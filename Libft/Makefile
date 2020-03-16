@@ -11,10 +11,10 @@
 # **************************************************************************** #
 
 
-CFLAGS = -O3 -Wall -Werror -Wextra -g3 -flto -march=native
+CFLAGS = -O3 -Wall -Werror -Wextra -pipe -flto -march=native
 
 NAME = libft.a
-	
+
 SRCS = 	src/ft_split.c 				\
 		src/ft_putnbr_fd.c 			\
 		src/ft_putendl_fd.c 		\
@@ -56,18 +56,6 @@ SRCS = 	src/ft_split.c 				\
 		src/get_next_line.c 		\
 		src/ft_pos_c_str.c
 
-
-BNSSRC = 	src/ft_lstnew.c 		\
-			src/ft_lstadd_front.c 	\
-			src/ft_lstsize.c 		\
-			src/ft_lstclear.c 		\
-			src/ft_lstlast.c 		\
-			src/ft_lstadd_back.c 	\
-			src/ft_lstdelone.c 		\
-			src/ft_lstmap.c 		\
-			src/ft_lstiter.c
-
-
 BNSOBJ = ${BNSSRC:.c=.o}
 
 OBJS = ${SRCS:.c=.o}
@@ -82,7 +70,7 @@ all : $(NAME)
 	${CC} ${CFLAGS} -I ./ -c $< -o ${<:.c=.o}
 
 bonus: ${BNSOBJ} ${OBJS} ${HEADER}
-	ar rcs $(NAME) ${OBJS} ${BNSOBJ} ${HEADER}	
+	ar rcs $(NAME) ${OBJS} ${BNSOBJ} ${HEADER}
 
 $(NAME): ${OBJS} ${HEADER}
 	ar rcs $(NAME) ${OBJS} ${HEADER}
@@ -92,7 +80,7 @@ fclean : clean
 
 clean :
 	rm -rf ${OBJS} ${BNSOBJ}
-	
+
 re : fclean all
 
 .PHONY: clean all fclean re bonus

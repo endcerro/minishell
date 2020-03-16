@@ -2,5 +2,5 @@
 
 int main(void)
 {
-	ft_putstr("AAA\n");
+	ft_putstr_fd("AAA\n", 1);
 }
