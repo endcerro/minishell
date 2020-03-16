@@ -32,6 +32,7 @@ ECHO		=	echo
 $(NAME)	:		$(OBJ)
 				@$(ECHO) "\033[38;5;208m> Building Libft\033[38;5;125m"
 				$(MAKE) -C $(SUB_MAKE)
+				@$(ECHO) "\033[38;5;208m> Building Minishell\033[38;5;125m"
 				$(CC) -I./$(INCLUDE) $(INC_LIB) $(CFLAGS) -o $(NAME) $(OBJS)
 				@$(ECHO) "\033[32m> Minishell compiled\033[0m"
 
