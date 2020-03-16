@@ -1,86 +1,91 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+         #
+#    By: hpottier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/19 16:51:20 by edal--ce          #+#    #+#              #
-#    Updated: 2020/02/26 01:53:22 by edal--ce         ###   ########.fr        #
+#    Created: 2019/11/04 14:27:31 by hpottier          #+#    #+#              #
+#    Updated: 2020/01/04 18:18:49 by hpottier         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
+NAME		=	libft.a
+SRC			=	ft_bzero.c \
+				ft_isalnum.c \
+				ft_isalpha.c \
+				ft_isascii.c \
+				ft_isdigit.c \
+				ft_islower.c \
+				ft_isprint.c \
+				ft_isupper.c \
+				ft_memccpy.c \
+				ft_memcpy.c \
+				ft_memchr.c \
+				ft_memcmp.c \
+				ft_memmove.c \
+				ft_memset.c \
+				ft_strchr.c \
+				ft_strlen.c \
+				ft_strrchr.c \
+				ft_tolower.c \
+				ft_toupper.c \
+				ft_strncmp.c \
+				ft_strlcpy.c \
+				ft_strlcat.c \
+				ft_strnstr.c \
+				ft_atoi.c \
+				ft_itoa.c \
+				ft_itoa_base.c \
+				ft_isspace.c \
+				ft_calloc.c \
+				ft_strdup.c \
+				ft_putchar_fd.c \
+				ft_putstr_fd.c \
+				ft_putendl_fd.c \
+				ft_putnbr_fd.c \
+				ft_putchar.c \
+				ft_putstr.c \
+				ft_putendl.c \
+				ft_putnbr.c \
+				ft_strjoin.c \
+				ft_substr.c \
+				ft_strtrim.c \
+				ft_split.c \
+				ft_itoa.c \
+				ft_strmapi.c \
+				get_next_line.c
 
-CFLAGS = -O3 -Wall -Werror -Wextra -pipe -flto -march=native
+OBJ			=	$(SRC:.c=.o)
 
-NAME = libft.a
+CFLAGS		=	-Wall -Wextra -Werror
 
-SRCS = 	src/ft_split.c 				\
-		src/ft_putnbr_fd.c 			\
-		src/ft_putendl_fd.c 		\
-		src/ft_putstr_fd.c 			\
-		src/ft_putchar_fd.c 		\
-		src/ft_substr.c 			\
-		src/ft_atoi.c 				\
-		src/ft_bzero.c 				\
-		src/ft_calloc.c 			\
-		src/ft_isalnum.c 			\
-		src/ft_isalpha.c			\
-		src/ft_isascii.c 			\
-		src/ft_isdigit.c 			\
-		src/ft_isprint.c 			\
-		src/ft_memccpy.c 			\
-		src/ft_memchr.c 			\
-		src/ft_memcmp.c 			\
-		src/ft_memcpy.c 			\
-		src/ft_memmove.c 			\
-		src/ft_memset.c 			\
-		src/ft_strchr.c 			\
-		src/ft_strdup.c 			\
-		src/ft_strlcat.c 			\
-		src/ft_strlcpy.c 			\
-		src/ft_strlen.c 			\
-		src/ft_strncmp.c 			\
-		src/ft_strnstr.c 			\
-		src/ft_strrchr.c 			\
-		src/ft_tolower.c 			\
-		src/ft_toupper.c 			\
-		src/ft_strjoin.c 			\
-		src/ft_strmapi.c 			\
-		src/ft_itoa.c 				\
-		src/ft_strtrim.c 			\
-		src/ft_convert_base.c 		\
-		src/ft_convert_base2.c 		\
-		src/ft_abs.c 				\
-		src/ft_isspace.c 			\
-		src/get_next_line.c 		\
-		src/ft_pos_c_str.c
+AC			=	ar rc
+RAN			=	ranlib
+CC			=	gcc
+RM			=	rm -f
+ECHO		=	echo
 
-BNSOBJ = ${BNSSRC:.c=.o}
+$(NAME)	:		$(OBJ)
+#				@$(ECHO) "\033[38;5;208m> Building Libft\033[38;5;125m"
+				$(AC) $(NAME) $(OBJ)
+				$(RAN) $(NAME)
+				@$(ECHO) "\033[32m> Libft compiled\033[0m"
 
-OBJS = ${SRCS:.c=.o}
+clean	:
+				-@$(RM) $(OBJ)
+#				@$(ECHO) "\033[94m> Libft Objects removed\033[0m"
 
-CC = gcc
+all		:		$(NAME)
 
-HEADER = libft.h
+fclean	:		clean
+				-@$(RM) $(NAME)
+#				@$(ECHO) "\033[94m> Libft cleaned all\033[0m"
 
-all : $(NAME)
+re		:		fclean all
 
-.c.o:
-	${CC} ${CFLAGS} -I ./ -c $< -o ${<:.c=.o}
+.PHONY	:		all clean re fclean
 
-bonus: ${BNSOBJ} ${OBJS} ${HEADER}
-	ar rcs $(NAME) ${OBJS} ${BNSOBJ} ${HEADER}
-
-$(NAME): ${OBJS} ${HEADER}
-	ar rcs $(NAME) ${OBJS} ${HEADER}
-
-fclean : clean
-	rm -rf  ./$(NAME)
-
-clean :
-	rm -rf ${OBJS} ${BNSOBJ}
-
-re : fclean all
-
-.PHONY: clean all fclean re bonus
+%.o		:		%.c
+#				@$(ECHO) "\033[38;5;208m> Compiling Libft\033[38;5;125m"
+				$(CC) -I. $(CFLAGS) -o $@ -c $<

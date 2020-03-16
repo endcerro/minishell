@@ -16,7 +16,7 @@ DIRSRC		=	Sources
 OBJD		=	Objets
 INCLUDE		=	Includes
 SUB_MAKE	=	Libft
-INC_LIB		=	-L./Libft -lft
+LIB			=	$(SUB_MAKE)/libft.a
 
 SRC			=	main.c
 
@@ -29,17 +29,18 @@ CC			=	gcc
 RM			=	rm -f
 ECHO		=	echo
 
-$(NAME)	:		$(OBJD) $(OBJ)
+$(NAME)	:		$(LIB) $(OBJD) $(OBJ)
 				@$(ECHO) "\033[32m> Minishell built\033[0m"
-				@$(ECHO) "\033[38;5;208m> Building Libft\033[38;5;125m"
-				@($(MAKE) -C $(SUB_MAKE))
-				@$(ECHO) "\033[32m> Libft built\033[0m"
 				@$(ECHO) "\033[38;5;208m> Compiling Minishell\033[38;5;125m"
-				$(CC) -I./$(INCLUDE) $(INC_LIB) $(CFLAGS) -o $(NAME) $(OBJS)
+				$(CC) -I./$(INCLUDE) -I./$(SUB_MAKE) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB)
 				@$(ECHO) "\033[32m> Minishell compiled\033[0m"
 
+$(LIB)	:
+				@$(ECHO) "\033[38;5;208m> Compiling Libft\033[38;5;125m"
+				@($(MAKE) -s -C $(SUB_MAKE))
+
 clean	:
-				@($(MAKE) clean -C $(SUB_MAKE))
+				@($(MAKE) clean -s -C $(SUB_MAKE))
 				@$(ECHO) "\033[94m> Libft Objects removed\033[0m"
 				-@$(RM) $(OBJS)
 				@$(ECHO) "\033[94m> Minishell Objects removed\033[0m"
@@ -50,7 +51,7 @@ $(OBJD)	:
 all		:		$(NAME)
 
 fclean	:		clean
-				@($(MAKE) fclean -C $(SUB_MAKE))
+				@($(MAKE) fclean -s -C $(SUB_MAKE))
 				@$(ECHO) "\033[94m> Libft cleaned all\033[0m"
 				-@$(RM) $(NAME)
 				@$(ECHO) "\033[94m> Minishell cleaned all\033[0m"
@@ -61,4 +62,4 @@ re		:		fclean all
 
 %.o		:		$(DIRSRC)/%.c
 				@$(ECHO) "\033[38;5;208m> Building Minishell\033[38;5;125m"
-				$(CC) -I./$(INCLUDE) $(INC_LIB) $(CFLAGS) -o $(OBJD)/$@ -c $<
+				$(CC) -I./$(INCLUDE) -I./$(SUB_MAKE) $(CFLAGS) -o $(OBJD)/$@ -c $<
