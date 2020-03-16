@@ -49,9 +49,6 @@ $(OBJD)	:
 
 all		:		$(NAME)
 
-#color	:
-#				@$(ECHO) "\033[38;5;208m> Compiling Libft\033[38;5;125m"
-
 fclean	:		clean
 				@($(MAKE) fclean -C $(SUB_MAKE))
 				@$(ECHO) "\033[94m> Libft cleaned all\033[0m"
