@@ -1,1 +1,0 @@
-# minshell
