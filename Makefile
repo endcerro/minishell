@@ -18,7 +18,8 @@ INCLUDE		=	Includes
 SUB_MAKE	=	Libft
 LIB			=	$(SUB_MAKE)/libft.a
 
-SRC			=	main.c
+SRC			=	main.c 				\
+				get_commands.c
 
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)

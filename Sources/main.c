@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
+/*   Updated: 2020/03/16 23:53:13 by edal--ce         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 void	prompt(char **line)
@@ -142,7 +153,7 @@ int		main(int ac, char **av, char **envp)
 		prompt(&line);
 		if (line == NULL && *line == 0)
 			break ;
-		if (!(params = ft_split(line, ' ')))	// Ce split est naze il faut le changer
+		if (!(params = get_blocks(line)))	// Ce split est naze il faut le changer
 			return (0);							// Il ne gere pas les quotes et les whitespaces
 		free(line);
 		if (*params)

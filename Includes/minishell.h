@@ -6,4 +6,7 @@
 # include <string.h>
 # include <errno.h>
 
+
+char **get_blocks(char *line);
+
 #endif
