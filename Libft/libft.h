@@ -33,7 +33,7 @@ t_list				*ft_lstnew(void *content);
 int					ft_lstsize(t_list *lst);
 int					ft_pow(int nb, int pow);
 char				*ft_itoa(int n);
-void				ft_putstr_fd(char *s, int fd);
+void				ft_putstr(char *s);
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t n, size_t s);

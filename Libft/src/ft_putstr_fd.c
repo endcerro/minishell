@@ -17,3 +17,10 @@ void	ft_putstr_fd(char *s, int fd)
 	if (s && fd != -1)
 		write(fd, s, ft_strlen((const char*)s));
 }
+
+void	ft_putstr(char *s)
+{
+	if (s && fd != -1)
+		write(1, s, ft_strlen((const char*)s));
+}
+
