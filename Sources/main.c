@@ -70,7 +70,7 @@ void	env(char **envp, char **params)
 	}
 }
 
-void	cd(char **envp, char **params) // Il faut changer PWD et OLDPWD dans env
+void	cd(char **envp, char **params) // Trouver comment virer OLDPWD et PWD sans leak
 {
 	int oldpwd;
 	int pwd;
