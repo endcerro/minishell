@@ -70,18 +70,37 @@ void	env(char **envp, char **params)
 	}
 }
 
-void	cd(char **params) // Il faut changer PWD et OLDPWD dans env
+void	cd(char **envp, char **params) // Il faut changer PWD et OLDPWD dans env
 {
+	int oldpwd;
+	int pwd;
+	int x;
+
 	if (params[1] && params[2] != 0)
 	{
-		ft_putstr("minishell: cd: too many arguments\n");
+		ft_putstr("minishell: cd: wrond number of arguments\n");
 		return ;
 	}
 	if (chdir(params[1]) == -1)
 	{
 		ft_putstr(strerror(errno));
 		write(1, "\n", 1);
+		return ;
 	}
+	oldpwd = -1;
+	pwd = -1;
+	x = -1;
+	while (envp[++x] && (pwd == -1 || oldpwd == -1))
+		if (ft_strncmp(envp[x], "PWD=", 4) == 0)
+			pwd = x;
+		else if (ft_strncmp(envp[x], "OLDPWD=", 7) == 0)
+			oldpwd = x;
+	if (envp[x] == NULL)
+		return ;
+	/* free(envp[oldpwd]); */
+	/* envp[oldpwd] = ft_strjoinf2("OLD", envp[pwd]); */
+	envp[oldpwd] = ft_strjoin("OLD", envp[pwd]);
+	envp[pwd] = ft_strjoinf2(envp[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
 }
 
 void	pwd(char **envp, char **params)
@@ -94,9 +113,10 @@ void	pwd(char **envp, char **params)
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
 	}
-	while (ft_strncmp(envp[x], "PWD=", 4) != 0)
+	while (envp[x] && ft_strncmp(envp[x], "PWD=", 4) != 0)
 		++x;
-	ft_putstr(&envp[x][4]);
+	if (envp[x])
+		ft_putstr(&envp[x][4]);
 	write(1, "\n", 1);
 }
 
@@ -110,34 +130,18 @@ void	checkinput(char **envp, char **params)
 		freeparams(params);
 		exit(0);
 	}
-	if (ft_strcmp(params[0], "echo") == 0) // A terminer
-	{
+	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
 		echo(params);
-		return ;
-	}
-	if (ft_strcmp(params[0], "env") == 0) // Fini
-	{
+	else if (ft_strcmp(params[0], "env") == 0) // Fini
 		env(envp, params);
-		return ;
-	}
-	if (ft_strcmp(params[0], "cd") == 0) // A terminer
-	{
-		cd(params);
-		return ;
-	}
-	if (ft_strcmp(params[0], "pwd") == 0) // Fini
-	{
+	else if (ft_strcmp(params[0], "cd") == 0) // A terminer
+		cd(envp, params);
+	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(envp, params);
+	else if (ft_strcmp(params[0], "export") == 0) // A terminer
 		return ;
-	}
-	if (ft_strcmp(params[0], "export") == 0) // A terminer
-	{
+	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		return ;
-	}
-	if (ft_strcmp(params[0], "unset") == 0) // A terminer
-	{
-		return ;
-	}
 }
 
 int		main(int ac, char **av, char **envp)
