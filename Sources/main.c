@@ -31,7 +31,7 @@ void	freechar2ptr(char **ptr)
 }
 
 void	echo(char **params)	// Ne gere ni les escape ni les quotes
-{							// Il y a aussi des problemes avec les espaces lie au split
+{
 	int i;
 	int ret;
 
@@ -70,22 +70,44 @@ void	env(char **envi, char **params)
 	}
 }
 
-void	cd(char **envi, char **params) // Regler le probleme de .. et . et chemin absolu
+char	*rethomedir(char **envi)
 {
-	int oldpwd;
-	int pwd;
-	int x;
+	while (*envi && ft_strncmp("HOME=", *envi, 5) != 0)
+		++envi;
+	if (*envi)
+		return (*envi + 5);
+	return (NULL);
+}
+
+void	cd(char **envi, char **params) // Regler le probleme de .. et .
+{
+	int		oldpwd;
+	int		pwd;
+	int		x;
+	char	*home;
 
 	if (params[1] && params[2] != 0)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
 		return ;
 	}
-	if (chdir(params[1]) == -1)
+	if (params[1])
 	{
-		ft_putstr(strerror(errno));
-		write(1, "\n", 1);
-		return ;
+		if (chdir(params[1]) == -1)
+		{
+			ft_putstr(strerror(errno));
+			write(1, "\n", 1);
+			return ;
+		}
+	}
+	else
+	{
+		if (chdir((home = rethomedir(envi))) == -1)
+		{
+			ft_putstr(strerror(errno));
+			write(1, "\n", 1);
+			return ;
+		}
 	}
 	oldpwd = -1;
 	pwd = -1;
@@ -99,7 +121,17 @@ void	cd(char **envi, char **params) // Regler le probleme de .. et . et chemin a
 		return ;
 	free(envi[oldpwd]);
 	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]);
-	envi[pwd] = ft_strjoinft(envi[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
+	if (params[1] == NULL)
+	{
+		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
+	}
+	else if (params[1][0] == '/')
+	{
+		free(envi[pwd]);
+		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
+	}
+	else
+		envi[pwd] = ft_strjoinft(envi[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
 }
 
 void	pwd(char **envi, char **params)
