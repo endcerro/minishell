@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int count_blocks(char *line)
+int		count_blocks(char *line)
 {
 	int i;
 	int count;
@@ -28,54 +28,61 @@ int count_blocks(char *line)
 			count++;
 			if(line[i++] == '"')
 				while(line[i] && line[i] != '"')
-					i++;
+					++i;
 			else
 				while(line[i] && !ft_isspace(line[i]))
-					i++;
+					++i;
 		}
 		else
-			i++;
+			++i;
 	}
 	return (count);
 }
 
-char			*get_word(char *line, int *p)
+char	*get_word(char *line, int *p)
 {
-	int len;
-	int cp;
+	size_t	len;
+	int		cp;
 
 	cp = *p;
 	len = 0;
 	if (line[*p] == '"' && ++(*p))
 	{
-		cp++;
 		while (line[*p] && line[*p] != '"' && ++len)
-			(*p)++;
-		(*p)++;
-	
+			++(*p);
+		++(*p);
+		return(ft_substr(line, cp, len + 2));
+	}
+	else if (line[*p] == '\'' && ++(*p))
+	{
+		while (line[*p] && line[*p] != '\'' && ++len)
+			++(*p);
+		++(*p);
+		return(ft_substr(line, cp, len + 2));
 	}
 	else
 		while (line[*p] && !ft_isspace(line[*p]) && ++len)
-			(*p)++;
+			++(*p);
 	return(ft_substr(line, cp, len));
 }
 
-char **get_blocks(char *line)
+char	**get_blocks(char *line)
 {
 	int 	p;
 	int 	i;
 	char 	**out;
 
-	if(!(out = malloc(sizeof(char*) * (count_blocks(line) + 1))))
+	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
 		return 0;
 	i = 0;
 	p = 0;
 	while (line[i])
 	{
 		if (ft_isspace(line[i]))
-			i++;
+			++i;
 		else
-			out[p++] = get_word(line, &i);
+			if ((out[p++] = get_word(line, &i)) == NULL)
+				return (out);
 	}
 	out[p] = 0;
 	return (out);

@@ -153,8 +153,8 @@ int		main(int ac, char **av, char **envp)
 		prompt(&line);
 		if (line == NULL && *line == 0)
 			break ;
-		if (!(params = get_blocks(line)))	// Ce split est naze il faut le changer
-			return (0);							// Il ne gere pas les quotes et les whitespaces
+		if (!(params = get_blocks(line)))
+			return (0);
 		free(line);
 		if (*params)
 			checkinput(envp, params);
