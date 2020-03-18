@@ -17,17 +17,17 @@ void	prompt(char **line)
 	get_next_line(0, line);
 }
 
-void	freeparams(char **params)
+void	freechar2ptr(char **ptr)
 {
 	int i;
 
 	i = 0;
-	while (params[i])
+	while (ptr[i])
 	{
-		free(params[i]);
+		free(ptr[i]);
 		++i;
 	}
-	free(params);
+	free(ptr);
 }
 
 void	echo(char **params)	// Ne gere ni les escape ni les quotes
@@ -52,7 +52,7 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 		write(1, "\n", 1);
 }
 
-void	env(char **envp, char **params)
+void	env(char **envi, char **params)
 {
 	int x;
 
@@ -61,16 +61,16 @@ void	env(char **envp, char **params)
 		ft_putstr("minishell: env: too many arguments\n");
 	else
 	{
-		while (envp[x])
+		while (envi[x])
 		{
-			ft_putstr(envp[x]);
+			ft_putstr(envi[x]);
 			write(1, "\n", 1);
 			++x;
 		}
 	}
 }
 
-void	cd(char **envp, char **params) // Trouver comment virer OLDPWD et PWD sans leak
+void	cd(char **envi, char **params) // Regler le probleme de .. et . et chemin absolu
 {
 	int oldpwd;
 	int pwd;
@@ -90,20 +90,19 @@ void	cd(char **envp, char **params) // Trouver comment virer OLDPWD et PWD sans 
 	oldpwd = -1;
 	pwd = -1;
 	x = -1;
-	while (envp[++x] && (pwd == -1 || oldpwd == -1))
-		if (ft_strncmp(envp[x], "PWD=", 4) == 0)
+	while (envi[++x] && (pwd == -1 || oldpwd == -1))
+		if (ft_strncmp(envi[x], "PWD=", 4) == 0)
 			pwd = x;
-		else if (ft_strncmp(envp[x], "OLDPWD=", 7) == 0)
+		else if (ft_strncmp(envi[x], "OLDPWD=", 7) == 0)
 			oldpwd = x;
-	if (envp[x] == NULL)
+	if (envi[x] == NULL)
 		return ;
-	/* free(envp[oldpwd]); */
-	/* envp[oldpwd] = ft_strjoinf2("OLD", envp[pwd]); */
-	envp[oldpwd] = ft_strjoin("OLD", envp[pwd]);
-	envp[pwd] = ft_strjoinf2(envp[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
+	free(envi[oldpwd]);
+	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]);
+	envi[pwd] = ft_strjoinft(envi[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
 }
 
-void	pwd(char **envp, char **params)
+void	pwd(char **envi, char **params)
 {
 	int x;
 
@@ -113,45 +112,65 @@ void	pwd(char **envp, char **params)
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
 	}
-	while (envp[x] && ft_strncmp(envp[x], "PWD=", 4) != 0)
+	while (envi[x] && ft_strncmp(envi[x], "PWD=", 4) != 0)
 		++x;
-	if (envp[x])
-		ft_putstr(&envp[x][4]);
+	if (envi[x])
+		ft_putstr(&envi[x][4]);
 	write(1, "\n", 1);
 }
 
-void	checkinput(char **envp, char **params)
+void	checkinput(char **envi, char **params)
 {
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
 		ft_putstr("exit\n");
 		if (params[1])
 			ft_putstr("minishell: exit: too many arguments\n");
-		freeparams(params);
+		freechar2ptr(params);
+		freechar2ptr(envi);
 		exit(0);
 	}
 	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
 		echo(params);
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
-		env(envp, params);
+		env(envi, params);
 	else if (ft_strcmp(params[0], "cd") == 0) // A terminer
-		cd(envp, params);
+		cd(envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
-		pwd(envp, params);
+		pwd(envi, params);
 	else if (ft_strcmp(params[0], "export") == 0) // A terminer
 		return ;
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		return ;
 }
 
-int		main(int ac, char **av, char **envp)
+char	**newenviron()
+{
+	char	**envi;
+	int		x;
+
+	x = 0;
+	while (environ[x])
+		++x;
+	++x;
+	if ((envi = (char **)malloc(sizeof(char *) * x)) == NULL)
+		return (NULL);
+	x = -1;
+	while (environ[++x])
+		envi[x] = ft_strdup(environ[x]);
+	envi[x] = NULL;
+	return (envi);
+}
+
+int		main(int ac, char **av)
 {
 	char *line;
 	char **params;
+	char **envi;
 
 	(void)ac;
 	(void)av;
-	(void)envp;
+	envi = newenviron();
 	while (1)
 	{
 		prompt(&line);
@@ -161,8 +180,7 @@ int		main(int ac, char **av, char **envp)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(envp, params);
-		freeparams(params);
+			checkinput(envi, params);
+		freechar2ptr(params);
 	}
-	return (0);
 }

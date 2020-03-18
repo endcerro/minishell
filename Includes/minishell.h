@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 
+extern char **environ;
 
 char **get_blocks(char *line);
 
