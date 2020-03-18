@@ -13,7 +13,7 @@
 
 void	prompt(char **line)
 {
-	ft_putstr("minishell @>");
+	ft_putstr("\033[31mminishell \033[33m@>\033[0m");
 	get_next_line(0, line);
 }
 
@@ -79,7 +79,7 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-void	cd(char **envi, char **params) // Regler le probleme de .. et .
+void	cd(char **envi, char **params) // Regler le probleme de ..
 {
 	int		oldpwd;
 	int		pwd;
@@ -125,6 +125,8 @@ void	cd(char **envi, char **params) // Regler le probleme de .. et .
 	{
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
 	}
+	if (params[1][0] == '.' && params[1][1] == 0)
+		return ;
 	else if (params[1][0] == '/')
 	{
 		free(envi[pwd]);
