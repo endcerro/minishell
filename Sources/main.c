@@ -79,6 +79,19 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
+int		checkdotdot(char *param)
+{
+	(void)param;
+	return (0);
+}
+
+char	*retdotdot(char *pwd, char *param)
+{
+	(void)pwd;
+	(void)param;
+	return (NULL);
+}
+
 void	cd(char **envi, char **params) // Regler le probleme de ..
 {
 	int		oldpwd;
@@ -128,6 +141,8 @@ void	cd(char **envi, char **params) // Regler le probleme de ..
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
 	else if (params[1][0] == '/')
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
+	else if (checkdotdot(params[1]))
+		envi[pwd] = retdotdot(envi[pwd], params[1]);
 	else
 		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
 }
