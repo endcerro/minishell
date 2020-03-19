@@ -121,19 +121,15 @@ void	cd(char **envi, char **params) // Regler le probleme de ..
 		return ;
 	free(envi[oldpwd]);
 	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]);
-	if (params[1] == NULL)
-	{
-		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
-	}
-	if (params[1][0] == '.' && params[1][1] == 0)
+	if (params[1] && params[1][0] == '.' && params[1][1] == 0)
 		return ;
+	free(envi[pwd]);
+	if (params[1] == NULL)
+		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
 	else if (params[1][0] == '/')
-	{
-		free(envi[pwd]);
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
-	}
 	else
-		envi[pwd] = ft_strjoinft(envi[pwd], ft_strjoinf2("/", ft_strdup(params[1])));
+		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
 }
 
 void	pwd(char **envi, char **params)
