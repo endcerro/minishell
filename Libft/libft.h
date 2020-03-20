@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:05:22 by hpottier          #+#    #+#             */
-/*   Updated: 2019/12/17 20:49:00 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/03/20 22:23:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char			*ft_strjoinf1(char *s1, char const *s2);
 char			*ft_strjoinf2(char const *s1, char *s2);
 char			*ft_strjoinft(char *s1, char *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_substrf1(char *s, unsigned int start, size_t len);
 char			*ft_strtrim(char const *s1, char const *set);
 char			**ft_split(char const *s, char c);
 char			*ft_itoa(int n);

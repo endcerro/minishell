@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/20 21:58:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/20 23:59:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -92,45 +92,46 @@ char	*rethomedir(char **envi)
 // 	return (NULL);
 // }
 
-char	*parse_dot_dot(char *path)
+char	*parse_dot_dot(char *pwd)
 {
-	char **tmp;
-	int i;
-	int j;
-	int t;
-	char *out;
+	t_path 	**path;
+	t_path 	*curr;
+	t_path 	*tmp;
 
-	i = -1;
-	tmp = ft_split(path, '/');
-	while(tmp[++i] != 0)
+	tmp = NULL;
+	path = init_path(pwd);
+	while(curr && ft_strncmp(curr->str,"../", 3) == 0)
 	{
-		if(ft_strcmp(tmp[i], "..") == 0 && i != 0)
+		printf("here\n");
+		*path = curr->next;
+		free(curr);
+		curr = *path;
+	}
+	while(curr)
+	{
+		if(ft_strncmp(curr->str,"../", 3) == 0)
 		{
-			t = 0;
-			while(t++ < 2)
+			if(tmp)
 			{
-				j = i - 1;
-				free(tmp[j]);
-				while(tmp[j++])
-					tmp[j - 1] = tmp[j];	
+				tmp->next = curr->next->next;
+				free(curr->next);
+				free(curr);
+				curr = tmp->next;
 			}
-			i = i - 2;
+			else
+			{
+				*path = curr->next->next;
+				free(curr->next);
+				free(curr);
+				curr = *path;
+			}	
 		}
+		tmp = curr;
+		curr = curr->next;
 	}
-	i = -1;
-	out = 0;
-	while (tmp[++i] != 0)
-	{
-		if (out == 0)
-			out = ft_strjoinf1(tmp[i], "/");
-		else
-		{
-			tmp[i] = ft_strjoinf1(tmp[i], "/");
-			out = ft_strjoinft(out, tmp[i]);
-		}
-	}
-	free(path);
-	return out;
+	print_path(*path);
+	free_path(path);
+	return 0;
 }
 
 void	cd(char **envi, char **params) // Regler le probleme de ..
@@ -184,7 +185,8 @@ void	cd(char **envi, char **params) // Regler le probleme de ..
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
 	else
 		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
-	envi[pwd] = parse_dot_dot(envi[pwd]);
+	// envi[pwd] = 
+	parse_dot_dot(envi[pwd]);
 }
 
 void	pwd(char **envi, char **params)
