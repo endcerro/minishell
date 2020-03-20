@@ -99,7 +99,7 @@ char	*parse_dot_dot(char *pwd)
 	t_path 	*tmp;
 
 	tmp = NULL;
-	path = init_path(pwd);
+	path = init_path(pwd + 4);
 	while(curr && ft_strncmp(curr->str,"../", 3) == 0)
 	{
 		printf("here\n");
@@ -124,7 +124,7 @@ char	*parse_dot_dot(char *pwd)
 				free(curr->next);
 				free(curr);
 				curr = *path;
-			}	
+			}
 		}
 		tmp = curr;
 		curr = curr->next;
@@ -185,7 +185,7 @@ void	cd(char **envi, char **params) // Regler le probleme de ..
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
 	else
 		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
-	// envi[pwd] = 
+	// envi[pwd] =
 	parse_dot_dot(envi[pwd]);
 }
 

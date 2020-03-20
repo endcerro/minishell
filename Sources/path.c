@@ -28,15 +28,15 @@ void	ft_lstadd_back(t_path **alst, t_path *new)
 
 	if (alst && new)
 	{
-		tmp = *alst;
-		if (tmp)
+		if (*alst == NULL)
+			*alst = new;
+		else
 		{
+			tmp = *alst;
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new;
 		}
-		else
-			*alst = new;
 	}
 }
 
@@ -47,6 +47,7 @@ t_path **init_path(char *str)
 
 	if(!(path = (t_path**)malloc(sizeof(t_path*))))
 		return (NULL);
+	*path = NULL;
 	i = -1;
 	while (str[++i])
 	{
@@ -68,7 +69,7 @@ void free_path(t_path **path)
 		curr= curr->next;
 		free(tmp);
 	}
-	free(path);	
+	free(path);
 }
 
 void print_path(t_path *path)
