@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/16 23:53:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/20 21:58:47 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -79,17 +79,58 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-int		checkdotdot(char *param)
-{
-	(void)param;
-	return (0);
-}
+// int		checkdotdot(char *param)
+// {
+// 	(void)param;
+// 	return (0);
+// }
 
-char	*retdotdot(char *pwd, char *param)
+// char	*retdotdot(char *pwd, char *param)
+// {
+// 	(void)pwd;
+// 	(void)param;
+// 	return (NULL);
+// }
+
+char	*parse_dot_dot(char *path)
 {
-	(void)pwd;
-	(void)param;
-	return (NULL);
+	char **tmp;
+	int i;
+	int j;
+	int t;
+	char *out;
+
+	i = -1;
+	tmp = ft_split(path, '/');
+	while(tmp[++i] != 0)
+	{
+		if(ft_strcmp(tmp[i], "..") == 0 && i != 0)
+		{
+			t = 0;
+			while(t++ < 2)
+			{
+				j = i - 1;
+				free(tmp[j]);
+				while(tmp[j++])
+					tmp[j - 1] = tmp[j];	
+			}
+			i = i - 2;
+		}
+	}
+	i = -1;
+	out = 0;
+	while (tmp[++i] != 0)
+	{
+		if (out == 0)
+			out = ft_strjoinf1(tmp[i], "/");
+		else
+		{
+			tmp[i] = ft_strjoinf1(tmp[i], "/");
+			out = ft_strjoinft(out, tmp[i]);
+		}
+	}
+	free(path);
+	return out;
 }
 
 void	cd(char **envi, char **params) // Regler le probleme de ..
@@ -141,10 +182,9 @@ void	cd(char **envi, char **params) // Regler le probleme de ..
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
 	else if (params[1][0] == '/')
 		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
-	else if (checkdotdot(params[1]))
-		envi[pwd] = retdotdot(envi[pwd], params[1]);
 	else
 		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
+	envi[pwd] = parse_dot_dot(envi[pwd]);
 }
 
 void	pwd(char **envi, char **params)
