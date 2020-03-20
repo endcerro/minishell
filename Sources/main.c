@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/21 00:44:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/21 00:55:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -101,16 +101,12 @@ char	*parse_dot_dot(char *pwd)
 	tmp = NULL;
 	path = init_path(pwd + 4);
 	curr = *path;
-
-	// printf("first .. trim.....\n");
-	// printf("%s\n", curr->str);
 	while(curr && ft_strncmp(curr->str,"..", 2) == 0)
 	{
 		*path = curr->next;
 		free(curr);
 		curr = *path;
 	}
-	// printf("Done\n");
 	while(curr)
 	{
 		if(curr->next && ft_strncmp(curr->next->str,"..", 2) == 0)
@@ -130,11 +126,12 @@ char	*parse_dot_dot(char *pwd)
 				curr = *path;
 			}
 		}
-		tmp = curr;
-		curr = curr->next;
+		else
+		{
+			tmp = curr;
+			curr = curr->next;
+		}
 	}
-	print_path(*path);
-	// free_path(path);
 	return (join_pwd(path, pwd));
 }
 

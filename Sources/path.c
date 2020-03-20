@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 23:29:47 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/21 00:50:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/21 00:56:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -19,7 +19,6 @@ t_path	*ft_lstnew(char *str)
 		return (0);
 	out->str = str;
 	out->next = 0;
-	// printf("content = %s\n",out->str );
 	return (out);
 }
 
@@ -50,7 +49,6 @@ t_path **init_path(char *str)
 		return (NULL);
 	*path = NULL;
 	i = -1;
-	// printf("str = %s\n",str );
 	while (str[++i])
 	{
 		if (str[i] == '/' && str[i + 1] != 0)
@@ -59,7 +57,6 @@ t_path **init_path(char *str)
 			str[i] = '\0';
 		}
 	}
-	// printf("init done \n");
 	return (path);
 }
 
@@ -84,29 +81,16 @@ char *join_pwd(t_path **path, char *pwd)
 	t_path 	*curr;
 
 	curr = *path;
-	write(1,"ici\n",4);
-	out = ft_strdup("PWD="); //modfier strjoin
+	out = ft_strdup("PWD=");
 	if(!curr)
 		out = ft_strjoinf1(out, "/");
 	while(curr)
 	{
-		printf("crash ??\n");
 		out = ft_strjoinf1(out, "/");
 		out = ft_strjoinf1(out, curr->str);
 		curr = curr->next;
 	}
-
-	printf("out = %s\n",out);
 	free(pwd);
 	free_path(path);
 	return (out);
-}
-
-void print_path(t_path *path)
-{
-	while(path)
-	{
-		printf("%s\n",path->str);
-		path = path->next;
-	}
 }
