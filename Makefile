@@ -41,16 +41,20 @@ $(LIB)		:
 				@$(ECHO) "\033[38;5;208m> Compiling Libft\033[38;5;125m"
 				@($(MAKE) -s -C $(SUB_MAKE))
 
+$(OBJD)		:
+				mkdir $(OBJD)
+
+$(OBJD)/%.o	:	$(DIRSRC)/%.c
+				@$(ECHO) "\033[38;5;208m> Building Minishell\033[38;5;125m"
+				$(CC) -I./$(INCLUDE) -I./$(SUB_MAKE) $(CFLAGS) -o $@ -c $<
+
+all			:	$(NAME)
+
 clean		:
 				@($(MAKE) clean -s -C $(SUB_MAKE))
 				@$(ECHO) "\033[94m> Libft Objects removed\033[0m"
 				-@$(RM) $(OBJS)
 				@$(ECHO) "\033[94m> Minishell Objects removed\033[0m"
-
-$(OBJD)		:
-				mkdir $(OBJD)
-
-all			:	$(NAME)
 
 fclean		:	clean
 				@($(MAKE) fclean -s -C $(SUB_MAKE))
@@ -61,7 +65,3 @@ fclean		:	clean
 re			:	fclean all
 
 .PHONY		:	all clean re fclean
-
-$(OBJD)/%.o	:	$(DIRSRC)/%.c
-				@$(ECHO) "\033[38;5;208m> Building Minishell\033[38;5;125m"
-				$(CC) -I./$(INCLUDE) -I./$(SUB_MAKE) $(CFLAGS) -o $@ -c $<
