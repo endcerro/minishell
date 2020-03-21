@@ -6,9 +6,10 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/21 00:55:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/21 00:59:54 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 void	prompt(char **line)
@@ -79,19 +80,6 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-// int		checkdotdot(char *param)
-// {
-// 	(void)param;
-// 	return (0);
-// }
-
-// char	*retdotdot(char *pwd, char *param)
-// {
-// 	(void)pwd;
-// 	(void)param;
-// 	return (NULL);
-// }
-
 char	*parse_dot_dot(char *pwd)
 {
 	t_path 	**path;
@@ -135,7 +123,7 @@ char	*parse_dot_dot(char *pwd)
 	return (join_pwd(path, pwd));
 }
 
-void	cd(char **envi, char **params) // Regler le probleme de ..
+void	cd(char **envi, char **params)
 {
 	int		oldpwd;
 	int		pwd;
@@ -221,7 +209,7 @@ void	checkinput(char **envi, char **params)
 		echo(params);
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
 		env(envi, params);
-	else if (ft_strcmp(params[0], "cd") == 0) // A terminer
+	else if (ft_strcmp(params[0], "cd") == 0) // Fini
 		cd(envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(envi, params);

@@ -6,9 +6,10 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 23:29:47 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/21 00:56:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/21 00:59:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 t_path	*ft_lstnew(char *str)
@@ -45,7 +46,7 @@ t_path **init_path(char *str)
 	t_path 	**path;
 	int 	i;
 
-	if(!(path = (t_path**)malloc(sizeof(t_path*))))
+	if (!(path = (t_path**)malloc(sizeof(t_path*))))
 		return (NULL);
 	*path = NULL;
 	i = -1;
@@ -66,7 +67,7 @@ void free_path(t_path **path)
 	t_path *curr;
 
 	curr = *path;
-	while(curr)
+	while (curr)
 	{
 		tmp = curr;
 		curr= curr->next;
@@ -82,9 +83,9 @@ char *join_pwd(t_path **path, char *pwd)
 
 	curr = *path;
 	out = ft_strdup("PWD=");
-	if(!curr)
+	if (!curr)
 		out = ft_strjoinf1(out, "/");
-	while(curr)
+	while (curr)
 	{
 		out = ft_strjoinf1(out, "/");
 		out = ft_strjoinf1(out, curr->str);
