@@ -18,6 +18,25 @@ void	prompt(char **line)
 	get_next_line(0, line);
 }
 
+char	*getcwdwrap(void)
+{
+	char			*str;
+	unsigned int	i;
+
+	i = 256;
+	str = NULL;
+	while (i < UINT_MAX)
+	{
+		if (!(str = (char *)malloc(i)))
+			return (NULL);
+		if (getcwd(str, i) != NULL)
+			break ;
+		free(str);
+		i += 100;
+	}
+	return (str);
+}
+
 void	freechar2ptr(char **ptr)
 {
 	int i;
@@ -129,6 +148,7 @@ void	cd(char **envi, char **params)
 	int		pwd;
 	int		x;
 	char	*home;
+	char	*str;
 
 	if (params[1] && params[2] != 0)
 	{
@@ -165,33 +185,42 @@ void	cd(char **envi, char **params)
 		return ;
 	free(envi[oldpwd]);
 	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]);
-	if (params[1] && params[1][0] == '.' && params[1][1] == 0)
-		return ;
 	free(envi[pwd]);
-	if (params[1] == NULL)
-		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home));
-	else if (params[1][0] == '/')
-		envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1]));
+	if ((str = getcwdwrap()) == NULL)
+		ft_putstr(strerror(errno));
 	else
-		envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1])));
-	envi[pwd] = parse_dot_dot(envi[pwd]);
+		envi[pwd] = ft_strjoinf2("PWD=", str);
+	/* if (params[1] && params[1][0] == '.' && params[1][1] == 0) */
+	/* 	return ; */
+	/* free(envi[pwd]); */
+	/* if (params[1] == NULL) */
+	/* 	envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home)); */
+	/* else if (params[1][0] == '/') */
+	/* 	envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1])); */
+	/* else */
+	/* 	envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1]))); */
+	/* envi[pwd] = parse_dot_dot(envi[pwd]); */
 }
 
-void	pwd(char **envi, char **params)
+void	pwd(char **params)
 {
-	int x;
+	/* int x; */
+	char *str;
 
-	x = 0;
+	/* x = 0; */
 	if (params[1])
 	{
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
 	}
-	while (envi[x] && ft_strncmp(envi[x], "PWD=", 4) != 0)
-		++x;
-	if (envi[x])
-		ft_putstr(&envi[x][4]);
+	/* while (envi[x] && ft_strncmp(envi[x], "PWD=", 4) != 0) */
+	/* 	++x; */
+	/* if (envi[x]) */
+	/* 	ft_putstr(&envi[x][4]); */
+	str = getcwdwrap();
+	ft_putstr(str);
 	write(1, "\n", 1);
+	free(str);
 }
 
 void	checkinput(char **envi, char **params)
@@ -212,7 +241,7 @@ void	checkinput(char **envi, char **params)
 	else if (ft_strcmp(params[0], "cd") == 0) // Fini
 		cd(envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
-		pwd(envi, params);
+		pwd(params);
 	else if (ft_strcmp(params[0], "export") == 0) // A terminer
 		return ;
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer

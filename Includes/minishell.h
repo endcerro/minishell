@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <errno.h>
+# include <limits.h>
 
 #include <stdio.h>
 
