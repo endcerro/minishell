@@ -99,48 +99,48 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-char	*parse_dot_dot(char *pwd)
-{
-	t_path 	**path;
-	t_path 	*curr;
-	t_path 	*tmp;
+/* char	*parse_dot_dot(char *pwd) */
+/* { */
+/* 	t_path 	**path; */
+/* 	t_path 	*curr; */
+/* 	t_path 	*tmp; */
 
-	tmp = NULL;
-	path = init_path(pwd + 4);
-	curr = *path;
-	while(curr && ft_strncmp(curr->str,"..", 2) == 0)
-	{
-		*path = curr->next;
-		free(curr);
-		curr = *path;
-	}
-	while(curr)
-	{
-		if(curr->next && ft_strncmp(curr->next->str,"..", 2) == 0)
-		{
-			if(tmp)
-			{
-				tmp->next = curr->next->next;
-				free(curr->next);
-				free(curr);
-				curr = tmp->next;
-			}
-			else
-			{
-				*path = curr->next->next;
-				free(curr->next);
-				free(curr);
-				curr = *path;
-			}
-		}
-		else
-		{
-			tmp = curr;
-			curr = curr->next;
-		}
-	}
-	return (join_pwd(path, pwd));
-}
+/* 	tmp = NULL; */
+/* 	path = init_path(pwd + 4); */
+/* 	curr = *path; */
+/* 	while(curr && ft_strncmp(curr->str,"..", 2) == 0) */
+/* 	{ */
+/* 		*path = curr->next; */
+/* 		free(curr); */
+/* 		curr = *path; */
+/* 	} */
+/* 	while(curr) */
+/* 	{ */
+/* 		if(curr->next && ft_strncmp(curr->next->str,"..", 2) == 0) */
+/* 		{ */
+/* 			if(tmp) */
+/* 			{ */
+/* 				tmp->next = curr->next->next; */
+/* 				free(curr->next); */
+/* 				free(curr); */
+/* 				curr = tmp->next; */
+/* 			} */
+/* 			else */
+/* 			{ */
+/* 				*path = curr->next->next; */
+/* 				free(curr->next); */
+/* 				free(curr); */
+/* 				curr = *path; */
+/* 			} */
+/* 		} */
+/* 		else */
+/* 		{ */
+/* 			tmp = curr; */
+/* 			curr = curr->next; */
+/* 		} */
+/* 	} */
+/* 	return (join_pwd(path, pwd)); */
+/* } */
 
 void	cd(char **envi, char **params)
 {
@@ -252,10 +252,20 @@ char	**newenviron()
 {
 	char	**envi;
 	int		x;
+	/* char	keys[3]; */
 
 	x = 0;
+	/* ft_bzero(keys, 3); */
 	while (environ[x])
+	{
+		/* if (ft_strncmp("PWD=", environ[x], 4) == 0) */
+		/* 	keys[0] = 1; */
+		/* if (ft_strncmp("SHLVL=", environ[x], 4) == 0) */
+		/* 	keys[1] = 1; */
+		/* if (ft_strncmp("_=", environ[x], 4) == 0) */
+		/* 	keys[2] = 1; */
 		++x;
+	}
 	++x;
 	if ((envi = (char **)malloc(sizeof(char *) * x)) == NULL)
 		return (NULL);
