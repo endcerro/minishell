@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/26 18:17:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/26 20:32:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,9 +225,11 @@ void	pwd(char **params)
 
 int check_match(char *env, char *param)
 {
-	int test = ft_strncmp(env, param, ft_strlen(env) - ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
-	printf("TEST = %d\n",test);
-	return test;
+	int ret;
+
+	ret = ft_strncmp(env, param, 
+		ft_strlen(env) - ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
+	return ret;
 }
 
 void export(char ***envi, char **params)
