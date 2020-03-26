@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/26 20:32:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/26 21:35:51 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,30 @@ void export(char ***envi, char **params)
 	*envi = n_envi;
 }
 
+void unset(char **envi, char **params)
+{
+	int		i;
+
+	i = 0;
+	if (params[1] == 0 || params[2] != 0)
+	{
+		ft_putstr("Wrong number of agrgs\n");
+		return;
+	}
+	while (envi[i])
+	{
+		if(!check_match(envi[i], params[1]))
+		{	
+			free(envi[i]);
+			while (envi[++i])
+				envi[i - 1] = envi[i];
+			envi[i - 1] = 0;
+			return;
+		}
+		i++;
+	}
+}
+
 void	checkinput(char ***envi, char **params)
 {
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
@@ -285,10 +309,10 @@ void	checkinput(char ***envi, char **params)
 		cd(*envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(params);
-	else if (ft_strcmp(params[0], "export") == 0) // A terminer
+	else if (ft_strcmp(params[0], "export") == 0) // A fignoler
 		export(envi, params);
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
-		return ;
+		unset(*envi, params);
 }
 
 char	**newenviron()
