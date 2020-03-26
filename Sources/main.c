@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/26 17:33:32 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/26 18:17:41 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,13 @@ void	pwd(char **params)
 	free(str);
 }
 
+int check_match(char *env, char *param)
+{
+	int test = ft_strncmp(env, param, ft_strlen(env) - ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
+	printf("TEST = %d\n",test);
+	return test;
+}
+
 void export(char ***envi, char **params)
 {
 	int		i;
@@ -234,8 +241,18 @@ void export(char ***envi, char **params)
 		ft_putstr("Wrong number of agrgs\n");
 		return;
 	}
+	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
+		return;
 	while ((*envi)[i])
+	{
+		if(!check_match((*envi)[i], params[1]))
+		{
+			free((*envi)[i]);
+			(*envi)[i] = ft_strdup(params[1]);
+			return;
+		}
 		i++;
+	}
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
 		return;
 	i = -1;
