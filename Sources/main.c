@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/21 00:59:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/03/26 17:33:32 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,31 @@ void	pwd(char **params)
 	free(str);
 }
 
-void	checkinput(char **envi, char **params)
+void export(char ***envi, char **params)
+{
+	int		i;
+	char	**n_envi;
+
+	i = 0;
+	if (params[1] == 0 || params[2] != 0)
+	{
+		ft_putstr("Wrong number of agrgs\n");
+		return;
+	}
+	while ((*envi)[i])
+		i++;
+	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
+		return;
+	i = -1;
+	while ((*envi)[++i])
+		n_envi[i] = (*envi)[i];
+	n_envi[i++] = ft_strdup(params[1]);
+	n_envi[i] = 0;
+	free(*envi);
+	*envi = n_envi;
+}
+
+void	checkinput(char ***envi, char **params)
 {
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
@@ -231,19 +255,19 @@ void	checkinput(char **envi, char **params)
 		if (params[1])
 			ft_putstr("minishell: exit: too many arguments\n");
 		freechar2ptr(params);
-		freechar2ptr(envi);
+		freechar2ptr(*envi);
 		exit(0);
 	}
 	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
 		echo(params);
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
-		env(envi, params);
+		env(*envi, params);
 	else if (ft_strcmp(params[0], "cd") == 0) // Fini
-		cd(envi, params);
+		cd(*envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(params);
 	else if (ft_strcmp(params[0], "export") == 0) // A terminer
-		return ;
+		export(envi, params);
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		return ;
 }
@@ -294,7 +318,7 @@ int		main(int ac, char **av)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(envi, params);
+			checkinput(&envi, params);
 		freechar2ptr(params);
 	}
 }
