@@ -223,15 +223,6 @@ void	pwd(char **params)
 	free(str);
 }
 
-int		check_match(char *env, char *param)
-{
-	int ret;
-
-	ret = ft_strncmp(env, param,
-		ft_strlen(env) - ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
-	return ret;
-}
-
 int		parti(char **tab, int lo, int hi)
 {
 	char	*pivot;
@@ -305,6 +296,15 @@ void	exportlst(char **envi)
 	}
 }
 
+int		check_match(char *env, char *param)
+{
+	int ret;
+
+	ret = ft_strncmp(env, param, ft_strlen(env)
+				- ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
+	return (ret);
+}
+
 void	export(char ***envi, char **params)
 {
 	int		i;
@@ -313,7 +313,7 @@ void	export(char ***envi, char **params)
 	i = 0;
 	if (params[2] != 0)
 	{
-		ft_putstr("Wrong number of agrgs\n");
+		ft_putstr("minishell: export: wrong number of arguments\n");
 		return ;
 	}
 	else if (params[1] == 0)
@@ -344,14 +344,14 @@ void	export(char ***envi, char **params)
 	*envi = n_envi;
 }
 
-void unset(char **envi, char **params)
+void	unset(char **envi, char **params)
 {
 	int		i;
 
 	i = 0;
 	if (params[1] == 0 || params[2] != 0)
 	{
-		ft_putstr("Wrong number of agrgs\n");
+		ft_putstr("minishell: unset: wrong number of arguments\n");
 		return;
 	}
 	while (envi[i])
