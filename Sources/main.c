@@ -223,40 +223,118 @@ void	pwd(char **params)
 	free(str);
 }
 
-int check_match(char *env, char *param)
+int		check_match(char *env, char *param)
 {
 	int ret;
 
-	ret = ft_strncmp(env, param, 
+	ret = ft_strncmp(env, param,
 		ft_strlen(env) - ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
 	return ret;
 }
 
-void export(char ***envi, char **params)
+int		parti(char **tab, int lo, int hi)
+{
+	char	*pivot;
+	char	*tmp;
+	int		i;
+	int		j;
+
+	pivot = tab[hi];
+	i = (lo - 1);
+	j = lo;
+	while (j <= hi)
+	{
+		if (ft_strcmp(tab[j], pivot) < 0)
+		{
+			++i;
+			tmp = tab[i];
+			tab[i] = tab[j];
+			tab[j] = tmp;
+		}
+		++j;
+	}
+	tmp = tab[i + 1];
+	tab[i + 1] = tab[hi];
+	tab[hi] = tmp;
+	return (i + 1);
+}
+
+void	quicks(char **tab, int lo, int hi)
+{
+	int pi;
+
+	if (lo < hi)
+	{
+		pi = parti(tab, lo, hi);
+		quicks(tab, lo, pi - 1);
+		quicks(tab, pi + 1, hi);
+	}
+}
+
+void	exportlst(char **envi)
+{
+	int		x;
+	int		y;
+	char	**env2;
+
+	x = 0;
+	while (envi[x])
+		++x;
+	if ((env2 = (char **)malloc(sizeof(char *) * (x + 1))) == NULL)
+	{
+		ft_putstr(strerror(errno));
+		return ;
+	}
+	y = -1;
+	while (envi[++y])
+		env2[y] = ft_strdup(envi[y]);
+	env2[y] = NULL;
+	quicks(env2, 0, y - 1);
+	x = -1;
+	while (env2[++x])
+	{
+		y = 0;
+		ft_putstr("declare -x ");
+		while (env2[x][y] != '=')
+			++y;
+		write(1, env2[x], y + 1);
+		write(1, "\"", 1);
+		ft_putstr(env2[x] + y + 1);
+		write(1, "\"", 1);
+		write(1, "\n", 1);
+	}
+}
+
+void	export(char ***envi, char **params)
 {
 	int		i;
 	char	**n_envi;
 
 	i = 0;
-	if (params[1] == 0 || params[2] != 0)
+	if (params[2] != 0)
 	{
 		ft_putstr("Wrong number of agrgs\n");
-		return;
+		return ;
+	}
+	else if (params[1] == 0)
+	{
+		exportlst(*envi);
+		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
-		return;
+		return ;
 	while ((*envi)[i])
 	{
 		if(!check_match((*envi)[i], params[1]))
 		{
 			free((*envi)[i]);
 			(*envi)[i] = ft_strdup(params[1]);
-			return;
+			return ;
 		}
 		i++;
 	}
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
-		return;
+		return ;
 	i = -1;
 	while ((*envi)[++i])
 		n_envi[i] = (*envi)[i];
@@ -279,7 +357,7 @@ void unset(char **envi, char **params)
 	while (envi[i])
 	{
 		if(!check_match(envi[i], params[1]))
-		{	
+		{
 			free(envi[i]);
 			while (envi[++i])
 				envi[i - 1] = envi[i];
