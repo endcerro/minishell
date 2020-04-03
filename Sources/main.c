@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/26 21:35:51 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/03 07:43:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,7 +322,7 @@ void	export(char ***envi, char **params)
 		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
-		return ;
+		params[1] = ft_strjoinf1(params[1],"=");
 	while ((*envi)[i])
 	{
 		if(!check_match((*envi)[i], params[1]))
