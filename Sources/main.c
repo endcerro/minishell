@@ -72,6 +72,18 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 		write(1, "\n", 1);
 }
 
+int		checkexport(char *var)
+{
+	int x;
+
+	x = 0;
+	while (var[x] && var[x] != '=')
+		++x;
+	if (var[x] == 0 || (var[x] == '=' && var[x + 1] == 0))
+		return (0);
+	return (1);
+}
+
 void	env(char **envi, char **params)
 {
 	int x;
@@ -83,8 +95,8 @@ void	env(char **envi, char **params)
 	{
 		while (envi[x])
 		{
-			ft_putstr(envi[x]);
-			write(1, "\n", 1);
+			if (checkexport(envi[x]) == 1)
+				ft_putsendl(envi[x]);
 			++x;
 		}
 	}
@@ -287,10 +299,13 @@ void	exportlst(char **envi)
 		ft_putstr("declare -x ");
 		while (env2[x][y] != '=')
 			++y;
-		write(1, env2[x], y + 1);
-		write(1, "\"", 1);
-		ft_putstr(env2[x] + y + 1);
-		write(1, "\"", 1);
+		write(1, env2[x], y);
+		if (env2[x][y + 1] != 0)
+		{
+			write(1, "=\"", 2);
+			ft_putstr(env2[x] + y + 1);
+			write(1, "\"", 1);
+		}
 		write(1, "\n", 1);
 	}
 }
