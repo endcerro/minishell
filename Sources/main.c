@@ -168,8 +168,7 @@ void	cd(char **envi, char **params)
 	{
 		if (chdir((home = rethomedir(envi))) == -1)
 		{
-			ft_putstr(strerror(errno));
-			write(1, "\n", 1);
+			ft_putstr("minishell: cd: HOME not set\n");
 			return ;
 		}
 	}
