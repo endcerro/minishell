@@ -192,6 +192,7 @@ void	cd(char **envi, char **params)
 			pwd = x;
 		else if (ft_strncmp(envi[x], "OLDPWD=", 7) == 0)
 			oldpwd = x;
+	printf("pwd = %d\noldpwd = %d\n", pwd, oldpwd); // AAAAAAAAAAAAAAAAAAAAAAAA
 	if (envi[x] == NULL)
 		return ;
 	free(envi[oldpwd]);
