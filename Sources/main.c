@@ -407,22 +407,24 @@ void	checkinput(char ***envi, char **params)
 		unset(*envi, params);
 }
 
-char	**newenviron()
+char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 {
 	char	**envi;
 	int		x;
-	/* char	keys[3]; */
+	char	keys[3];
+	char	*(str[3]);
 
 	x = 0;
-	/* ft_bzero(keys, 3); */
+	ft_bzero(keys, 3);
+	str[2] = NULL;
 	while (environ[x])
 	{
-		/* if (ft_strncmp("PWD=", environ[x], 4) == 0) */
-		/* 	keys[0] = 1; */
-		/* if (ft_strncmp("SHLVL=", environ[x], 4) == 0) */
-		/* 	keys[1] = 1; */
-		/* if (ft_strncmp("_=", environ[x], 4) == 0) */
-		/* 	keys[2] = 1; */
+		if (ft_strncmp("PWD=", environ[x], 4) == 0)
+			keys[0] = 1;
+		if (ft_strncmp("SHLVL=", environ[x], 4) == 0)
+			keys[1] = 1;
+		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0)
+			keys[2] = 1;
 		++x;
 	}
 	++x;
@@ -432,6 +434,24 @@ char	**newenviron()
 	while (environ[++x])
 		envi[x] = ft_strdup(environ[x]);
 	envi[x] = NULL;
+	if (keys[0] == 0)
+	{
+		str[1] = ft_strjoinf2("PWD=", getcwdwrap());
+		export(&envi, str);
+		free(str[1]);
+	}
+	if (keys[1] == 0)
+	{
+		str[1] = ft_strdup("SHLVL=1");
+		export(&envi, str);
+		free(str[1]);
+	}
+	if (keys[2] == 0)
+	{
+		str[1] = ft_strdup("OLDPWD=");
+		export(&envi, str);
+		free(str[1]);
+	}
 	return (envi);
 }
 
