@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/26 17:40:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/26 18:53:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,24 @@ void	freechar2ptr(char **ptr)
 
 void 	parse_qts(char *str, int *cpt)
 {
+	int 	i;
 	int 	j;
 
+	i = 0;
 	j = -1;
 	while (str[++j])
 		if ((str[j] == '\'' || str[j] == '\"'))
 			if (!(cpt[str[j] == '\"'] % 2))
+			{
 				cpt[!(str[j] == '\"')]++;
+				i = 0;
+				while(str[j + i])
+				{
+					str[j + i] = str[j + i + 1];
+					i++;
+				}
+				j--;
+			}
 }
 
 char **getfiller(int depth, int *cpt)
@@ -72,14 +83,14 @@ char **getfiller(int depth, int *cpt)
 	if (cpt[0] % 2 || cpt[1] % 2)
 	{
 		out = getfiller(depth + 1, cpt);
-		out[depth] = tmp; 
+		tmp = ft_strjoinf2("\n", tmp);
 	}
 	else
 	{
 		out = malloc(sizeof(char *) * (depth + 2));
 		out[depth + 1] = 0;
-		out[depth] = tmp;
 	}
+	out[depth] = tmp;
 	return (out);
 }
 
@@ -118,8 +129,8 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
-		if (params[i + 1])
-			write(1, "\n", 1);
+		// if (params[i + 1])
+		// 	write(1, "\n", 1);
 	}
 	i = -1;
 	while(fill && fill[++i])
