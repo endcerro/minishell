@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/26 18:57:18 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/26 23:04:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	freechar2ptr(char **ptr)
 	int i;
 
 	i = 0;
+	if (ptr == 0)
+		return ;
 	while (ptr[i])
 	{
 		free(ptr[i]);
@@ -50,26 +52,80 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
+int parse_esc(char *str) //Faut changer cette merde
+{
+	int i;
+	int j;
+	int r;
+
+	r = 0;
+	i = 1;
+	if(*(str + 1) == 'n' && (r = 1))
+		*str = '\n';
+	else if(*(str + 1) == 't' && (r = 1))
+		*str = '\t';
+	else if(*(str + 1) == 'v' && (r = 1))
+		*str = '\v';
+	else if(*(str + 1) == 'b' && (r = 1))
+		*str = '\b';
+	else if(*(str + 1) == 'r' && (r = 1))
+		*str = '\r';
+	else if(*(str + 1) == 'f' && (r = 1))
+		*str = '\f';
+	else if(*(str + 1) == 'a' && (r = 1))
+		*str = '\a';
+	else if(*(str + 1) == '\\' && (r = 1))
+		*str = '\\';
+	else if(*(str + 1) == '?' && (r = 1))
+		*str = '?';
+	else if(*(str + 1) == '\'' && (r = 1))
+		*str = '\'';
+	else if(*(str + 1) == '\"' && (r = 1))
+		*str = '\"';
+	j = -1;
+	while(str[++j + i])
+		str[j + i] = str[j + i + 1];
+	return (r);
+}
+
+int	parse_bs(char *str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\\')
+			i -= parse_esc(str + i);
+	
+	return 0;
+}
 void 	parse_qts(char *str, int *cpt)
 {
 	int 	i;
 	int 	j;
+	int 	v;
 
 	i = 0;
 	j = -1;
 	while (str[++j])
 		if ((str[j] == '\'' || str[j] == '\"'))
-			if (!(cpt[str[j] == '\"'] % 2))
+		{
+			v = 0;
+			if(j > 0 && str[j - 1] == '\\' && (v = 1))
+			{
+				while (j - v >= 0 && str[j - v] == '\\')
+					v++;
+				v--;
+			}
+			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
 			{
 				cpt[!(str[j] == '\"')]++;
-				i = 0;
-				while(str[j + i])
-				{
+				i = -1;
+				while(str[j + ++i])
 					str[j + i] = str[j + i + 1];
-					i++;
-				}
 				j--;
 			}
+		}
 }
 
 char **getfiller(int depth, int *cpt)
@@ -79,17 +135,17 @@ char **getfiller(int depth, int *cpt)
 
 	write(1, "dquote> ", 8);
 	get_next_line(0, &tmp);
-	parse_qts(tmp, cpt);	
+	parse_qts(tmp, cpt);
+	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2)
-	{
 		out = getfiller(depth + 1, cpt);
-		tmp = ft_strjoinf2("\n", tmp);
-	}
 	else
 	{
 		out = malloc(sizeof(char *) * (depth + 2));
 		out[depth + 1] = 0;
 	}
+	if(depth == 0)
+		tmp = ft_strjoinf2("\n", tmp);
 	out[depth] = tmp;
 	return (out);
 }
@@ -100,18 +156,21 @@ char **check_finished(char **params)
 	int		cpt[2];
 	char	**fill;
 	
-	i = 0;
+	i = -1;
 	fill = 0;
 	cpt[0] = 0;
 	cpt[1] = 0;
-	while (params[i])
-		parse_qts(params[i++], cpt);
+	while (params[++i])
+	{
+		parse_qts(params[i], cpt);
+		parse_bs(params[i]);
+	}
 	if (cpt[0] % 2 || cpt[1] % 2)
-		fill = getfiller(0, cpt);
+	 	fill = getfiller(0, cpt);
 	return (fill);
 }
 
-void	echo(char **params)	// Ne gere ni les escape ni les quotes
+void	echo(char **params)	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
@@ -129,7 +188,6 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
-
 		if (params[i + 1])
 			write(1," ",1);
 		// 	write(1, "\n", 1);
@@ -141,6 +199,7 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 		if (fill[i + 1])
 			write(1, "\n", 1);	
 	}
+	freechar2ptr(fill);
 	if (ret)
 		write(1, "\n", 1);
 }

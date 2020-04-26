@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/03/16 23:53:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/26 22:48:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,13 @@ char	**get_blocks(char *line)
 	int 	p;
 	int 	i;
 	char 	**out;
+	
+	i = 0;
+	p = 0;
 
 	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
 		return 0;
-	i = 0;
-	p = 0;
-	while (line[i])
+	while (i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
 			++i;
