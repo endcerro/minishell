@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/26 18:53:46 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/26 18:57:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,9 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
-		// if (params[i + 1])
+
+		if (params[i + 1])
+			write(1," ",1);
 		// 	write(1, "\n", 1);
 	}
 	i = -1;
