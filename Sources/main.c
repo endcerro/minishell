@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/03 07:43:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/26 17:40:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,66 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
+void 	parse_qts(char *str, int *cpt)
+{
+	int 	j;
+
+	j = -1;
+	while (str[++j])
+		if ((str[j] == '\'' || str[j] == '\"'))
+			if (!(cpt[str[j] == '\"'] % 2))
+				cpt[!(str[j] == '\"')]++;
+}
+
+char **getfiller(int depth, int *cpt)
+{
+	char *tmp;
+	char **out;
+
+	write(1, "dquote> ", 8);
+	get_next_line(0, &tmp);
+	parse_qts(tmp, cpt);	
+	if (cpt[0] % 2 || cpt[1] % 2)
+	{
+		out = getfiller(depth + 1, cpt);
+		out[depth] = tmp; 
+	}
+	else
+	{
+		out = malloc(sizeof(char *) * (depth + 2));
+		out[depth + 1] = 0;
+		out[depth] = tmp;
+	}
+	return (out);
+}
+
+char **check_finished(char **params)
+{
+	int		i;
+	int		cpt[2];
+	char	**fill;
+	
+	i = 0;
+	fill = 0;
+	cpt[0] = 0;
+	cpt[1] = 0;
+	while (params[i])
+		parse_qts(params[i++], cpt);
+	if (cpt[0] % 2 || cpt[1] % 2)
+		fill = getfiller(0, cpt);
+	return (fill);
+}
+
 void	echo(char **params)	// Ne gere ni les escape ni les quotes
 {
 	int i;
 	int ret;
+	char **fill;
 
 	i = 0;
 	ret = 1;
+	fill = 0;
+	fill = check_finished(params);
 	if (params[1] && ft_strcmp(params[1], "-n") == 0)
 	{
 		++i;
@@ -66,7 +119,14 @@ void	echo(char **params)	// Ne gere ni les escape ni les quotes
 	{
 		ft_putstr(params[i]);
 		if (params[i + 1])
-			write(1, " ", 1);
+			write(1, "\n", 1);
+	}
+	i = -1;
+	while(fill && fill[++i])
+	{
+		ft_putstr(fill[i]);
+		if (fill[i + 1])
+			write(1, "\n", 1);	
 	}
 	if (ret)
 		write(1, "\n", 1);
