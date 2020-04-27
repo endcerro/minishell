@@ -613,4 +613,5 @@ int		main(int ac, char **av)
 			checkinput(&envi, params, vars);
 		freechar2ptr(params);
 	}
+	// Free envi et vars
 }
