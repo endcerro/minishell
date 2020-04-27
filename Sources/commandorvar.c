@@ -25,7 +25,7 @@ char	**commandorvar(char ***envi, char **params, char ***vars)
 		while (params[x][++i])
 			if (params[x][i] == '=')
 			{
-				addvar(vars); // Gerer variable
+//				addvar(vars); // Gerer variable
 				break ;
 			}
 		if (params[x][i] == 0)
