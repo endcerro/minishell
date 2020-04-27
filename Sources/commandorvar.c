@@ -68,6 +68,13 @@ void	addvar(char ***vars, char *str)
 	*vars = newvars;
 }
 
+void	execsomestuff(char **envi, char **vars, char **params)
+{
+	(void)envi;
+	(void)vars;
+	(void)params;
+}
+
 void	commandorvar(char ***envi, char **params, char ***vars)
 {
 	int x;
@@ -86,7 +93,7 @@ void	commandorvar(char ***envi, char **params, char ***vars)
 			}
 		if (params[x][i] == 0)
 		{
-			; // Execute commande
+			execsomestuff(*envi, *vars, &(x[params]));
 			break ;
 		}
 	}

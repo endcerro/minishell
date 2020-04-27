@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-void	prompt(char **line)
+int		prompt(char **line)
 {
 	ft_putstr("\033[31mminishell \033[33m@>\033[0m");
-	get_next_line(0, line);
+	return (get_next_line(0, line));
 }
 
 char	*getcwdwrap(void)
@@ -524,6 +524,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 			ft_putstr("minishell: exit: too many arguments\n");
 		freechar2ptr(params);
 		freechar2ptr(*envi);
+		freechar2ptr(*vars);
 		exit(0);
 	}
 	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
@@ -601,9 +602,8 @@ int		main(int ac, char **av)
 	(void)av;
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE
-	while (1)
+	while (prompt(&line) > 0)
 	{
-		prompt(&line);
 		if (line == NULL && *line == 0)
 			break ;
 		if (!(params = get_blocks(line)))
@@ -613,5 +613,7 @@ int		main(int ac, char **av)
 			checkinput(&envi, params, &vars); // PAS PROTEGE
 		freechar2ptr(params);
 	}
-	// Free envi et vars
+	ft_putstr("exit\n");
+	freechar2ptr(envi);
+	freechar2ptr(vars);
 }
