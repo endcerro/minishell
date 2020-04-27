@@ -71,13 +71,13 @@ char	**get_blocks(char *line)
 	int 	p;
 	int 	i;
 	char 	**out;
-	
+
 	i = 0;
 	p = 0;
 
 	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
 		return 0;
-	while (i < ft_strlen(line))
+	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
 			++i;

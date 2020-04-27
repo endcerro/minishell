@@ -96,7 +96,7 @@ int	parse_bs(char *str)
 	while (str[++i])
 		if (str[i] == '\\')
 			i -= parse_esc(str + i);
-	
+
 	return 0;
 }
 void 	parse_qts(char *str, int *cpt)
@@ -155,7 +155,7 @@ char **check_finished(char **params)
 	int		i;
 	int		cpt[2];
 	char	**fill;
-	
+
 	i = -1;
 	fill = 0;
 	cpt[0] = 0;
@@ -197,7 +197,7 @@ void	echo(char **params)	//Devrait etre pas mal, à vérifier
 	{
 		ft_putstr(fill[i]);
 		if (fill[i + 1])
-			write(1, "\n", 1);	
+			write(1, "\n", 1);
 	}
 	freechar2ptr(fill);
 	if (ret)
@@ -515,7 +515,7 @@ void	unset(char **envi, char **params)
 	}
 }
 
-void	checkinput(char ***envi, char **params)
+void	checkinput(char ***envi, char **params, char **vars)
 {
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
@@ -538,6 +538,8 @@ void	checkinput(char ***envi, char **params)
 		export(envi, params);
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		unset(*envi, params);
+	else
+		vars = commandorvar(envi, params, vars);
 }
 
 char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
@@ -593,9 +595,11 @@ int		main(int ac, char **av)
 	char *line;
 	char **params;
 	char **envi;
+	char **vars;
 
 	(void)ac;
 	(void)av;
+	vars = NULL;
 	envi = newenviron();
 	while (1)
 	{
@@ -606,7 +610,7 @@ int		main(int ac, char **av)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(&envi, params);
+			checkinput(&envi, params, vars);
 		freechar2ptr(params);
 	}
 }
