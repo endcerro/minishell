@@ -43,7 +43,7 @@ $(LIB)		:
 				@($(MAKE) -s -C $(SUB_MAKE))
 
 $(OBJD)		:
-				mkdir $(OBJD)
+				@mkdir $(OBJD)
 
 $(OBJD)/%.o	:	$(DIRSRC)/%.c
 				@$(ECHO) "\033[38;5;208m> Building Minishell\033[38;5;125m"
