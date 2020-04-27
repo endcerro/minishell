@@ -14,7 +14,7 @@
 
 void	addvar(char ***vars)
 {
-	;
+	(void)vars;
 }
 
 void	commandorvar(char ***envi, char **params, char ***vars)
