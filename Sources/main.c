@@ -515,7 +515,7 @@ void	unset(char **envi, char **params)
 	}
 }
 
-void	checkinput(char ***envi, char **params, char **vars)
+void	checkinput(char ***envi, char **params, char ***vars)
 {
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
@@ -610,7 +610,7 @@ int		main(int ac, char **av)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(&envi, params, vars);
+			checkinput(&envi, params, &vars);
 		freechar2ptr(params);
 	}
 	// Free envi et vars

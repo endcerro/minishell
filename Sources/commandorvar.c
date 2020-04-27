@@ -12,9 +12,27 @@
 
 #include "minishell.h"
 
-char	**commandorvar(char ***envi, char **params, char **vars)
+char	**commandorvar(char ***envi, char **params, char ***vars)
 {
+	int x;
+	int i;
+
 	(void)envi;
-	(void)params;
+	x = -1;
+	while (params[++x])
+	{
+		i = -1;
+		while (params[x][++i])
+			if (params[x][i] == '=')
+			{
+				addvar(vars); // Gerer variable
+				break ;
+			}
+		if (params[x][i] == 0)
+		{
+			; // Execute commande
+			break ;
+		}
+	}
 	return (vars);
 }
