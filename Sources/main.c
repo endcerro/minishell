@@ -539,7 +539,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		unset(*envi, params);
 	else
-		vars = commandorvar(envi, params, vars);
+		commandorvar(envi, params, vars);
 }
 
 char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
