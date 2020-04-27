@@ -403,7 +403,7 @@ void	export(char ***envi, char **params)
 	char	**n_envi;
 
 	i = 0;
-	if (params[2] != 0)
+	if (params[1] != 0 && params[2] != 0)
 	{
 		ft_putstr("minishell: export: wrong number of arguments\n");
 		return ;
