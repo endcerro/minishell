@@ -39,5 +39,4 @@ void	commandorvar(char ***envi, char **params, char ***vars)
 			break ;
 		}
 	}
-	return (vars);
 }
