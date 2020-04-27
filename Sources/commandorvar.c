@@ -23,8 +23,8 @@ void	addvar(char ***vars, char *str)
 			++size;
 	if (!(newvars = (char **)malloc(sizeof (char *) * (size + 2))))
 	{
-		ft_pustr("minishell: ");
-		ft_putstr(streror(errno));
+		ft_putstr("minishell: ");
+		ft_putstr(strerror(errno));
 		return ;
 	}
 	newvars[size + 1] = NULL;
