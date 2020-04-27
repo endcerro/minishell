@@ -614,6 +614,7 @@ int		main(int ac, char **av)
 		freechar2ptr(params);
 	}
 	ft_putstr("exit\n");
+	free(line);
 	freechar2ptr(envi);
 	freechar2ptr(vars);
 }
