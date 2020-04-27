@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+void	freevarsreste(char ***vars, int size)
+{
+	while ((*vars)[size])
+	{
+		free((*vars)[size]);
+		++size;
+	}
+	free((*vars));
+	*vars = NULL;
+}
+
 void	addvar(char ***vars, char *str)
 {
 	int		size;
@@ -28,13 +39,28 @@ void	addvar(char ***vars, char *str)
 		return ;
 	}
 	newvars[size + 1] = NULL;
-	newvars[size] = ft_strdup(str); // PAS PROTEGE
+	if (!(newvars[size] = ft_strdup(str)))
+	{
+		free(newvars);
+		ft_putstr("minishell: ");
+		ft_putstr(strerror(errno));
+		return ;
+	}
 	if (*vars != NULL)
 	{
 		size = -1;
 		while ((*vars)[++size])
 		{
-			newvars[size] = ft_strdup((*vars)[size]); // PAS PROTEGE
+			if (!(newvars[size] = ft_strdup((*vars)[size])))
+			{
+				freevarsreste(vars, size);
+				while (--size >= 0)
+					free(newvars[size]);
+				free(newvars);
+				ft_putstr("minishell: ");
+				ft_putstr(strerror(errno));
+				return ;
+			}
 			free((*vars)[size]);
 		}
 		free(*vars);
