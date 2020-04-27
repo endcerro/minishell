@@ -31,11 +31,5 @@ typedef struct 	s_path
 
 char 			**get_blocks(char *line);
 void			commandorvar(char ***envi, char **params, char ***vars);
-/* t_path 			**init_path(char *str); */
-/* void 			free_path(t_path **path); */
-/* char 			*join_pwd(t_path **path, char *pwd); */
-
-
-
 
 #endif

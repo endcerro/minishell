@@ -138,14 +138,14 @@ char **getfiller(int depth, int *cpt)
 	parse_qts(tmp, cpt);
 	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2)
-		out = getfiller(depth + 1, cpt);
+		out = getfiller(depth + 1, cpt); // PAS PROTEGE
 	else
 	{
 		out = malloc(sizeof(char *) * (depth + 2));
 		out[depth + 1] = 0;
 	}
 	if(depth == 0)
-		tmp = ft_strjoinf2("\n", tmp);
+		tmp = ft_strjoinf2("\n", tmp); // PAS PROTEGE
 	out[depth] = tmp;
 	return (out);
 }
@@ -166,7 +166,7 @@ char **check_finished(char **params)
 		parse_bs(params[i]);
 	}
 	if (cpt[0] % 2 || cpt[1] % 2)
-	 	fill = getfiller(0, cpt);
+	 	fill = getfiller(0, cpt); // PAS PROTEGE
 	return (fill);
 }
 
@@ -190,7 +190,6 @@ void	echo(char **params)	//Devrait etre pas mal, à vérifier
 		ft_putstr(params[i]);
 		if (params[i + 1])
 			write(1," ",1);
-		// 	write(1, "\n", 1);
 	}
 	i = -1;
 	while(fill && fill[++i])
@@ -243,49 +242,6 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-/* char	*parse_dot_dot(char *pwd) */
-/* { */
-/* 	t_path 	**path; */
-/* 	t_path 	*curr; */
-/* 	t_path 	*tmp; */
-
-/* 	tmp = NULL; */
-/* 	path = init_path(pwd + 4); */
-/* 	curr = *path; */
-/* 	while(curr && ft_strncmp(curr->str,"..", 2) == 0) */
-/* 	{ */
-/* 		*path = curr->next; */
-/* 		free(curr); */
-/* 		curr = *path; */
-/* 	} */
-/* 	while(curr) */
-/* 	{ */
-/* 		if(curr->next && ft_strncmp(curr->next->str,"..", 2) == 0) */
-/* 		{ */
-/* 			if(tmp) */
-/* 			{ */
-/* 				tmp->next = curr->next->next; */
-/* 				free(curr->next); */
-/* 				free(curr); */
-/* 				curr = tmp->next; */
-/* 			} */
-/* 			else */
-/* 			{ */
-/* 				*path = curr->next->next; */
-/* 				free(curr->next); */
-/* 				free(curr); */
-/* 				curr = *path; */
-/* 			} */
-/* 		} */
-/* 		else */
-/* 		{ */
-/* 			tmp = curr; */
-/* 			curr = curr->next; */
-/* 		} */
-/* 	} */
-/* 	return (join_pwd(path, pwd)); */
-/* } */
-
 void	cd(char **envi, char **params)
 {
 	int		oldpwd;
@@ -328,40 +284,29 @@ void	cd(char **envi, char **params)
 	if (envi[x] == NULL)
 		return ;
 	free(envi[oldpwd]);
-	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]);
+	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]); // PAS PROTEGE
 	free(envi[pwd]);
 	if ((str = getcwdwrap()) == NULL)
 		ft_putstr(strerror(errno));
 	else
-		envi[pwd] = ft_strjoinf2("PWD=", str);
-	/* if (params[1] && params[1][0] == '.' && params[1][1] == 0) */
-	/* 	return ; */
-	/* free(envi[pwd]); */
-	/* if (params[1] == NULL) */
-	/* 	envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(home)); */
-	/* else if (params[1][0] == '/') */
-	/* 	envi[pwd] = ft_strjoinf2("PWD=", ft_strdup(params[1])); */
-	/* else */
-	/* 	envi[pwd] = ft_strjoinf2(&envi[oldpwd][3], ft_strjoinf2("/", ft_strdup(params[1]))); */
-	/* envi[pwd] = parse_dot_dot(envi[pwd]); */
+		envi[pwd] = ft_strjoinf2("PWD=", str); // PAS PROTEGE
 }
 
 void	pwd(char **params)
 {
-	/* int x; */
 	char *str;
 
-	/* x = 0; */
 	if (params[1])
 	{
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
 	}
-	/* while (envi[x] && ft_strncmp(envi[x], "PWD=", 4) != 0) */
-	/* 	++x; */
-	/* if (envi[x]) */
-	/* 	ft_putstr(&envi[x][4]); */
-	str = getcwdwrap();
+	if ((str = getcwdwrap()) != NULL)
+	{
+		ft_putstr("minishell: pwd: ");
+		ft_putstr(strerror(errno));
+		return ;
+	}
 	ft_putstr(str);
 	write(1, "\n", 1);
 	free(str);
@@ -469,7 +414,7 @@ void	export(char ***envi, char **params)
 		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
-		params[1] = ft_strjoinf1(params[1],"=");
+		params[1] = ft_strjoinf1(params[1],"="); // PAS PROTEGE
 	while ((*envi)[i])
 	{
 		if(!check_match((*envi)[i], params[1]))
@@ -531,7 +476,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 		echo(params);
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
 		env(*envi, params);
-	else if (ft_strcmp(params[0], "cd") == 0) // Fini
+	else if (ft_strcmp(params[0], "cd") == 0) // Fini // PAS PROTEGE
 		cd(*envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(params);
@@ -572,20 +517,20 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	envi[x] = NULL;
 	if (keys[0] == 0)
 	{
-		str[1] = ft_strjoinf2("PWD=", getcwdwrap());
-		export(&envi, str);
+		str[1] = ft_strjoinf2("PWD=", getcwdwrap()); // PAS PROTEGE
+		export(&envi, str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[1] == 0)
 	{
 		str[1] = ft_strdup("SHLVL=1"); // PAS PROTEGE
-		export(&envi, str);
+		export(&envi, str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[2] == 0)
 	{
 		str[1] = ft_strdup("OLDPWD="); // PAS PROTEGE
-		export(&envi, str);
+		export(&envi, str); // PAS PROTEGE
 		free(str[1]);
 	}
 	return (envi);

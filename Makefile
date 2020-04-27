@@ -20,8 +20,7 @@ LIB			=	$(SUB_MAKE)/libft.a
 
 SRC			=	main.c \
 				get_commands.c \
-				commandorvar.c \
-				path.c
+				commandorvar.c
 
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
