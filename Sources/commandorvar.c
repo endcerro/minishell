@@ -12,9 +12,34 @@
 
 #include "minishell.h"
 
-void	addvar(char ***vars)
+void	addvar(char ***vars, char *str)
 {
-	(void)vars;
+	int		size;
+	char	**newvars;
+
+	size = 0;
+	if (*vars != NULL)
+		while ((*vars)[size])
+			++size;
+	if (!(newvars = (char **)malloc(sizeof (char *) * (size + 2))))
+	{
+		ft_pustr("minishell: ");
+		ft_putstr(streror(errno));
+		return ;
+	}
+	newvars[size + 1] = NULL;
+	newvars[size] = ft_strdup(str); // PAS PROTEGE
+	if (*vars != NULL)
+	{
+		size = -1;
+		while ((*vars)[++size])
+		{
+			newvars[size] = ft_strdup((*vars)[size]); // PAS PROTEGE
+			free((*vars)[size]);
+		}
+		free(*vars);
+	}
+	*vars = newvars;
 }
 
 void	commandorvar(char ***envi, char **params, char ***vars)
@@ -26,11 +51,11 @@ void	commandorvar(char ***envi, char **params, char ***vars)
 	x = -1;
 	while (params[++x])
 	{
-		i = -1;
+		i = 0;
 		while (params[x][++i])
-			if (params[x][i] == '=')
+			if (params[x][i] == '=' && params[x][i - 1] != '\\')
 			{
-				addvar(vars); // Gerer variable
+				addvar(vars, params[x]);
 				break ;
 			}
 		if (params[x][i] == 0)

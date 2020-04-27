@@ -422,7 +422,7 @@ void	exportlst(char **envi)
 	}
 	y = -1;
 	while (envi[++y])
-		env2[y] = ft_strdup(envi[y]);
+		env2[y] = ft_strdup(envi[y]); // PAS PROTEGE
 	env2[y] = NULL;
 	quicks(env2, 0, y - 1);
 	x = -1;
@@ -465,7 +465,7 @@ void	export(char ***envi, char **params)
 	}
 	else if (params[1] == 0)
 	{
-		exportlst(*envi);
+		exportlst(*envi); // PAS PROTEGE
 		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
@@ -475,7 +475,7 @@ void	export(char ***envi, char **params)
 		if(!check_match((*envi)[i], params[1]))
 		{
 			free((*envi)[i]);
-			(*envi)[i] = ft_strdup(params[1]);
+			(*envi)[i] = ft_strdup(params[1]); // PAS PROTEGE
 			return ;
 		}
 		i++;
@@ -485,7 +485,7 @@ void	export(char ***envi, char **params)
 	i = -1;
 	while ((*envi)[++i])
 		n_envi[i] = (*envi)[i];
-	n_envi[i++] = ft_strdup(params[1]);
+	n_envi[i++] = ft_strdup(params[1]); // PAS PROTEGE
 	n_envi[i] = 0;
 	free(*envi);
 	*envi = n_envi;
@@ -534,7 +534,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 		cd(*envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
 		pwd(params);
-	else if (ft_strcmp(params[0], "export") == 0) // A fignoler
+	else if (ft_strcmp(params[0], "export") == 0) // A fignoler // PAS PROTEGE
 		export(envi, params);
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		unset(*envi, params);
@@ -567,7 +567,7 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 		return (NULL);
 	x = -1;
 	while (environ[++x])
-		envi[x] = ft_strdup(environ[x]);
+		envi[x] = ft_strdup(environ[x]); // PAS PROTEGE
 	envi[x] = NULL;
 	if (keys[0] == 0)
 	{
@@ -577,13 +577,13 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	}
 	if (keys[1] == 0)
 	{
-		str[1] = ft_strdup("SHLVL=1");
+		str[1] = ft_strdup("SHLVL=1"); // PAS PROTEGE
 		export(&envi, str);
 		free(str[1]);
 	}
 	if (keys[2] == 0)
 	{
-		str[1] = ft_strdup("OLDPWD=");
+		str[1] = ft_strdup("OLDPWD="); // PAS PROTEGE
 		export(&envi, str);
 		free(str[1]);
 	}
@@ -600,7 +600,7 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	vars = NULL;
-	envi = newenviron();
+	envi = newenviron(); // PAS PROTEGE
 	while (1)
 	{
 		prompt(&line);
@@ -610,7 +610,7 @@ int		main(int ac, char **av)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(&envi, params, &vars);
+			checkinput(&envi, params, &vars); // PAS PROTEGE
 		freechar2ptr(params);
 	}
 	// Free envi et vars
