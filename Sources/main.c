@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 18:06:44 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 18:31:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -476,8 +476,15 @@ int 	get_output(char **params)
 		{
 			if (params[i + 1])
 			{
-				fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-				write(fd, "File created\n", 13);
+				// int stdout = dup(1);
+
+				// fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				// dup2(fd, 1);
+				// free(params[i + 1]);
+				// free(params[i]);
+				// dup2(stdout, 1);
+				// params[i] = 0;
+				// write(fd, "File created\n", 13);
 			}		
 		}
 	}
