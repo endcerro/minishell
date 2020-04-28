@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 17:52:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 18:06:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ char *env(char **envi, char **params, char *request)
 			++x;
 		}
 	}
-	return 0;
+	return (0);
 }
 
 char	*rethomedir(char **envi)
@@ -463,8 +463,6 @@ void	unset(char **envi, char **params)
 	}
 }
 
-#include <fcntl.h>
-
 int 	get_output(char **params)
 {
 	int i;
@@ -476,10 +474,8 @@ int 	get_output(char **params)
 	{
 		if (ft_strcmp(params[i], ">") == 0)
 		{
-			// printf("> found\n");
 			if (params[i + 1])
 			{
-				// printf("path found\n");	
 				fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 				write(fd, "File created\n", 13);
 			}		
