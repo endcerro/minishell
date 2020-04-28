@@ -224,7 +224,7 @@ char *env(char **envi, char **params, char *request)
 		while (envi[x])
 		{
 			if(request != 0)
-			{	
+			{
 				if (!ft_strncmp(envi[x], request, ft_strlen(request)))
 					return (envi[x] + ft_strlen(request) + 1);
 			}
@@ -485,7 +485,7 @@ int 	get_output(char **params)
 				// dup2(stdout, 1);
 				// params[i] = 0;
 				// write(fd, "File created\n", 13);
-			}		
+			}
 		}
 	}
 	return (fd);
@@ -574,21 +574,19 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 
 void	sigkill(int sig)
 {
-	write(1, "\nMDR non\n", 9);
-	if (kill(0, sig) == -1)
+	if (kill(mshell.pid, sig) == -1)
 		exit(0);
 }
 
-int		main(int ac, char **av)
+int		main(void)
 {
 	char *line;
 	char **params;
 	char **envi;
 	char **vars;
 
-	(void)ac;
-	(void)av;
-	/* signal(SIGINT, &sigkill); */
+	mshell.pid = 0;
+	signal(SIGINT, &sigkill);
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE
 	while (prompt(&line) > 0)
