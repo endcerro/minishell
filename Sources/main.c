@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/27 20:21:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 16:46:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char **getfiller(int depth, int *cpt)
 	return (out);
 }
 
-char **check_finished(char **params, int interp)
+char **check_finished(char **params, char **envi)
 {
 	int		i;
 	int		cpt[2];
@@ -157,15 +157,16 @@ char **check_finished(char **params, int interp)
 	while (params[++i])
 	{
 		parse_qts(params[i], cpt);
+		parse_env(&params[i], envi);
 		// if (interp)
-			parse_bs(params[i]);
+		parse_bs(params[i]);
 	}
 	if (cpt[0] % 2 || cpt[1] % 2)
 	 	fill = getfiller(0, cpt); // PAS PROTEGE
 	return (fill);
 }
 
-void	echo(char **params)	//Devrait etre pas mal, à vérifier
+void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
@@ -181,7 +182,7 @@ void	echo(char **params)	//Devrait etre pas mal, à vérifier
 		++i;
 		ret = 0;
 	}
-	fill = check_finished(params, interp);
+	fill = check_finished(params, envi);
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
@@ -191,6 +192,7 @@ void	echo(char **params)	//Devrait etre pas mal, à vérifier
 	i = -1;
 	while(fill && fill[++i])
 	{
+		parse_env(&(fill[i]), envi);
 		ft_putstr(fill[i]);
 		if (fill[i + 1])
 			write(1, "\n", 1);
@@ -212,7 +214,7 @@ int		checkexport(char *var)
 	return (1);
 }
 
-void	env(char **envi, char **params)
+char *env(char **envi, char **params, char *request)
 {
 	int x;
 
@@ -223,11 +225,17 @@ void	env(char **envi, char **params)
 	{
 		while (envi[x])
 		{
-			if (checkexport(envi[x]) == 1)
+			if(request != 0)
+			{
+				if (ft_strnstr(envi[x], request, ft_strlen(request)))
+					return (envi[x] + ft_strlen(request));
+			}	
+			else if (checkexport(envi[x]) == 1)
 				ft_putsendl(envi[x]);
 			++x;
 		}
 	}
+	return 0;
 }
 
 char	*rethomedir(char **envi)
@@ -457,8 +465,38 @@ void	unset(char **envi, char **params)
 	}
 }
 
+#include <fcntl.h>
+
+int 	get_output(char **params)
+{
+	int i;
+	int fd;
+
+	fd = 1;
+	i = -1;
+	while(params[++i])
+	{
+		if (ft_strcmp(params[i], ">") == 0)
+		{
+			// printf("> found\n");
+			if (params[i + 1])
+			{
+				// printf("path found\n");	
+				fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				write(fd, "File created\n", 13);
+			}		
+		}
+	}
+	return (fd);
+}
+
 void	checkinput(char ***envi, char **params, char ***vars)
 {
+
+	int fd;
+	fd = 1;
+	fd = get_output(params);
+
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
 		ft_putstr("exit\n");
@@ -470,9 +508,9 @@ void	checkinput(char ***envi, char **params, char ***vars)
 		exit(0);
 	}
 	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
-		echo(params);
+		echo(params, *envi);
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
-		env(*envi, params);
+		env(*envi, params, 0);
 	else if (ft_strcmp(params[0], "cd") == 0) // Fini // PAS PROTEGE
 		cd(*envi, params);
 	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
