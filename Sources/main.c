@@ -533,6 +533,13 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	return (envi);
 }
 
+void	sigkill(int sig)
+{
+	write(1, "\nMDR non\n", 9);
+//	if (kill(-1, sig) == -1)
+//		exit(0);
+}
+
 int		main(int ac, char **av)
 {
 	char *line;
@@ -542,6 +549,7 @@ int		main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, &sigkill);
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE
 	while (prompt(&line) > 0)
