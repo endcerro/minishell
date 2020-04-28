@@ -229,7 +229,7 @@ char *env(char **envi, char **params, char *request)
 			{
 				if (ft_strnstr(envi[x], request, ft_strlen(request)))
 					return (envi[x] + ft_strlen(request));
-			}	
+			}
 			else if (checkexport(envi[x]) == 1)
 				ft_putsendl(envi[x]);
 			++x;
@@ -481,10 +481,10 @@ int 	get_output(char **params)
 			// printf("> found\n");
 			if (params[i + 1])
 			{
-				// printf("path found\n");	
+				// printf("path found\n");
 				fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 				write(fd, "File created\n", 13);
-			}		
+			}
 		}
 	}
 	return (fd);
@@ -573,21 +573,19 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 
 void	sigkill(int sig)
 {
-	write(1, "\nMDR non\n", 9);
-	if (kill(0, sig) == -1)
+	if (kill(mshell.pid, sig) == -1)
 		exit(0);
 }
 
-int		main(int ac, char **av)
+int		main(void)
 {
 	char *line;
 	char **params;
 	char **envi;
 	char **vars;
 
-	(void)ac;
-	(void)av;
-	/* signal(SIGINT, &sigkill); */
+	mshell.pid = 0;
+	signal(SIGINT, &sigkill);
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE
 	while (prompt(&line) > 0)

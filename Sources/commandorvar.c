@@ -110,7 +110,6 @@ int		checkslash(char *file)
 
 void	execsomestuff(char **envi, char **vars, char **params)
 {
-	pid_t		pid;
 	int			wstatus;
 	struct stat	sta;
 	char		*str;
@@ -135,8 +134,8 @@ void	execsomestuff(char **envi, char **vars, char **params)
 			ft_putstr(": command not found\n");
 			return ;
 		}
-	pid = fork();
-	if (pid == 0)
+	mshell.pid = fork();
+	if (mshell.pid == 0)
 	{
 		if (str)
 			execve(str, params, envi);
@@ -148,7 +147,7 @@ void	execsomestuff(char **envi, char **vars, char **params)
 		ft_putendl(strerror(errno));
 		exit(0);
 	}
-	else if (pid < 0)
+	else if (mshell.pid < 0)
 	{
 		ft_putstr("minishell: ");
 		ft_putstr(params[0]);
@@ -157,10 +156,8 @@ void	execsomestuff(char **envi, char **vars, char **params)
 		return ;
 	}
 	// Gerer les signals
-	/* sleep(3); */
-	/* kill(0, SIGINT); */
 	wait(&wstatus);
-	/* while (waitpid(pid, &wstatus, WNOHAND |) == 0) */
+	/* while (waitpid(mshell.pid, &wstatus, WNOHAND |) == 0) */
 	/* 	; */
 }
 

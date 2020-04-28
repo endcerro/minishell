@@ -24,13 +24,17 @@
 
 #include <stdio.h>
 
-extern char **environ;
+extern char		**environ;
 
-typedef struct 	s_path
+typedef struct 	s_mshell
 {
-	char 			*str;
-	struct s_path 	*next;
-}				t_path;
+	char		**env;
+	char		**vars;
+	char		**params;
+	pid_t		pid;
+}				t_mshell;
+
+t_mshell		mshell;
 
 char 			**get_blocks(char *line);
 char 			*env(char **envi, char **params, char *test);
