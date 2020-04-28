@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/26 23:04:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/27 19:54:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,30 @@ int parse_esc(char *str) //Faut changer cette merde
 	int i;
 	int j;
 	int r;
+	int tra;
 
 	r = 0;
-	i = 1;
-	if(*(str + 1) == 'n' && (r = 1))
-		*str = '\n';
-	else if(*(str + 1) == 't' && (r = 1))
-		*str = '\t';
-	else if(*(str + 1) == 'v' && (r = 1))
-		*str = '\v';
-	else if(*(str + 1) == 'b' && (r = 1))
-		*str = '\b';
-	else if(*(str + 1) == 'r' && (r = 1))
-		*str = '\r';
-	else if(*(str + 1) == 'f' && (r = 1))
-		*str = '\f';
-	else if(*(str + 1) == 'a' && (r = 1))
-		*str = '\a';
-	else if(*(str + 1) == '\\' && (r = 1))
-		*str = '\\';
-	else if(*(str + 1) == '?' && (r = 1))
-		*str = '?';
-	else if(*(str + 1) == '\'' && (r = 1))
-		*str = '\'';
-	else if(*(str + 1) == '\"' && (r = 1))
-		*str = '\"';
+	tra = 0;
 	j = -1;
-	while(str[++j + i])
-		str[j + i] = str[j + i + 1];
+	if (*(str + 1) == '\\')
+	{
+		while (*(str + r) == '\\')
+			r++;
+		if (*(str + r) == '"' || *(str + r) == '\'')
+			r++;
+		tra = (r % 2 == 0) ? r - r / 2 : r - (r + 1) / 2;
+		r = -tra;
+	}
+	else if (*(str + 1) == '\'' && (tra = 1))
+		*str = '\'';
+	else if (*(str + 1) == '\"' && (tra = 1))
+		*str = '\"';
+	while (++j < tra)
+	{
+		i = -1;
+		while (str[++i])
+			str[i] = str[i + 1];
+	}
 	return (r);
 }
 
@@ -150,7 +146,7 @@ char **getfiller(int depth, int *cpt)
 	return (out);
 }
 
-char **check_finished(char **params)
+char **check_finished(char **params, int interp)
 {
 	int		i;
 	int		cpt[2];
@@ -163,7 +159,8 @@ char **check_finished(char **params)
 	while (params[++i])
 	{
 		parse_qts(params[i], cpt);
-		parse_bs(params[i]);
+		// if (interp)
+			parse_bs(params[i]);
 	}
 	if (cpt[0] % 2 || cpt[1] % 2)
 	 	fill = getfiller(0, cpt); // PAS PROTEGE
@@ -174,17 +171,19 @@ void	echo(char **params)	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
+	int interp;
 	char **fill;
 
 	i = 0;
 	ret = 1;
+	interp = 0;
 	fill = 0;
-	fill = check_finished(params);
 	if (params[1] && ft_strcmp(params[1], "-n") == 0)
 	{
 		++i;
 		ret = 0;
 	}
+	fill = check_finished(params, interp);
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
