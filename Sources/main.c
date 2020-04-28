@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 16:46:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 17:40:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ char *env(char **envi, char **params, char *request)
 	int x;
 
 	x = 0;
-	if (params[1])
+	if (params[1] && request == 0)
 		ft_putstr("minishell: env: too many arguments\n");
 	else
 	{
@@ -228,7 +228,7 @@ char *env(char **envi, char **params, char *request)
 			if(request != 0)
 			{
 				if (ft_strnstr(envi[x], request, ft_strlen(request)))
-					return (envi[x] + ft_strlen(request));
+					return (envi[x] + ft_strlen(request) + 1);
 			}	
 			else if (checkexport(envi[x]) == 1)
 				ft_putsendl(envi[x]);
