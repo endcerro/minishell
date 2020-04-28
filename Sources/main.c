@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/27 19:54:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/27 20:21:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,8 @@ int parse_esc(char *str) //Faut changer cette merde
 		tra = (r % 2 == 0) ? r - r / 2 : r - (r + 1) / 2;
 		r = -tra;
 	}
-	else if (*(str + 1) == '\'' && (tra = 1))
-		*str = '\'';
-	else if (*(str + 1) == '\"' && (tra = 1))
-		*str = '\"';
+	else if ((*(str + 1) == '\'' || *(str + 1) == '\"') && (tra = 1))
+		*str = (*(str + 1) == '\'') ? '\'' : '\"';
 	while (++j < tra)
 	{
 		i = -1;
