@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 17:40:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 17:52:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,12 +170,10 @@ void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
-	int interp;
 	char **fill;
 
 	i = 0;
 	ret = 1;
-	interp = 0;
 	fill = 0;
 	if (params[1] && ft_strcmp(params[1], "-n") == 0)
 	{
@@ -226,10 +224,10 @@ char *env(char **envi, char **params, char *request)
 		while (envi[x])
 		{
 			if(request != 0)
-			{
-				if (ft_strnstr(envi[x], request, ft_strlen(request)))
+			{	
+				if (!ft_strncmp(envi[x], request, ft_strlen(request)))
 					return (envi[x] + ft_strlen(request) + 1);
-			}	
+			}
 			else if (checkexport(envi[x]) == 1)
 				ft_putsendl(envi[x]);
 			++x;

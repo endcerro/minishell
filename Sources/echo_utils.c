@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 17:40:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 17:53:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,20 @@ char *inside_join(char *base, char *add)
 		i++;
 	}
 	out[p] = 0;
+	// free(add);
 	free(base);
 	return out;
 }
 
 void parse_env(char **param, char **envi)
 {
-	int i;
 	int len;
 	char *tmp;
 	char *tmp2;
 	char *cache;
 
-	i = 0;
 	len = 0;
-	// printf("Param = %s\n",*param);
 	cache = ft_strchr(*param, '$');
-	// printf("cache = %s\n",cache );
-	
 	while(cache != NULL)
 	{
 		if (cache)
@@ -78,15 +74,12 @@ void parse_env(char **param, char **envi)
 				len++;
 			tmp = ft_substr(cache, 1, len);
 			tmp2 = env(envi, param, tmp);
+			free(tmp);
 			if(tmp2)
 				*param = inside_join(*param, tmp2);
 			else
 				*param = inside_join(*param, 0);
 		}
-		// printf("param = %s\n",*param );
 		cache = ft_strchr(*param, '$');
-		// printf("cache = %s\n",cache );
-		// cache = ft_strchr(cache, '$');
-		// printf("new param %s\n",cache );
 	}
 }
