@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 16:46:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/04/28 18:31:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,12 +170,10 @@ void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
-	int interp;
 	char **fill;
 
 	i = 0;
 	ret = 1;
-	interp = 0;
 	fill = 0;
 	if (params[1] && ft_strcmp(params[1], "-n") == 0)
 	{
@@ -219,23 +217,23 @@ char *env(char **envi, char **params, char *request)
 	int x;
 
 	x = 0;
-	if (params[1])
+	if (params[1] && request == 0)
 		ft_putstr("minishell: env: too many arguments\n");
 	else
 	{
 		while (envi[x])
 		{
 			if(request != 0)
-			{
-				if (ft_strnstr(envi[x], request, ft_strlen(request)))
-					return (envi[x] + ft_strlen(request));
+			{	
+				if (!ft_strncmp(envi[x], request, ft_strlen(request)))
+					return (envi[x] + ft_strlen(request) + 1);
 			}
 			else if (checkexport(envi[x]) == 1)
 				ft_putsendl(envi[x]);
 			++x;
 		}
 	}
-	return 0;
+	return (0);
 }
 
 char	*rethomedir(char **envi)
@@ -465,8 +463,6 @@ void	unset(char **envi, char **params)
 	}
 }
 
-#include <fcntl.h>
-
 int 	get_output(char **params)
 {
 	int i;
@@ -478,13 +474,18 @@ int 	get_output(char **params)
 	{
 		if (ft_strcmp(params[i], ">") == 0)
 		{
-			// printf("> found\n");
 			if (params[i + 1])
 			{
-				// printf("path found\n");
-				fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-				write(fd, "File created\n", 13);
-			}
+				// int stdout = dup(1);
+
+				// fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				// dup2(fd, 1);
+				// free(params[i + 1]);
+				// free(params[i]);
+				// dup2(stdout, 1);
+				// params[i] = 0;
+				// write(fd, "File created\n", 13);
+			}		
 		}
 	}
 	return (fd);
@@ -573,19 +574,21 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 
 void	sigkill(int sig)
 {
-	if (kill(mshell.pid, sig) == -1)
+	write(1, "\nMDR non\n", 9);
+	if (kill(0, sig) == -1)
 		exit(0);
 }
 
-int		main(void)
+int		main(int ac, char **av)
 {
 	char *line;
 	char **params;
 	char **envi;
 	char **vars;
 
-	mshell.pid = 0;
-	signal(SIGINT, &sigkill);
+	(void)ac;
+	(void)av;
+	/* signal(SIGINT, &sigkill); */
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE
 	while (prompt(&line) > 0)
