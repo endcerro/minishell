@@ -26,7 +26,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra  -g
+CFLAGS		=	-Wall -Wextra  -g #-Werror
 
 CC			=	gcc
 RM			=	rm -f

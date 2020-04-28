@@ -157,9 +157,9 @@ void	execsomestuff(char **envi, char **vars, char **params)
 		return ;
 	}
 	// Gerer les signals
-	sleep(3);
-	kill(0, SIGINT);
-	/* wait(&wstatus); */
+	/* sleep(3); */
+	/* kill(0, SIGINT); */
+	wait(&wstatus);
 	/* while (waitpid(pid, &wstatus, WNOHAND |) == 0) */
 	/* 	; */
 }
