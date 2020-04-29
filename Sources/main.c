@@ -579,9 +579,8 @@ void	sigkill(int sig)
 	{
 		kill(g_mshell.pid, sig);
 		g_mshell.pid = 0;
+		/* write(1, "\n", 1); */
 	}
-	else
-		write(1, "\n", 1);
 }
 
 int		main(void)
@@ -592,6 +591,7 @@ int		main(void)
 	char **vars;
 
 	g_mshell.pid = 0;
+	g_mshell.exitcode = 0;
 	signal(SIGINT, &sigkill);
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE

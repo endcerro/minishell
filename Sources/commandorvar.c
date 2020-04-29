@@ -110,7 +110,6 @@ int		checkslash(char *file)
 
 void	execsomestuff(char **envi, char **vars, char **params)
 {
-	int			wstatus;
 	struct stat	sta;
 	char		*str;
 
@@ -156,10 +155,10 @@ void	execsomestuff(char **envi, char **vars, char **params)
 		return ;
 	}
 	// Gerer les signals
-	wait(&wstatus);
-	write(1, "\n", 1);
-	/* while (waitpid(g_mshell.pid, &wstatus, WNOHAND |) == 0) */
-	/* 	; */
+	/* wait(&g_mshell.exitcode); */
+	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
+		;
+	/* write(1, "\n", 1); */
 }
 
 void	commandorvar(char ***envi, char **params, char ***vars)

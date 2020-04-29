@@ -32,6 +32,7 @@ typedef struct 	s_mshell
 	char		**vars;
 	char		**params;
 	pid_t		pid;
+	int			exitcode;
 }				t_mshell;
 
 t_mshell		g_mshell;
