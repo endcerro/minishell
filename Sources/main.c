@@ -495,6 +495,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 {
 
 	int fd;
+
 	fd = 1;
 	fd = get_output(params);
 
@@ -574,8 +575,13 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 
 void	sigkill(int sig)
 {
-	if (kill(mshell.pid, sig) == -1)
-		exit(0);
+	if (g_mshell.pid != 0)
+	{
+		kill(g_mshell.pid, sig);
+		g_mshell.pid = 0;
+	}
+	else
+		write(1, "\n", 1);
 }
 
 int		main(void)
@@ -585,7 +591,7 @@ int		main(void)
 	char **envi;
 	char **vars;
 
-	mshell.pid = 0;
+	g_mshell.pid = 0;
 	signal(SIGINT, &sigkill);
 	vars = NULL;
 	envi = newenviron(); // PAS PROTEGE

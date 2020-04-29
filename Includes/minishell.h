@@ -34,7 +34,7 @@ typedef struct 	s_mshell
 	pid_t		pid;
 }				t_mshell;
 
-t_mshell		mshell;
+t_mshell		g_mshell;
 
 char 			**get_blocks(char *line);
 char 			*env(char **envi, char **params, char *test);

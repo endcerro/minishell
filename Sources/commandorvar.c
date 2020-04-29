@@ -134,8 +134,8 @@ void	execsomestuff(char **envi, char **vars, char **params)
 			ft_putstr(": command not found\n");
 			return ;
 		}
-	mshell.pid = fork();
-	if (mshell.pid == 0)
+	g_mshell.pid = fork();
+	if (g_mshell.pid == 0)
 	{
 		if (str)
 			execve(str, params, envi);
@@ -147,7 +147,7 @@ void	execsomestuff(char **envi, char **vars, char **params)
 		ft_putendl(strerror(errno));
 		exit(0);
 	}
-	else if (mshell.pid < 0)
+	else if (g_mshell.pid < 0)
 	{
 		ft_putstr("minishell: ");
 		ft_putstr(params[0]);
@@ -157,7 +157,8 @@ void	execsomestuff(char **envi, char **vars, char **params)
 	}
 	// Gerer les signals
 	wait(&wstatus);
-	/* while (waitpid(mshell.pid, &wstatus, WNOHAND |) == 0) */
+	write(1, "\n", 1);
+	/* while (waitpid(g_mshell.pid, &wstatus, WNOHAND |) == 0) */
 	/* 	; */
 }
 
