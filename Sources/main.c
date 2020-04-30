@@ -521,13 +521,14 @@ void	checkinput(char ***envi, char **params, char ***vars)
 		export(envi, params);
 	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
 		unset(*envi, params);
+	else if (ft_strcmp(params[0], "clear") == 0)
+		ft_putstr("\033c");
 	else
 		commandorvar(envi, params, vars);
 }
 
-char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
+int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 {
-	char	**envi;
 	int		x;
 	char	keys[3];
 	char	*(str[3]);
@@ -546,31 +547,31 @@ char	**newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 		++x;
 	}
 	++x;
-	if ((envi = (char **)malloc(sizeof(char *) * x)) == NULL)
-		return (NULL);
+	if ((g_mshell.env = (char **)malloc(sizeof(char *) * x)) == NULL)
+		return (-1);
 	x = -1;
 	while (environ[++x])
-		envi[x] = ft_strdup(environ[x]); // PAS PROTEGE
-	envi[x] = NULL;
+		g_mshell.env[x] = ft_strdup(environ[x]); // PAS PROTEGE
+	g_mshell.env[x] = NULL;
 	if (keys[0] == 0)
 	{
 		str[1] = ft_strjoinf2("PWD=", getcwdwrap()); // PAS PROTEGE
-		export(&envi, str); // PAS PROTEGE
+		export(&g_mshell.env, str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[1] == 0)
 	{
 		str[1] = ft_strdup("SHLVL=1"); // PAS PROTEGE
-		export(&envi, str); // PAS PROTEGE
+		export(&g_mshell.env, str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[2] == 0)
 	{
 		str[1] = ft_strdup("OLDPWD="); // PAS PROTEGE
-		export(&envi, str); // PAS PROTEGE
+		export(&g_mshell.env, str); // PAS PROTEGE
 		free(str[1]);
 	}
-	return (envi);
+	return (0);
 }
 
 void	sigkill(int sig)
@@ -581,6 +582,8 @@ void	sigkill(int sig)
 		g_mshell.pid = 0;
 		/* write(1, "\n", 1); */
 	}
+	/* signal(sig, SIG_IGN); */
+	/* write(1, "\n", 1); */
 }
 
 int		main(void)
@@ -593,8 +596,11 @@ int		main(void)
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
 	signal(SIGINT, &sigkill);
+	signal(SIGQUIT, &sigkill);
 	vars = NULL;
-	envi = newenviron(); // PAS PROTEGE
+	if (newenviron() == -1) // PAS PROTEGE
+		exit(1);
+	envi = g_mshell.env;
 	while (prompt(&line) > 0)
 	{
 		if (line == NULL && *line == 0)
