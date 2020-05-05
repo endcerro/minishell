@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/26 22:48:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:50:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ char	**get_blocks(char *line)
 				return (out);
 	}
 	out[p] = 0;
+	g_mshell.params = out;
 	return (out);
 }

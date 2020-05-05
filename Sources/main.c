@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 18:31:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:59:31 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,13 @@ char **getfiller(int depth, int *cpt)
 	return (out);
 }
 
-char **check_finished(char **params, char **envi)
+char **check_finished()
 {
 	int		i;
 	int		cpt[2];
 	char	**fill;
+	char 	**params = g_mshell.params;
+	char 	**envi = g_mshell.env;
 
 	i = -1;
 	fill = 0;
@@ -158,7 +160,6 @@ char **check_finished(char **params, char **envi)
 	{
 		parse_qts(params[i], cpt);
 		parse_env(&params[i], envi);
-		// if (interp)
 		parse_bs(params[i]);
 	}
 	if (cpt[0] % 2 || cpt[1] % 2)
@@ -166,11 +167,13 @@ char **check_finished(char **params, char **envi)
 	return (fill);
 }
 
-void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
+void	echo()	//Devrait etre pas mal, à vérifier
 {
 	int i;
 	int ret;
 	char **fill;
+
+	char **params = g_mshell.params;
 
 	i = 0;
 	ret = 1;
@@ -180,7 +183,7 @@ void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
 		++i;
 		ret = 0;
 	}
-	fill = check_finished(params, envi);
+	fill = check_finished();
 	while (params[++i])
 	{
 		ft_putstr(params[i]);
@@ -190,7 +193,7 @@ void	echo(char **params, char **envi)	//Devrait etre pas mal, à vérifier
 	i = -1;
 	while(fill && fill[++i])
 	{
-		parse_env(&(fill[i]), envi);
+		parse_env(&(fill[i]), g_mshell.env);
 		ft_putstr(fill[i]);
 		if (fill[i + 1])
 			write(1, "\n", 1);
@@ -212,9 +215,12 @@ int		checkexport(char *var)
 	return (1);
 }
 
-char *env(char **envi, char **params, char *request)
+char *env(char **envi2, char **params2, char *request)
 {
 	int x;
+
+	char **envi = g_mshell.env;
+	char **params = g_mshell.params;
 
 	x = 0;
 	if (params[1] && request == 0)
@@ -496,8 +502,20 @@ void	checkinput(char ***envi, char **params, char ***vars)
 
 	int fd;
 
-	fd = 1;
-	fd = get_output(params);
+	char **params1;
+	char ***envi1;
+	char ***vars1;
+	params1 = g_mshell.params;
+	envi1 = &g_mshell.env;
+	vars1 = &g_mshell.vars;
+
+
+	// fd = 1;
+	// fd = get_output(params);
+
+	printf("%p %p\n",params1, params);
+	printf("%p %p\n",envi1, env);
+	printf("%p %p\n",*vars1, vars);
 
 	if (ft_strcmp(params[0], "exit") == 0) // Fini
 	{
@@ -510,7 +528,7 @@ void	checkinput(char ***envi, char **params, char ***vars)
 		exit(0);
 	}
 	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
-		echo(params, *envi);
+		echo();
 	else if (ft_strcmp(params[0], "env") == 0) // Fini
 		env(*envi, params, 0);
 	else if (ft_strcmp(params[0], "cd") == 0) // Fini // PAS PROTEGE
