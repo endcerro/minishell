@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commandorvar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2019/11/12 17:03:45 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/05/06 19:07:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,11 @@ void	commandorvar(char ***envi, char **params, char ***vars)
 	int i;
 
 	x = -1;
+
+	// char ***envi = &(g_mshell.env);
+	// char **params = g_mshell.params;
+	// char ***vars = &(g_mshell.params);
+
 	while (params[++x])
 	{
 		i = 0;

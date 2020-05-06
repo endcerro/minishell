@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 16:23:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/06 18:31:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct 	s_mshell
 t_mshell		g_mshell;
 
 char 			**get_blocks(char *line);
-char 			*env(char **envi, char **params, char *test);
-void 			parse_env(char **param, char **envi);
+char 			*env(char *request);
+void 			parse_env(char **param);
 void			commandorvar(char ***envi, char **params, char ***vars);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/04/28 17:53:44 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/06 19:00:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char *inside_join(char *base, char *add)
 	int p;
 	char *out;
 
-	// printf("%p\n",add );
 	if(add != 0)
 		out = malloc(sizeof(char) * (ft_strlen(base) + ft_strlen(add) + 1));
 	else
@@ -28,58 +27,40 @@ char *inside_join(char *base, char *add)
 	j = 0;
 	i = 0;
 
-	// if(add)
-	// 	add++;
-	// printf("base = %s\n add = %s\n",base,add);
-
 	while(base[i])
 	{
 		if(j == 0 && base[i] == '$')
 		{
-			// printf("here %s\n",base + i);
 			while(add && add[j])
 				out[p++] = add[j++];
 			i++;
-			while(++j && ft_isupper(base[i]))
+			while(++j && base[i] && !ft_isspace(base[i]))
 				i++;
-			i--;
 		}
 		else
-		{
-			// printf("|%c|\n",base[i] );
-			out[p++] = base[i];
-		}
-		i++;
+			out[p++] = base[i++];
 	}
 	out[p] = 0;
-	// free(add);
 	free(base);
 	return out;
 }
 
-void parse_env(char **param, char **envi)
+void parse_env(char **param)
 {
 	int len;
 	char *tmp;
-	char *tmp2;
 	char *cache;
 
 	len = 0;
 	cache = ft_strchr(*param, '$');
 	while(cache != NULL)
 	{
-		if (cache)
-		{
-			while (ft_isupper(cache[len + 1]))
-				len++;
-			tmp = ft_substr(cache, 1, len);
-			tmp2 = env(envi, param, tmp);
-			free(tmp);
-			if(tmp2)
-				*param = inside_join(*param, tmp2);
-			else
-				*param = inside_join(*param, 0);
-		}
+		// while (ft_isupper(cache[len + 1]))
+		while (cache[len + 1] && cache[len + 1] != '=')
+			len++;
+		tmp = ft_substr(cache, 1, len);
+		*param = inside_join(*param, env(tmp));	
+		free(tmp);
 		cache = ft_strchr(*param, '$');
 	}
 }

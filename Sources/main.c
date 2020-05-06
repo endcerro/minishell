@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/05 19:59:31 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/06 19:14:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
-int parse_esc(char *str) //Faut changer cette merde
+int parse_esc(char *str)
 {
 	int i;
 	int j;
@@ -149,18 +149,15 @@ char **check_finished()
 	int		i;
 	int		cpt[2];
 	char	**fill;
-	char 	**params = g_mshell.params;
-	char 	**envi = g_mshell.env;
 
 	i = -1;
 	fill = 0;
-	cpt[0] = 0;
-	cpt[1] = 0;
-	while (params[++i])
+	ft_bzero(cpt, 2);
+	while (g_mshell.params[++i])
 	{
-		parse_qts(params[i], cpt);
-		parse_env(&params[i], envi);
-		parse_bs(params[i]);
+		parse_qts(g_mshell.params[i], cpt);
+		parse_env(&g_mshell.params[i]);
+		parse_bs(g_mshell.params[i]);
 	}
 	if (cpt[0] % 2 || cpt[1] % 2)
 	 	fill = getfiller(0, cpt); // PAS PROTEGE
@@ -173,27 +170,24 @@ void	echo()	//Devrait etre pas mal, à vérifier
 	int ret;
 	char **fill;
 
-	char **params = g_mshell.params;
-
 	i = 0;
-	ret = 1;
+	ret = 0;
 	fill = 0;
-	if (params[1] && ft_strcmp(params[1], "-n") == 0)
-	{
+	if (g_mshell.params[1] && ft_strcmp(g_mshell.params[1], "-n") == 0)
 		++i;
-		ret = 0;
-	}
+	else
+		ret = 1;
 	fill = check_finished();
-	while (params[++i])
+	while (g_mshell.params[++i])
 	{
-		ft_putstr(params[i]);
-		if (params[i + 1])
+		ft_putstr(g_mshell.params[i]);
+		if (g_mshell.params[i + 1])
 			write(1," ",1);
 	}
 	i = -1;
-	while(fill && fill[++i])
+	while (fill && fill[++i])
 	{
-		parse_env(&(fill[i]), g_mshell.env);
+		parse_env(&(fill[i]));
 		ft_putstr(fill[i]);
 		if (fill[i + 1])
 			write(1, "\n", 1);
@@ -215,7 +209,8 @@ int		checkexport(char *var)
 	return (1);
 }
 
-char *env(char **envi2, char **params2, char *request)
+// char *env(char **envi2, char **params2, char *request)
+char 	*env(char *request)
 {
 	int x;
 
@@ -242,8 +237,10 @@ char *env(char **envi2, char **params2, char *request)
 	return (0);
 }
 
-char	*rethomedir(char **envi)
+char	*rethomedir()
 {
+	char **envi = g_mshell.env;
+
 	while (*envi && ft_strncmp("HOME=", *envi, 5) != 0)
 		++envi;
 	if (*envi)
@@ -251,7 +248,7 @@ char	*rethomedir(char **envi)
 	return (NULL);
 }
 
-void	cd(char **envi, char **params)
+void	cd()
 {
 	int		oldpwd;
 	int		pwd;
@@ -259,14 +256,14 @@ void	cd(char **envi, char **params)
 	char	*home;
 	char	*str;
 
-	if (params[1] && params[2] != 0)
+	if (g_mshell.params[1] && g_mshell.params[2] != 0)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
 		return ;
 	}
-	if (params[1])
+	if (g_mshell.params[1])
 	{
-		if (chdir(params[1]) == -1)
+		if (chdir(g_mshell.params[1]) == -1)
 		{
 			ft_putstr(strerror(errno));
 			write(1, "\n", 1);
@@ -275,7 +272,7 @@ void	cd(char **envi, char **params)
 	}
 	else
 	{
-		if (chdir((home = rethomedir(envi))) == -1)
+		if (chdir((home = rethomedir())) == -1)
 		{
 			ft_putstr("minishell: cd: HOME not set\n");
 			return ;
@@ -284,26 +281,27 @@ void	cd(char **envi, char **params)
 	oldpwd = -1;
 	pwd = -1;
 	x = -1;
-	while (envi[++x] && (pwd == -1 || oldpwd == -1))
-		if (ft_strncmp(envi[x], "PWD=", 4) == 0)
+	while (g_mshell.env[++x] && (pwd == -1 || oldpwd == -1))
+		if (ft_strncmp(g_mshell.env[x], "PWD=", 4) == 0)
 			pwd = x;
-		else if (ft_strncmp(envi[x], "OLDPWD=", 7) == 0)
+		else if (ft_strncmp(g_mshell.env[x], "OLDPWD=", 7) == 0)
 			oldpwd = x;
 	printf("pwd = %d\noldpwd = %d\n", pwd, oldpwd); // AAAAAAAAAAAAAAAAAAAAAAAA
-	if (envi[x] == NULL)
+	if (g_mshell.env[x] == NULL)
 		return ;
-	free(envi[oldpwd]);
-	envi[oldpwd] = ft_strjoin("OLD", envi[pwd]); // PAS PROTEGE
-	free(envi[pwd]);
+	free(g_mshell.env[oldpwd]);
+	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // PAS PROTEGE
+	free(g_mshell.env[pwd]);
 	if ((str = getcwdwrap()) == NULL)
 		ft_putstr(strerror(errno));
 	else
-		envi[pwd] = ft_strjoinf2("PWD=", str); // PAS PROTEGE
+		g_mshell.env[pwd] = ft_strjoinf2("PWD=", str); // PAS PROTEGE
 }
 
-void	pwd(char **params)
+void	pwd()
 {
 	char *str;
+	char **params = g_mshell.params;
 
 	if (params[1])
 	{
@@ -406,9 +404,10 @@ int		check_match(char *env, char *param)
 	return (ret);
 }
 
-void	export(char ***envi, char **params)
+void	export(char **params)
 {
 	int		i;
+	char 	***envi = &(g_mshell.env);
 	char	**n_envi;
 
 	i = 0;
@@ -445,24 +444,25 @@ void	export(char ***envi, char **params)
 	*envi = n_envi;
 }
 
-void	unset(char **envi, char **params)
+// void	unset(char **envi2, char **params2)
+void	unset()
 {
 	int		i;
 
 	i = 0;
-	if (params[1] == 0 || params[2] != 0)
+	if (g_mshell.params[1] == 0 || g_mshell.params[2] != 0)
 	{
 		ft_putstr("minishell: unset: wrong number of arguments\n");
 		return;
 	}
-	while (envi[i])
+	while (g_mshell.env[i])
 	{
-		if(!check_match(envi[i], params[1]))
+		if(!check_match(g_mshell.env[i], g_mshell.params[1]))
 		{
-			free(envi[i]);
-			while (envi[++i])
-				envi[i - 1] = envi[i];
-			envi[i - 1] = 0;
+			free(g_mshell.env[i]);
+			while (g_mshell.env[++i])
+				g_mshell.env[i - 1] = g_mshell.env[i];
+			g_mshell.env[i - 1] = 0;
 			return;
 		}
 		i++;
@@ -497,52 +497,35 @@ int 	get_output(char **params)
 	return (fd);
 }
 
-void	checkinput(char ***envi, char **params, char ***vars)
+// void	checkinput(char ***envi2, char **params2, char ***vars2)
+void	checkinput()
 {
-
-	int fd;
-
-	char **params1;
-	char ***envi1;
-	char ***vars1;
-	params1 = g_mshell.params;
-	envi1 = &g_mshell.env;
-	vars1 = &g_mshell.vars;
-
-
-	// fd = 1;
-	// fd = get_output(params);
-
-	printf("%p %p\n",params1, params);
-	printf("%p %p\n",envi1, env);
-	printf("%p %p\n",*vars1, vars);
-
-	if (ft_strcmp(params[0], "exit") == 0) // Fini
+	if (ft_strcmp(g_mshell.params[0], "exit") == 0) // Fini
 	{
 		ft_putstr("exit\n");
-		if (params[1])
+		if (g_mshell.params[1])
 			ft_putstr("minishell: exit: too many arguments\n");
-		freechar2ptr(params);
-		freechar2ptr(*envi);
-		freechar2ptr(*vars);
+		freechar2ptr(g_mshell.env);
+		freechar2ptr(g_mshell.params);
+		freechar2ptr(g_mshell.vars);
 		exit(0);
 	}
-	else if (ft_strcmp(params[0], "echo") == 0) // A terminer
+	else if (ft_strcmp(g_mshell.params[0], "echo") == 0) // A terminer
 		echo();
-	else if (ft_strcmp(params[0], "env") == 0) // Fini
-		env(*envi, params, 0);
-	else if (ft_strcmp(params[0], "cd") == 0) // Fini // PAS PROTEGE
-		cd(*envi, params);
-	else if (ft_strcmp(params[0], "pwd") == 0) // Fini
-		pwd(params);
-	else if (ft_strcmp(params[0], "export") == 0) // A fignoler // PAS PROTEGE
-		export(envi, params);
-	else if (ft_strcmp(params[0], "unset") == 0) // A terminer
-		unset(*envi, params);
-	else if (ft_strcmp(params[0], "clear") == 0)
+	else if (ft_strcmp(g_mshell.params[0], "env") == 0) // Fini
+		env(0);// env(*envi, params, 0);
+	else if (ft_strcmp(g_mshell.params[0], "cd") == 0) // Fini // PAS PROTEGE
+		cd();
+	else if (ft_strcmp(g_mshell.params[0], "pwd") == 0) // Fini
+		pwd();
+	else if (ft_strcmp(g_mshell.params[0], "export") == 0) // A fignoler // PAS PROTEGE
+		export(g_mshell.params);
+	else if (ft_strcmp(g_mshell.params[0], "unset") == 0) // A terminer
+		unset();
+	else if (ft_strcmp(g_mshell.params[0], "clear") == 0)
 		ft_putstr("\033c");
 	else
-		commandorvar(envi, params, vars);
+		commandorvar(&(g_mshell.env), g_mshell.params, &(g_mshell.vars));
 }
 
 int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
@@ -574,19 +557,19 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	if (keys[0] == 0)
 	{
 		str[1] = ft_strjoinf2("PWD=", getcwdwrap()); // PAS PROTEGE
-		export(&g_mshell.env, str); // PAS PROTEGE
+		export(str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[1] == 0)
 	{
 		str[1] = ft_strdup("SHLVL=1"); // PAS PROTEGE
-		export(&g_mshell.env, str); // PAS PROTEGE
+		export(str); // PAS PROTEGE
 		free(str[1]);
 	}
 	if (keys[2] == 0)
 	{
 		str[1] = ft_strdup("OLDPWD="); // PAS PROTEGE
-		export(&g_mshell.env, str); // PAS PROTEGE
+		export(str); // PAS PROTEGE
 		free(str[1]);
 	}
 	return (0);
@@ -627,7 +610,7 @@ int		main(void)
 			return (0);
 		free(line);
 		if (*params)
-			checkinput(&envi, params, &vars); // PAS PROTEGE
+			checkinput(); // PAS PROTEGE
 		freechar2ptr(params);
 	}
 	ft_putstr("exit\n");
