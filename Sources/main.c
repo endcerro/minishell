@@ -584,24 +584,23 @@ void	sigkill(int sig)
 int		main(void)
 {
 	char *line;
-	char **params;
 
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
 	if (newenviron() == -1) // PAS PROTEGE
-		exit(1);
+		return (1);
 	while (prompt(&line) > 0)
 	{
 		if (line == NULL && *line == 0)
 			break ;
-		if (!(params = get_blocks(line)))
-			return (0);
+		if (get_blocks(line) == -1) // PAS PROTEGE
+			return (0); // Rien n'est free en cas d'erreur
 		free(line);
-		if (*params)
+		if (*g_mshell.params)
 			checkinput(); // PAS PROTEGE
-		freechar2ptr(params);
+		freechar2ptr(g_mshell.params);
 	}
 	ft_putstr("exit\n");
 	free(line);

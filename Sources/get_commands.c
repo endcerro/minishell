@@ -66,7 +66,7 @@ char	*get_word(char *line, int *p)
 	return(ft_substr(line, cp, len));
 }
 
-char	**get_blocks(char *line)
+int		get_blocks(char *line)
 {
 	int 	p;
 	int 	i;
@@ -76,16 +76,16 @@ char	**get_blocks(char *line)
 	p = 0;
 
 	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
-		return 0;
+		return (-1);
 	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
 			++i;
 		else
 			if ((out[p++] = get_word(line, &i)) == NULL)
-				return (out);
+				return (-1);
 	}
 	out[p] = 0;
 	g_mshell.params = out;
-	return (out);
+	return (1);
 }
