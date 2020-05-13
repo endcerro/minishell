@@ -40,6 +40,7 @@ t_mshell		g_mshell;
 char 			**get_blocks(char *line);
 char 			*env(char *request);
 void 			parse_env(char **param);
-void			commandorvar(char ***envi, char **params, char ***vars);
+void			commandorvar(void);
+void			freechar2ptr(char **ptr);
 
 #endif

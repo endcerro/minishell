@@ -12,25 +12,25 @@
 
 #include "minishell.h"
 
-void	freevarsreste(char ***vars, int size)
+void	freevarsreste(int size)
 {
-	while ((*vars)[size])
+	while (g_mshell.vars[size])
 	{
-		free((*vars)[size]);
+		free(g_mshell.vars[size]);
 		++size;
 	}
-	free((*vars));
-	*vars = NULL;
+	free(g_mshell.vars);
+	g_mshell.vars = NULL;
 }
 
-void	addvar(char ***vars, char *str)
+void	addvar(char *str)
 {
 	int		size;
 	char	**newvars;
 
 	size = 0;
-	if (*vars != NULL)
-		while ((*vars)[size])
+	if (g_mshell.vars != NULL)
+		while (g_mshell.vars[size])
 			++size;
 	if (!(newvars = (char **)malloc(sizeof (char *) * (size + 2))))
 	{
@@ -46,14 +46,14 @@ void	addvar(char ***vars, char *str)
 		ft_putendl(strerror(errno));
 		return ;
 	}
-	if (*vars != NULL)
+	if (g_mshell.vars != NULL)
 	{
 		size = -1;
-		while ((*vars)[++size])
+		while (g_mshell.vars[++size])
 		{
-			if (!(newvars[size] = ft_strdup((*vars)[size])))
+			if (!(newvars[size] = ft_strdup(g_mshell.vars[size])))
 			{
-				freevarsreste(vars, size);
+				freevarsreste(size);
 				while (--size >= 0)
 					free(newvars[size]);
 				free(newvars);
@@ -61,14 +61,14 @@ void	addvar(char ***vars, char *str)
 				ft_putendl(strerror(errno));
 				return ;
 			}
-			free((*vars)[size]);
+			free(g_mshell.vars[size]);
 		}
-		free(*vars);
+		free(g_mshell.vars);
 	}
-	*vars = newvars;
+	g_mshell.vars = newvars;
 }
 
-char	*checkpath(char **envi, char **params)
+char	*checkpath(int j)
 {
 	int			x;
 	int			i;
@@ -77,18 +77,18 @@ char	*checkpath(char **envi, char **params)
 	char		*str;
 
 	x = 0;
-	while (envi[x] && ft_strncmp(envi[x], "PATH=", 5) != 0)
+	while (g_mshell.env[x] && ft_strncmp(g_mshell.env[x], "PATH=", 5) != 0)
 		++x;
-	if (envi[x] == 0)
+	if (g_mshell.env[x] == 0)
 		return (NULL); // Meme sans PATH bash test un truc par defaut
 	i = 4;
 	prev = 5;
-	while (envi[x][++i])
-		if (envi[x][i] == ':')
+	while (g_mshell.env[x][++i])
+		if (g_mshell.env[x][i] == ':')
 		{
-			envi[x][i] = 0;
-			str = ft_strjoinf1(ft_strjoin(&envi[x][prev], "/"), params[0]);
-			envi[x][i] = ':';
+			g_mshell.env[x][i] = 0;
+			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"), g_mshell.params[j]);
+			g_mshell.env[x][i] = ':';
 			if (stat(str, &sta) != -1)
 				return (str);
 			free(str);
@@ -97,39 +97,39 @@ char	*checkpath(char **envi, char **params)
 	return (NULL);
 }
 
-int		checkslash(char *file)
+int		checkslash(char *str)
 {
 	int x;
 
 	x = -1;
-	while (file[++x])
-		if (file[x] == '/')
+	while (str[++x])
+		if (str[x] == '/')
 			return (1);
 	return (0);
 }
 
-void	execsomestuff(char **envi, char **vars, char **params)
+void	execsomestuff(int x)
 {
 	struct stat	sta;
 	char		*str;
 
-	(void)vars;// Remplacer vars par leurs valeurs dans params
+	// Remplacer les variables locales et d'environement par leurs valeurs dans params
 	str = NULL;
-	if (checkslash(params[0]))
+	if (checkslash(g_mshell.params[x]))
 	{
-		if (stat(params[0], &sta) == -1)
+		if (stat(g_mshell.params[x], &sta) == -1)
 		{
 			ft_putstr("minishell: ");
-			ft_putstr(params[0]);
+			ft_putstr(g_mshell.params[x]);
 			ft_putstr(": No such file or directory\n");
 			return ;
 		}
 	}
 	else
-		if ((str = checkpath(envi, params)) == NULL)
+		if ((str = checkpath(x)) == NULL)
 		{
 			ft_putstr("minishell: ");
-			ft_putstr(params[0]);
+			ft_putstr(g_mshell.params[x]);
 			ft_putstr(": command not found\n");
 			return ;
 		}
@@ -137,23 +137,29 @@ void	execsomestuff(char **envi, char **vars, char **params)
 	if (g_mshell.pid == 0)
 	{
 		if (str)
-			execve(str, params, envi);
+			execve(str, &(g_mshell.params[x]), g_mshell.env);
 		else
-			execve(params[0], params, envi);
+			execve(g_mshell.params[x], &(g_mshell.params[x]), g_mshell.env);
 		ft_putstr("minishell: ");
-		ft_putstr(params[0]);
+		ft_putstr(g_mshell.params[x]);
 		ft_putstr(": ");
 		ft_putendl(strerror(errno));
+		free(str);
+		freechar2ptr(g_mshell.env);
+		freechar2ptr(g_mshell.params);
+		freechar2ptr(g_mshell.vars);
 		exit(0);
 	}
 	else if (g_mshell.pid < 0)
 	{
 		ft_putstr("minishell: ");
-		ft_putstr(params[0]);
+		ft_putstr(g_mshell.params[x]);
 		ft_putstr(": ");
 		ft_putendl(strerror(errno));
+		free(str);
 		return ;
 	}
+	free(str);
 	// Gerer les signals
 	/* wait(&g_mshell.exitcode); */
 	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
@@ -161,29 +167,24 @@ void	execsomestuff(char **envi, char **vars, char **params)
 	/* write(1, "\n", 1); */
 }
 
-void	commandorvar(char ***envi, char **params, char ***vars)
+void	commandorvar(void)
 {
 	int x;
 	int i;
 
 	x = -1;
-
-	// char ***envi = &(g_mshell.env);
-	// char **params = g_mshell.params;
-	// char ***vars = &(g_mshell.params);
-
-	while (params[++x])
+	while (g_mshell.params[++x])
 	{
 		i = 0;
-		while (params[x][++i])
-			if (params[x][i] == '=' && params[x][i - 1] != '\\')
+		while (g_mshell.params[x][++i])
+			if (g_mshell.params[x][i] == '=' && g_mshell.params[x][i - 1] != '\\')
 			{
-				addvar(vars, params[x]);
+				addvar(g_mshell.params[x]);
 				break ;
 			}
-		if (params[x][i] == 0)
+		if (g_mshell.params[x][i] == 0)
 		{
-			execsomestuff(*envi, *vars, &(x[params]));
+			execsomestuff(x);
 			break ;
 		}
 	}

@@ -209,42 +209,39 @@ int		checkexport(char *var)
 	return (1);
 }
 
-// char *env(char **envi2, char **params2, char *request)
 char 	*env(char *request)
 {
 	int x;
 
-	char **envi = g_mshell.env;
-	char **params = g_mshell.params;
-
 	x = 0;
-	if (params[1] && request == 0)
+	if (g_mshell.params[1] && request == NULL)
 		ft_putstr("minishell: env: too many arguments\n");
 	else
 	{
-		while (envi[x])
+		while (g_mshell.env[x])
 		{
-			if(request != 0)
+			if(request != NULL)
 			{
-				if (!ft_strncmp(envi[x], request, ft_strlen(request)))
-					return (envi[x] + ft_strlen(request) + 1);
+				if (!ft_strncmp(g_mshell.env[x], request, ft_strlen(request)))
+					return (g_mshell.env[x] + ft_strlen(request) + 1);
 			}
-			else if (checkexport(envi[x]) == 1)
-				ft_putsendl(envi[x]);
+			else if (checkexport(g_mshell.env[x]) == 1)
+				ft_putsendl(g_mshell.env[x]);
 			++x;
 		}
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*rethomedir()
 {
-	char **envi = g_mshell.env;
+	int	x;
 
-	while (*envi && ft_strncmp("HOME=", *envi, 5) != 0)
-		++envi;
-	if (*envi)
-		return (*envi + 5);
+	x = 0;
+	while (g_mshell.env[x] && ft_strncmp("HOME=", g_mshell.env[x], 5) != 0)
+		++x;
+	if (g_mshell.env[x])
+		return (g_mshell.env[x] + 5);
 	return (NULL);
 }
 
@@ -286,7 +283,7 @@ void	cd()
 			pwd = x;
 		else if (ft_strncmp(g_mshell.env[x], "OLDPWD=", 7) == 0)
 			oldpwd = x;
-	printf("pwd = %d\noldpwd = %d\n", pwd, oldpwd); // AAAAAAAAAAAAAAAAAAAAAAAA
+	/* printf("pwd = %d\noldpwd = %d\n", pwd, oldpwd); // AAAAAAAAAAAAAAAAAAAAAAAA */
 	if (g_mshell.env[x] == NULL)
 		return ;
 	free(g_mshell.env[oldpwd]);
@@ -301,14 +298,13 @@ void	cd()
 void	pwd()
 {
 	char *str;
-	char **params = g_mshell.params;
 
-	if (params[1])
+	if (g_mshell.params[1])
 	{
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
 	}
-	if ((str = getcwdwrap()) != NULL)
+	if ((str = getcwdwrap()) == NULL)
 	{
 		ft_putstr("minishell: pwd: ");
 		ft_putstr(strerror(errno));
@@ -444,7 +440,6 @@ void	export(char **params)
 	*envi = n_envi;
 }
 
-// void	unset(char **envi2, char **params2)
 void	unset()
 {
 	int		i;
@@ -497,8 +492,7 @@ int 	get_output(char **params)
 	return (fd);
 }
 
-// void	checkinput(char ***envi2, char **params2, char ***vars2)
-void	checkinput()
+void	checkinput(void)
 {
 	if (ft_strcmp(g_mshell.params[0], "exit") == 0) // Fini
 	{
@@ -513,7 +507,7 @@ void	checkinput()
 	else if (ft_strcmp(g_mshell.params[0], "echo") == 0) // A terminer
 		echo();
 	else if (ft_strcmp(g_mshell.params[0], "env") == 0) // Fini
-		env(0);// env(*envi, params, 0);
+		env(NULL);
 	else if (ft_strcmp(g_mshell.params[0], "cd") == 0) // Fini // PAS PROTEGE
 		cd();
 	else if (ft_strcmp(g_mshell.params[0], "pwd") == 0) // Fini
@@ -525,7 +519,7 @@ void	checkinput()
 	else if (ft_strcmp(g_mshell.params[0], "clear") == 0)
 		ft_putstr("\033c");
 	else
-		commandorvar(&(g_mshell.env), g_mshell.params, &(g_mshell.vars));
+		commandorvar();
 }
 
 int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
@@ -591,17 +585,13 @@ int		main(void)
 {
 	char *line;
 	char **params;
-	char **envi;
-	char **vars;
 
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
-	vars = NULL;
 	if (newenviron() == -1) // PAS PROTEGE
 		exit(1);
-	envi = g_mshell.env;
 	while (prompt(&line) > 0)
 	{
 		if (line == NULL && *line == 0)
@@ -615,6 +605,6 @@ int		main(void)
 	}
 	ft_putstr("exit\n");
 	free(line);
-	freechar2ptr(envi);
-	freechar2ptr(vars);
+	freechar2ptr(g_mshell.env);
+	freechar2ptr(g_mshell.vars);
 }
