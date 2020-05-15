@@ -403,7 +403,6 @@ int		check_match(char *env, char *param)
 void	export(char **params)
 {
 	int		i;
-	char 	***envi = &(g_mshell.env);
 	char	**n_envi;
 
 	i = 0;
@@ -414,17 +413,17 @@ void	export(char **params)
 	}
 	else if (params[1] == 0)
 	{
-		exportlst(*envi); // PAS PROTEGE
+		exportlst(g_mshell.env); // PAS PROTEGE
 		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
 		params[1] = ft_strjoinf1(params[1],"="); // PAS PROTEGE
-	while ((*envi)[i])
+	while (g_mshell.env[i])
 	{
-		if(!check_match((*envi)[i], params[1]))
+		if(!check_match(g_mshell.env[i], params[1]))
 		{
-			free((*envi)[i]);
-			(*envi)[i] = ft_strdup(params[1]); // PAS PROTEGE
+			free(g_mshell.env[i]);
+			g_mshell.env[i] = ft_strdup(params[1]); // PAS PROTEGE
 			return ;
 		}
 		i++;
@@ -432,12 +431,12 @@ void	export(char **params)
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
 		return ;
 	i = -1;
-	while ((*envi)[++i])
-		n_envi[i] = (*envi)[i];
+	while (g_mshell.env[++i])
+		n_envi[i] = g_mshell.env[i];
 	n_envi[i++] = ft_strdup(params[1]); // PAS PROTEGE
 	n_envi[i] = 0;
-	free(*envi);
-	*envi = n_envi;
+	free(g_mshell.env);
+	g_mshell.env = n_envi;
 }
 
 void	unset()
