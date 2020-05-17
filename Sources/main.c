@@ -406,6 +406,7 @@ void	exportlst(char **envi)
 		}
 		write(1, "\n", 1);
 	}
+	freechar2ptr(env2);
 }
 
 int		check_match(char *env, char *param)
