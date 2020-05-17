@@ -19,10 +19,11 @@ SUB_MAKE	=	Libft
 LIB			=	$(SUB_MAKE)/libft.a
 
 SRC			=	main.c \
-				get_commands.c \
-				commandorvar.c \
-				echo_utils.c
-
+				get_commands.c 	\
+				commandorvar.c 	\
+				echo_utils.c	\
+				export_utils.c
+				
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 

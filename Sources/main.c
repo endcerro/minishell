@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/06 19:14:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/17 19:25:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,45 +82,7 @@ int		parse_esc(char *str)
 	return (r);
 }
 
-int		parse_bs(char *str)
-{
-	int i;
 
-	i = -1;
-	while (str[++i])
-		if (str[i] == '\\')
-			i -= parse_esc(str + i);
-
-	return 0;
-}
-void 	parse_qts(char *str, int *cpt)
-{
-	int 	i;
-	int 	j;
-	int 	v;
-
-	i = 0;
-	j = -1;
-	while (str[++j])
-		if ((str[j] == '\'' || str[j] == '\"'))
-		{
-			v = 0;
-			if(j > 0 && str[j - 1] == '\\' && (v = 1))
-			{
-				while (j - v >= 0 && str[j - v] == '\\')
-					v++;
-				v--;
-			}
-			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
-			{
-				cpt[!(str[j] == '\"')]++;
-				i = -1;
-				while(str[j + ++i])
-					str[j + i] = str[j + i + 1];
-				j--;
-			}
-		}
-}
 
 char	**getfiller(int depth, int *cpt)
 {
@@ -129,7 +91,10 @@ char	**getfiller(int depth, int *cpt)
 
 	write(1, "dquote> ", 8);
 	get_next_line(0, &tmp);
+	// printf("tmp b4 :%s\n",tmp);
 	parse_qts(tmp, cpt);
+	out = 0;
+	// printf("tmp af %d :%s\n", *cpt,tmp);
 	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2)
 		out = getfiller(depth + 1, cpt); // PAS PROTEGE
@@ -144,25 +109,7 @@ char	**getfiller(int depth, int *cpt)
 	return (out);
 }
 
-char	**check_finished()
-{
-	int		i;
-	int		cpt[2];
-	char	**fill;
 
-	i = -1;
-	fill = 0;
-	ft_bzero(cpt, 2);
-	while (g_mshell.params[++i])
-	{
-		parse_qts(g_mshell.params[i], cpt);
-		parse_env(&g_mshell.params[i]);
-		parse_bs(g_mshell.params[i]);
-	}
-	if (cpt[0] % 2 || cpt[1] % 2)
-	 	fill = getfiller(0, cpt); // PAS PROTEGE
-	return (fill);
-}
 
 void	echo()	//Devrait etre pas mal, à vérifier
 {
@@ -226,7 +173,10 @@ char 	*env(char *request)
 					return (g_mshell.env[x] + ft_strlen(request) + 1);
 			}
 			else if (checkexport(g_mshell.env[x]) == 1)
+			{
+				// printf("here\n");
 				ft_putsendl(g_mshell.env[x]);
+			}
 			++x;
 		}
 	}
@@ -418,24 +368,48 @@ int		check_match(char *env, char *param)
 	return (ret);
 }
 
+
+
 void	export(char **params)
 {
 	int		i;
 	char	**n_envi;
 
+	char 	**testfill = 0;
+
 	i = 0;
-	if (params[1] != 0 && params[2] != 0)
+	
+	if(check_valid_export(params) == 0)
+	{
+		ft_putstr("export not valid identifier\n");
+		return;
+	}
+	testfill = check_finished(params);
+	if (testfill == 0 && params[1] != 0 && params[2] != 0)
 	{
 		ft_putstr("minishell: export: wrong number of arguments\n");
 		return ;
 	}
-	else if (params[1] == 0)
+	int t = 0;
+	if (testfill != 0)
+	{
+		int p = 1;
+		while(params[p + 1])
+			params[p] = ft_strjoinft(params[p], params[p + 1]);
+		while(testfill[t])
+			params[p] = ft_strjoinft(params[p], testfill[t++]);	
+		free(testfill);
+	}
+	printf("after fill p2 :%s \n",params[1]);
+	if (params[1] == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
 		return ;
 	}
 	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
+	{
 		params[1] = ft_strjoinf1(params[1],"="); // PAS PROTEGE
+	}
 	while (g_mshell.env[i])
 	{
 		if(!check_match(g_mshell.env[i], params[1]))

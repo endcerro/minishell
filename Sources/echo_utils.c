@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/06 19:00:55 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/17 19:25:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,68 @@ void	parse_env(char **param)
 		free(tmp);
 		cache = ft_strchr(*param, '$');
 	}
+}
+
+int		parse_bs(char *str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\\')
+			i -= parse_esc(str + i);
+
+	return 0;
+}
+
+
+void 	parse_qts(char *str, int *cpt)
+{
+	int 	i;
+	int 	j;
+	int 	v;
+
+	i = 0;
+	j = -1;
+	while (str[++j])
+		if ((str[j] == '\'' || str[j] == '\"'))
+		{
+			v = 0;
+			if(j > 0 && str[j - 1] == '\\' && (v = 1))
+			{
+				while (j - v >= 0 && str[j - v] == '\\')
+					v++;
+				v--;
+			}
+			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
+			{
+				cpt[!(str[j] == '\"')]++;
+				i = -1;
+				while(str[j + ++i])
+					str[j + i] = str[j + i + 1];
+				j--;
+			}
+		}
+}
+
+char	**check_finished()	//Chnager le char ** en char * ?
+{
+	int		i;
+	int		cpt[2];
+	char	**fill;
+
+	i = -1;
+	fill = 0;
+	ft_bzero(cpt, 2);
+	cpt[0] = 0;
+	cpt[1] = 0;
+	while (g_mshell.params[++i])
+	{
+		parse_qts(g_mshell.params[i], cpt);
+		parse_env(&g_mshell.params[i]);
+		parse_bs(g_mshell.params[i]);
+	}
+	if (cpt[0] % 2 || cpt[1] % 2)
+	 	fill = getfiller(0, cpt); // PAS PROTEGE
+	return (fill);
 }
