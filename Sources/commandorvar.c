@@ -27,8 +27,20 @@ void	addvar(char *str)
 {
 	int		size;
 	char	**newvars;
+	char	*tmp[3];
 
 	size = 0;
+	tmp[2] = NULL;
+	tmp[0] = ft_strchr(str, '=');
+	*tmp[0] = 0;
+	if (env(str) != NULL)
+	{
+		*tmp[0] = '=';
+		tmp[1] = str;
+		export(tmp);
+		return ;
+	}
+	*tmp[0] = '=';
 	if (g_mshell.vars != NULL)
 		while (g_mshell.vars[size])
 			++size;

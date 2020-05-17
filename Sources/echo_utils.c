@@ -45,11 +45,12 @@ char *inside_join(char *base, char *add)
 	return out;
 }
 
-void parse_env(char **param)
+void	parse_env(char **param)
 {
-	int len;
-	char *tmp;
-	char *cache;
+	int		len;
+	char	*tmp;
+	char	*cache;
+	char	*str;
 
 	len = 0;
 	cache = ft_strchr(*param, '$');
@@ -59,7 +60,8 @@ void parse_env(char **param)
 		while (cache[len + 1] && cache[len + 1] != '=')
 			len++;
 		tmp = ft_substr(cache, 1, len);
-		*param = inside_join(*param, env(tmp));	
+		str = env(tmp);
+		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
 		free(tmp);
 		cache = ft_strchr(*param, '$');
 	}

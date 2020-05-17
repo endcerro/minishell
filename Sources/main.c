@@ -52,7 +52,7 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
-int parse_esc(char *str)
+int		parse_esc(char *str)
 {
 	int i;
 	int j;
@@ -82,7 +82,7 @@ int parse_esc(char *str)
 	return (r);
 }
 
-int	parse_bs(char *str)
+int		parse_bs(char *str)
 {
 	int i;
 
@@ -122,7 +122,7 @@ void 	parse_qts(char *str, int *cpt)
 		}
 }
 
-char **getfiller(int depth, int *cpt)
+char	**getfiller(int depth, int *cpt)
 {
 	char *tmp;
 	char **out;
@@ -144,7 +144,7 @@ char **getfiller(int depth, int *cpt)
 	return (out);
 }
 
-char **check_finished()
+char	**check_finished()
 {
 	int		i;
 	int		cpt[2];
@@ -166,9 +166,9 @@ char **check_finished()
 
 void	echo()	//Devrait etre pas mal, à vérifier
 {
-	int i;
-	int ret;
-	char **fill;
+	int		i;
+	int		ret;
+	char	**fill;
 
 	i = 0;
 	ret = 0;
@@ -227,6 +227,23 @@ char 	*env(char *request)
 			}
 			else if (checkexport(g_mshell.env[x]) == 1)
 				ft_putsendl(g_mshell.env[x]);
+			++x;
+		}
+	}
+	return (NULL);
+}
+
+char 	*vars(char *request)
+{
+	int x;
+
+	if (request != NULL && g_mshell.vars != NULL)
+	{
+		x = 0;
+		while (g_mshell.vars[x])
+		{
+			if (!ft_strncmp(g_mshell.vars[x], request, ft_strlen(request)))
+				return (g_mshell.vars[x] + ft_strlen(request) + 1);
 			++x;
 		}
 	}

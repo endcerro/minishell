@@ -38,7 +38,9 @@ typedef struct 	s_mshell
 t_mshell		g_mshell;
 
 int 			get_blocks(char *line);
+void			export(char **params);
 char 			*env(char *request);
+char 			*vars(char *request);
 void 			parse_env(char **param);
 void			commandorvar(void);
 void			freechar2ptr(char **ptr);
