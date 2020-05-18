@@ -92,7 +92,12 @@ char	*checkpath(int j)
 	while (g_mshell.env[x] && ft_strncmp(g_mshell.env[x], "PATH=", 5) != 0)
 		++x;
 	if (g_mshell.env[x] == 0)
-		return (NULL); // Meme sans PATH bash test un truc par defaut
+	{
+		str = ft_strjoin("/bin/", g_mshell.params[j]);
+		if (stat(str, &sta) != -1)
+			return (str);
+		return (NULL);
+	}
 	i = 4;
 	prev = 5;
 	while (g_mshell.env[x][++i])
