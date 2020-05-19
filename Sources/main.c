@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 13:16:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 13:31:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -613,18 +613,19 @@ int		main(void)
 			return (0); // Rien n'est free en cas d'erreur
 		get_lst(line);
 
-		free(line);
-		if (g_mshell.ls)
-		{
+		
+		// if (g_mshell.ls)
+		// {
 			checkinput_ls();
-		}
+		// }
 
 		// if (*g_mshell.params)
 		// {
 		// 	check_command(0);
 		// 	// checkinput(); // PAS PROTEGE
 		// }
-		freechar2ptr(g_mshell.params);
+			free(line);
+		// freechar2ptr(g_mshell.params);
 	}
 	ft_putstr("exit\n");
 	free(line);
