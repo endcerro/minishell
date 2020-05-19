@@ -22,7 +22,8 @@ SRC			=	main.c \
 				get_commands.c 	\
 				commandorvar.c 	\
 				echo_utils.c	\
-				export_utils.c
+				export_utils.c  \
+				get_commands_lst.c
 				
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)

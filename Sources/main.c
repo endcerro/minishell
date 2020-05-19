@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 10:22:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 13:06:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,21 +163,34 @@ int		checkexport(char *var)
 	return (1);
 }
 
+int 	wordlen(char *str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isalnum(str[i]))
+			return i;
+	}
+	return i;
+}
+
 char 	*env(char *request)
 {
 	int x;
 
 	x = 0;
-	if (g_mshell.params[1] && request == NULL)
-		ft_putstr("minishell: env: too many arguments\n");
-	else
-	{
+	// if (g_mshell.params[1] && request == NULL)
+	// 	ft_putstr("minishell: env: too many arguments\n");
+	// else
+//	{
 		while (g_mshell.env[x])
 		{
 			if(request != NULL)
 			{
-				if (!ft_strncmp(g_mshell.env[x], request, ft_strlen(request)))
-					return (g_mshell.env[x] + ft_strlen(request) + 1);
+				if (!ft_strncmp(g_mshell.env[x], request, wordlen(request)))
+					return (g_mshell.env[x] + wordlen(request));
 			}
 			else if (checkexport(g_mshell.env[x]) == 1)
 			{
@@ -186,7 +199,7 @@ char 	*env(char *request)
 			}
 			++x;
 		}
-	}
+//	}
 	return (NULL);
 }
 
@@ -593,16 +606,19 @@ int		main(void)
 		return (1);
 	while (prompt(&line) > 0)
 	{
+		
 		if (line == NULL && *line == 0)
 			break ;
 		if (get_blocks(line) == -1) // PAS PROTEGE
 			return (0); // Rien n'est free en cas d'erreur
+		get_lst(line);
+
 		free(line);
-		if (*g_mshell.params)
-		{
-			check_command(0);
-			// checkinput(); // PAS PROTEGE
-		}
+		// if (*g_mshell.params)
+		// {
+		// 	check_command(0);
+		// 	// checkinput(); // PAS PROTEGE
+		// }
 		freechar2ptr(g_mshell.params);
 	}
 	ft_putstr("exit\n");

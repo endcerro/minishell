@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/17 19:21:47 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 10:24:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:49:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,13 @@ void check_command(int i )
 	{
 		printf("blocks = %d\n",count_blocks(finish));
 		g_mshell.params[j - 1] = ft_strjoinft(g_mshell.params[j - 1], finish);
+		printf("blocks af join= %d\n",count_blocks(g_mshell.params[j - 1]));
 	}
 
 	// // printf("Parmas listing ;\n");
 	while(g_mshell.params[i])
 	{
-		// g_mshell.params[i] = parse_qts(g_mshell.params[i], cpt);
 
-		// if (cpt[0] % 2 || cpt[1] % 2)
-		// 	out = getfiller(0, cpt);
 
 		if(g_mshell.params[i][0] == '>')
 		{

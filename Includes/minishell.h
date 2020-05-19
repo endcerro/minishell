@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 10:25:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 12:41:34 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,19 @@
 
 extern char		**environ;
 
+typedef struct		s_list
+{
+	char			*content;
+	struct s_list	*next;
+}					t_list;
+
 typedef struct 	s_mshell
 {
+	char 		*line;
 	char		**env;
 	char		**vars;
 	char		**params;
+	t_list		*ls;
 	pid_t		pid;
 	int			exitcode;
 }				t_mshell;
@@ -56,6 +64,10 @@ void	checkinput(void);
 char	*check_finished1();	//Chnager le char ** en char * ?
 void	freechar2ptr(char **ptr);
 int		count_blocks(char *line);
+
+void	get_lst(char *line);
+char 	*inside_join(char *base, char *add);
+
 
 
 

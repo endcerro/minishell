@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/05 19:50:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 11:44:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		count_blocks(char *line)
 		if(!ft_isspace(line[i]))
 		{
 			count++;
+			// printf("block = %s \n",line + i );
 			if(line[i++] == '"')
 				while(line[i] && line[i] != '"')
 					++i;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 10:17:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 13:07:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ void	parse_env(char **param)
 		// while (ft_isupper(cache[len + 1]))
 		while (cache[len + 1] && cache[len + 1] != '=')
 			len++;
+		
 		tmp = ft_substr(cache, 1, len);
+		printf("searching for %s\n",tmp );
 		str = env(tmp);
+		printf("str found = %s\n",str );
 		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
 		free(tmp);
 		cache = ft_strchr(*param, '$');
@@ -82,11 +85,11 @@ int		parse_bs(char *str)
 
 void 	parse_qts(char *str, int *cpt)
 {
-	int 	i;
+	// int 	i;
 	int 	j;
 	int 	v;
 
-	i = 0;
+	// i = 0;
 	j = -1;
 	while (str[++j])
 		if ((str[j] == '\'' || str[j] == '\"'))
@@ -101,10 +104,12 @@ void 	parse_qts(char *str, int *cpt)
 			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
 			{
 				cpt[!(str[j] == '\"')]++;
-				i = -1;
-				while(str[j + ++i])
-					str[j + i] = str[j + i + 1];
-				j--;
+				// i = -1;
+				// while(str[j + ++i])
+				// {
+				// 	str[j + i] = str[j + i + 1];
+				// }
+				// j--;
 			}
 		}
 }
@@ -162,6 +167,9 @@ char	*check_finished1()	//Chnager le char ** en char * ?
 			out = ft_strjoinf1(out, fill[i++]);
 		}
 	}
-	freechar2ptr(fill);
+
+	// add_blocks()
+
+	// freechar2ptr(fill);
 	return (out);
 }
