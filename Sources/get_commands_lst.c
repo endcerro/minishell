@@ -228,12 +228,6 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 		curr = curr->next;
 	else
 		ret = 1;
-	// fill = check_finished();
-
-
-	// char *test = 0;
-	// test = check_finished1();
-	// curr = g_mshell.ls->
 	while (curr)
 	{
 		ft_putstr(curr->content);
@@ -242,19 +236,10 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 		curr = curr->next;
 	}
 	i = -1;
-	// while (fill && fill[++i])
-	// {
-	// 	parse_env(&(fill[i]));
-	// 	ft_putstr(fill[i]);
-	// 	if (fill[i + 1])
-	// 		write(1, "\n", 1);
-	// }
-	// if(test)
-	// 	ft_putstr(test);
-	// freechar2ptr(fill);
 	if (ret)
 		write(1, "\n", 1);
 }
+
 
 void	checkinput_ls(void)
 {
@@ -275,18 +260,21 @@ void	checkinput_ls(void)
 		printf("echo ls\n");
 		echo_ls();
 	}	
-	// else if (ft_strcmp(g_mshell.params[0], "env") == 0) // Fini
-	// 	env(NULL);
-	// else if (ft_strcmp(g_mshell.params[0], "cd") == 0) // Fini // PAS PROTEGE
-	// 	cd();
-	// else if (ft_strcmp(g_mshell.params[0], "pwd") == 0) // Fini
-	// 	pwd();
-	// else if (ft_strcmp(g_mshell.params[0], "export") == 0) // A fignoler // PAS PROTEGE
-	// 	export(g_mshell.params);
-	// else if (ft_strcmp(g_mshell.params[0], "unset") == 0) // A terminer
-	// 	unset();
-	// else if (ft_strcmp(g_mshell.params[0], "clear") == 0)
-	// 	ft_putstr("\033c");
-	// else
-	// 	commandorvar();
+	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
+	{
+		printf("env ls\n");
+		env(NULL);
+	}
+	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0) // Fini // PAS PROTEGE
+		cd();
+	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0) // Fini
+		pwd();
+	else if (ft_strcmp(g_mshell.ls->content, "export") == 0) // A fignoler // PAS PROTEGE
+		export(g_mshell.params);
+	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0) // A terminer
+		unset();
+	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
+		ft_putstr("\033c");
+	else
+		commandorvar();
 }

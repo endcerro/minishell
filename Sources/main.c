@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 13:31:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 13:52:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,15 +239,18 @@ void	cd()
 	int		x;
 	char	*home;
 	char	*str;
+	t_list	*curr;
 
-	if (g_mshell.params[1] && g_mshell.params[2] != 0)
+	curr = g_mshell.ls->next;
+
+	if (curr && curr->next != 0)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
 		return ;
 	}
-	if (g_mshell.params[1])
+	if (curr)
 	{
-		if (chdir(g_mshell.params[1]) == -1)
+		if (chdir(curr->content) == -1)
 		{
 			ft_putstr(strerror(errno));
 			write(1, "\n", 1);
@@ -285,8 +288,11 @@ void	cd()
 void	pwd()
 {
 	char *str;
+	t_list	*curr;
 
-	if (g_mshell.params[1])
+	curr = g_mshell.ls->next;
+
+	if (curr)
 	{
 		ft_putstr("minishell: pwd: too many arguments\n");
 		return ;
@@ -394,48 +400,34 @@ void	export(char **params)
 {
 	int		i;
 	char	**n_envi;
+	t_list	*curr;
 
-	char 	**testfill = 0;
+	curr = g_mshell.ls->next;
+	// char 	**testfill = 0;
 
 	i = 0;
 	
-	if(check_valid_export(params) == 0)
+	if(check_valid_export(params) == 0) //FUNC TO DO
 	{
 		ft_putstr("export not valid identifier\n");
 		return;
 	}
-	testfill = check_finished(params);
-	if (testfill == 0 && params[1] != 0 && params[2] != 0)
-	{
-		ft_putstr("minishell: export: wrong number of arguments\n");
-		return ;
-	}
-	int t = 0;
-	if (testfill != 0)
-	{
-		int p = 1;
-		while(params[p + 1])
-			params[p] = ft_strjoinft(params[p], params[p + 1]);
-		while(testfill[t])
-			params[p] = ft_strjoinft(params[p], testfill[t++]);	
-		free(testfill);
-	}
-	// printf("after fill p2 :%s \n",params[1]);
-	if (params[1] == 0)
+
+	if (curr == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
 		return ;
 	}
-	if(!ft_strnstr(params[1], "=", ft_strlen(params[1])))
+	if(!ft_strnstr(curr->content, "=", ft_strlen(curr->content)))
 	{
-		params[1] = ft_strjoinf1(params[1],"="); // PAS PROTEGE
+		curr->content = ft_strjoinf1(curr->content,"="); // PAS PROTEGE
 	}
 	while (g_mshell.env[i])
 	{
-		if(!check_match(g_mshell.env[i], params[1]))
+		if(!check_match(g_mshell.env[i], curr->content))
 		{
 			free(g_mshell.env[i]);
-			g_mshell.env[i] = ft_strdup(params[1]); // PAS PROTEGE
+			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
 			return ;
 		}
 		i++;
@@ -445,7 +437,7 @@ void	export(char **params)
 	i = -1;
 	while (g_mshell.env[++i])
 		n_envi[i] = g_mshell.env[i];
-	n_envi[i++] = ft_strdup(params[1]); // PAS PROTEGE
+	n_envi[i++] = ft_strdup(curr->content); // PAS PROTEGE
 	n_envi[i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;
@@ -454,16 +446,19 @@ void	export(char **params)
 void	unset()
 {
 	int		i;
+	t_list	*curr;
+
+	curr = g_mshell.ls->next;
 
 	i = 0;
-	if (g_mshell.params[1] == 0 || g_mshell.params[2] != 0)
+	if (curr == 0 || curr->next != 0)
 	{
 		ft_putstr("minishell: unset: wrong number of arguments\n");
 		return;
 	}
 	while (g_mshell.env[i])
 	{
-		if(!check_match(g_mshell.env[i], g_mshell.params[1]))
+		if(!check_match(g_mshell.env[i], curr->content))
 		{
 			free(g_mshell.env[i]);
 			while (g_mshell.env[++i])
