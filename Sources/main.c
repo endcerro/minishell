@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/17 19:25:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 09:05:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,7 +400,7 @@ void	export(char **params)
 			params[p] = ft_strjoinft(params[p], testfill[t++]);	
 		free(testfill);
 	}
-	printf("after fill p2 :%s \n",params[1]);
+	// printf("after fill p2 :%s \n",params[1]);
 	if (params[1] == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
