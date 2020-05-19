@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 09:05:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:22:39 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,16 +115,21 @@ void	echo()	//Devrait etre pas mal, à vérifier
 {
 	int		i;
 	int		ret;
-	char	**fill;
+	// char	**fill;
 
 	i = 0;
 	ret = 0;
-	fill = 0;
+	// fill = 0;
 	if (g_mshell.params[1] && ft_strcmp(g_mshell.params[1], "-n") == 0)
 		++i;
 	else
 		ret = 1;
-	fill = check_finished();
+	// fill = check_finished();
+
+
+	// char *test = 0;
+	// test = check_finished1();
+	
 	while (g_mshell.params[++i])
 	{
 		ft_putstr(g_mshell.params[i]);
@@ -132,14 +137,16 @@ void	echo()	//Devrait etre pas mal, à vérifier
 			write(1," ",1);
 	}
 	i = -1;
-	while (fill && fill[++i])
-	{
-		parse_env(&(fill[i]));
-		ft_putstr(fill[i]);
-		if (fill[i + 1])
-			write(1, "\n", 1);
-	}
-	freechar2ptr(fill);
+	// while (fill && fill[++i])
+	// {
+	// 	parse_env(&(fill[i]));
+	// 	ft_putstr(fill[i]);
+	// 	if (fill[i + 1])
+	// 		write(1, "\n", 1);
+	// }
+	// if(test)
+	// 	ft_putstr(test);
+	// freechar2ptr(fill);
 	if (ret)
 		write(1, "\n", 1);
 }
@@ -485,6 +492,8 @@ int 	get_output(char **params)
 
 void	checkinput(void)
 {
+	printf("CHECKING INPUT %s\n",g_mshell.params[0] );
+	// check_command(0);
 	if (ft_strcmp(g_mshell.params[0], "exit") == 0) // Fini
 	{
 		ft_putstr("exit\n");
@@ -590,7 +599,10 @@ int		main(void)
 			return (0); // Rien n'est free en cas d'erreur
 		free(line);
 		if (*g_mshell.params)
-			checkinput(); // PAS PROTEGE
+		{
+			check_command(0);
+			// checkinput(); // PAS PROTEGE
+		}
 		freechar2ptr(g_mshell.params);
 	}
 	ft_putstr("exit\n");

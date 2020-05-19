@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/17 19:27:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:25:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ void 			parse_qts(char *str, int *cpt);
 int				parse_bs(char *str);
 int				parse_esc(char *str);
 char			**getfiller(int depth, int *cpt);
+void			check_command(int i );
+void	checkinput(void);
+char	*check_finished1();	//Chnager le char ** en char * ?
+void	freechar2ptr(char **ptr);
+int		count_blocks(char *line);
+
 
 
 

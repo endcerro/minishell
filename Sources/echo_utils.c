@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/17 19:25:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:17:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,39 @@ char	**check_finished()	//Chnager le char ** en char * ?
 	if (cpt[0] % 2 || cpt[1] % 2)
 	 	fill = getfiller(0, cpt); // PAS PROTEGE
 	return (fill);
+}
+
+char	*check_finished1()	//Chnager le char ** en char * ?
+{
+	int		i;
+	int		cpt[2];
+	char	**fill;
+
+	i = -1;
+	fill = 0;
+	ft_bzero(cpt, 2);
+	cpt[0] = 0;
+	cpt[1] = 0;
+	while (g_mshell.params[++i])
+	{
+		parse_qts(g_mshell.params[i], cpt);
+		parse_env(&g_mshell.params[i]);
+		parse_bs(g_mshell.params[i]);
+	}
+	if (cpt[0] % 2 || cpt[1] % 2)
+	 	fill = getfiller(0, cpt); // PAS PROTEGE+
+
+	char *out = 0;
+	i = 0;
+	if(fill && fill[i])
+	{
+		out = ft_strdup(fill[i++]);
+		while(fill[i])
+		{
+			out = ft_strjoinf1(out, "\n");
+			out = ft_strjoinf1(out, fill[i++]);
+		}
+	}
+	freechar2ptr(fill);
+	return (out);
 }
