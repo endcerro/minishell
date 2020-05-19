@@ -107,7 +107,6 @@ void	parse_env_lst(char **param)
 	cache = ft_strchr(*param, '$');
 	while(cache != NULL)
 	{
-		// while (ft_isupper(cache[len + 1]))
 		while (cache[len + 1] && cache[len + 1] != '=')
 			len++;
 		tmp = ft_substr(cache, 1, len);
@@ -131,17 +130,14 @@ char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 
 	parse_qts(line, cpt);
 
-	printf("line b4 %s\n", line);
+	// printf("line b4 %s\n", line);
 	if (cpt[0] % 2 || cpt[1] % 2)
 	{
 	 	fill = getfiller(0, cpt); // PAS PROTEGE+
 	}
 
 
-	// parse_env(&line);
-	printf("line af %s\n", line);
 	// parse_bs(line);
-	
 
 	char *out = 0;
 	i = 0;
@@ -154,12 +150,6 @@ char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 			out = ft_strjoinf1(out, fill[i++]);
 		}
 	}
-	// else
-	// 	out = line;
-	// if(out)
-	// 	ft_strjoinft(line,out);
-	// 	out = line
-	printf("return = %s\n",out );
 	return (out);
 }
 
@@ -190,6 +180,15 @@ t_list *split_line_lst(char *line)
 	return (f_lst);
 }
 
+void tag_lst(t_list *lst)
+{
+	//Function that needs to set id to know what the text is supposed to be
+	//1 for function name
+	//2 for params
+	//3 for redirection marker
+	//etc
+}
+
 void	get_lst(char *line)
 {
 	char *filler;
@@ -202,12 +201,92 @@ void	get_lst(char *line)
 		line = ft_strjoinft(line, filler);
 	}
 	
-	printf("Line b4 env= %s\n",line );
+	// printf("Line b4 env= %s\n",line );
 	parse_env(&line);
-	printf("Line af env= %s\n",line );
+	// printf("Line af env= %s\n",line );
 
 
 	t_list *out = split_line_lst(line);
+	tag_lst(out);
 	// free(line);
 	ft_lstprint(out);
+	ft_putstr("\n\n");
+	g_mshell.ls = out;
+}
+
+void	echo_ls()	//Devrait etre pas mal, à vérifier
+{
+	int		i;
+	int		ret;
+	t_list	*curr;
+
+	i = 0;
+	ret = 0;
+	// fill = 0;
+	curr = g_mshell.ls->next;
+	if (curr && ft_strcmp(curr->content, "-n") == 0)
+		curr = curr->next;
+	else
+		ret = 1;
+	// fill = check_finished();
+
+
+	// char *test = 0;
+	// test = check_finished1();
+	// curr = g_mshell.ls->
+	while (curr)
+	{
+		ft_putstr(curr->content);
+		if (curr->next)
+			write(1," ",1);
+		curr = curr->next;
+	}
+	i = -1;
+	// while (fill && fill[++i])
+	// {
+	// 	parse_env(&(fill[i]));
+	// 	ft_putstr(fill[i]);
+	// 	if (fill[i + 1])
+	// 		write(1, "\n", 1);
+	// }
+	// if(test)
+	// 	ft_putstr(test);
+	// freechar2ptr(fill);
+	if (ret)
+		write(1, "\n", 1);
+}
+
+void	checkinput_ls(void)
+{
+	// printf("CHECKING INPUT %s\n",g_mshell.params[0] );
+	// check_command(0);
+	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
+	{
+		ft_putstr("exit\n");
+		if (g_mshell.ls->next)
+			ft_putstr("minishell: exit: too many arguments\n");
+		freechar2ptr(g_mshell.env);
+		// freechar2ptr(g_mshell.params);
+		freechar2ptr(g_mshell.vars);
+		exit(0);
+	}
+	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) // A terminer
+	{
+		printf("echo ls\n");
+		echo_ls();
+	}	
+	// else if (ft_strcmp(g_mshell.params[0], "env") == 0) // Fini
+	// 	env(NULL);
+	// else if (ft_strcmp(g_mshell.params[0], "cd") == 0) // Fini // PAS PROTEGE
+	// 	cd();
+	// else if (ft_strcmp(g_mshell.params[0], "pwd") == 0) // Fini
+	// 	pwd();
+	// else if (ft_strcmp(g_mshell.params[0], "export") == 0) // A fignoler // PAS PROTEGE
+	// 	export(g_mshell.params);
+	// else if (ft_strcmp(g_mshell.params[0], "unset") == 0) // A terminer
+	// 	unset();
+	// else if (ft_strcmp(g_mshell.params[0], "clear") == 0)
+	// 	ft_putstr("\033c");
+	// else
+	// 	commandorvar();
 }

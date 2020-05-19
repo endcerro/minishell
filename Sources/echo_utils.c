@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 13:07:57 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/19 13:23:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	parse_env(char **param)
 			len++;
 		
 		tmp = ft_substr(cache, 1, len);
-		printf("searching for %s\n",tmp );
+		// printf("searching for %s\n",tmp );
 		str = env(tmp);
-		printf("str found = %s\n",str );
+		// printf("str found = %s\n",str );
 		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
 		free(tmp);
 		cache = ft_strchr(*param, '$');
