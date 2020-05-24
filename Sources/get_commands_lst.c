@@ -262,11 +262,11 @@ void check_rdir()
 	{
 		if (curr->type == 2 && curr->next && curr->next->type == 1)
 		{
-			printf("\n");
-			printf("oldfd = %d\n",dup(1));
+			// printf("oldfd = %d\n",dup(1));
+			g_mshell.oldfd = dup(1);
 			fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
 			printf("newfd = %d\n",fd);
-			dup2(1, fd);
+			dup2(fd, 1);
 		}
 		curr = curr->next;
 	}
@@ -279,7 +279,7 @@ void	checkinput_ls(void)
 	t_list *curr;
 
 	curr = g_mshell.ls;
-
+	g_mshell.oldfd = 0;
 	check_rdir();
 
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
@@ -318,6 +318,12 @@ void	checkinput_ls(void)
 
 	t_list *copy;
 	copy = g_mshell.ls;
+	if (g_mshell.oldfd != 0)
+	{
+		close(dup(1));
+		dup2(g_mshell.oldfd, 1);
+		g_mshell.oldfd = 0;
+	}
 	while(curr)
 	{
 		if(curr->type == 3 && curr->next != NULL)
@@ -328,5 +334,5 @@ void	checkinput_ls(void)
 		curr = curr->next;
 	}
 	g_mshell.ls = copy;
-	// dup2()
+	
 }

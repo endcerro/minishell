@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/24 19:35:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/24 21:09:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct 	s_mshell
 	t_list		*ls;
 	pid_t		pid;
 	int			exitcode;
+
+	int 		oldfd;
 }				t_mshell;
 
 t_mshell		g_mshell;
