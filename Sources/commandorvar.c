@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/05/24 20:32:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/24 20:43:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,13 +186,29 @@ void	execsomestuff(int x)
 
 char **ls_params()
 {
-	// char **out;
-	// int i;
-	// t_list *curr;
+	char **out;
+	int i;
+	t_list *curr;
 
-	// curr = g_mshell.ls;
+	curr = g_mshell.ls;
+	i = 0;
 
-	// while(curr && curr ->)
+
+	while(curr && curr->type == 1 && ++i)
+		curr = curr->next;
+
+	printf("list to build of len %d \n",i );
+
+	out = malloc(sizeof(char*) * (i + 1));
+	curr = g_mshell.ls;
+	i = 0;
+	while(curr && curr->type == 1)
+	{
+		out[i++] = curr->content;
+		curr = curr->next;
+	}
+	out[i] = 0;
+	return out;
 }
 
 void	commandorvar(void)
@@ -200,9 +216,9 @@ void	commandorvar(void)
 	int x;
 	int i;
 	t_list	*curr;
-	// char **oldparam = g_mshell.params;
+	char **oldparam = g_mshell.params;
 	
-	// g_mshell.params = ls_params();
+	g_mshell.params = ls_params();
 	x = -1;
 	while (g_mshell.params[++x])
 	{
@@ -219,4 +235,6 @@ void	commandorvar(void)
 			break ;
 		}
 	}
+	free(g_mshell.params);
+	g_mshell.params = oldparam;
 }
