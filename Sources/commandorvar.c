@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/05/19 14:04:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/24 20:32:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,12 +184,25 @@ void	execsomestuff(int x)
 	/* write(1, "\n", 1); */
 }
 
+char **ls_params()
+{
+	// char **out;
+	// int i;
+	// t_list *curr;
+
+	// curr = g_mshell.ls;
+
+	// while(curr && curr ->)
+}
+
 void	commandorvar(void)
 {
 	int x;
 	int i;
 	t_list	*curr;
+	// char **oldparam = g_mshell.params;
 	
+	// g_mshell.params = ls_params();
 	x = -1;
 	while (g_mshell.params[++x])
 	{

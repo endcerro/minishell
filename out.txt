@@ -1,2 +1,0 @@
-CHECKING INPUT @÷e+V
-minishell: @÷e+V: command not found
