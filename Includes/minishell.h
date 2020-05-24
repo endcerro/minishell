@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 13:53:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/24 19:35:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct		s_list
 {
 	char			*content;
 	struct s_list	*next;
+	int 			type;
 }					t_list;
 
 typedef struct 	s_mshell

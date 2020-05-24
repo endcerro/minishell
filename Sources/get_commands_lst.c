@@ -8,13 +8,16 @@ void	ft_lstprint(t_list *lst)
 		{
 			ft_putchar('|');
 			ft_putstr(lst->content);
+			ft_putchar(':');
+			ft_putnbr(lst->type);
 			ft_putchar('|');
-			// (*f)(lst->content);
 			lst = lst->next;
 		}
-			ft_putchar('|');
-			ft_putstr(lst->content);
-			ft_putchar('|');
+		ft_putchar('|');
+		ft_putstr(lst->content);
+		ft_putchar(':');
+		ft_putnbr(lst->type);
+		ft_putchar('|');
 	}
 }
 
@@ -48,6 +51,7 @@ t_list	*ft_lstnew(char *content)
 		return (0);
 	out->content = content;
 	out->next = 0;
+	out->type = 1;
 	return (out);
 }
 
@@ -182,11 +186,17 @@ t_list *split_line_lst(char *line)
 
 void tag_lst(t_list *lst)
 {
-	//Function that needs to set id to know what the text is supposed to be
-	//1 for function name
-	//2 for params
-	//3 for redirection marker
-	//etc
+	t_list *curr;
+
+	curr = lst;
+	while (curr)
+	{
+		if (ft_strcmp(curr->content, ">") == 0)	//REDIRECTION ARE 3
+			curr->type = 2;
+		else if (ft_strcmp(curr->content, ";") == 0) //END OF COMMAND ARE 2
+			curr->type = 3;
+		curr = curr->next;
+	}
 }
 
 void	get_lst(char *line)
@@ -211,6 +221,7 @@ void	get_lst(char *line)
 	// free(line);
 	ft_lstprint(out);
 	ft_putstr("\n\n");
+	tag_lst(out);
 	g_mshell.ls = out;
 }
 
@@ -228,7 +239,7 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 		curr = curr->next;
 	else
 		ret = 1;
-	while (curr)
+	while (curr && curr->type == 1)
 	{
 		ft_putstr(curr->content);
 		if (curr->next)
@@ -240,11 +251,28 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 		write(1, "\n", 1);
 }
 
+void check_rdir()
+{
+	t_list *curr;
+
+	curr = g_mshell.ls;
+
+	// while(curr)
+	// {
+
+	// }
+}
 
 void	checkinput_ls(void)
 {
 	// printf("CHECKING INPUT %s\n",g_mshell.params[0] );
 	// check_command(0);
+	t_list *curr;
+
+	curr = g_mshell.ls;
+
+	check_rdir();
+
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
 	{
 		ft_putstr("exit\n");
@@ -257,12 +285,12 @@ void	checkinput_ls(void)
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) // A terminer
 	{
-		printf("echo ls\n");
+		// printf("echo ls\n");
 		echo_ls();
 	}	
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
 	{
-		printf("env ls\n");
+		// printf("env ls\n");
 		env(NULL);
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0) // Fini // PAS PROTEGE
@@ -277,4 +305,17 @@ void	checkinput_ls(void)
 		ft_putstr("\033c");
 	else
 		commandorvar();
+
+
+	t_list *copy;
+	copy = g_mshell.ls;
+	while(curr)
+	{
+		if(curr->type == 3 && curr->next != NULL)
+		{
+			g_mshell.ls = curr->next;
+			checkinput_ls();
+		}
+		curr = curr->next;
+	}
 }
