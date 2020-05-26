@@ -48,7 +48,7 @@ typedef struct 	s_mshell
 t_mshell		g_mshell;
 
 int 			get_blocks(char *line);
-void			export(char **params);
+int				export(char **params);
 char 			*env(char *request);
 char 			*vars(char *request);
 void 			parse_env_ls(char **param);
@@ -67,18 +67,15 @@ void 			checkinput_ls(void);
 void			get_lst(char *line);
 char 			*inside_join(char *base, char *add);
 char 			*env(char *request);
-void			pwd();
-void			cd();
-void			unset();
+int				pwd();
+int				cd();
+int				unset();
 
 void			ft_lstclear(t_list **lst);
 t_list			*ft_lstnew(char *content);
 void 			check_rdir();
 void			ft_lstadd_back(t_list **alst, t_list *new);
 char			*check_finished_lst(char *line);
-
-
-
 
 
 #endif
