@@ -14,7 +14,7 @@
 
 int check_valid_export(char **params) //TODO
 {
-	
+
 	// int i;
 
 	// i = 0;
@@ -54,18 +54,18 @@ void check_command(int i )
 	char *finish = 0;
 
 	finish = check_finished1();
-	
+
 	int j = 0;
 	while(finish && g_mshell.params[j])
 	{
-		printf("finishing..\n");
+		// printf("finishing..\n");
 		j++;
 	}
 	if(finish)
 	{
-		printf("blocks = %d\n",count_blocks(finish));
+		// printf("blocks = %d\n",count_blocks(finish));
 		g_mshell.params[j - 1] = ft_strjoinft(g_mshell.params[j - 1], finish);
-		printf("blocks af join= %d\n",count_blocks(g_mshell.params[j - 1]));
+		// printf("blocks af join= %d\n",count_blocks(g_mshell.params[j - 1]));
 	}
 
 	// // printf("Parmas listing ;\n");
@@ -78,13 +78,13 @@ void check_command(int i )
 			if (g_mshell.params[i + 1])
 			{
 				newfd = open(g_mshell.params[i + 1],O_WRONLY | O_APPEND | O_CREAT, 0644);
-				
+
 			}
-			printf("REDIRECTION\n");
+			// printf("REDIRECTION\n");
 		}
 		else if(g_mshell.params[i][0] == ';')
 		{
-			printf("OTHER COMMAND\n");
+			// printf("OTHER COMMAND\n");
 			g_mshell.params[i] = 0;
 			g_mshell.params = g_mshell.params + i + 1;
 			// printf("next param to evaluate = %s\n",g_mshell.params[0] );
@@ -94,8 +94,8 @@ void check_command(int i )
 		}
 		// else
 			i++;
-			// printf("%s\n", g_mshell.params[i++]);		
-		
+			// printf("%s\n", g_mshell.params[i++]);
+
 	}
 	g_mshell.params = copy;
 	// 	// printf("\neol\n\n");
@@ -105,7 +105,7 @@ void check_command(int i )
 	{
 		dup2(newfd, 1);
 	}
-	
+
 	checkinput();
 	dup2(oldfd,1);
 

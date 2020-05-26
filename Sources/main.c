@@ -129,7 +129,7 @@ void	echo()	//Devrait etre pas mal, à vérifier
 
 	// char *test = 0;
 	// test = check_finished1();
-	
+
 	while (g_mshell.params[++i])
 	{
 		ft_putstr(g_mshell.params[i]);
@@ -406,7 +406,7 @@ void	export(char **params)
 	// char 	**testfill = 0;
 
 	i = 0;
-	
+
 	if(check_valid_export(params) == 0) //FUNC TO DO
 	{
 		ft_putstr("export not valid identifier\n");
@@ -500,7 +500,7 @@ int 	get_output(char **params)
 
 void	checkinput(void)
 {
-	printf("CHECKING INPUT %s\n",g_mshell.params[0] );
+	// printf("CHECKING INPUT %s\n",g_mshell.params[0] );
 	// check_command(0);
 	if (ft_strcmp(g_mshell.params[0], "exit") == 0) // Fini
 	{
@@ -533,47 +533,69 @@ void	checkinput(void)
 int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 {
 	int		x;
+	int		z;
 	char	keys[3];
 	char	*(str[3]);
 
 	x = 0;
+	z = 3;
 	ft_bzero(keys, 3);
 	str[2] = NULL;
 	while (environ[x])
 	{
 		if (ft_strncmp("PWD=", environ[x], 4) == 0)
+		{
 			keys[0] = 1;
+			--z;
+		}
 		if (ft_strncmp("SHLVL=", environ[x], 4) == 0)
+		{
 			keys[1] = 1;
+			--z;
+		}
 		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0)
+		{
 			keys[2] = 1;
+			--z;
+		}
 		++x;
 	}
 	++x;
-	if ((g_mshell.env = (char **)malloc(sizeof(char *) * x)) == NULL)
+	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z))) == NULL)
 		return (-1);
 	x = -1;
 	while (environ[++x])
-		g_mshell.env[x] = ft_strdup(environ[x]); // PAS PROTEGE
-	g_mshell.env[x] = NULL;
+		if ((g_mshell.env[x] = ft_strdup(environ[x])) == NULL)
+		{
+			freechar2ptr(env);
+			return (-1);
+		}
+	g_mshell.env[x + z] = NULL;
+	z = 0;
 	if (keys[0] == 0)
 	{
-		str[1] = ft_strjoinf2("PWD=", getcwdwrap()); // PAS PROTEGE
-		export(str); // PAS PROTEGE
-		free(str[1]);
+		if ((g_mshell.env[x + z] = ft_strjoinf2("PWD=", getcwdwrap())) == NULL)
+		{
+			freechar2ptr(env);
+			return (-1);
+		}
+		++z;
 	}
 	if (keys[1] == 0)
 	{
-		str[1] = ft_strdup("SHLVL=1"); // PAS PROTEGE
-		export(str); // PAS PROTEGE
-		free(str[1]);
+		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
+		{
+			freechar2ptr(env);
+			return (-1);
+		}
+		++z;
 	}
 	if (keys[2] == 0)
-	{
-		str[1] = ft_strdup("OLDPWD="); // PAS PROTEGE
-		export(str); // PAS PROTEGE
-		free(str[1]);
-	}
+		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD=")) == NULL)
+		{
+			freechar2ptr(env);
+			return (-1);
+		}
 	return (0);
 }
 
@@ -597,18 +619,18 @@ int		main(void)
 	g_mshell.exitcode = 0;
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
-	if (newenviron() == -1) // PAS PROTEGE
+	if (newenviron() == -1)
 		return (1);
 	while (prompt(&line) > 0)
 	{
-		
+
 		if (line == NULL && *line == 0)
 			break ;
 		if (get_blocks(line) == -1) // PAS PROTEGE
 			return (0); // Rien n'est free en cas d'erreur
 		get_lst(line);
 
-		
+
 		// if (g_mshell.ls)
 		// {
 			checkinput_ls();

@@ -4,20 +4,20 @@ void	ft_lstprint(t_list *lst)
 {
 	if (lst)
 	{
-		while (lst->next)
-		{
-			ft_putchar('|');
-			ft_putstr(lst->content);
-			ft_putchar(':');
-			ft_putnbr(lst->type);
-			ft_putchar('|');
-			lst = lst->next;
-		}
-		ft_putchar('|');
-		ft_putstr(lst->content);
-		ft_putchar(':');
-		ft_putnbr(lst->type);
-		ft_putchar('|');
+		/* while (lst->next) */
+		/* { */
+		/* 	ft_putchar('|'); */
+		/* 	ft_putstr(lst->content); */
+		/* 	ft_putchar(':'); */
+		/* 	ft_putnbr(lst->type); */
+		/* 	ft_putchar('|'); */
+		/* 	lst = lst->next; */
+		/* } */
+		/* ft_putchar('|'); */
+		/* ft_putstr(lst->content); */
+		/* ft_putchar(':'); */
+		/* ft_putnbr(lst->type); */
+		/* ft_putchar('|'); */
 	}
 }
 
@@ -174,7 +174,7 @@ t_list *split_line_lst(char *line)
 			lst = ft_lstnew(get_word_lst(line, &i));
 			if (f_lst == 0)
 			{
-				f_lst = lst;	
+				f_lst = lst;
 				lst = 0;
 			}
 			else
@@ -202,7 +202,7 @@ void tag_lst(t_list *lst)
 void	get_lst(char *line)
 {
 	char *filler;
-	
+
 	filler = check_finished_lst(line);
 
 	if (filler)
@@ -210,7 +210,7 @@ void	get_lst(char *line)
 		// printf("here\n");
 		line = ft_strjoinft(line, filler);
 	}
-	
+
 	// printf("Line b4 env= %s\n",line );
 	parse_env(&line);
 	// printf("Line af env= %s\n",line );
@@ -219,8 +219,8 @@ void	get_lst(char *line)
 	t_list *out = split_line_lst(line);
 	tag_lst(out);
 	// free(line);
-	ft_lstprint(out);
-	ft_putstr("\n\n");
+	/* ft_lstprint(out); */
+	/* ft_putstr("\n\n"); */
 	tag_lst(out);
 	g_mshell.ls = out;
 }
@@ -265,7 +265,7 @@ void check_rdir()
 			// printf("oldfd = %d\n",dup(1));
 			g_mshell.oldfd = dup(1);
 			fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
-			printf("newfd = %d\n",fd);
+			// printf("newfd = %d\n",fd);
 			dup2(fd, 1);
 		}
 		curr = curr->next;
@@ -296,7 +296,7 @@ void	checkinput_ls(void)
 	{
 		// printf("echo ls\n");
 		echo_ls();
-	}	
+	}
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
 	{
 		// printf("env ls\n");
@@ -334,5 +334,5 @@ void	checkinput_ls(void)
 		curr = curr->next;
 	}
 	g_mshell.ls = copy;
-	
+
 }

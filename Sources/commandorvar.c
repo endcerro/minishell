@@ -197,7 +197,7 @@ char **ls_params()
 	while(curr && curr->type == 1 && ++i)
 		curr = curr->next;
 
-	printf("list to build of len %d \n",i );
+	// printf("list to build of len %d \n",i );
 
 	out = malloc(sizeof(char*) * (i + 1));
 	curr = g_mshell.ls;
@@ -217,7 +217,7 @@ void	commandorvar(void)
 	int i;
 	t_list	*curr;
 	char **oldparam = g_mshell.params;
-	
+
 	g_mshell.params = ls_params();
 	x = -1;
 	while (g_mshell.params[++x])
