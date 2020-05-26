@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:40:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 17:28:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,28 @@ typedef struct 	s_mshell
 t_mshell		g_mshell;
 
 int 			get_blocks(char *line);
-void			export(char **params);
-char 			*env(char *request);
-char 			*vars(char *request);
-void 			parse_env_ls(char **param);
-void			commandorvar(void);
-void			freechar2ptr(char **ptr);
-
+int				count_blocks(char *line);
 int 			check_valid_export(char **params);
 void 			parse_qts(char *str, int *cpt);
 int				parse_bs(char *str);
 int				parse_esc(char *str);
 char			**getfiller(int depth, int *cpt);
+
+void			export(char **params);
+char 			*env(char *request);
+void			pwd();
+void			cd();
+char 			*vars(char *request);
+void 			parse_env_ls(char **param);
+void			commandorvar(void);
 void			freechar2ptr(char **ptr);
-int				count_blocks(char *line);
+
+
 
 void 			checkinput_ls(void);
 void			get_lst(char *line);
 char 			*inside_join(char *base, char *add);
-char 			*env(char *request);
-void			pwd();
-void			cd();
+
 void			unset();
 
 void			ft_lstclear(t_list **lst);
