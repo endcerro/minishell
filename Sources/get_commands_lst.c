@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:32:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:36:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -185,7 +185,7 @@ void	checkinput_ls(void)
 	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0) // Fini
 		pwd();
 	else if (ft_strcmp(g_mshell.ls->content, "export") == 0) // A fignoler // PAS PROTEGE
-		export(g_mshell.params);
+		export(0);
 	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0) // A terminer
 		unset();
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)

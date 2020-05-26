@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:31:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:36:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,11 +333,11 @@ void	export(char **params)
 
 	i = 0;
 
-	if(check_valid_export(params) == 0) //FUNC TO DO
-	{
-		ft_putstr("export not valid identifier\n");
-		return;
-	}
+	// if(check_valid_export(params) == 0) //FUNC TO DO
+	// {
+	// 	ft_putstr("export not valid identifier\n");
+	// 	return;
+	// }
 
 	if (curr == 0)
 	{

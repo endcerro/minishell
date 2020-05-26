@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:16:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:35:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,26 +126,4 @@ void 	parse_qts(char *str, int *cpt)
 				// j--;
 			}
 		}
-}
-
-char	**check_finished()	//Chnager le char ** en char * ?
-{
-	int		i;
-	int		cpt[2];
-	char	**fill;
-
-	i = -1;
-	fill = 0;
-	ft_bzero(cpt, 2);
-	cpt[0] = 0;
-	cpt[1] = 0;
-	while (g_mshell.params[++i])
-	{
-		parse_qts(g_mshell.params[i], cpt);
-		parse_env_ls(&g_mshell.params[i]);
-		parse_bs(g_mshell.params[i]);
-	}
-	if (cpt[0] % 2 || cpt[1] % 2)
-	 	fill = getfiller(0, cpt); // PAS PROTEGE
-	return (fill);
 }
