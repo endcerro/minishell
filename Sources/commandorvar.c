@@ -125,18 +125,19 @@ int		checkslash(char *str)
 	return (0);
 }
 
-void	execsomestuff(int x, char **params)
+void	execsomestuff(int x)
 {
 	struct stat	sta;
 	char		*str;
 
+	// Remplacer les variables locales et d'environement par leurs valeurs dans params
 	str = NULL;
-	if (checkslash(params[x]))
+	if (checkslash(g_mshell.params[x]))
 	{
-		if (stat(params[x], &sta) == -1)
+		if (stat(g_mshell.params[x], &sta) == -1)
 		{
 			ft_putstr("minishell: ");
-			ft_putstr(params[x]);
+			ft_putstr(g_mshell.params[x]);
 			ft_putstr(": No such file or directory\n");
 			return ;
 		}
@@ -145,7 +146,7 @@ void	execsomestuff(int x, char **params)
 		if ((str = checkpath(x)) == NULL)
 		{
 			ft_putstr("minishell: ");
-			ft_putstr(params[x]);
+			ft_putstr(g_mshell.params[x]);
 			ft_putstr(": command not found\n");
 			return ;
 		}
@@ -153,23 +154,23 @@ void	execsomestuff(int x, char **params)
 	if (g_mshell.pid == 0)
 	{
 		if (str)
-			execve(str, &(params[x]), g_mshell.env);
+			execve(str, &(g_mshell.params[x]), g_mshell.env);
 		else
-			execve(params[x], &(params[x]), g_mshell.env);
+			execve(g_mshell.params[x], &(g_mshell.params[x]), g_mshell.env);
 		ft_putstr("minishell: ");
-		ft_putstr(params[x]);
+		ft_putstr(g_mshell.params[x]);
 		ft_putstr(": ");
 		ft_putendl(strerror(errno));
 		free(str);
 		freechar2ptr(g_mshell.env);
-		freechar2ptr(params);
+		freechar2ptr(g_mshell.params);
 		freechar2ptr(g_mshell.vars);
 		exit(0);
 	}
 	else if (g_mshell.pid < 0)
 	{
 		ft_putstr("minishell: ");
-		ft_putstr(params[x]);
+		ft_putstr(g_mshell.params[x]);
 		ft_putstr(": ");
 		ft_putendl(strerror(errno));
 		free(str);
@@ -191,10 +192,14 @@ char	**ls_params()
 
 	curr = g_mshell.ls;
 	i = 0;
+
+
 	while(curr && curr->type == 1 && ++i)
 		curr = curr->next;
-	if ((out = malloc(sizeof(char*) * (i + 1))) == NULL)
-		return (NULL);
+
+	// printf("list to build of len %d \n",i );
+
+	out = malloc(sizeof(char*) * (i + 1));
 	curr = g_mshell.ls;
 	i = 0;
 	while(curr && curr->type == 1)
@@ -208,31 +213,28 @@ char	**ls_params()
 
 void	commandorvar(void)
 {
-	int		x;
-	int		i;
-	char	**params;
+	int x;
+	int i;
+	t_list	*curr;
+	char **oldparam = g_mshell.params;
 
-	if ((params = ls_params()) == NULL)
-	{
-		ft_putstr("minishell: ");
-		ft_putendl(strerror(errno));
-		return ;
-	}
+	g_mshell.params = ls_params();
 	x = -1;
-	while (params[++x])
+	while (g_mshell.params[++x])
 	{
 		i = 0;
-		while (params[x][++i])
-			if (params[x][i] == '=' && params[x][i - 1] != '\\')
+		while (g_mshell.params[x][++i])
+			if (g_mshell.params[x][i] == '=' && g_mshell.params[x][i - 1] != '\\')
 			{
-				addvar(params[x]);
+				addvar(g_mshell.params[x]);
 				break ;
 			}
-		if (params[x][i] == 0)
+		if (g_mshell.params[x][i] == 0)
 		{
-			execsomestuff(x, params);
+			execsomestuff(x);
 			break ;
 		}
 	}
-	free(params);
+	free(g_mshell.params);
+	g_mshell.params = oldparam;
 }
