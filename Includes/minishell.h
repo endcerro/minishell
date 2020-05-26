@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 15:42:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 14:58:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int				parse_bs(char *str);
 int				parse_esc(char *str);
 char			**getfiller(int depth, int *cpt);
 void			check_command(int i );
-void	checkinput_ls(void);
+void	checkinput(void);
 char	*check_finished1();	//Chnager le char ** en char * ?
 void	freechar2ptr(char **ptr);
 int		count_blocks(char *line);
@@ -76,13 +76,10 @@ void	pwd();
 void	cd();
 void	unset();
 void	export(char **params);
-char	*get_word_lst(char *line, int *p);
 
-//LST UTILS
 
-t_list	*ft_lstnew(char *content);
-void	ft_lstadd_back(t_list **alst, t_list *new);
-void	ft_lstclear(t_list **lst);
-void	ft_lstprint(t_list *lst);
+
+
+
 
 #endif
