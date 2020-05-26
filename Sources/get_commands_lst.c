@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:41:12 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 18:29:21 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -102,11 +102,12 @@ void	get_lst(char *line)
 	// free(line);
 	/* ft_lstprint(out); */
 	/* ft_putstr("\n\n"); */
-	tag_lst(out);
+	// ft_lstprint(out);
+	// tag_lst(out);
 	g_mshell.ls = out;
 }
 
-void	echo_ls()	//Devrait etre pas mal, à vérifier
+int		echo_ls(void)	//Devrait etre pas mal, à vérifier
 {
 	int		ret;
 	t_list	*curr;
@@ -127,6 +128,7 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 	}
 	if (ret)
 		write(1, "\n", 1);
+	return (0);
 }
 
 void	checkinput_ls(void)
@@ -152,21 +154,22 @@ void	checkinput_ls(void)
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) // A terminer
 	{
 		// printf("echo ls\n");
-		echo_ls();
+		g_mshell.exitcode = echo_ls();
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
 	{
 		// printf("env ls\n");
 		env(NULL);
+		g_mshell.exitcode = 0;
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0) // Fini // PAS PROTEGE
-		cd();
+		g_mshell.exitcode = cd();
 	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0) // Fini
-		pwd();
+		g_mshell.exitcode = pwd();
 	else if (ft_strcmp(g_mshell.ls->content, "export") == 0) // A fignoler // PAS PROTEGE
-		export(0);
+		g_mshell.exitcode = export(0);
 	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0) // A terminer
-		unset();
+		g_mshell.exitcode = unset();
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 		ft_putstr("\033c");
 	else

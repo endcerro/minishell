@@ -48,38 +48,35 @@ typedef struct 	s_mshell
 t_mshell		g_mshell;
 
 int 			get_blocks(char *line);
-int				count_blocks(char *line);
-int 			check_valid_export(char **params);
-void 			parse_qts(char *str, int *cpt);
-int				parse_bs(char *str);
-int				parse_esc(char *str);
-char			**getfiller(int depth, int *cpt);
-
-void			export(char **params);
+int				export(char **params);
 char 			*env(char *request);
-void			pwd();
-void			cd();
 char 			*vars(char *request);
 void 			parse_env_ls(char **param);
 void			commandorvar(void);
 void			freechar2ptr(char **ptr);
 
 
+int 			check_valid_export(char **params);
+void 			parse_qts(char *str, int *cpt);
+int				parse_bs(char *str);
+int				parse_esc(char *str);
+char			**getfiller(int depth, int *cpt);
+void			freechar2ptr(char **ptr);
+int				count_blocks(char *line);
 
 void 			checkinput_ls(void);
 void			get_lst(char *line);
 char 			*inside_join(char *base, char *add);
-
-void			unset();
+char 			*env(char *request);
+int				pwd();
+int				cd();
+int				unset();
 
 void			ft_lstclear(t_list **lst);
 t_list			*ft_lstnew(char *content);
 void 			check_rdir();
 void			ft_lstadd_back(t_list **alst, t_list *new);
 char			*check_finished_lst(char *line);
-
-
-
 
 
 #endif

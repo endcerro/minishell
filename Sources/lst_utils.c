@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:41:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 18:28:04 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -15,21 +15,22 @@ void	ft_lstprint(t_list *lst)
 {
 	if (lst)
 	{
-		/* while (lst->next) */
-		/* { */
-		/* 	ft_putchar('|'); */
-		/* 	ft_putstr(lst->content); */
-		/* 	ft_putchar(':'); */
-		/* 	ft_putnbr(lst->type); */
-		/* 	ft_putchar('|'); */
-		/* 	lst = lst->next; */
-		/* } */
-		/* ft_putchar('|'); */
-		/* ft_putstr(lst->content); */
-		/* ft_putchar(':'); */
-		/* ft_putnbr(lst->type); */
-		/* ft_putchar('|'); */
+		 while (lst->next)
+		{
+		 	ft_putchar('|');
+		 	ft_putstr(lst->content);
+		 	ft_putchar(':');
+		 	ft_putnbr(lst->type);
+			ft_putchar('|');
+			lst = lst->next;
+		}
+		ft_putchar('|'); 
+		ft_putstr(lst->content);
+		ft_putchar(':');
+		ft_putnbr(lst->type);
+		ft_putchar('|');
 	}
+	ft_putchar('\n');
 }
 
 void	ft_lstdelone(t_list *lst)

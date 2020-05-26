@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:36:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 18:28:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ char 	*vars(char *request)
 	return (NULL);
 }
 
-char	*rethomedir()
+char	*rethomedir(void)
 {
 	int	x;
 
@@ -158,7 +158,7 @@ char	*rethomedir()
 	return (NULL);
 }
 
-void	cd()
+int		cd(void)
 {
 	int		oldpwd;
 	int		pwd;
@@ -172,7 +172,7 @@ void	cd()
 	if (curr && curr->next != 0)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
-		return ;
+		return (1);
 	}
 	if (curr)
 	{
@@ -180,15 +180,15 @@ void	cd()
 		{
 			ft_putstr(strerror(errno));
 			write(1, "\n", 1);
-			return ;
+			return (1);
 		}
 	}
 	else
 	{
 		if (chdir((home = rethomedir())) == -1)
 		{
-			ft_putstr("minishell: cd: HOME not set\n");
-			return ;
+			ft_putstr("minishell: cd: $HOME not set\n");
+			return (1);
 		}
 	}
 	oldpwd = -1;
@@ -199,9 +199,8 @@ void	cd()
 			pwd = x;
 		else if (ft_strncmp(g_mshell.env[x], "OLDPWD=", 7) == 0)
 			oldpwd = x;
-	/* printf("pwd = %d\noldpwd = %d\n", pwd, oldpwd); // AAAAAAAAAAAAAAAAAAAAAAAA */
 	if (g_mshell.env[x] == NULL)
-		return ;
+		return (0);
 	free(g_mshell.env[oldpwd]);
 	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // PAS PROTEGE
 	free(g_mshell.env[pwd]);
@@ -209,29 +208,28 @@ void	cd()
 		ft_putstr(strerror(errno));
 	else
 		g_mshell.env[pwd] = ft_strjoinf2("PWD=", str); // PAS PROTEGE
+	return (0);
 }
 
-void	pwd()
+int		pwd(void)
 {
 	char *str;
-	t_list	*curr;
 
-	curr = g_mshell.ls->next;
-
-	if (curr)
+	if (g_mshell.ls->next)
 	{
 		ft_putstr("minishell: pwd: too many arguments\n");
-		return ;
+		return (1);
 	}
 	if ((str = getcwdwrap()) == NULL)
 	{
 		ft_putstr("minishell: pwd: ");
 		ft_putstr(strerror(errno));
-		return ;
+		return (1);
 	}
 	ft_putstr(str);
 	write(1, "\n", 1);
 	free(str);
+	return (0);
 }
 
 int		parti(char **tab, int lo, int hi)
@@ -322,7 +320,7 @@ int		check_match(char *env, char *param)
 
 
 
-void	export(char **params)
+int		export(char **params)
 {
 	int		i;
 	char	**n_envi;
@@ -342,7 +340,7 @@ void	export(char **params)
 	if (curr == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
-		return ;
+		return (0);
 	}
 	if(!ft_strnstr(curr->content, "=", ft_strlen(curr->content)))
 	{
@@ -354,12 +352,12 @@ void	export(char **params)
 		{
 			free(g_mshell.env[i]);
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
-			return ;
+			return (0);
 		}
 		i++;
 	}
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
-		return ;
+		return (1);
 	i = -1;
 	while (g_mshell.env[++i])
 		n_envi[i] = g_mshell.env[i];
@@ -367,9 +365,10 @@ void	export(char **params)
 	n_envi[i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;
+	return (0);
 }
 
-void	unset()
+int		unset(void)
 {
 	int		i;
 	t_list	*curr;
@@ -380,7 +379,7 @@ void	unset()
 	if (curr == 0 || curr->next != 0)
 	{
 		ft_putstr("minishell: unset: wrong number of arguments\n");
-		return;
+		return (1);
 	}
 	while (g_mshell.env[i])
 	{
@@ -390,13 +389,14 @@ void	unset()
 			while (g_mshell.env[++i])
 				g_mshell.env[i - 1] = g_mshell.env[i];
 			g_mshell.env[i - 1] = 0;
-			return;
+			return (0);
 		}
 		i++;
 	}
+	return (0);
 }
 
-int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
+int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans env
 {
 	int		x;
 	int		z;
@@ -482,6 +482,7 @@ int		main(void)
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
 	g_mshell.vars = NULL;
+	g_mshell.ls = 0;
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
 	if (newenviron() == -1)
@@ -492,13 +493,14 @@ int		main(void)
 			break ;
 
 		get_lst(line);
-			checkinput_ls();
+		checkinput_ls();
 
-			free(line);
-	
+		free(line);
+
 	}
 	ft_putstr("exit\n");
-	ft_lstclear(&(g_mshell.ls));
+	if(g_mshell.ls)
+		ft_lstclear(&(g_mshell.ls));
 	free(line);
 	freechar2ptr(g_mshell.env);
 	freechar2ptr(g_mshell.vars);
