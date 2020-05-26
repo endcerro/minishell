@@ -380,7 +380,7 @@ void	unset()
 	if (curr == 0 || curr->next != 0)
 	{
 		ft_putstr("minishell: unset: wrong number of arguments\n");
-		return;
+		return ;
 	}
 	while (g_mshell.env[i])
 	{
@@ -390,7 +390,7 @@ void	unset()
 			while (g_mshell.env[++i])
 				g_mshell.env[i - 1] = g_mshell.env[i];
 			g_mshell.env[i - 1] = 0;
-			return;
+			return ;
 		}
 		i++;
 	}
@@ -492,10 +492,10 @@ int		main(void)
 			break ;
 
 		get_lst(line);
-			checkinput_ls();
+		checkinput_ls();
 
-			free(line);
-	
+		free(line);
+
 	}
 	ft_putstr("exit\n");
 	ft_lstclear(&(g_mshell.ls));
