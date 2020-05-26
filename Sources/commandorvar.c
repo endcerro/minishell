@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/05/24 20:43:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:15:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	addvar(char *str)
 	g_mshell.vars = newvars;
 }
 
-char	*checkpath(int j)
+char	*checkpath(int j, char **params)
 {
 	int			x;
 	int			i;
@@ -93,7 +93,7 @@ char	*checkpath(int j)
 		++x;
 	if (g_mshell.env[x] == 0)
 	{
-		str = ft_strjoin("/bin/", g_mshell.params[j]);
+		str = ft_strjoin("/bin/", params[j]);
 		if (stat(str, &sta) != -1)
 			return (str);
 		return (NULL);
@@ -104,7 +104,7 @@ char	*checkpath(int j)
 		if (g_mshell.env[x][i] == ':')
 		{
 			g_mshell.env[x][i] = 0;
-			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"), g_mshell.params[j]);
+			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"), params[j]);
 			g_mshell.env[x][i] = ':';
 			if (stat(str, &sta) != -1)
 				return (str);
@@ -142,7 +142,7 @@ void	execsomestuff(int x, char **params)
 		}
 	}
 	else
-		if ((str = checkpath(x)) == NULL)
+		if ((str = checkpath(x, params)) == NULL)
 		{
 			ft_putstr("minishell: ");
 			ft_putstr(params[x]);

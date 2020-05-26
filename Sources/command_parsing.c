@@ -1,31 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_parsing.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
+/*   Updated: 2020/05/26 16:29:33 by edal--ce         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
-
-char	*get_word_lst(char *line, int *p)
-{
-	size_t	len;
-	int		cp;
-
-	cp = *p;
-	len = 0;
-	if (line[*p] == '"' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '"' && ++len)
-			++(*p);
-		++(*p);
-		return(ft_substr(line, cp, len + 2));
-	}
-	else if (line[*p] == '\'' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '\'' && ++len)
-			++(*p);
-		++(*p);
-		return(ft_substr(line, cp, len + 2));
-	}
-	else
-		while (line[*p] && !ft_isspace(line[*p]) && ++len)
-			++(*p);
-	return(ft_substr(line, cp, len));
-}
 
 char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 {
@@ -58,8 +42,6 @@ char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 	}
 	return (out);
 }
-
-
 
 void check_rdir()
 {

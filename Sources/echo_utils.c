@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 14:58:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:16:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,31 +85,6 @@ void 	parse_env_ls(char **str) //Gerer le $ seul
 	swap_char(*str, '$');
 }
 
-// void	parse_env(char **param)
-// {
-// 	int		len;
-// 	char	*tmp;
-// 	char	*cache;
-// 	char	*str;
-
-// 	len = 0;
-// 	cache = ft_strchr(*param, '$');
-// 	while(cache != NULL)
-// 	{
-// 		// while (ft_isupper(cache[len + 1]))
-// 		while (cache[len + 1] && cache[len + 1] != '=')
-// 			len++;
-		
-// 		tmp = ft_substr(cache, 1, len);
-// 		// printf("searching for %s\n",tmp );
-// 		str = env(tmp);
-// 		// printf("str found = %s\n",str );
-// 		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
-// 		free(tmp);
-// 		cache = ft_strchr(*param, '$');
-// 	}
-// }
-
 int		parse_bs(char *str)
 {
 	int i;
@@ -118,7 +93,6 @@ int		parse_bs(char *str)
 	while (str[++i])
 		if (str[i] == '\\')
 			i -= parse_esc(str + i);
-
 	return 0;
 }
 
@@ -174,42 +148,4 @@ char	**check_finished()	//Chnager le char ** en char * ?
 	if (cpt[0] % 2 || cpt[1] % 2)
 	 	fill = getfiller(0, cpt); // PAS PROTEGE
 	return (fill);
-}
-
-char	*check_finished1()	//Chnager le char ** en char * ?
-{
-	int		i;
-	int		cpt[2];
-	char	**fill;
-
-	i = -1;
-	fill = 0;
-	ft_bzero(cpt, 2);
-	cpt[0] = 0;
-	cpt[1] = 0;
-	while (g_mshell.params[++i])
-	{
-		parse_qts(g_mshell.params[i], cpt);
-		parse_env_ls(&g_mshell.params[i]);
-		parse_bs(g_mshell.params[i]);
-	}
-	if (cpt[0] % 2 || cpt[1] % 2)
-	 	fill = getfiller(0, cpt); // PAS PROTEGE+
-
-	char *out = 0;
-	i = 0;
-	if(fill && fill[i])
-	{
-		out = ft_strdup(fill[i++]);
-		while(fill[i])
-		{
-			out = ft_strjoinf1(out, "\n");
-			out = ft_strjoinf1(out, fill[i++]);
-		}
-	}
-
-	// add_blocks()
-
-	// freechar2ptr(fill);
-	return (out);
 }
