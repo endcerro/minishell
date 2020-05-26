@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:36:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 16:41:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -128,27 +128,6 @@ void	echo_ls()	//Devrait etre pas mal, à vérifier
 	if (ret)
 		write(1, "\n", 1);
 }
-
-// void check_rdir()
-// {
-// 	t_list *curr;
-// 	int fd;
-
-// 	curr = g_mshell.ls;
-
-// 	while(curr && curr->type != 3)
-// 	{
-// 		if (curr->type == 2 && curr->next && curr->next->type == 1)
-// 		{
-// 			// printf("oldfd = %d\n",dup(1));
-// 			g_mshell.oldfd = dup(1);
-// 			fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
-// 			// printf("newfd = %d\n",fd);
-// 			dup2(fd, 1);
-// 		}
-// 		curr = curr->next;
-// 	}
-// }
 
 void	checkinput_ls(void)
 {
