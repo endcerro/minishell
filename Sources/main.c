@@ -535,12 +535,10 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	int		x;
 	int		z;
 	char	keys[3];
-	char	*(str[3]);
 
 	x = 0;
 	z = 3;
 	ft_bzero(keys, 3);
-	str[2] = NULL;
 	while (environ[x])
 	{
 		if (ft_strncmp("PWD=", environ[x], 4) == 0)
@@ -567,7 +565,7 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	while (environ[++x])
 		if ((g_mshell.env[x] = ft_strdup(environ[x])) == NULL)
 		{
-			freechar2ptr(env);
+			freechar2ptr(g_mshell.env);
 			return (-1);
 		}
 	g_mshell.env[x + z] = NULL;
@@ -576,7 +574,7 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	{
 		if ((g_mshell.env[x + z] = ft_strjoinf2("PWD=", getcwdwrap())) == NULL)
 		{
-			freechar2ptr(env);
+			freechar2ptr(g_mshell.env);
 			return (-1);
 		}
 		++z;
@@ -585,7 +583,7 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	{
 		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
 		{
-			freechar2ptr(env);
+			freechar2ptr(g_mshell.env);
 			return (-1);
 		}
 		++z;
@@ -593,7 +591,7 @@ int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
 	if (keys[2] == 0)
 		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD=")) == NULL)
 		{
-			freechar2ptr(env);
+			freechar2ptr(g_mshell.env);
 			return (-1);
 		}
 	return (0);
