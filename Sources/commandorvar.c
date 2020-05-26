@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/05/24 20:43:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 15:37:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ void	commandorvar(void)
 {
 	int x;
 	int i;
-	t_list	*curr;
 	char **oldparam = g_mshell.params;
 
 	g_mshell.params = ls_params();

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 11:44:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 15:39:53 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,53 +40,53 @@ int		count_blocks(char *line)
 	return (count);
 }
 
-char	*get_word(char *line, int *p)
-{
-	size_t	len;
-	int		cp;
+// char	*get_word(char *line, int *p)
+// {
+// 	size_t	len;
+// 	int		cp;
 
-	cp = *p;
-	len = 0;
-	if (line[*p] == '"' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '"' && ++len)
-			++(*p);
-		++(*p);
-		return(ft_substr(line, cp, len + 2));
-	}
-	else if (line[*p] == '\'' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '\'' && ++len)
-			++(*p);
-		++(*p);
-		return(ft_substr(line, cp, len + 2));
-	}
-	else
-		while (line[*p] && !ft_isspace(line[*p]) && ++len)
-			++(*p);
-	return(ft_substr(line, cp, len));
-}
+// 	cp = *p;
+// 	len = 0;
+// 	if (line[*p] == '"' && ++(*p))
+// 	{
+// 		while (line[*p] && line[*p] != '"' && ++len)
+// 			++(*p);
+// 		++(*p);
+// 		return(ft_substr(line, cp, len + 2));
+// 	}
+// 	else if (line[*p] == '\'' && ++(*p))
+// 	{
+// 		while (line[*p] && line[*p] != '\'' && ++len)
+// 			++(*p);
+// 		++(*p);
+// 		return(ft_substr(line, cp, len + 2));
+// 	}
+// 	else
+// 		while (line[*p] && !ft_isspace(line[*p]) && ++len)
+// 			++(*p);
+// 	return(ft_substr(line, cp, len));
+// }
 
-int		get_blocks(char *line)
-{
-	int 	p;
-	int 	i;
-	char 	**out;
+// int		get_blocks(char *line)
+// {
+// 	int 	p;
+// 	int 	i;
+// 	char 	**out;
 
-	i = 0;
-	p = 0;
+// 	i = 0;
+// 	p = 0;
 
-	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
-		return (-1);
-	while ((size_t)i < ft_strlen(line))
-	{
-		if (ft_isspace(line[i]))
-			++i;
-		else
-			if ((out[p++] = get_word(line, &i)) == NULL)
-				return (-1);
-	}
-	out[p] = 0;
-	g_mshell.params = out;
-	return (1);
-}
+// 	if(!(out = (char **)malloc(sizeof(char *) * (count_blocks(line) + 1))))
+// 		return (-1);
+// 	while ((size_t)i < ft_strlen(line))
+// 	{
+// 		if (ft_isspace(line[i]))
+// 			++i;
+// 		else
+// 			if ((out[p++] = get_word(line, &i)) == NULL)
+// 				return (-1);
+// 	}
+// 	out[p] = 0;
+// 	g_mshell.params = out;
+// 	return (1);
+// }

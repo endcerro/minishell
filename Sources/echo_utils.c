@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 14:58:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 15:08:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void 	parse_env_ls(char **str) //Gerer le $ seul
 			*($_pos) = -1;
 		else
 		{
+			printf("query = %s\n",query );
 			if(env(query))
 				*str = inside_join(*str, env(query) + 1);
 			else
@@ -81,6 +82,7 @@ void 	parse_env_ls(char **str) //Gerer le $ seul
 		}
 		$_pos = ft_strchr(*str, '$');
 		free(query);
+		printf("str = %s\n",*str );
 	}
 	swap_char(*str, '$');
 }

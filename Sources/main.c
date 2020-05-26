@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/19 13:52:50 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 15:37:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,35 +52,7 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
-int		parse_esc(char *str)
-{
-	int i;
-	int j;
-	int r;
-	int tra;
 
-	r = 0;
-	tra = 0;
-	j = -1;
-	if (*(str + 1) == '\\')
-	{
-		while (*(str + r) == '\\')
-			r++;
-		if (*(str + r) == '"' || *(str + r) == '\'')
-			r++;
-		tra = (r % 2 == 0) ? r - r / 2 : r - (r + 1) / 2;
-		r = -tra;
-	}
-	else if ((*(str + 1) == '\'' || *(str + 1) == '\"') && (tra = 1))
-		*str = (*(str + 1) == '\'') ? '\'' : '\"';
-	while (++j < tra)
-	{
-		i = -1;
-		while (str[++i])
-			str[i] = str[i + 1];
-	}
-	return (r);
-}
 
 
 
@@ -107,48 +79,6 @@ char	**getfiller(int depth, int *cpt)
 		tmp = ft_strjoinf2("\n", tmp); // PAS PROTEGE
 	out[depth] = tmp;
 	return (out);
-}
-
-
-
-void	echo()	//Devrait etre pas mal, à vérifier
-{
-	int		i;
-	int		ret;
-	// char	**fill;
-
-	i = 0;
-	ret = 0;
-	// fill = 0;
-	if (g_mshell.params[1] && ft_strcmp(g_mshell.params[1], "-n") == 0)
-		++i;
-	else
-		ret = 1;
-	// fill = check_finished();
-
-
-	// char *test = 0;
-	// test = check_finished1();
-
-	while (g_mshell.params[++i])
-	{
-		ft_putstr(g_mshell.params[i]);
-		if (g_mshell.params[i + 1])
-			write(1," ",1);
-	}
-	i = -1;
-	// while (fill && fill[++i])
-	// {
-	// 	parse_env(&(fill[i]));
-	// 	ft_putstr(fill[i]);
-	// 	if (fill[i + 1])
-	// 		write(1, "\n", 1);
-	// }
-	// if(test)
-	// 	ft_putstr(test);
-	// freechar2ptr(fill);
-	if (ret)
-		write(1, "\n", 1);
 }
 
 int		checkexport(char *var)
@@ -402,9 +332,8 @@ void	export(char **params)
 	char	**n_envi;
 	t_list	*curr;
 
-	curr = g_mshell.ls->next;
-	// char 	**testfill = 0;
-
+	if (g_mshell.ls)
+		curr = g_mshell.ls->next;
 	i = 0;
 
 	if(check_valid_export(params) == 0) //FUNC TO DO
@@ -412,7 +341,6 @@ void	export(char **params)
 		ft_putstr("export not valid identifier\n");
 		return;
 	}
-
 	if (curr == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
@@ -468,66 +396,6 @@ void	unset()
 		}
 		i++;
 	}
-}
-
-int 	get_output(char **params)
-{
-	int i;
-	int fd;
-
-	fd = 1;
-	i = -1;
-	while(params[++i])
-	{
-		if (ft_strcmp(params[i], ">") == 0)
-		{
-			if (params[i + 1])
-			{
-				// int stdout = dup(1);
-
-				// fd = open(params[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-				// dup2(fd, 1);
-				// free(params[i + 1]);
-				// free(params[i]);
-				// dup2(stdout, 1);
-				// params[i] = 0;
-				// write(fd, "File created\n", 13);
-			}
-		}
-	}
-	return (fd);
-}
-
-void	checkinput(void)
-{
-	// printf("CHECKING INPUT %s\n",g_mshell.params[0] );
-	// check_command(0);
-	if (ft_strcmp(g_mshell.params[0], "exit") == 0) // Fini
-	{
-		ft_putstr("exit\n");
-		if (g_mshell.params[1])
-			ft_putstr("minishell: exit: too many arguments\n");
-		freechar2ptr(g_mshell.env);
-		freechar2ptr(g_mshell.params);
-		freechar2ptr(g_mshell.vars);
-		exit(0);
-	}
-	else if (ft_strcmp(g_mshell.params[0], "echo") == 0) // A terminer
-		echo();
-	else if (ft_strcmp(g_mshell.params[0], "env") == 0) // Fini
-		env(NULL);
-	else if (ft_strcmp(g_mshell.params[0], "cd") == 0) // Fini // PAS PROTEGE
-		cd();
-	else if (ft_strcmp(g_mshell.params[0], "pwd") == 0) // Fini
-		pwd();
-	else if (ft_strcmp(g_mshell.params[0], "export") == 0) // A fignoler // PAS PROTEGE
-		export(g_mshell.params);
-	else if (ft_strcmp(g_mshell.params[0], "unset") == 0) // A terminer
-		unset();
-	else if (ft_strcmp(g_mshell.params[0], "clear") == 0)
-		ft_putstr("\033c");
-	else
-		commandorvar();
 }
 
 int		newenviron() // Il faut gerer la variable _= qui n'apparait que dans env
@@ -626,22 +494,13 @@ int		main(void)
 	{
 		if (line == NULL && *line == 0)
 			break ;
-		if (get_blocks(line) == -1) // PAS PROTEGE
-			break ;
+		// if (get_blocks(line) == -1) // PAS PROTEGE
+		// 	break ;
 		get_lst(line);
 
+		checkinput_ls();
 
-		// if (g_mshell.ls)
-		// {
-			checkinput_ls();
-		// }
-
-		// if (*g_mshell.params)
-		// {
-		// 	check_command(0);
-		// 	// checkinput(); // PAS PROTEGE
-		// }
-			free(line);
+		free(line);
 		// freechar2ptr(g_mshell.params);
 	}
 	ft_putstr("exit\n");
