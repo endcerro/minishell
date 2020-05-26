@@ -617,17 +617,17 @@ int		main(void)
 
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
+	g_mshell.vars = NULL;
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
 	if (newenviron() == -1)
 		return (1);
 	while (prompt(&line) > 0)
 	{
-
 		if (line == NULL && *line == 0)
 			break ;
 		if (get_blocks(line) == -1) // PAS PROTEGE
-			return (0); // Rien n'est free en cas d'erreur
+			break ;
 		get_lst(line);
 
 

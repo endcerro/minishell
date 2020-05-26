@@ -184,11 +184,11 @@ void	execsomestuff(int x)
 	/* write(1, "\n", 1); */
 }
 
-char **ls_params()
+char	**ls_params()
 {
-	char **out;
-	int i;
-	t_list *curr;
+	char	**out;
+	int		i;
+	t_list	*curr;
 
 	curr = g_mshell.ls;
 	i = 0;
