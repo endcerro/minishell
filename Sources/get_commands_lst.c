@@ -100,26 +100,26 @@ char	*get_word_lst(char *line, int *p)
 	return(ft_substr(line, cp, len));
 }
 
-void	parse_env_lst(char **param)
-{
-	int		len;
-	char	*tmp;
-	char	*cache;
-	char	*str;
+// void	parse_env_lst(char **param)
+// {
+// 	int		len;
+// 	char	*tmp;
+// 	char	*cache;
+// 	char	*str;
 
-	len = 0;
-	cache = ft_strchr(*param, '$');
-	while(cache != NULL)
-	{
-		while (cache[len + 1] && cache[len + 1] != '=')
-			len++;
-		tmp = ft_substr(cache, 1, len);
-		str = env(tmp);
-		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
-		free(tmp);
-		cache = ft_strchr(*param, '$');
-	}
-}
+// 	len = 0;
+// 	cache = ft_strchr(*param, '$');
+// 	while(cache != NULL)
+// 	{
+// 		while (cache[len + 1] && cache[len + 1] != '=')
+// 			len++;
+// 		tmp = ft_substr(cache, 1, len);
+// 		str = env(tmp);
+// 		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
+// 		free(tmp);
+// 		cache = ft_strchr(*param, '$');
+// 	}
+// }
 char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 {
 	int		i;
@@ -212,7 +212,7 @@ void	get_lst(char *line)
 	}
 
 	// printf("Line b4 env= %s\n",line );
-	parse_env(&line);
+	parse_env_ls(&line);
 	// printf("Line af env= %s\n",line );
 
 

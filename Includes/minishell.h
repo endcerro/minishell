@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/24 21:09:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/26 14:58:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int 			get_blocks(char *line);
 void			export(char **params);
 char 			*env(char *request);
 char 			*vars(char *request);
-void 			parse_env(char **param);
+void 			parse_env_ls(char **param);
 void			commandorvar(void);
 void			freechar2ptr(char **ptr);
 
