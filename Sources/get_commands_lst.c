@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 12:14:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 12:40:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -38,6 +38,18 @@ char	*get_word_lst(char *line, int *p)
 	return(ft_substr(line, cp, len));
 }
 
+void find_char(char *buff)
+{
+	if (buff[0] == 0)
+		buff[0] = ';';
+	else if (buff[0] == ';')
+		buff[0] = '>';
+	else if (buff[0] == '>')
+		buff[0] = 0;
+	// else if (buff[0] == '|')
+	// 	buff[0] = '>';
+}
+
 void inner_split(t_list *lst)
 {
 	t_list 	*curr;
@@ -46,44 +58,52 @@ void inner_split(t_list *lst)
 	int 	i;
 	char 	*pos;
 
+	char 	buff[2];
+	ft_bzero(buff,2);
+	find_char(buff);
 	curr = lst;
-	while(curr)
-	{
-		new = 0;
-		if(curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
+	while(buff[0])
+	{	
+		while(curr)
 		{
-			pos = 0;
-			if(ft_strchr(curr->content, ';'))
+			new = 0;
+			if(curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
 			{
-				pos = ft_strchr(curr->content, ';');
-				split = ft_split(curr->content, ';');
-				i = -1;
-				while (split[++i])
+				pos = 0;
+				if(ft_strchr(curr->content, buff[0]))
 				{
-					if (pos == curr->content)
+					pos = ft_strchr(curr->content, buff[0]);
+					split = ft_split(curr->content, buff[0]);
+					i = -1;
+					while (split[++i])
 					{
-						ft_lstadd_back(&new, ft_lstnew(ft_strdup(";")));	
-						pos = ft_strchr(pos + 1, ';');
+						if (pos == curr->content)
+						{
+							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));	
+							pos = ft_strchr(pos + 1, buff[0]);
+						}
+						ft_lstadd_back(&new, ft_lstnew(split[i]));
+						if (pos != 0)
+						{
+							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
+							pos = ft_strchr(pos + 1, buff[0]);
+						}
 					}
-					ft_lstadd_back(&new, ft_lstnew(split[i]));
-					if (pos != 0)
-					{
-						ft_lstadd_back(&new, ft_lstnew(ft_strdup(";")));
-						pos = ft_strchr(pos + 1, ';');
-					}
+					free(split);
 				}
-				free(split);
 			}
+			if(new)
+			{
+				free(curr->content);
+				curr->content = new->content;
+				ft_lstadd_back(&new, curr->next);
+				curr->next = new->next;
+				free(new);
+			}
+			curr = curr->next;
 		}
-		if(new)
-		{
-			free(curr->content);
-			curr->content = new->content;
-			ft_lstadd_back(&new, curr->next);
-			curr->next = new->next;
-			free(new);
-		}
-		curr = curr->next;
+		find_char(buff);
+		curr = lst;
 	}
 }
 
