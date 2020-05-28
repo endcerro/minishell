@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 14:32:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 15:16:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -45,6 +45,8 @@ void find_char(char *buff)
 	else if (buff[0] == ';')
 		buff[0] = '>';
 	else if (buff[0] == '>')
+		buff[0] = '<';
+	else if (buff[0] == '<')
 		buff[0] = 0;
 	// else if (buff[0] == '|')
 	// 	buff[0] = '>';
@@ -214,6 +216,7 @@ void	checkinput_ls(void)
 
 	curr = g_mshell.ls;
 	g_mshell.oldfd = 0;
+	g_mshell.oldfd_in = 0;
 	check_rdir();
 
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
@@ -253,6 +256,13 @@ void	checkinput_ls(void)
 		close(dup(1));
 		dup2(g_mshell.oldfd, 1);
 		g_mshell.oldfd = 0;
+	}
+	if (g_mshell.oldfd_in != 0)
+	{
+		// printf("here\n");
+		close(dup(0));
+		dup2(g_mshell.oldfd_in, 0);
+		g_mshell.oldfd_in = 0;
 	}
 	while(curr)
 	{

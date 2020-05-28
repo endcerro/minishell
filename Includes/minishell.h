@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 19:00:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 15:04:07 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct 	s_mshell
 	int			exitcode;
 
 	int 		oldfd;
+	int 		oldfd_in;
 }				t_mshell;
 
 t_mshell		g_mshell;
