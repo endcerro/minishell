@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 16:29:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 14:32:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -49,15 +49,21 @@ void check_rdir()
 	int fd;
 
 	curr = g_mshell.ls;
+	g_mshell.oldfd = dup(1);
 
 	while(curr && curr->type != 3)
 	{
 		if (curr->type == 2 && curr->next && curr->next->type == 1)
 		{
-			g_mshell.oldfd = dup(1);
 			fd = open(curr->next->content,
 			 O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
 			dup2(fd, 1);
+		}
+		else if (curr->type == 4 && curr->next && curr->next->type == 1)
+		{
+			fd = open(curr->next->content,
+			 O_APPEND | O_WRONLY | O_CREAT, 0644);
+			dup2(fd, 1);	
 		}
 		curr = curr->next;
 	}

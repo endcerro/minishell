@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 12:40:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 14:32:04 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -143,10 +143,14 @@ void tag_lst(t_list *lst)
 	curr = lst;
 	while (curr)
 	{
-		if (ft_strcmp(curr->content, ">") == 0)	//REDIRECTION ARE 3
+		if (ft_strcmp(curr->content, ">") == 0)	//REDIRECTION ARE 2
 			curr->type = 2;
-		else if (ft_strcmp(curr->content, ";") == 0) //END OF COMMAND ARE 2
+		else if (ft_strcmp(curr->content, ";") == 0) //END OF COMMAND ARE 3
 			curr->type = 3;
+		else if (ft_strcmp(curr->content, ">>") == 0) //APPEND RDIR ARE 4
+			curr->type = 4;
+		else if (ft_strcmp(curr->content, "<") == 0) //INPUT RDIR ARE 5
+			curr->type = 5;
 		curr = curr->next;
 	}
 }
