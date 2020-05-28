@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 18:29:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 12:14:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -38,6 +38,55 @@ char	*get_word_lst(char *line, int *p)
 	return(ft_substr(line, cp, len));
 }
 
+void inner_split(t_list *lst)
+{
+	t_list 	*curr;
+	t_list 	*new;
+	char 	**split;
+	int 	i;
+	char 	*pos;
+
+	curr = lst;
+	while(curr)
+	{
+		new = 0;
+		if(curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
+		{
+			pos = 0;
+			if(ft_strchr(curr->content, ';'))
+			{
+				pos = ft_strchr(curr->content, ';');
+				split = ft_split(curr->content, ';');
+				i = -1;
+				while (split[++i])
+				{
+					if (pos == curr->content)
+					{
+						ft_lstadd_back(&new, ft_lstnew(ft_strdup(";")));	
+						pos = ft_strchr(pos + 1, ';');
+					}
+					ft_lstadd_back(&new, ft_lstnew(split[i]));
+					if (pos != 0)
+					{
+						ft_lstadd_back(&new, ft_lstnew(ft_strdup(";")));
+						pos = ft_strchr(pos + 1, ';');
+					}
+				}
+				free(split);
+			}
+		}
+		if(new)
+		{
+			free(curr->content);
+			curr->content = new->content;
+			ft_lstadd_back(&new, curr->next);
+			curr->next = new->next;
+			free(new);
+		}
+		curr = curr->next;
+	}
+}
+
 t_list *split_line_lst(char *line)
 {
 	t_list 	*f_lst;
@@ -62,6 +111,8 @@ t_list *split_line_lst(char *line)
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
+//	ft_lstprint(f_lst);
+	inner_split(f_lst);
 	return (f_lst);
 }
 
@@ -102,7 +153,7 @@ void	get_lst(char *line)
 	// free(line);
 	/* ft_lstprint(out); */
 	/* ft_putstr("\n\n"); */
-	// ft_lstprint(out);
+//	ft_lstprint(out);
 	// tag_lst(out);
 	g_mshell.ls = out;
 }
@@ -147,18 +198,13 @@ void	checkinput_ls(void)
 		if (g_mshell.ls->next)
 			ft_putstr("minishell: exit: too many arguments\n");
 		freechar2ptr(g_mshell.env);
-		// freechar2ptr(g_mshell.params);
 		freechar2ptr(g_mshell.vars);
 		exit(0);
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) // A terminer
-	{
-		// printf("echo ls\n");
 		g_mshell.exitcode = echo_ls();
-	}
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
 	{
-		// printf("env ls\n");
 		env(NULL);
 		g_mshell.exitcode = 0;
 	}
@@ -190,9 +236,10 @@ void	checkinput_ls(void)
 		{
 			g_mshell.ls = curr->next;
 			checkinput_ls();
+			g_mshell.ls = copy;
+			return ;
 		}
 		curr = curr->next;
 	}
 	g_mshell.ls = copy;
-
 }

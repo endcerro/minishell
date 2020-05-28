@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/26 18:28:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 12:15:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -83,4 +83,23 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 		else
 			*alst = new;
 	}
+}
+
+void	ft_lstadd_front(t_list **alst, t_list *new)
+{
+	if (alst && new)
+	{
+		new->next = *alst;
+		*alst = new;
+	}
+}
+
+void	ft_lstadd_next(t_list *alst, t_list *new)
+{
+	t_list *copy;
+
+	copy = alst->next;
+
+	alst->next = new;
+	new->next = copy;
 }
