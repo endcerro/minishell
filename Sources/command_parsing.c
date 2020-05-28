@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 15:13:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 22:39:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -86,7 +86,7 @@ void check_rdir()
 
 	curr = g_mshell.ls;
 	
-
+//	ft_lstprint(curr);
 
 	while(curr && curr->type != 3)
 	{
@@ -109,7 +109,6 @@ void check_rdir()
 			g_mshell.oldfd_in = dup(0);
 			fd = open(curr->next->content, O_RDONLY);
 			dup2(fd, 0);
-			// add_file_ls(curr);
 		}
 		curr = curr->next;
 	}

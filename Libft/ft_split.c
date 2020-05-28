@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 16:55:09 by hpottier          #+#    #+#             */
-/*   Updated: 2020/03/16 23:56:26 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 16:17:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int			count_word(char const *str, char c)
 		++i;
 	while (str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == c && str[i + 1] && str[i + 1] == c)
 		{
 			while (str[i] && str[i] == c)
 				++i;

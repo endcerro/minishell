@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 15:16:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/05/28 22:36:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -47,9 +47,9 @@ void find_char(char *buff)
 	else if (buff[0] == '>')
 		buff[0] = '<';
 	else if (buff[0] == '<')
+		buff[0] = '|';
+	else if (buff[0] == '|')
 		buff[0] = 0;
-	// else if (buff[0] == '|')
-	// 	buff[0] = '>';
 }
 
 void inner_split(t_list *lst)
@@ -58,38 +58,32 @@ void inner_split(t_list *lst)
 	t_list 	*new;
 	char 	**split;
 	int 	i;
-	char 	*pos;
+	int 	j;
 
 	char 	buff[2];
 	ft_bzero(buff,2);
 	find_char(buff);
 	curr = lst;
-	while(buff[0])
-	{	
+	while(buff[0])	
+	{
 		while(curr)
 		{
 			new = 0;
 			if(curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
 			{
-				pos = 0;
 				if(ft_strchr(curr->content, buff[0]))
 				{
-					pos = ft_strchr(curr->content, buff[0]);
 					split = ft_split(curr->content, buff[0]);
 					i = -1;
-					while (split[++i])
+					j = 0;
+					while(curr->content[j])
 					{
-						if (pos == curr->content)
-						{
-							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));	
-							pos = ft_strchr(pos + 1, buff[0]);
-						}
-						ft_lstadd_back(&new, ft_lstnew(split[i]));
-						if (pos != 0)
-						{
-							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
-							pos = ft_strchr(pos + 1, buff[0]);
-						}
+						while(curr->content[j] == buff[0] && ++j)
+							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));		
+						while(curr->content[j] && curr->content[j] != buff[0])
+							j++;
+						if (split[++i])
+							ft_lstadd_back(&new, ft_lstnew(split[i]));	
 					}
 					free(split);
 				}
@@ -141,18 +135,30 @@ t_list *split_line_lst(char *line)
 void tag_lst(t_list *lst)
 {
 	t_list *curr;
+	t_list	*cpy;
 
 	curr = lst;
 	while (curr)
 	{
-		if (ft_strcmp(curr->content, ">") == 0)	//REDIRECTION ARE 2
+		if (ft_strcmp(curr->content, ">") == 0)		//REDIRECTION ARE 2
+		{
 			curr->type = 2;
+			if (curr->next && ft_strcmp(curr->next->content, ">") == 0)
+			{
+				curr->type = 4;
+				free(curr->content);
+				curr->content = ft_strdup(">>");
+				cpy = curr->next->next;
+				ft_lstdelone(curr->next);
+				curr->next = cpy;
+			}
+		}
 		else if (ft_strcmp(curr->content, ";") == 0) //END OF COMMAND ARE 3
 			curr->type = 3;
-		else if (ft_strcmp(curr->content, ">>") == 0) //APPEND RDIR ARE 4
-			curr->type = 4;
 		else if (ft_strcmp(curr->content, "<") == 0) //INPUT RDIR ARE 5
 			curr->type = 5;
+		// else if (ft_strcmp(curr->content, ">>") == 0) //APPEND RDIR ARE 4
+		// 	curr->type = 4;
 		curr = curr->next;
 	}
 }
