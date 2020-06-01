@@ -38,7 +38,7 @@ char	*get_word_lst(char *line, int *p)
 	return(ft_substr(line, cp, len));
 }
 
-void find_char(char *buff)
+void	find_char(char *buff)
 {
 	if (buff[0] == 0)
 		buff[0] = ';';
@@ -52,7 +52,7 @@ void find_char(char *buff)
 		buff[0] = 0;
 }
 
-void inner_split(t_list *lst)
+void	inner_split(t_list *lst)
 {
 	t_list 	*curr;
 	t_list 	*new;
@@ -64,7 +64,7 @@ void inner_split(t_list *lst)
 	ft_bzero(buff,2);
 	find_char(buff);
 	curr = lst;
-	while(buff[0])	
+	while(buff[0])
 	{
 		while(curr)
 		{
@@ -79,11 +79,11 @@ void inner_split(t_list *lst)
 					while(curr->content[j])
 					{
 						while(curr->content[j] == buff[0] && ++j)
-							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));		
+							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
 						while(curr->content[j] && curr->content[j] != buff[0])
 							j++;
 						if (split[++i])
-							ft_lstadd_back(&new, ft_lstnew(split[i]));	
+							ft_lstadd_back(&new, ft_lstnew(split[i]));
 					}
 					free(split);
 				}
@@ -103,7 +103,7 @@ void inner_split(t_list *lst)
 	}
 }
 
-t_list *split_line_lst(char *line)
+t_list	*split_line_lst(char *line)
 {
 	t_list 	*f_lst;
 	t_list 	*lst;
@@ -132,7 +132,7 @@ t_list *split_line_lst(char *line)
 	return (f_lst);
 }
 
-void tag_lst(t_list *lst)
+void	tag_lst(t_list *lst)
 {
 	t_list *curr;
 	t_list	*cpy;
