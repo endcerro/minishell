@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 22:40:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 16:47:59 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,24 @@ typedef struct 	s_mshell
 	pid_t		pid;
 	int			exitcode;
 
-	int 		oldfd;
-	int 		oldfd_in;
+	char 		rdirin;
+	char 		rdirout;
+
+	int 		pipe1[3];
+	int 		pipe2[3];
+
+	char 		pipnb;
+
+	int 		oldfdout;
+	int 		oldfdin;
+
+
 }				t_mshell;
 
 t_mshell		g_mshell;
 
 int 			get_blocks(char *line);
-int				export(char **params);
+int				export(char *params);
 char 			*env(char *request);
 char 			*vars(char *request);
 void 			parse_env_ls(char **param);

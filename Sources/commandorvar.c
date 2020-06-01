@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/05/26 16:15:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 17:31:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,31 @@ void	addvar(char *str)
 {
 	int		size;
 	char	**newvars;
-	char	*tmp[3];
+	char	*tmp;
 
 	size = 0;
-	tmp[2] = NULL;
-	tmp[0] = ft_strchr(str, '=');
-	*tmp[0] = 0;
 	if (env(str) != NULL)
 	{
-		*tmp[0] = '=';
-		tmp[1] = str;
-		export(tmp);
+		export(str);
 		return ;
 	}
-	*tmp[0] = '=';
 	if (g_mshell.vars != NULL)
 		while (g_mshell.vars[size])
+		{
+			if (ft_strncmp(g_mshell.vars[size], str, ft_strchr(str, '=') - str) == 0)
+			{
+				if ((tmp = ft_strdup(str)) == NULL)
+				{
+					ft_putstr("minishell: ");
+					ft_putendl(strerror(errno));
+					return ;
+				}
+				free(g_mshell.vars[size]);
+				g_mshell.vars[size] = tmp;
+				return ;
+			}
 			++size;
+		}
 	if (!(newvars = (char **)malloc(sizeof (char *) * (size + 2))))
 	{
 		ft_putstr("minishell: ");
@@ -79,6 +87,7 @@ void	addvar(char *str)
 	}
 	g_mshell.vars = newvars;
 }
+
 
 char	*checkpath(int j, char **params)
 {

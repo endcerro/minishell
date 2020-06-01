@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 12:07:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 17:47:34 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,31 @@ char 	*env(char *request)
 		}
 //	}
 	return (NULL);
+}
+
+
+int		unset_var(char *target)
+{
+	int		i;
+	t_list	*curr;
+
+	curr = g_mshell.ls->next;
+
+	i = 0;
+
+	while (g_mshell.vars[i])
+	{
+		if(!check_match(g_mshell.vars[i], target))
+		{
+			free(g_mshell.vars[i]);
+			while (g_mshell.vars[++i])
+				g_mshell.vars[i - 1] = g_mshell.vars[i];
+			g_mshell.vars[i - 1] = 0;
+			return (0);
+		}
+		i++;
+	}
+	return (0);
 }
 
 char 	*vars(char *request)
@@ -320,14 +345,20 @@ int		check_match(char *env, char *param)
 
 
 
-int		export(char **params)
+int		export(char *param)
 {
 	int		i;
 	char	**n_envi;
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
+	if (param != NULL)
+	{
+		printf("Param input = %s\n",param );
+		curr = ft_lstnew(param);
+	}
 	// char 	**testfill = 0;
+
 
 	i = 0;
 
@@ -342,20 +373,36 @@ int		export(char **params)
 		exportlst(g_mshell.env); // PAS PROTEGE
 		return (0);
 	}
+
+//	char *tmp;
+	// If export TEST and test is in vars -> export from vars
+	// If export TEST= and test is in vars -> export from command and free in vars
+	// tmp = vars(curr->content);
+	// printf("tmp = %s\n",tmp );
+	// if (tmp)
+	// {
+	// 	curr->content = ft_strjoinf1(curr->content, "=");
+	// 	curr->content = ft_strjoinf1(curr->content, tmp);
+	// 	// unset_var(curr->content);
+	// }
+
 	if(!ft_strnstr(curr->content, "=", ft_strlen(curr->content)))
 	{
+		printf("here\n");
 		curr->content = ft_strjoinf1(curr->content,"="); // PAS PROTEGE
 	}
 	while (g_mshell.env[i])
 	{
 		if(!check_match(g_mshell.env[i], curr->content))
 		{
+
 			free(g_mshell.env[i]);
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
 			return (0);
 		}
 		i++;
 	}
+	printf("curr_content %s\n",curr->content );
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
 		return (1);
 	i = -1;
@@ -365,6 +412,10 @@ int		export(char **params)
 	n_envi[i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;
+	if(param != NULL)
+	{
+		free(curr);
+	}
 	return (0);
 }
 
@@ -483,6 +534,20 @@ int		main(void)
 	g_mshell.exitcode = 0;
 	g_mshell.vars = NULL;
 	g_mshell.ls = 0;
+
+	// printf("pipe1 %d \n", pipe(g_mshell.pipe1));
+	// printf("pipe2 %d \n",pipe(g_mshell.pipe2));
+	
+	g_mshell.pipe1[2] = -1;
+	g_mshell.pipe2[2] = -1;
+
+	g_mshell.rdirin = 0;
+	g_mshell.rdirout = 0;
+	g_mshell.pipnb = 0;
+
+	g_mshell.oldfdout = dup(1);
+	g_mshell.oldfdin = dup(0);
+
 	signal(SIGINT, &sigkill);
 	signal(SIGQUIT, &sigkill);
 	if (newenviron() == -1)

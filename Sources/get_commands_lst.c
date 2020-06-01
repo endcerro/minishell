@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 22:36:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 16:36:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -157,6 +157,8 @@ void	tag_lst(t_list *lst)
 			curr->type = 3;
 		else if (ft_strcmp(curr->content, "<") == 0) //INPUT RDIR ARE 5
 			curr->type = 5;
+		else if (ft_strcmp(curr->content, "|") == 0 && (g_mshell.pipnb)++)
+			curr->type = 6;
 		// else if (ft_strcmp(curr->content, ">>") == 0) //APPEND RDIR ARE 4
 		// 	curr->type = 4;
 		curr = curr->next;
@@ -173,11 +175,11 @@ void	get_lst(char *line)
 	{
 		// printf("here\n");
 		line = ft_strjoinft(line, filler);
-	}
+	}	
 
-	// printf("Line b4 env= %s\n",line );
-	parse_env_ls(&line);
-	// printf("Line af env= %s\n",line );
+
+	// parse_env_ls(&line);			//NEEDED SOMEWHERE ELSE
+
 
 
 	t_list *out = split_line_lst(line);
@@ -214,16 +216,35 @@ int		echo_ls(void)	//Devrait etre pas mal, à vérifier
 	return (0);
 }
 
+void 	expand_vars(t_list *lst)
+{
+	t_list *curr;
+
+	curr = lst;
+	while (curr && curr->type != 3)
+	{
+		parse_env_ls(&(curr->content));
+		curr = curr->next;
+	}
+}
+
+
 void	checkinput_ls(void)
 {
 	// printf("CHECKING INPUT %s\n",g_mshell.params[0] );
 	// check_command(0);
 	t_list *curr;
 
+
 	curr = g_mshell.ls;
-	g_mshell.oldfd = 0;
-	g_mshell.oldfd_in = 0;
+
+	printf("pipnb %d\n",g_mshell.pipnb );
+	// g_mshell.oldfdout = 0;
+	// g_mshell.oldfdin = 0;
+	ft_lstprint(curr);
 	check_rdir();
+
+	expand_vars(curr);
 
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
 	{
@@ -257,19 +278,56 @@ void	checkinput_ls(void)
 
 	t_list *copy;
 	copy = g_mshell.ls;
-	if (g_mshell.oldfd != 0)
+	if (g_mshell.rdirout == 1)
 	{
 		close(dup(1));
-		dup2(g_mshell.oldfd, 1);
-		g_mshell.oldfd = 0;
+		dup2(g_mshell.oldfdout, 1);
+		g_mshell.rdirout = 0;
 	}
-	if (g_mshell.oldfd_in != 0)
+	if (g_mshell.rdirin == 1)
 	{
 		// printf("here\n");
 		close(dup(0));
-		dup2(g_mshell.oldfd_in, 0);
-		g_mshell.oldfd_in = 0;
+		dup2(g_mshell.oldfdin, 0);
+		g_mshell.rdirin = 0;
 	}
+	if(g_mshell.rdirin == 2)
+	{
+		dup2(g_mshell.oldfdin, 0);
+		if(g_mshell.pipe1[2] == 0)
+		{
+			close(g_mshell.pipe1[0]);
+			g_mshell.pipe1[2] = -1;
+		}
+		else
+		{
+			close(g_mshell.pipe2[0]);
+			g_mshell.pipe2[2] = -1; 	
+		}
+		g_mshell.rdirin = 0;
+	}
+	if (g_mshell.rdirout == 2)
+	{
+
+		if(g_mshell.pipe1[2] == 1)
+		{
+			dup2(g_mshell.pipe1[0], 0);	
+			dup2(g_mshell.oldfdout, 1);
+			close(g_mshell.pipe1[1]);
+			g_mshell.pipe1[2] = 0;
+		}
+		else
+		{
+			dup2(g_mshell.pipe2[0], 0);	
+			dup2(g_mshell.oldfdout, 1);
+			close(g_mshell.pipe2[1]);
+			g_mshell.pipe2[2] = 0;
+		}	
+		g_mshell.rdirout = 0;
+		g_mshell.rdirin = 2;
+	}
+
+
 	while(curr)
 	{
 		if(curr->type == 3 && curr->next != NULL)

@@ -19,6 +19,8 @@ int			main(void)
 		dup2(pipefd[1], 1);
 		execve("/bin/ls", argv, environ);
 	}
+	wait(0);
+	close(pipefd[1]);
 	if (fork() == 0)
 	{
 		argv = (char **)malloc(sizeof(char *) * 2);
@@ -27,5 +29,6 @@ int			main(void)
 		dup2(pipefd[0], 0);
 		execve("/bin/grep", argv, environ);
 	}
+	wait(0);
 	return (0);
 }
