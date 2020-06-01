@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 16:36:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 19:24:11 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -237,6 +237,8 @@ void	checkinput_ls(void)
 
 
 	curr = g_mshell.ls;
+	if(curr == 0)
+		return;
 
 	printf("pipnb %d\n",g_mshell.pipnb );
 	// g_mshell.oldfdout = 0;

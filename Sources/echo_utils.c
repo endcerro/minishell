@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 16:44:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 19:27:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,23 @@ void 	swap_char(char *str, char c)
 	}
 }
 
+void check_exitcode(char **str)
+{
+	int i;
+	char *pos;
+	char *tmp;
+	// printf("STR TO CHECK IS %s\n",*str );
+
+	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
+	tmp = ft_itoa(g_mshell.exitcode);
+	if (pos)
+	{
+		*str = inside_join(pos, tmp);
+		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
+	}
+	free(tmp);
+}
+
 void 	parse_env_ls(char **str) //Gerer le $ seul
 {
 	char	*$_pos;
@@ -64,6 +81,8 @@ void 	parse_env_ls(char **str) //Gerer le $ seul
 	int		len;
 
 	len = 0;
+	check_exitcode(str);
+
 	$_pos = ft_strchr(*str, '$');
 	while($_pos != NULL)
 	{

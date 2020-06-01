@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 17:47:34 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/01 19:12:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		checkexport(char *var)
 	x = 0;
 	while (var[x] && var[x] != '=')
 		++x;
-	if (var[x] == 0 || (var[x] == '=' && var[x + 1] == 0))
+	if (var[x] == 0)
 		return (0);
 	return (1);
 }
@@ -320,10 +320,12 @@ void	exportlst(char **envi)
 	{
 		y = 0;
 		ft_putstr("declare -x ");
-		while (env2[x][y] != '=')
+		while (env2[x][y] && env2[x][y] != '=' ) 
 			++y;
 		write(1, env2[x], y);
-		if (env2[x][y + 1] != 0)
+		if (env2[x][y] == '=' && env2[x][y + 1] == 0)
+			write(1, "=\"\"", 3);
+		else if (env2[x][y + 1] != 0)
 		{
 			write(1, "=\"", 2);
 			ft_putstr(env2[x] + y + 1);
@@ -337,9 +339,19 @@ void	exportlst(char **envi)
 int		check_match(char *env, char *param)
 {
 	int ret;
+	int i ;
 
-	ret = ft_strncmp(env, param, ft_strlen(env)
-				- ft_strlen(ft_strnstr(env, "=", ft_strlen(env))));
+	i = 0;
+	// printf("strlen = %d\n",ft_strlen(ft_strnstr(env, "=", ft_strlen(env) )));
+	
+	while (env[i] && env[i] != '=')
+		i++;
+
+
+	ret = ft_strncmp(env, param, i);
+
+	// printf("ret = %d\n",ret );
+	
 	return (ret);
 }
 
@@ -357,59 +369,41 @@ int		export(char *param)
 		printf("Param input = %s\n",param );
 		curr = ft_lstnew(param);
 	}
-	// char 	**testfill = 0;
-
-
 	i = 0;
-
-	// if(check_valid_export(params) == 0) //FUNC TO DO
-	// {
-	// 	ft_putstr("export not valid identifier\n");
-	// 	return;
-	// }
-
 	if (curr == 0)
 	{
 		exportlst(g_mshell.env); // PAS PROTEGE
 		return (0);
 	}
 
-//	char *tmp;
-	// If export TEST and test is in vars -> export from vars
-	// If export TEST= and test is in vars -> export from command and free in vars
-	// tmp = vars(curr->content);
-	// printf("tmp = %s\n",tmp );
-	// if (tmp)
-	// {
-	// 	curr->content = ft_strjoinf1(curr->content, "=");
-	// 	curr->content = ft_strjoinf1(curr->content, tmp);
-	// 	// unset_var(curr->content);
-	// }
-
-	if(!ft_strnstr(curr->content, "=", ft_strlen(curr->content)))
+	char *tmp;
+	if (ft_strchr(curr->content, '=') == NULL)
 	{
-		printf("here\n");
-		curr->content = ft_strjoinf1(curr->content,"="); // PAS PROTEGE
+		tmp = vars(curr->content);	
+		if (tmp)
+		{
+			curr->content = ft_strjoinf1(curr->content, "=");
+			curr->content = ft_strjoinf1(curr->content, tmp);
+		}
 	}
+	unset_var(curr->content);
 	while (g_mshell.env[i])
 	{
 		if(!check_match(g_mshell.env[i], curr->content))
 		{
-
 			free(g_mshell.env[i]);
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
 			return (0);
 		}
 		i++;
 	}
-	printf("curr_content %s\n",curr->content );
 	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
 		return (1);
 	i = -1;
 	while (g_mshell.env[++i])
 		n_envi[i] = g_mshell.env[i];
-	n_envi[i++] = ft_strdup(curr->content); // PAS PROTEGE
-	n_envi[i] = 0;
+	n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
+	n_envi[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;
 	if(param != NULL)
@@ -506,7 +500,7 @@ int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans en
 		++z;
 	}
 	if (keys[2] == 0)
-		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD=")) == NULL)
+		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
 		{
 			freechar2ptr(g_mshell.env);
 			return (-1);
