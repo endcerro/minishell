@@ -320,7 +320,7 @@ void	exportlst(char **envi)
 	{
 		y = 0;
 		ft_putstr("declare -x ");
-		while (env2[x][y] && env2[x][y] != '=' ) 
+		while (env2[x][y] && env2[x][y] != '=' )
 			++y;
 		write(1, env2[x], y);
 		if (env2[x][y] == '=' && env2[x][y + 1] == 0)
@@ -343,7 +343,7 @@ int		check_match(char *env, char *param)
 
 	i = 0;
 	// printf("strlen = %d\n",ft_strlen(ft_strnstr(env, "=", ft_strlen(env) )));
-	
+
 	while (env[i] && env[i] != '=')
 		i++;
 
@@ -351,7 +351,7 @@ int		check_match(char *env, char *param)
 	ret = ft_strncmp(env, param, i);
 
 	// printf("ret = %d\n",ret );
-	
+
 	return (ret);
 }
 
@@ -379,7 +379,7 @@ int		export(char *param)
 	char *tmp;
 	if (ft_strchr(curr->content, '=') == NULL)
 	{
-		tmp = vars(curr->content);	
+		tmp = vars(curr->content);
 		if (tmp)
 		{
 			curr->content = ft_strjoinf1(curr->content, "=");
@@ -508,7 +508,7 @@ int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans en
 	return (0);
 }
 
-void	sigkill(int sig)
+void	sigint(int sig)
 {
 	if (g_mshell.pid != 0)
 	{
@@ -516,6 +516,20 @@ void	sigkill(int sig)
 		g_mshell.pid = 0;
 		/* write(1, "\n", 1); */
 	}
+	g_mshell.exitcode = 130;
+	/* signal(sig, SIG_IGN); */
+	/* write(1, "\n", 1); */
+}
+
+void	sigquit(int sig)
+{
+	if (g_mshell.pid != 0)
+	{
+		kill(g_mshell.pid, sig);
+		g_mshell.pid = 0;
+		/* write(1, "\n", 1); */
+	}
+	g_mshell.exitcode = 131;
 	/* signal(sig, SIG_IGN); */
 	/* write(1, "\n", 1); */
 }
@@ -531,7 +545,7 @@ int		main(void)
 
 	// printf("pipe1 %d \n", pipe(g_mshell.pipe1));
 	// printf("pipe2 %d \n",pipe(g_mshell.pipe2));
-	
+
 	g_mshell.pipe1[2] = -1;
 	g_mshell.pipe2[2] = -1;
 
@@ -542,8 +556,8 @@ int		main(void)
 	g_mshell.oldfdout = dup(1);
 	g_mshell.oldfdin = dup(0);
 
-	signal(SIGINT, &sigkill);
-	signal(SIGQUIT, &sigkill);
+	signal(SIGINT, &sigint);
+	signal(SIGQUIT, &sigquit);
 	if (newenviron() == -1)
 		return (1);
 	while (prompt(&line) > 0)
