@@ -129,31 +129,6 @@ char 	*env(char *request)
 	return (NULL);
 }
 
-
-int		unset_var(char *target)
-{
-	int		i;
-	t_list	*curr;
-
-	curr = g_mshell.ls->next;
-
-	i = 0;
-
-	while (g_mshell.vars[i])
-	{
-		if(!check_match(g_mshell.vars[i], target))
-		{
-			free(g_mshell.vars[i]);
-			while (g_mshell.vars[++i])
-				g_mshell.vars[i - 1] = g_mshell.vars[i];
-			g_mshell.vars[i - 1] = 0;
-			return (0);
-		}
-		i++;
-	}
-	return (0);
-}
-
 char 	*vars(char *request)
 {
 	int x;
@@ -355,7 +330,29 @@ int		check_match(char *env, char *param)
 	return (ret);
 }
 
+int		unset_var(char *target)
+{
+	int		i;
+	t_list	*curr;
 
+	curr = g_mshell.ls->next;
+
+	i = 0;
+
+	while (g_mshell.vars[i])
+	{
+		if(!check_match(g_mshell.vars[i], target))
+		{
+			free(g_mshell.vars[i]);
+			while (g_mshell.vars[++i])
+				g_mshell.vars[i - 1] = g_mshell.vars[i];
+			g_mshell.vars[i - 1] = 0;
+			return (0);
+		}
+		i++;
+	}
+	return (0);
+}
 
 int		export(char *param)
 {
