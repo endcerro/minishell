@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:57:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:08:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -105,9 +105,9 @@ void	inner_split(t_list *lst)
 
 t_list	*split_line_lst(char *line)
 {
-	t_list 	*f_lst;
-	t_list 	*lst;
-	int 	i;
+	t_list	*f_lst;
+	t_list	*lst;
+	int		i;
 
 	i = 0;
 	f_lst = 0;
@@ -127,7 +127,6 @@ t_list	*split_line_lst(char *line)
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
-//	ft_lstprint(f_lst);
 	inner_split(f_lst);
 	return (f_lst);
 }
