@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 10:33:51 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:50:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -165,7 +165,7 @@ void	tag_lst(t_list *lst)
 	}
 }
 
-void	get_lst(char *line)
+char *get_lst(char *line)
 {
 	char *filler;
 
@@ -189,7 +189,9 @@ void	get_lst(char *line)
 	/* ft_putstr("\n\n"); */
 //	ft_lstprint(out);
 	// tag_lst(out);
+	// free(filler);
 	g_mshell.ls = out;
+	return (line);
 }
 
 int		echo_ls(void)	//Devrait etre pas mal, à vérifier

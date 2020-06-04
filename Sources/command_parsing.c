@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 16:25:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:52:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -40,6 +40,7 @@ char	*check_finished_lst(char *line)	//Chnager le char ** en char * ?
 			out = ft_strjoinf1(out, fill[i++]);
 		}
 	}
+	freechar2ptr(fill);
 	return (out);
 }
 

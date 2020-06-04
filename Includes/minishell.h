@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 10:21:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:48:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void			freechar2ptr(char **ptr);
 int				count_blocks(char *line);
 
 void 			checkinput_ls(void);
-void			get_lst(char *line);
+char			*get_lst(char *line);
 char 			*inside_join(char *base, char *add);
 char 			*env(char *request);
 int				pwd();
