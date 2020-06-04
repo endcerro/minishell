@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 19:12:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:24:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,25 @@ char	**getfiller(int depth, int *cpt)
 		tmp = ft_strjoinf2("\n", tmp); // PAS PROTEGE
 	out[depth] = tmp;
 	return (out);
+}
+
+int		check_match(char *env, char *param)
+{
+	int ret;
+	int i ;
+
+	i = 0;
+	// printf("strlen = %d\n",ft_strlen(ft_strnstr(env, "=", ft_strlen(env) )));
+
+	while (env[i] && env[i] != '=')
+		i++;
+
+
+	ret = ft_strncmp(env, param, i);
+
+	// printf("ret = %d\n",ret );
+
+	return (ret);
 }
 
 int		checkexport(char *var)
@@ -336,24 +355,7 @@ void	exportlst(char **envi)
 	freechar2ptr(env2);
 }
 
-int		check_match(char *env, char *param)
-{
-	int ret;
-	int i ;
 
-	i = 0;
-	// printf("strlen = %d\n",ft_strlen(ft_strnstr(env, "=", ft_strlen(env) )));
-
-	while (env[i] && env[i] != '=')
-		i++;
-
-
-	ret = ft_strncmp(env, param, i);
-
-	// printf("ret = %d\n",ret );
-
-	return (ret);
-}
 
 
 

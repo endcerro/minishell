@@ -6,11 +6,24 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/01 19:27:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:23:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 char *inside_join(char *base, char *add)
 {
@@ -59,13 +72,11 @@ void 	swap_char(char *str, char c)
 
 void check_exitcode(char **str)
 {
-	int i;
 	char *pos;
 	char *tmp;
-	// printf("STR TO CHECK IS %s\n",*str );
 
 	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
-	tmp = ft_itoa(g_mshell.exitcode);
+	tmp = ft_itoaa(g_mshell.exitcode);
 	if (pos)
 	{
 		*str = inside_join(pos, tmp);

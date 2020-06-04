@@ -25,6 +25,7 @@ SRC			=	main.c \
 				export_utils.c  \
 				get_commands_lst.c \
 				command_parsing.c \
+				n_itoa.c \
 				lst_utils.c 		
 				
 OBJ			=	$(SRC:.c=.o)
