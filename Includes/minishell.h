@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:59:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:02:24 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,6 @@ void			ft_lstdelone(t_list *lst);
 void			ft_lstprint(t_list *lst);
 char			*ft_itoaa(int n);
 
-
-// void 			close_pipe();
-// void 			open_pipe(t_list *curr);
 
 void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
