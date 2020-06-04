@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:14:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:57:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -544,7 +544,8 @@ int		main(void)
 
 	g_mshell.pipe1[2] = -1;
 	g_mshell.pipe2[2] = -1;
-
+	g_mshell.pipes[2] = -1;
+	g_mshell.pipes[5] = -1;
 	g_mshell.rdirin = 0;
 	g_mshell.rdirout = 0;
 	// g_mshell.pipnb = 0;

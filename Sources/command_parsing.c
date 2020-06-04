@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:01:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:57:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -76,7 +76,8 @@ void check_rdir()
 		}
 		else if (curr->type == 6 && curr->next && curr->next->type == 1)
 		{
-		 	open_pipe(curr);
+		 	// open_pipe(curr);
+		 	open_pipe_n(curr);
 		 	break;
 		} 
 		curr = curr->next;

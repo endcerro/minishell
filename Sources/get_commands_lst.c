@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:15:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:57:39 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -284,7 +284,9 @@ void	checkinput_ls(void)
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
-	close_pipe();
+	// close_pipe();
+
+	close_pipe_n();
 	while(curr)
 	{
 		if(curr->type == 3 && curr->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 12:02:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:59:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct 	s_mshell
 
 	int 		pipe1[3];
 	int 		pipe2[3];
+	int 		pipes[6];
 
 	char 		pipnb;
 
@@ -95,7 +96,10 @@ void			ft_lstprint(t_list *lst);
 char			*ft_itoaa(int n);
 
 
-void 			close_pipe();
-void 			open_pipe(t_list *curr);
+// void 			close_pipe();
+// void 			open_pipe(t_list *curr);
+
+void 			close_pipe_n();
+void 			open_pipe_n(t_list *curr);
 
 #endif
