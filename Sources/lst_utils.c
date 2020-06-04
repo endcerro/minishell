@@ -6,12 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/28 14:23:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:18:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
-void	ft_lstprint(t_list *lst)
+/* void	ft_lstprint(t_list *lst)
 {
 	if (lst)
 	{
@@ -24,14 +25,14 @@ void	ft_lstprint(t_list *lst)
 			ft_putchar('|');
 			lst = lst->next;
 		}
-		ft_putchar('|'); 
+		ft_putchar('|');
 		ft_putstr(lst->content);
 		ft_putchar(':');
 		ft_putnbr(lst->type);
 		ft_putchar('|');
 	}
 	ft_putchar('\n');
-}
+} */
 
 void	ft_lstdelone(t_list *lst)
 {
@@ -85,21 +86,11 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 	}
 }
 
-void	ft_lstadd_front(t_list **alst, t_list *new)
-{
-	if (alst && new)
-	{
-		new->next = *alst;
-		*alst = new;
-	}
-}
-
 void	ft_lstadd_next(t_list *alst, t_list *new)
 {
 	t_list *copy;
 
 	copy = alst->next;
-
 	alst->next = new;
 	new->next = copy;
 }

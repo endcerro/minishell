@@ -6,9 +6,10 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:08:18 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:52:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_word_lst(char *line, int *p)
@@ -23,19 +24,19 @@ char	*get_word_lst(char *line, int *p)
 		while (line[*p] && line[*p] != '"' && ++len)
 			++(*p);
 		++(*p);
-		return(ft_substr(line, cp, len + 2));
+		return (ft_substr(line, cp, len + 2));
 	}
 	else if (line[*p] == '\'' && ++(*p))
 	{
 		while (line[*p] && line[*p] != '\'' && ++len)
 			++(*p);
 		++(*p);
-		return(ft_substr(line, cp, len + 2));
+		return (ft_substr(line, cp, len + 2));
 	}
 	else
 		while (line[*p] && !ft_isspace(line[*p]) && ++len)
 			++(*p);
-	return(ft_substr(line, cp, len));
+	return (ft_substr(line, cp, len));
 }
 
 void	find_char(char *buff)
@@ -54,33 +55,33 @@ void	find_char(char *buff)
 
 void	inner_split(t_list *lst)
 {
-	t_list 	*curr;
-	t_list 	*new;
-	char 	**split;
-	int 	i;
-	int 	j;
+	t_list	*curr;
+	t_list	*new;
+	char	**split;
+	int		i;
+	int		j;
+	char	buff[2];
 
-	char 	buff[2];
-	ft_bzero(buff,2);
+	ft_bzero(buff, 2);
 	find_char(buff);
 	curr = lst;
-	while(buff[0])
+	while (buff[0])
 	{
-		while(curr)
+		while (curr)
 		{
 			new = 0;
-			if(curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
+			if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
 			{
-				if(ft_strchr(curr->content, buff[0]))
+				if (ft_strchr(curr->content, buff[0]))
 				{
 					split = ft_split(curr->content, buff[0]);
 					i = -1;
 					j = 0;
-					while(curr->content[j])
+					while (curr->content[j])
 					{
-						while(curr->content[j] == buff[0] && ++j)
+						while (curr->content[j] == buff[0] && ++j)
 							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
-						while(curr->content[j] && curr->content[j] != buff[0])
+						while (curr->content[j] && curr->content[j] != buff[0])
 							j++;
 						if (split[++i])
 							ft_lstadd_back(&new, ft_lstnew(split[i]));
@@ -88,7 +89,7 @@ void	inner_split(t_list *lst)
 					free(split);
 				}
 			}
-			if(new)
+			if (new)
 			{
 				free(curr->content);
 				curr->content = new->content;
@@ -133,72 +134,53 @@ t_list	*split_line_lst(char *line)
 
 void	tag_lst(t_list *lst)
 {
-	t_list *curr;
+	t_list	*cr;
 	t_list	*cpy;
 
-	curr = lst;
-	while (curr)
+	cr = lst;
+	while (cr)
 	{
-		if (ft_strcmp(curr->content, ">") == 0)		//REDIRECTION ARE 2
+		if (ft_strcmp(cr->content, ">") == 0 && (cr->type = 2))
 		{
-			curr->type = 2;
-			if (curr->next && ft_strcmp(curr->next->content, ">") == 0)
+			if (cr->next && ft_strcmp(cr->next->content, ">") == 0)
 			{
-				curr->type = 4;
-				free(curr->content);
-				curr->content = ft_strdup(">>");
-				cpy = curr->next->next;
-				ft_lstdelone(curr->next);
-				curr->next = cpy;
+				cr->type = 4;
+				cr->content = ft_strjoinft(cr->content, cr->next->content);
+				cpy = cr->next->next;
+				free(cr->next);
+				cr->next = cpy;
 			}
 		}
-		else if (ft_strcmp(curr->content, ";") == 0) //END OF COMMAND ARE 3
-			curr->type = 3;
-		else if (ft_strcmp(curr->content, "<") == 0) //INPUT RDIR ARE 5
-			curr->type = 5;
-		else if (ft_strcmp(curr->content, "|") == 0)// && ++(g_mshell.pipnb))
-			curr->type = 6;
-		curr = curr->next;
+		else if (ft_strcmp(cr->content, ";") == 0)
+			cr->type = 3;
+		else if (ft_strcmp(cr->content, "<") == 0)
+			cr->type = 5;
+		else if (ft_strcmp(cr->content, "|") == 0)
+			cr->type = 6;
+		cr = cr->next;
 	}
 }
 
-char *get_lst(char *line)
+char	*get_lst(char *line)
 {
-	char *filler;
+	char	*filler;
+	t_list	*out;
 
 	filler = check_finished_lst(line);
-
 	if (filler)
-	{
-		// printf("here\n");
 		line = ft_strjoinft(line, filler);
-	}	
-
-
-	// parse_env_ls(&line);			//NEEDED SOMEWHERE ELSE
-
-
-
-	t_list *out = split_line_lst(line);
+	out = split_line_lst(line);
 	tag_lst(out);
-	// printf("\n\nPipes ammount : %d\n\n",g_mshell.pipnb);
-	// free(line);
-	/* ft_lstprint(out); */
-	/* ft_putstr("\n\n"); */
-//	ft_lstprint(out);
-	// tag_lst(out);
-	// free(filler);
 	g_mshell.ls = out;
 	return (line);
 }
 
-int		echo_ls(void)	//Devrait etre pas mal, à vérifier
+int		echo_ls(void)
 {
 	int		ret;
 	t_list	*curr;
 
 	ret = 0;
-	// fill = 0;
 	curr = g_mshell.ls->next;
 	if (curr && ft_strcmp(curr->content, "-n") == 0)
 		curr = curr->next;
@@ -208,7 +190,7 @@ int		echo_ls(void)	//Devrait etre pas mal, à vérifier
 	{
 		ft_putstr(curr->content);
 		if (curr->next)
-			write(1," ",1);
+			write(1, " ", 1);
 		curr = curr->next;
 	}
 	if (ret)
@@ -216,7 +198,7 @@ int		echo_ls(void)	//Devrait etre pas mal, à vérifier
 	return (0);
 }
 
-void 	expand_vars(t_list *lst)
+void	expand_vars(t_list *lst)
 {
 	t_list *curr;
 
@@ -228,18 +210,17 @@ void 	expand_vars(t_list *lst)
 	}
 }
 
-
 void	checkinput_ls(void)
 {
-	t_list *curr;
-
+	t_list	*curr;
+	t_list	*copy;
 
 	curr = g_mshell.ls;
-	if(curr == 0)
-		return;
+	if (curr == 0)
+		return ;
 	check_rdir();
 	expand_vars(curr);
-	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) // Fini
+	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ft_putstr("exit\n");
 		if (g_mshell.ls->next)
@@ -248,28 +229,25 @@ void	checkinput_ls(void)
 		freechar2ptr(g_mshell.vars);
 		exit(0);
 	}
-	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) // A terminer
+	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
-	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) // Fini
+	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
 	{
 		env(NULL);
 		g_mshell.exitcode = 0;
 	}
-	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0) // Fini // PAS PROTEGE
+	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
 		g_mshell.exitcode = cd();
-	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0) // Fini
+	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
 		g_mshell.exitcode = pwd();
-	else if (ft_strcmp(g_mshell.ls->content, "export") == 0) // A fignoler // PAS PROTEGE
+	else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
 		g_mshell.exitcode = export(0);
-	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0) // A terminer
+	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
 		g_mshell.exitcode = unset();
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 		ft_putstr("\033c");
 	else
 		commandorvar();
-
-
-	t_list *copy;
 	copy = g_mshell.ls;
 	if (g_mshell.rdirout == 1)
 	{
@@ -283,17 +261,14 @@ void	checkinput_ls(void)
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
-	// close_pipe();
-
 	close_pipe_n();
-	while(curr)
+	while (curr)
 	{
-		if(curr->type == 3 && curr->next != NULL)
+		if (curr->type == 3 && curr->next != NULL)
 		{
 			g_mshell.ls = curr->next;
 			checkinput_ls();
-			g_mshell.ls = copy;
-			return ;
+			break ;
 		}
 		curr = curr->next;
 	}

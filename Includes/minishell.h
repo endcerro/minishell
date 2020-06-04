@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:02:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:27:24 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ void			freechar2ptr(char **ptr);
 int 			check_valid_export(char **params);
 void 			parse_qts(char *str, int *cpt);
 int				parse_bs(char *str);
-int				parse_esc(char *str);
+int				parse_esc(char *str, int i);
 char			**getfiller(int depth, int *cpt);
 void			freechar2ptr(char **ptr);
-int				count_blocks(char *line);
 
 void 			checkinput_ls(void);
 char			*get_lst(char *line);
@@ -89,14 +88,17 @@ t_list			*ft_lstnew(char *content);
 void 			check_rdir();
 void			ft_lstadd_back(t_list **alst, t_list *new);
 char			*check_finished_lst(char *line);
-void			ft_lstadd_front(t_list **alst, t_list *new);
 void			ft_lstadd_next(t_list *alst, t_list *new);
 void			ft_lstdelone(t_list *lst);
-void			ft_lstprint(t_list *lst);
+
 char			*ft_itoaa(int n);
 
 
 void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
+
+
+void			ft_lstprint(t_list *lst);
+
 
 #endif
