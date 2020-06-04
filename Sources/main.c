@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 10:47:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 18:14:41 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -542,15 +542,12 @@ int		main(void)
 	g_mshell.vars = NULL;
 	g_mshell.ls = 0;
 
-	// printf("pipe1 %d \n", pipe(g_mshell.pipe1));
-	// printf("pipe2 %d \n",pipe(g_mshell.pipe2));
-
 	g_mshell.pipe1[2] = -1;
 	g_mshell.pipe2[2] = -1;
 
 	g_mshell.rdirin = 0;
 	g_mshell.rdirout = 0;
-	g_mshell.pipnb = 0;
+	// g_mshell.pipnb = 0;
 
 	g_mshell.oldfdout = dup(1);
 	g_mshell.oldfdin = dup(0);
@@ -567,14 +564,13 @@ int		main(void)
 		line = get_lst(line);
 		checkinput_ls();
 		ft_lstclear(&g_mshell.ls);
-
 		free(line);
-
+		line = 0;
 	}
 	ft_putstr("exit\n");
 	if(g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
-	// free(line);
+	free(line);
 	freechar2ptr(g_mshell.env);
 	freechar2ptr(g_mshell.vars);
 }
