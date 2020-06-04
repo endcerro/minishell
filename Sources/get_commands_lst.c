@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 10:22:09 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:33:51 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -157,7 +157,7 @@ void	tag_lst(t_list *lst)
 			curr->type = 3;
 		else if (ft_strcmp(curr->content, "<") == 0) //INPUT RDIR ARE 5
 			curr->type = 5;
-		else if (ft_strcmp(curr->content, "|") == 0 && (g_mshell.pipnb)++)
+		else if (ft_strcmp(curr->content, "|") == 0 && ++(g_mshell.pipnb))
 			curr->type = 6;
 		// else if (ft_strcmp(curr->content, ">>") == 0) //APPEND RDIR ARE 4
 		// 	curr->type = 4;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 10:24:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/04 10:32:07 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,6 +566,7 @@ int		main(void)
 
 		get_lst(line);
 		checkinput_ls();
+		ft_lstclear(&g_mshell.ls);
 
 		free(line);
 
