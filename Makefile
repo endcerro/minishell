@@ -19,7 +19,7 @@ SUB_MAKE	=	Libft
 LIB			=	$(SUB_MAKE)/libft.a
 
 SRC			=	main.c \
-				get_commands.c 	\
+				inside_join.c 	\
 				commandorvar.c 	\
 				echo_utils.c	\
 				export_utils.c  \

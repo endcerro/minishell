@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 15:33:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:08:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void	checkinput_ls(void)
 			ft_putstr("minishell: exit: too many arguments\n");
 		freechar2ptr(g_mshell.env);
 		freechar2ptr(g_mshell.vars);
+		ft_lstclear(&g_mshell.ls);
 		exit(0);
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)

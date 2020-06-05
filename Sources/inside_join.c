@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_commands.c                                     :+:      :+:    :+:   */
+/*   inside_join.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:37:30 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 18:00:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*inside_join(char *base, char *add)
+void	select_free(char *str1, char *str, int mode)
 {
-	int		i;
-	int		j;
-	int		p;
-	char	*out;
-
-	if (add != 0)
-	{
-		if (!(out = malloc(sizeof(char) *
-				(ft_strlen(base) + ft_strlen(add) + 1))))
-			return (0);
-	}
+	if (mode == 1)
+		free(str1);
+	else if (mode == 2)
+		free(str);
 	else
-		out = ft_strdup(base);
-	p = 0;
+	{
+		free(str1);
+		free(str);
+	}
+}
+
+void	iniside_join_loop(char *base, char *add, char *out)
+{
+	int i;
+	int j;
+	int p;
+
 	j = 0;
+	p = 0;
 	i = 0;
 	while (base[i])
 	{
@@ -44,5 +48,21 @@ char	*inside_join(char *base, char *add)
 			out[p++] = base[i++];
 	}
 	out[p] = 0;
+}
+
+char	*inside_join(char *base, char *add, int mode)
+{
+	char	*out;
+
+	if (add != 0)
+	{
+		if (!(out = malloc(sizeof(char) *
+				(ft_strlen(base) + ft_strlen(add) + 1))))
+			return (0);
+	}
+	else
+		out = ft_strdup(base);
+	iniside_join_loop(base, add, out);
+	select_free(base, add, mode);
 	return (out);
 }

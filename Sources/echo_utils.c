@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:37:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 17:52:08 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_exitcode(char **str)
 	tmp = ft_itoaa(g_mshell.exitcode);
 	if (pos)
 	{
-		*str = inside_join(pos, tmp);
+		*str = inside_join(pos, tmp, 2);
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	}
 	free(tmp);
@@ -58,9 +58,9 @@ void	parse_env_ls(char **str)
 		else
 		{
 			if (env(query))
-				*str = inside_join(*str, env(query) + 1);
+				*str = inside_join(*str, env(query) + 1, 1);
 			else
-				*str = inside_join(*str, vars(query));
+				*str = inside_join(*str, vars(query), 1);
 		}
 		d_pos = ft_strchr(*str, '$');
 		free(query);
