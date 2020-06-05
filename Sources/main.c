@@ -319,7 +319,7 @@ void	exportlst(char **envi)
 		write(1, env2[x], y);
 		if (env2[x][y] == '=' && env2[x][y + 1] == 0)
 			write(1, "=\"\"", 3);
-		else if (env2[x][y + 1] != 0)
+		else if (env2[x][y] != 0 && env2[x][y + 1] != 0)
 		{
 			write(1, "=\"", 2);
 			ft_putstr(env2[x] + y + 1);
@@ -341,18 +341,19 @@ int		unset_var(char *target)
 
 	i = 0;
 
-	while (g_mshell.vars[i])
-	{
-		if(!check_match(g_mshell.vars[i], target))
+	if (g_mshell.vars != NULL)
+		while (g_mshell.vars[i])
 		{
-			free(g_mshell.vars[i]);
-			while (g_mshell.vars[++i])
-				g_mshell.vars[i - 1] = g_mshell.vars[i];
-			g_mshell.vars[i - 1] = 0;
-			return (0);
+			if(!check_match(g_mshell.vars[i], target))
+			{
+				free(g_mshell.vars[i]);
+				while (g_mshell.vars[++i])
+					g_mshell.vars[i - 1] = g_mshell.vars[i];
+				g_mshell.vars[i - 1] = 0;
+				return (0);
+			}
+			i++;
 		}
-		i++;
-	}
 	return (0);
 }
 
@@ -392,6 +393,8 @@ int		export(char *param)
 		{
 			free(g_mshell.env[i]);
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
+			if (param != NULL)
+				free(curr);
 			return (0);
 		}
 		i++;
@@ -405,10 +408,6 @@ int		export(char *param)
 	n_envi[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;
-	if(param != NULL)
-	{
-		free(curr);
-	}
 	return (0);
 }
 

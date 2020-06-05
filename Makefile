@@ -27,12 +27,12 @@ SRC			=	main.c \
 				command_parsing.c \
 				n_itoa.c \
 				redirections.c \
-				lst_utils.c 		
-				
+				lst_utils.c
+
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra  -g -fsanitize=address#-Werror
+CFLAGS		=	-Wall -Wextra  -g #-fsanitize=address #-Werror
 
 CC			=	gcc
 RM			=	rm -f

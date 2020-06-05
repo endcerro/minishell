@@ -212,7 +212,7 @@ char	**ls_params()
 		curr = curr->next;
 	}
 	out[i] = 0;
-	return out;
+	return (out);
 }
 
 void	commandorvar(void)

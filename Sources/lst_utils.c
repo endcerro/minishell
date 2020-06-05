@@ -46,14 +46,17 @@ void	ft_lstclear(t_list **lst)
 	t_list *cache2;
 
 	cache = *lst;
-	while (cache->next)
+	if (cache != NULL)
 	{
-		cache2 = cache->next;
+		while (cache->next)
+		{
+			cache2 = cache->next;
+			ft_lstdelone(cache);
+			cache = cache2;
+		}
 		ft_lstdelone(cache);
-		cache = cache2;
+		*lst = 0;
 	}
-	ft_lstdelone(cache);
-	*lst = 0;
 }
 
 t_list	*ft_lstnew(char *content)
