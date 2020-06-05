@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:27:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 15:24:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char			**getfiller(int depth, int *cpt);
 void			freechar2ptr(char **ptr);
 
 void 			checkinput_ls(void);
+void 			check_pipe(char *str, int *cpt);
 char			*get_lst(char *line);
 char 			*inside_join(char *base, char *add);
 char 			*env(char *request);

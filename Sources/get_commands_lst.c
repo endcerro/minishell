@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 19:52:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 15:33:24 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void	checkinput_ls(void)
 	t_list	*copy;
 
 	curr = g_mshell.ls;
+	// ft_putstr_fd("Here",2);
 	if (curr == 0)
 		return ;
 	check_rdir();
@@ -249,11 +250,20 @@ void	checkinput_ls(void)
 	else
 		commandorvar();
 	copy = g_mshell.ls;
+	int test = 0;
 	if (g_mshell.rdirout == 1)
 	{
 		close(dup(1));
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
+
+		// printf("p1 %d p2 %d\n",g_mshell.pipes[2], g_mshell.pipes[5] );
+		if(g_mshell.pipes[2] == 0)
+		{
+			test = 1;
+			dup2(g_mshell.pipes[0], 0);
+			g_mshell.rdirin = 2;
+		}
 	}
 	if (g_mshell.rdirin == 1)
 	{
@@ -261,7 +271,8 @@ void	checkinput_ls(void)
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
-	close_pipe_n();
+	if (test == 0)
+		close_pipe_n();
 	while (curr)
 	{
 		if (curr->type == 3 && curr->next != NULL)

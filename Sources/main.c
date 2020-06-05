@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/04 18:57:22 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 15:25:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	**getfiller(int depth, int *cpt)
 	get_next_line(0, &tmp);
 	// printf("tmp b4 :%s\n",tmp);
 	parse_qts(tmp, cpt);
+	check_pipe(tmp, cpt);
 	out = 0;
 	// printf("tmp af %d :%s\n", *cpt,tmp);
 	parse_bs(tmp);
