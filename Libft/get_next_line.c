@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 16:04:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/02/26 02:11:34 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:42:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	*recurs(int depth, int *ret, int fd)
 	}
 	else
 	{
-		out = recurs(depth + 1, ret, fd);
+		if(!(out = recurs(depth + 1, ret, fd)))
+			return (0);
 		out[depth] = buff[0];
 	}
 	return (out);

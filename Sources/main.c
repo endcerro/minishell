@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 15:25:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:40:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,43 @@ char	**getfiller(int depth, int *cpt)
 
 	write(1, "dquote> ", 8);
 	get_next_line(0, &tmp);
+	if (tmp == NULL)
+	{
+		return (NULL);
+	}
 	// printf("tmp b4 :%s\n",tmp);
 	parse_qts(tmp, cpt);
 	check_pipe(tmp, cpt);
 	out = 0;
 	// printf("tmp af %d :%s\n", *cpt,tmp);
 	parse_bs(tmp);
-	if (cpt[0] % 2 || cpt[1] % 2)
+	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
+	{
 		out = getfiller(depth + 1, cpt); // PAS PROTEGE
+		if (out == 0)
+		{
+			free(tmp);
+			return (0);
+		}
+	}
 	else
 	{
-		out = malloc(sizeof(char *) * (depth + 2));
+		if(!(out = malloc(sizeof(char *) * (depth + 2))))
+		{
+			free(tmp);
+			return (NULL);
+		}
 		out[depth + 1] = 0;
 	}
 	if(depth == 0)
+	{
 		tmp = ft_strjoinf2("\n", tmp); // PAS PROTEGE
+		if(tmp == 0)
+		{
+			free (out);
+			return (0);
+		}
+	}
 	out[depth] = tmp;
 	return (out);
 }
@@ -559,10 +581,11 @@ int		main(void)
 		return (1);
 	while (prompt(&line) > 0)
 	{
-		if (line == NULL && *line == 0)
+		// if (line == NULL && *line == 0)
+		if (line == NULL || *line == 0)
 			break ;
 
-		line = get_lst(line); // PAS PROTEGE
+		line = get_lst(line); // PROTECTED UNTILL HERE
 		if (line == NULL)
 			continue ;
 		checkinput_ls();

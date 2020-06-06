@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 16:08:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:40:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,13 @@ t_list	*inner_split(t_list *lst)
 						while (curr->content[j] == buff[0] && ++j)
 						{
 							if ((tmp = ft_lstnew(ft_strdup(buff))) == NULL)
+							{
+								freechar2ptr(split);
 								return (NULL);
+							}
 							else if (tmp->content == NULL)
 							{
+								freechar2ptr(split);
 								ft_lstdelone(tmp);
 								return (NULL);
 							}
@@ -97,11 +101,14 @@ t_list	*inner_split(t_list *lst)
 						if (split[++i])
 						{
 							if ((tmp = ft_lstnew(split[i])) == NULL)
+							{
+								freechar2ptr(split);
 								return (NULL);
+							}
 							ft_lstadd_back(&new, ft_lstnew(split[i]));
 						}
 					}
-					free(split);
+					freechar2ptr(split);
 				}
 			}
 			if (new)
@@ -120,7 +127,7 @@ t_list	*inner_split(t_list *lst)
 	return (lst);
 }
 
-t_list	*split_line_lst(char *line)
+t_list	*split_line_lst(char *line) 	//PROTECTED
 {
 	t_list	*f_lst;
 	t_list	*lst;
@@ -134,7 +141,7 @@ t_list	*split_line_lst(char *line)
 			++i;
 		else
 		{
-			if ((lst = ft_lstnew(get_word_lst(line, &i))) == NULL)
+			if ((lst = ft_lstnew(get_word_lst(line, &i))) == NULL || lst->content == NULL)
 			{
 				ft_lstclear(&f_lst);
 				return (NULL);
@@ -188,20 +195,30 @@ t_list	*tag_lst(t_list *lst)
 	return (lst);
 }
 
-char	*get_lst(char *line)
+char	*get_lst(char *line)		//PROTECTED
 {
 	char	*filler;
 	t_list	*out;
 
-	if ((filler = check_finished_lst(line)) != NULL) // PAS PROTEGE
+	if ((filler = check_finished_lst(line)) != NULL)
 	{
 		if ((line = ft_strjoinft(line, filler)) == NULL)
 			return (NULL);
 	}
+	else
+	{
+		free(line);
+		return (0);
+	}
 	if ((out = split_line_lst(line)) == NULL)
+	{
+		free(line);
 		return (NULL);
+	}
+
 	if (tag_lst(out) == NULL)
 	{
+		free(line);
 		ft_lstclear(&out);
 		return (NULL);
 	}
