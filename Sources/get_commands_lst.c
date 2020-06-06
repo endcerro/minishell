@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 19:33:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:08:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,44 +53,13 @@ void	find_char(char *buff)
 		buff[0] = 0;
 }
 
-void	inner_split_loop(t_list *curr, char *buff, int i, int j)
-{
-	char	**split;
-	t_list	*new;
-
-	new = 0;
-	split = 0;
-	if (ft_isalnum(curr->content[0]) && curr->content[1])
-		if (ft_strchr(curr->content, buff[0]))
-		{
-			split = ft_split(curr->content, buff[0]);
-			while (curr->content[j])
-			{
-				while (curr->content[j] == buff[0] && ++j)
-					ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
-				while (curr->content[j] && curr->content[j] != buff[0])
-					j++;
-				if (split[++i])
-					ft_lstadd_back(&new, ft_lstnew(split[i]));
-			}
-		}
-	free(split);
-	if (new == 0)
-		return ;
-	free(curr->content);
-	curr->content = new->content;
-	ft_lstadd_back(&new, curr->next);
-	curr->next = new->next;
-	free(new);
-}
-
 void	inner_split(t_list *lst)
 {
 	t_list	*curr;
-	// t_list	*new;
-	// char	**split;
-	// int		i;
-	// int		j;
+	t_list	*new;
+	char	**split;
+	int		i;
+	int		j;
 	char	buff[2];
 
 	ft_bzero(buff, 2);
@@ -100,7 +69,34 @@ void	inner_split(t_list *lst)
 	{
 		while (curr)
 		{
-			inner_split_loop(curr,buff, -1, 0);
+			new = 0;
+			if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
+			{
+				if (ft_strchr(curr->content, buff[0]))
+				{
+					split = ft_split(curr->content, buff[0]);
+					i = -1;
+					j = 0;
+					while (curr->content[j])
+					{
+						while (curr->content[j] == buff[0] && ++j)
+							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
+						while (curr->content[j] && curr->content[j] != buff[0])
+							j++;
+						if (split[++i])
+							ft_lstadd_back(&new, ft_lstnew(split[i]));
+					}
+					free(split);
+				}
+			}
+			if (new)
+			{
+				free(curr->content);
+				curr->content = new->content;
+				ft_lstadd_back(&new, curr->next);
+				curr->next = new->next;
+				free(new);
+			}
 			curr = curr->next;
 		}
 		find_char(buff);
@@ -176,7 +172,6 @@ char	*get_lst(char *line)
 	out = split_line_lst(line);
 	tag_lst(out);
 	g_mshell.ls = out;
-	g_mshell.ls_b = out;
 	return (line);
 }
 
@@ -215,39 +210,27 @@ void	expand_vars(t_list *lst)
 	}
 }
 
-void ft_exit(void)
+void	checkinput_ls(void)
 {
-	ft_putstr("exit\n");
-	if (g_mshell.ls->next)
-		ft_putstr("minishell: exit: too many arguments\n");
-	freechar2ptr(g_mshell.env);
-	freechar2ptr(g_mshell.vars);
-	ft_lstclear(&g_mshell.ls_b);
-	exit(0);
-}
+	t_list	*curr;
+	t_list	*copy;
 
-int is_builtin(char *str)
-{
-	if (!ft_strcmp(str, "exit") || 
-		!ft_strcmp(g_mshell.ls->content, "echo") 	||
-		!ft_strcmp(g_mshell.ls->content, "cd")		||
-		!ft_strcmp(g_mshell.ls->content, "pwd")		||
-		!ft_strcmp(g_mshell.ls->content, "export")	||
-		!ft_strcmp(g_mshell.ls->content, "unset")	||
-		!ft_strcmp(g_mshell.ls->content, "clear")	||
-		!ft_strcmp(g_mshell.ls->content, "env"))
-		return (1);
-	return (0);
-}
-int builtin(void)
-{
-	if(!is_builtin(g_mshell.ls->content))
-		return (0);
-
-	//Trim quotes
-
+	curr = g_mshell.ls;
+	// ft_putstr_fd("Here",2);
+	if (curr == 0)
+		return ;
+	check_rdir();
+	expand_vars(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-		ft_exit();
+	{
+		ft_putstr("exit\n");
+		if (g_mshell.ls->next)
+			ft_putstr("minishell: exit: too many arguments\n");
+		freechar2ptr(g_mshell.env);
+		freechar2ptr(g_mshell.vars);
+		ft_lstclear(&g_mshell.ls);
+		exit(0);
+	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
@@ -265,20 +248,7 @@ int builtin(void)
 		g_mshell.exitcode = unset();
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 		ft_putstr("\033c");
-	return (1);
-}
-
-void	checkinput_ls(void)
-{
-	t_list	*curr;
-	t_list	*copy;
-
-	curr = g_mshell.ls;
-	if (curr == 0)
-		return ;
-	check_rdir();
-	expand_vars(curr);
-	if(!builtin())
+	else
 		commandorvar();
 	copy = g_mshell.ls;
 	int test = 0;
@@ -287,6 +257,8 @@ void	checkinput_ls(void)
 		close(dup(1));
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
+
+		// printf("p1 %d p2 %d\n",g_mshell.pipes[2], g_mshell.pipes[5] );
 		if(g_mshell.pipes[2] == 0)
 		{
 			test = 1;

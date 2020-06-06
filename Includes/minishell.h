@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 19:10:11 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/05 17:49:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct 	s_mshell
 	char		**env;
 	char		**vars;
 	t_list		*ls;
-	t_list 		*ls_b;
 	pid_t		pid;
 	int			exitcode;
 
@@ -69,7 +68,7 @@ void			commandorvar(void);
 void			freechar2ptr(char **ptr);
 
 
-int 			check_valid_export(t_list *curr);
+int 			check_valid_export(char **params);
 void 			parse_qts(char *str, int *cpt);
 int				parse_bs(char *str);
 int				parse_esc(char *str, int i);
@@ -102,10 +101,5 @@ void 			open_pipe_n(t_list *curr);
 
 void			ft_lstprint(t_list *lst);
 
-void 			trimquotes(char *str);
-
-void	quicks(char **tab, int lo, int hi);
-int		check_match(char *env, char *param);
-int 	wordlen(char *str);
 
 #endif
