@@ -562,13 +562,15 @@ int		main(void)
 		if (line == NULL && *line == 0)
 			break ;
 
-		line = get_lst(line);
+		line = get_lst(line); // PAS PROTEGE
+		if (line == NULL)
+			continue ;
 		checkinput_ls();
 		ft_lstclear(&g_mshell.ls);
 		free(line);
 		line = 0;
 	}
-	ft_putstr("exit\n");
+	write(1, "exit\n", 5);
 	if(g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
 	free(line);

@@ -55,7 +55,7 @@ void	ft_lstclear(t_list **lst)
 			cache = cache2;
 		}
 		ft_lstdelone(cache);
-		*lst = 0;
+		*lst = NULL;
 	}
 }
 
@@ -64,9 +64,9 @@ t_list	*ft_lstnew(char *content)
 	t_list *out;
 
 	if (!(out = malloc(sizeof(t_list))))
-		return (0);
+		return (NULL);
 	out->content = content;
-	out->next = 0;
+	out->next = NULL;
 	out->type = 1;
 	return (out);
 }

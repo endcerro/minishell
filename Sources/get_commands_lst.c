@@ -53,7 +53,7 @@ void	find_char(char *buff)
 		buff[0] = 0;
 }
 
-void	inner_split(t_list *lst)
+t_list	*inner_split(t_list *lst)
 {
 	t_list	*curr;
 	t_list	*new;
@@ -61,6 +61,7 @@ void	inner_split(t_list *lst)
 	int		i;
 	int		j;
 	char	buff[2];
+	t_list	*tmp;
 
 	ft_bzero(buff, 2);
 	find_char(buff);
@@ -74,17 +75,31 @@ void	inner_split(t_list *lst)
 			{
 				if (ft_strchr(curr->content, buff[0]))
 				{
-					split = ft_split(curr->content, buff[0]);
+					if ((split = ft_split(curr->content, buff[0])) == NULL)
+						return (NULL);
 					i = -1;
 					j = 0;
 					while (curr->content[j])
 					{
 						while (curr->content[j] == buff[0] && ++j)
-							ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
+						{
+							if ((tmp = ft_lstnew(ft_strdup(buff))) == NULL)
+								return (NULL);
+							else if (tmp->content == NULL)
+							{
+								ft_lstdelone(tmp);
+								return (NULL);
+							}
+							ft_lstadd_back(&new, tmp);
+						}
 						while (curr->content[j] && curr->content[j] != buff[0])
 							j++;
 						if (split[++i])
+						{
+							if ((tmp = ft_lstnew(split[i])) == NULL)
+								return (NULL);
 							ft_lstadd_back(&new, ft_lstnew(split[i]));
+						}
 					}
 					free(split);
 				}
@@ -102,6 +117,7 @@ void	inner_split(t_list *lst)
 		find_char(buff);
 		curr = lst;
 	}
+	return (lst);
 }
 
 t_list	*split_line_lst(char *line)
@@ -111,28 +127,36 @@ t_list	*split_line_lst(char *line)
 	int		i;
 
 	i = 0;
-	f_lst = 0;
+	f_lst = NULL;
 	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
 			++i;
 		else
 		{
-			lst = ft_lstnew(get_word_lst(line, &i));
-			if (f_lst == 0)
+			if ((lst = ft_lstnew(get_word_lst(line, &i))) == NULL)
+			{
+				ft_lstclear(&f_lst);
+				return (NULL);
+			}
+			if (f_lst == NULL)
 			{
 				f_lst = lst;
-				lst = 0;
+				lst = NULL;
 			}
 			else
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
-	inner_split(f_lst);
+	if (inner_split(f_lst) == NULL)
+	{
+		ft_lstclear(&f_lst);
+		return (NULL);
+	}
 	return (f_lst);
 }
 
-void	tag_lst(t_list *lst)
+t_list	*tag_lst(t_list *lst)
 {
 	t_list	*cr;
 	t_list	*cpy;
@@ -146,6 +170,8 @@ void	tag_lst(t_list *lst)
 			{
 				cr->type = 4;
 				cr->content = ft_strjoinft(cr->content, cr->next->content);
+				if (cr->content == NULL)
+					return (NULL);
 				cpy = cr->next->next;
 				free(cr->next);
 				cr->next = cpy;
@@ -159,6 +185,7 @@ void	tag_lst(t_list *lst)
 			cr->type = 6;
 		cr = cr->next;
 	}
+	return (lst);
 }
 
 char	*get_lst(char *line)
@@ -166,11 +193,18 @@ char	*get_lst(char *line)
 	char	*filler;
 	t_list	*out;
 
-	filler = check_finished_lst(line);
-	if (filler)
-		line = ft_strjoinft(line, filler);
-	out = split_line_lst(line);
-	tag_lst(out);
+	if ((filler = check_finished_lst(line)) != NULL) // PAS PROTEGE
+	{
+		if ((line = ft_strjoinft(line, filler)) == NULL)
+			return (NULL);
+	}
+	if ((out = split_line_lst(line)) == NULL)
+		return (NULL);
+	if (tag_lst(out) == NULL)
+	{
+		ft_lstclear(&out);
+		return (NULL);
+	}
 	g_mshell.ls = out;
 	return (line);
 }
@@ -216,7 +250,6 @@ void	checkinput_ls(void)
 	t_list	*copy;
 
 	curr = g_mshell.ls;
-	// ft_putstr_fd("Here",2);
 	if (curr == 0)
 		return ;
 	check_rdir();

@@ -28,7 +28,7 @@ void 	check_pipe(char *str, int *cpt)
 			++pipefound;
 		else if(!ft_isspace(str[i]))
 			pipefound = 0;
-		
+
 		i++;
 	}
 	if(pipefound >= 2)
@@ -56,11 +56,17 @@ char	*check_finished_lst(char *line)
 		fill = getfiller(0, cpt); /* PAS PROTEGE+ */
 	if (fill && fill[i])
 	{
-		out = ft_strdup(fill[i++]);
-		while (fill[i])
+		if ((out = ft_strdup(fill[i])) == NULL)
 		{
-			out = ft_strjoinf1(out, "\n");
-			out = ft_strjoinf1(out, fill[i++]);
+			freechar2ptr(fill);
+			return (NULL);
+		}
+		while (fill[++i])
+		{
+			if ((out = ft_strjoinf1(out, "\n")) == NULL)
+				break ;
+			if ((out = ft_strjoinf1(out, fill[i])) == NULL)
+				break ;
 		}
 	}
 	freechar2ptr(fill);
