@@ -6,127 +6,121 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/05/17 19:25:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 18:16:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *inside_join(char *base, char *add)
+void	swap_char(char *str, char c)
 {
-	int i;
-	int j;
-	int p;
-	char *out;
+	int		i;
 
-	if(add != 0)
-		out = malloc(sizeof(char) * (ft_strlen(base) + ft_strlen(add) + 1));
-	else
-		out = malloc(sizeof(char) * (ft_strlen(base) + 1));
-	p = 0;
-	j = 0;
-	i = 0;
-
-	while(base[i])
+	i = -1;
+	while (str[++i])
 	{
-		if(j == 0 && base[i] == '$')
-		{
-			while(add && add[j])
-				out[p++] = add[j++];
-			i++;
-			while(++j && base[i] && !ft_isspace(base[i]))
-				i++;
-		}
-		else
-			out[p++] = base[i++];
+		if (str[i] == -1)
+			str[i] = c;
 	}
-	out[p] = 0;
-	free(base);
-	return out;
 }
 
-void	parse_env(char **param)
+void	check_exitcode(char **str)
 {
-	int		len;
+	char	*pos;
 	char	*tmp;
-	char	*cache;
-	char	*str;
+
+	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
+	tmp = ft_itoaa(g_mshell.exitcode);
+	if(tmp == 0)
+	{
+		free(*str);
+		*str = 0;
+		return ;
+	}
+	
+	if (pos)
+	{
+		*str = inside_join(pos, tmp, 2);
+		if(*str == 0)
+			return ;
+		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
+	}
+	free(tmp);
+}
+
+void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
+{
+	char	*d_pos;
+	char	*query;
+	int		len;
 
 	len = 0;
-	cache = ft_strchr(*param, '$');
-	while(cache != NULL)
+	check_exitcode(str);
+	if(*str == 0)
 	{
-		// while (ft_isupper(cache[len + 1]))
-		while (cache[len + 1] && cache[len + 1] != '=')
-			len++;
-		tmp = ft_substr(cache, 1, len);
-		str = env(tmp);
-		*param = inside_join(*param, str == NULL ? vars(tmp) : str);
-		free(tmp);
-		cache = ft_strchr(*param, '$');
+		return ;
 	}
+	d_pos = ft_strchr(*str, '$');
+	while (d_pos != NULL)
+	{
+		while (d_pos[len + 1] && ft_isalnum(d_pos[len + 1]))
+			len++;
+		query = ft_substr(d_pos, 1, len);
+		if(query == 0)
+		{
+			free(*str);
+			*str = 0;
+			return ;
+		}
+		printf("QUERY = %s\n",query );
+		if (*query == 0 || ft_isspace(*query))
+			*(d_pos) = -1;
+		else
+		{
+			if (env(query))
+				*str = inside_join(*str, env(query) + 1, 1);
+			else
+				*str = inside_join(*str, vars(query), 1);
+			if(*str == 0)
+			{
+				free(query);
+				return ;
+			}
+		}
+		d_pos = ft_strchr(*str, '$');
+		free(query);
+	}				
+	swap_char(*str, '$');
 }
 
 int		parse_bs(char *str)
 {
-	int i;
+	int		i;
 
 	i = -1;
 	while (str[++i])
 		if (str[i] == '\\')
-			i -= parse_esc(str + i);
-
-	return 0;
+			i -= parse_esc(str + i, 0);
+	return (0);
 }
 
-
-void 	parse_qts(char *str, int *cpt)
+void	parse_qts(char *str, int *cpt)
 {
-	int 	i;
-	int 	j;
-	int 	v;
+	int		j;
+	int		v;
 
-	i = 0;
 	j = -1;
 	while (str[++j])
 		if ((str[j] == '\'' || str[j] == '\"'))
 		{
 			v = 0;
-			if(j > 0 && str[j - 1] == '\\' && (v = 1))
+			if (j > 0 && str[j - 1] == '\\' && (v = 1))
 			{
 				while (j - v >= 0 && str[j - v] == '\\')
 					v++;
 				v--;
 			}
 			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
-			{
 				cpt[!(str[j] == '\"')]++;
-				i = -1;
-				while(str[j + ++i])
-					str[j + i] = str[j + i + 1];
-				j--;
-			}
 		}
-}
-
-char	**check_finished()	//Chnager le char ** en char * ?
-{
-	int		i;
-	int		cpt[2];
-	char	**fill;
-
-	i = -1;
-	fill = 0;
-	ft_bzero(cpt, 2);
-	cpt[0] = 0;
-	cpt[1] = 0;
-	while (g_mshell.params[++i])
-	{
-		parse_qts(g_mshell.params[i], cpt);
-		parse_env(&g_mshell.params[i]);
-		parse_bs(g_mshell.params[i]);
-	}
-	if (cpt[0] % 2 || cpt[1] % 2)
-	 	fill = getfiller(0, cpt); // PAS PROTEGE
-	return (fill);
 }
