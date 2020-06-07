@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:40:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:19:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	**getfiller(int depth, int *cpt)
 	return (out);
 }
 
-int		check_match(char *env, char *param)
+int		check_match(char *env, char *param)		//PROTECTED
 {
 	int ret;
 	int i ;
@@ -244,7 +244,11 @@ int		cd(void)
 	if (g_mshell.env[x] == NULL)
 		return (0);
 	free(g_mshell.env[oldpwd]);
-	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // PAS PROTEGE
+	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // FREE F2?
+	if(g_mshell.env[oldpwd] == 0)
+	{
+		return (1);
+	}
 	free(g_mshell.env[pwd]);
 	if ((str = getcwdwrap()) == NULL)
 		ft_putstr(strerror(errno));
@@ -313,7 +317,7 @@ void	quicks(char **tab, int lo, int hi)
 	}
 }
 
-void	exportlst(char **envi)
+void	exportlst(char **envi)					//PROTECTED
 {
 	int		x;
 	int		y;
@@ -329,7 +333,14 @@ void	exportlst(char **envi)
 	}
 	y = -1;
 	while (envi[++y])
-		env2[y] = ft_strdup(envi[y]); // PAS PROTEGE
+	{
+		env2[y] = ft_strdup(envi[y]);
+		if(env2[y] == 0)
+		{
+			freechar2ptr(env2);
+			return ;
+		}
+	}
 	env2[y] = NULL;
 	quicks(env2, 0, y - 1);
 	x = -1;
@@ -355,7 +366,7 @@ void	exportlst(char **envi)
 
 
 
-int		unset_var(char *target)
+int		unset_var(char *target)			//PROTECTED
 {
 	int		i;
 	t_list	*curr;
@@ -380,7 +391,7 @@ int		unset_var(char *target)
 	return (0);
 }
 
-int		export(char *param)
+int		export(char *param)			//PROTECTED
 {
 	int		i;
 	char	**n_envi;
@@ -395,7 +406,7 @@ int		export(char *param)
 	i = 0;
 	if (curr == 0)
 	{
-		exportlst(g_mshell.env); // PAS PROTEGE
+		exportlst(g_mshell.env); // PROTECTED
 		return (0);
 	}
 
@@ -406,16 +417,30 @@ int		export(char *param)
 		if (tmp)
 		{
 			curr->content = ft_strjoinf1(curr->content, "=");
+			if(curr->content == 0)
+				return (1);
 			curr->content = ft_strjoinf1(curr->content, tmp);
+			if(curr->content == 0)
+				return (1);
 		}
 	}
+
 	unset_var(curr->content);
+	char *cpy;
 	while (g_mshell.env[i])
 	{
 		if(!check_match(g_mshell.env[i], curr->content))
 		{
-			free(g_mshell.env[i]);
+			cpy = g_mshell.env[i]; 
+			
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
+			
+			if(g_mshell.env[i] == 0)
+			{
+				g_mshell.env[i] = cpy;
+				return (1);
+			}
+			free(cpy);
 			if (param != NULL)
 				free(curr);
 			return (0);
@@ -428,6 +453,11 @@ int		export(char *param)
 	while (g_mshell.env[++i])
 		n_envi[i] = g_mshell.env[i];
 	n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
+	if(n_envi[i] == 0)
+	{
+		freechar2ptr(n_envi);
+		return (1);
+	}
 	n_envi[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = n_envi;

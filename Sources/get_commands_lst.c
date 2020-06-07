@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:55:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:18:21 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,16 +249,21 @@ int		echo_ls(void)
 	return (0);
 }
 
-void	expand_vars(t_list *lst)
+int		expand_vars(t_list *lst)
 {
 	t_list *curr;
 
 	curr = lst;
 	while (curr && curr->type != 3)
 	{
-		parse_env_ls(&(curr->content));
+		parse_env_ls(&(curr->content));		//PROTECTED
+		if(curr->content == 0)
+		{
+			return (1);
+		}
 		curr = curr->next;
 	}
+	return (0);
 }
 
 void	checkinput_ls(void)
@@ -269,8 +274,12 @@ void	checkinput_ls(void)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	check_rdir();						//PROTECTED UNTILL HERE
-	expand_vars(curr);
+	check_rdir();						
+	if(expand_vars(curr))
+	{
+		return ;
+	}
+
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ft_putstr("exit\n");
@@ -281,21 +290,21 @@ void	checkinput_ls(void)
 		ft_lstclear(&g_mshell.ls);
 		exit(0);
 	}
-	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
-		g_mshell.exitcode = echo_ls();
-	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
+	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) 
+		g_mshell.exitcode = echo_ls();						//PROTECTED
+	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) //PROTECTED UNTILL HERE
 	{
 		env(NULL);
 		g_mshell.exitcode = 0;
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
-		g_mshell.exitcode = cd();
+		g_mshell.exitcode = cd();							//CHECK PROTECTION
 	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
 		g_mshell.exitcode = pwd();
 	else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
-		g_mshell.exitcode = export(0);
+		g_mshell.exitcode = export(0);							//PROTECTED
 	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
-		g_mshell.exitcode = unset();
+		g_mshell.exitcode = unset();							//PROTECTED
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 		ft_putstr("\033c");
 	else

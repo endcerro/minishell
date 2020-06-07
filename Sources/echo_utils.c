@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 17:52:08 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:00:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,24 @@ void	check_exitcode(char **str)
 
 	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	tmp = ft_itoaa(g_mshell.exitcode);
+	if(tmp == 0)
+	{
+		free(*str);
+		*str = 0;
+		return ;
+	}
+	
 	if (pos)
 	{
 		*str = inside_join(pos, tmp, 2);
+		if(*str == 0)
+			return ;
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	}
 	free(tmp);
 }
 
-void	parse_env_ls(char **str)
+void	parse_env_ls(char **str)				//PROTECTED
 {
 	char	*d_pos;
 	char	*query;
@@ -47,12 +56,22 @@ void	parse_env_ls(char **str)
 
 	len = 0;
 	check_exitcode(str);
+	if(str == 0)
+	{
+		return ;
+	}
 	d_pos = ft_strchr(*str, '$');
 	while (d_pos != NULL)
 	{
 		while (d_pos[len + 1] && ft_isalnum(d_pos[len + 1]))
 			len++;
 		query = ft_substr(d_pos, 1, len);
+		if(query == 0)
+		{
+			free(*str);
+			*str = 0;
+			return ;
+		}
 		if (*query == 0 || ft_isspace(*query))
 			*(d_pos) = -1;
 		else
@@ -61,10 +80,14 @@ void	parse_env_ls(char **str)
 				*str = inside_join(*str, env(query) + 1, 1);
 			else
 				*str = inside_join(*str, vars(query), 1);
+			if(*str == 0)
+			{
+				return ;
+			}
 		}
 		d_pos = ft_strchr(*str, '$');
 		free(query);
-	}
+	}				
 	swap_char(*str, '$');
 }
 
