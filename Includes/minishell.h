@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:04:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:56:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int				unset();
 
 void			ft_lstclear(t_list **lst);
 t_list			*ft_lstnew(char *content);
+t_list			*ft_lstnew_p(char *content);
 void 			check_rdir();
 void			ft_lstadd_back(t_list **alst, t_list *new);
 char			*check_finished_lst(char *line);

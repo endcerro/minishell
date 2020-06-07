@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:18:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:59:31 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,11 @@ t_list	*inner_split(t_list *lst)
 	return (lst);
 }
 
-t_list	*split_line_lst(char *line) 	//PROTECTED
+t_list	*split_line_lst(char *line)
 {
 	t_list	*f_lst;
 	t_list	*lst;
+	char 	*temp;
 	int		i;
 
 	i = 0;
@@ -141,7 +142,7 @@ t_list	*split_line_lst(char *line) 	//PROTECTED
 			++i;
 		else
 		{
-			if ((lst = ft_lstnew(get_word_lst(line, &i))) == NULL || lst->content == NULL)
+			if ((lst = ft_lstnew_p(get_word_lst(line, &i))) == NULL || lst->content == NULL)
 			{
 				ft_lstclear(&f_lst);
 				return (NULL);
@@ -205,13 +206,15 @@ char	*get_lst(char *line)		//PROTECTED
 		if ((line = ft_strjoinft(line, filler)) == NULL)
 			return (NULL);
 	}
-	else
-	{
-		free(line);
-		return (0);
-	}
+	// else
+	// {
+	// 	printf("HERE1\n");
+	// 	free(line);
+	// 	return (0);
+	// }
 	if ((out = split_line_lst(line)) == NULL)
 	{
+		// printf("HERE\n");
 		free(line);
 		return (NULL);
 	}
@@ -249,14 +252,14 @@ int		echo_ls(void)
 	return (0);
 }
 
-int		expand_vars(t_list *lst)
+int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 {
 	t_list *curr;
 
 	curr = lst;
 	while (curr && curr->type != 3)
 	{
-		parse_env_ls(&(curr->content));		//PROTECTED
+		parse_env_ls(&(curr->content));
 		if(curr->content == 0)
 		{
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:19:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 18:38:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		prompt(char **line)
 	return (get_next_line(0, line));
 }
 
-char	*getcwdwrap(void)
+char	*getcwdwrap(void)				//MALLOC PROTECTED
 {
 	char			*str;
 	unsigned int	i;
@@ -27,7 +27,7 @@ char	*getcwdwrap(void)
 	str = NULL;
 	while (i < UINT_MAX)
 	{
-		if (!(str = (char *)malloc(i)))
+		if (!(str = (char *)malloc(i)))				
 			return (NULL);
 		if (getcwd(str, i) != NULL)
 			break ;
@@ -46,13 +46,14 @@ void	freechar2ptr(char **ptr)
 		return ;
 	while (ptr[i])
 	{
-		free(ptr[i]);
+		if(ptr[i] != -1)
+			free(ptr[i]);
 		++i;
 	}
 	free(ptr);
 }
 
-char	**getfiller(int depth, int *cpt)
+char	**getfiller(int depth, int *cpt)		//MALLOC PROTECTED
 {
 	char *tmp;
 	char **out;
@@ -71,7 +72,7 @@ char	**getfiller(int depth, int *cpt)
 	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
-		out = getfiller(depth + 1, cpt); // PAS PROTEGE
+		out = getfiller(depth + 1, cpt);
 		if (out == 0)
 		{
 			free(tmp);
@@ -89,7 +90,7 @@ char	**getfiller(int depth, int *cpt)
 	}
 	if(depth == 0)
 	{
-		tmp = ft_strjoinf2("\n", tmp); // PAS PROTEGE
+		tmp = ft_strjoinf2("\n", tmp);
 		if(tmp == 0)
 		{
 			free (out);
@@ -250,6 +251,7 @@ int		cd(void)
 		return (1);
 	}
 	free(g_mshell.env[pwd]);
+	g_mshell.env[pwd] = -1;		//SKIP THIS IN FREECHAR2PTR if issue on getcwdwrap
 	if ((str = getcwdwrap()) == NULL)
 		ft_putstr(strerror(errno));
 	else
@@ -317,7 +319,7 @@ void	quicks(char **tab, int lo, int hi)
 	}
 }
 
-void	exportlst(char **envi)					//PROTECTED
+void	exportlst(char **envi)					//MALLOC PROTECTED
 {
 	int		x;
 	int		y;
@@ -618,6 +620,7 @@ int		main(void)
 		line = get_lst(line); // PROTECTED UNTILL HERE
 		if (line == NULL)
 			continue ;
+		// printf("AFTER GETLST\n");
 		checkinput_ls();
 		ft_lstclear(&g_mshell.ls);
 		free(line);

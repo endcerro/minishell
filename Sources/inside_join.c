@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 18:00:55 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:53:41 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	iniside_join_loop(char *base, char *add, char *out)
 	out[p] = 0;
 }
 
-char	*inside_join(char *base, char *add, int mode)
+char	*inside_join(char *base, char *add, int mode)	//MALLOC PROC OK
 {
 	char	*out;
 
@@ -58,10 +58,19 @@ char	*inside_join(char *base, char *add, int mode)
 	{
 		if (!(out = malloc(sizeof(char) *
 				(ft_strlen(base) + ft_strlen(add) + 1))))
+		{
+			select_free(base, add, mode);
 			return (0);
+		}
+
 	}
 	else
 		out = ft_strdup(base);
+	if (out == 0)
+	{
+		select_free(base, add, mode);
+		return (0);
+	}
 	iniside_join_loop(base, add, out);
 	select_free(base, add, mode);
 	return (out);

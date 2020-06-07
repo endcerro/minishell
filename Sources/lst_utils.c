@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:18:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 17:59:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,27 @@ void	ft_lstclear(t_list **lst)
 	}
 }
 
-t_list	*ft_lstnew(char *content)
+t_list	*ft_lstnew(char *content)			//MALLOC PROTECTED
 {
 	t_list *out;
 
 	if (!(out = malloc(sizeof(t_list))))
 		return (NULL);
+	out->content = content;
+	out->next = NULL;
+	out->type = 1;
+	return (out);
+}
+
+t_list	*ft_lstnew_p(char *content)		//MALLOC PROTECTED
+{
+	t_list *out;
+
+	if (!(out = malloc(sizeof(t_list))))
+	{
+		free(content);
+		return (NULL);
+	}
 	out->content = content;
 	out->next = NULL;
 	out->type = 1;

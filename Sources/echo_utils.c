@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:00:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 18:16:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	check_exitcode(char **str)
 	free(tmp);
 }
 
-void	parse_env_ls(char **str)				//PROTECTED
+void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 {
 	char	*d_pos;
 	char	*query;
@@ -56,7 +56,7 @@ void	parse_env_ls(char **str)				//PROTECTED
 
 	len = 0;
 	check_exitcode(str);
-	if(str == 0)
+	if(*str == 0)
 	{
 		return ;
 	}
@@ -72,6 +72,7 @@ void	parse_env_ls(char **str)				//PROTECTED
 			*str = 0;
 			return ;
 		}
+		printf("QUERY = %s\n",query );
 		if (*query == 0 || ft_isspace(*query))
 			*(d_pos) = -1;
 		else
@@ -82,6 +83,7 @@ void	parse_env_ls(char **str)				//PROTECTED
 				*str = inside_join(*str, vars(query), 1);
 			if(*str == 0)
 			{
+				free(query);
 				return ;
 			}
 		}
