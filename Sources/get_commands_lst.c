@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:40:19 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:55:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,7 +269,7 @@ void	checkinput_ls(void)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	check_rdir();
+	check_rdir();						//PROTECTED UNTILL HERE
 	expand_vars(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{

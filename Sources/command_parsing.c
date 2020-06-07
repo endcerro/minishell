@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:03:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:54:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,10 @@ void	check_rdir(void)
 			g_mshell.rdirout = 1;
 			fd = open(curr->next->content,
 				O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
-			dup2(fd, 1);
+			if(fd == -1)
+				ft_putstr_fd("Oh no no no.. FD ERROR\n",2);
+			else
+				dup2(fd, 1);
 		}
 		else if (curr->type == 4 && curr->next && curr->next->type == 1)
 		{
@@ -115,7 +118,10 @@ void	check_rdir(void)
 			g_mshell.rdirout = 1;
 			fd = open(curr->next->content,
 				O_APPEND | O_WRONLY | O_CREAT, 0644);
-			dup2(fd, 1);
+			if(fd == -1)
+				ft_putstr_fd("Oh no no no.. FD ERROR\n",2);
+			else
+				dup2(fd, 1);
 		}
 		else if (curr->type == 5 && curr->next && curr->next->type == 1)
 		{
@@ -123,7 +129,10 @@ void	check_rdir(void)
 				close(0);
 			g_mshell.rdirin = 1;
 			fd = open(curr->next->content, O_RDONLY);
-			dup2(fd, 0);
+			if(fd == -1)
+				ft_putstr_fd("Oh no no no.. FD ERROR\n",2);
+			else
+				dup2(fd, 0);
 		}
 		else if (curr->type == 6 && curr->next && curr->next->type == 1)
 		{
