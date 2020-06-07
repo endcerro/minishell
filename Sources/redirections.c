@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/05 14:52:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 19:17:03 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	close_pipe_n(void)
 
 	if (g_mshell.rdirin == 2)
 	{
-		// ft_putstr_fd("Here2",2);
 		dup2(g_mshell.oldfdin, 0);
 		if (pipes[2] != 0)
 			pipes += sizeof(int) * 3;

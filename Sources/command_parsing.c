@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/06 18:54:22 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 19:06:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ char	*check_finished_lst(char *line)
 	{
 		fill = getfiller(0, cpt);
 		if(fill == 0)
-		{
-			// free(line);
 			return (0);
-			//IF PB
-		}
 	}
 	if (fill && fill[i])
 	{
@@ -81,19 +77,12 @@ char	*check_finished_lst(char *line)
 	return (out);
 }
 
-// int getfd(int type ,int fd)
-// {
-// 	if(fd)
-// }
-
 void	check_rdir(void)
 {
 	t_list	*curr;
 	int		fd;
-	int 	flags;
 
 	fd = 0;
-
 	curr = g_mshell.ls;
 	while (curr && curr->type != 3)
 	{
@@ -136,17 +125,7 @@ void	check_rdir(void)
 		}
 		else if (curr->type == 6 && curr->next && curr->next->type == 1)
 		{
-			// ft_putstr_fd("Current rdirs : ", 2);
-			// ft_putnbr_fd(g_mshell.rdirin, 2);
-			// ft_putstr_fd(" ", 2);
-			// ft_putnbr_fd(g_mshell.rdirout, 2);
-			// ft_putstr_fd("\n", 2);
 			open_pipe_n(curr);
-			// ft_putstr_fd("Current rdirs : ", 2);
-			// ft_putnbr_fd(g_mshell.rdirin, 2);
-			// ft_putstr_fd(" ", 2);
-			// ft_putnbr_fd(g_mshell.rdirout, 2);
-			// ft_putstr_fd("\n", 2);
 			break ;
 		}
 		curr = curr->next;

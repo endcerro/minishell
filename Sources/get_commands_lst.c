@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:59:31 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/07 19:40:05 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ t_list	*split_line_lst(char *line)
 {
 	t_list	*f_lst;
 	t_list	*lst;
-	char 	*temp;
 	int		i;
 
 	i = 0;
