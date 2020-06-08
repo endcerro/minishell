@@ -28,6 +28,7 @@ SRC			=	main.c \
 				n_itoa.c \
 				export.c \
 				cd.c \
+				lst_creat.c \
 				utils.c \
 				redirections.c \
 				lst_utils.c
@@ -35,7 +36,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra  -g -fsanitize=address #-Werror
+CFLAGS		=	-Wall -Wextra  -g #-fsanitize=address #-Werror
 
 CC			=	gcc
 RM			=	rm -f

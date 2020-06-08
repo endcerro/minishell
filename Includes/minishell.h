@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:43:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 15:45:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int				export(char *params);
 char 			*env(char *request);
 void			commandorvar(void);
 //BUILTIN UTILS
-void 			checkinput_ls(void);
+void 			checkinput_ls(char *line);
 void 			parse_env_ls(char **param);
 char 			*vars(char *request);
 int				check_match(char *env, char *param);
@@ -68,6 +68,7 @@ char 			*inside_join(char *base, char *add, int mode);
 int 			check_valid_export(char **params);
 char			*getcwdwrap(void);
 //COMMAND PARSING
+char			*get_lst(char *line);
 int 			get_blocks(char *line);
 char			**getfiller(int depth, int *cpt);
 void 			parse_qts(char *str, int *cpt);
@@ -80,10 +81,11 @@ void 			check_pipe(char *str, int *cpt);
 void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
 //LST UTILS
+t_list			*tag_lst(t_list *lst);
 char			*get_lst(char *line);
 t_list			*ft_lstnew(char *content);
 t_list			*ft_lstnew_p(char *content);
-void			ft_lstclear(t_list **lst);
+int				ft_lstclear(t_list **lst);
 void			ft_lstprint(t_list *lst);
 void			ft_lstadd_next(t_list *alst, t_list *new);
 void			ft_lstdelone(t_list *lst);

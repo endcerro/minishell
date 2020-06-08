@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 17:59:57 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 15:49:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,52 @@
 	ft_putchar('\n');
 } */
 
+t_list	*tag_lst(t_list *lst)
+{
+	t_list	*cr;
+	t_list	*cpy;
+
+	cr = lst;
+	while (cr)
+	{
+		if (ft_strcmp(cr->content, ">") == 0 && (cr->type = 2))
+		{
+			if (cr->next && ft_strcmp(cr->next->content, ">") == 0)
+			{
+				cr->type = 4;
+				cr->content = ft_strjoinft(cr->content, cr->next->content);
+				if (cr->content == NULL)
+					return (NULL);
+				cpy = cr->next->next;
+				free(cr->next);
+				cr->next = cpy;
+			}
+		}
+		else if (ft_strcmp(cr->content, ";") == 0)
+			cr->type = 3;
+		else if (ft_strcmp(cr->content, "<") == 0)
+			cr->type = 5;
+		else if (ft_strcmp(cr->content, "|") == 0)
+			cr->type = 6;
+		cr = cr->next;
+	}
+	return (lst);
+}
+
 void	ft_lstdelone(t_list *lst)
 {
 	free(lst->content);
 	free(lst);
 }
 
-void	ft_lstclear(t_list **lst)
+int 	ft_lstclear(t_list **lst)
 {
 	t_list *cache;
 	t_list *cache2;
 
 	cache = *lst;
 	if (lst == 0)
-		return ;
+		return (0);
 	if (cache != NULL)
 	{
 		while (cache->next)
@@ -59,6 +91,7 @@ void	ft_lstclear(t_list **lst)
 		ft_lstdelone(cache);
 		*lst = NULL;
 	}
+	return (0);
 }
 
 t_list	*ft_lstnew(char *content)			//MALLOC PROTECTED

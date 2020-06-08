@@ -6,227 +6,19 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:40:05 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 15:26:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_word_lst(char *line, int *p)
-{
-	size_t	len;
-	int		cp;
 
-	cp = *p;
-	len = 0;
-	if (line[*p] == '"' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '"' && ++len)
-			++(*p);
-		++(*p);
-		return (ft_substr(line, cp, len + 2));
-	}
-	else if (line[*p] == '\'' && ++(*p))
-	{
-		while (line[*p] && line[*p] != '\'' && ++len)
-			++(*p);
-		++(*p);
-		return (ft_substr(line, cp, len + 2));
-	}
-	else
-		while (line[*p] && !ft_isspace(line[*p]) && ++len)
-			++(*p);
-	return (ft_substr(line, cp, len));
-}
 
-void	find_char(char *buff)
-{
-	if (buff[0] == 0)
-		buff[0] = ';';
-	else if (buff[0] == ';')
-		buff[0] = '>';
-	else if (buff[0] == '>')
-		buff[0] = '<';
-	else if (buff[0] == '<')
-		buff[0] = '|';
-	else if (buff[0] == '|')
-		buff[0] = 0;
-}
 
-t_list	*inner_split(t_list *lst)
-{
-	t_list	*curr;
-	t_list	*new;
-	char	**split;
-	int		i;
-	int		j;
-	char	buff[2];
-	t_list	*tmp;
 
-	ft_bzero(buff, 2);
-	find_char(buff);
-	curr = lst;
-	while (buff[0])
-	{
-		while (curr)
-		{
-			new = 0;
-			if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[1])
-			{
-				if (ft_strchr(curr->content, buff[0]))
-				{
-					if ((split = ft_split(curr->content, buff[0])) == NULL)
-						return (NULL);
-					i = -1;
-					j = 0;
-					while (curr->content[j])
-					{
-						while (curr->content[j] == buff[0] && ++j)
-						{
-							if ((tmp = ft_lstnew(ft_strdup(buff))) == NULL)
-							{
-								freechar2ptr(split);
-								return (NULL);
-							}
-							else if (tmp->content == NULL)
-							{
-								freechar2ptr(split);
-								ft_lstdelone(tmp);
-								return (NULL);
-							}
-							ft_lstadd_back(&new, tmp);
-						}
-						while (curr->content[j] && curr->content[j] != buff[0])
-							j++;
-						if (split[++i])
-						{
-							if ((tmp = ft_lstnew(split[i])) == NULL)
-							{
-								freechar2ptr(split);
-								return (NULL);
-							}
-							ft_lstadd_back(&new, ft_lstnew(split[i]));
-						}
-					}
-					freechar2ptr(split);
-				}
-			}
-			if (new)
-			{
-				free(curr->content);
-				curr->content = new->content;
-				ft_lstadd_back(&new, curr->next);
-				curr->next = new->next;
-				free(new);
-			}
-			curr = curr->next;
-		}
-		find_char(buff);
-		curr = lst;
-	}
-	return (lst);
-}
 
-t_list	*split_line_lst(char *line)
-{
-	t_list	*f_lst;
-	t_list	*lst;
-	int		i;
 
-	i = 0;
-	f_lst = NULL;
-	while ((size_t)i < ft_strlen(line))
-	{
-		if (ft_isspace(line[i]))
-			++i;
-		else
-		{
-			if ((lst = ft_lstnew_p(get_word_lst(line, &i))) == NULL || lst->content == NULL)
-			{
-				ft_lstclear(&f_lst);
-				return (NULL);
-			}
-			if (f_lst == NULL)
-			{
-				f_lst = lst;
-				lst = NULL;
-			}
-			else
-				ft_lstadd_back(&f_lst, lst);
-		}
-	}
-	if (inner_split(f_lst) == NULL)
-	{
-		ft_lstclear(&f_lst);
-		return (NULL);
-	}
-	return (f_lst);
-}
 
-t_list	*tag_lst(t_list *lst)
-{
-	t_list	*cr;
-	t_list	*cpy;
-
-	cr = lst;
-	while (cr)
-	{
-		if (ft_strcmp(cr->content, ">") == 0 && (cr->type = 2))
-		{
-			if (cr->next && ft_strcmp(cr->next->content, ">") == 0)
-			{
-				cr->type = 4;
-				cr->content = ft_strjoinft(cr->content, cr->next->content);
-				if (cr->content == NULL)
-					return (NULL);
-				cpy = cr->next->next;
-				free(cr->next);
-				cr->next = cpy;
-			}
-		}
-		else if (ft_strcmp(cr->content, ";") == 0)
-			cr->type = 3;
-		else if (ft_strcmp(cr->content, "<") == 0)
-			cr->type = 5;
-		else if (ft_strcmp(cr->content, "|") == 0)
-			cr->type = 6;
-		cr = cr->next;
-	}
-	return (lst);
-}
-
-char	*get_lst(char *line)		//PROTECTED
-{
-	char	*filler;
-	t_list	*out;
-
-	if ((filler = check_finished_lst(line)) != NULL)
-	{
-		if ((line = ft_strjoinft(line, filler)) == NULL)
-			return (NULL);
-	}
-	// else
-	// {
-	// 	printf("HERE1\n");
-	// 	free(line);
-	// 	return (0);
-	// }
-	if ((out = split_line_lst(line)) == NULL)
-	{
-		// printf("HERE\n");
-		free(line);
-		return (NULL);
-	}
-
-	if (tag_lst(out) == NULL)
-	{
-		free(line);
-		ft_lstclear(&out);
-		return (NULL);
-	}
-	g_mshell.ls = out;
-	return (line);
-}
 
 int		echo_ls(void)
 {
@@ -268,7 +60,7 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 	return (0);
 }
 
-void	checkinput_ls(void)
+void	checkinput_ls(char *line)
 {
 	t_list	*curr;
 	t_list	*copy;
@@ -290,6 +82,7 @@ void	checkinput_ls(void)
 		freechar2ptr(g_mshell.env);
 		freechar2ptr(g_mshell.vars);
 		ft_lstclear(&g_mshell.ls);
+		free(line);
 		exit(0);
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) 
@@ -340,7 +133,7 @@ void	checkinput_ls(void)
 		if (curr->type == 3 && curr->next != NULL)
 		{
 			g_mshell.ls = curr->next;
-			checkinput_ls();
+			checkinput_ls(line);
 			break ;
 		}
 		curr = curr->next;

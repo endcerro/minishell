@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 18:16:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 15:16:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ void	check_exitcode(char **str)
 	
 	if (pos)
 	{
-		*str = inside_join(pos, tmp, 2);
+		*str = inside_join(pos, tmp, 0);
 		if(*str == 0)
 			return ;
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	}
-	free(tmp);
+	else
+		free(tmp);
+	// free(tmp);
 }
 
 void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE

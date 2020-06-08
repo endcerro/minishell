@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:45:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 15:44:39 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ int		prompt(char **line)
 	ft_putstr("\033[31mminishell \033[33m@>\033[0m");
 	return (get_next_line(0, line));
 }
-
-
-
 
 char	**getfiller(int depth, int *cpt)		//MALLOC PROTECTED
 {
@@ -39,7 +36,7 @@ char	**getfiller(int depth, int *cpt)		//MALLOC PROTECTED
 	{
 		out = getfiller(depth + 1, cpt);
 		if (out == 0)
-			return (freeret(tmp, 0));
+			return ((char **)(long)freeret(tmp, 0));
 	}
 	else
 	{
@@ -63,8 +60,6 @@ char	**getfiller(int depth, int *cpt)		//MALLOC PROTECTED
 	return (out);
 }
 
-
-
 int		checkexport(char *var)
 {
 	int x;
@@ -77,32 +72,27 @@ int		checkexport(char *var)
 	return (1);
 }
 
-
-
 char 	*env(char *request)
 {
 	int x;
 
 	x = 0;
-	// if (g_mshell.params[1] && request == NULL)
-	// 	ft_putstr("minishell: env: too many arguments\n");
-	// else
-//	{
-		while (g_mshell.env[x])
+	if (request == NULL && g_mshell.ls->next && g_mshell.ls->next->type == 1)
+	{
+		ft_putstr_fd("minishell: env: too many arguments\n", 2);
+		return (NULL);	
+	}	
+	while (g_mshell.env[x])
+	{
+		if(request != NULL)
 		{
-			if(request != NULL)
-			{
-				if (!ft_strncmp(g_mshell.env[x], request, wordlen(request)))
-					return (g_mshell.env[x] + wordlen(request));
-			}
-			else if (checkexport(g_mshell.env[x]) == 1)
-			{
-				// printf("here\n");
-				ft_putsendl(g_mshell.env[x]);
-			}
-			++x;
+			if (!ft_strncmp(g_mshell.env[x], request, wordlen(request)))
+				return (g_mshell.env[x] + wordlen(request));
 		}
-//	}
+		else if (checkexport(g_mshell.env[x]) == 1)
+			ft_putsendl(g_mshell.env[x]);
+		++x;
+	}
 	return (NULL);
 }
 
@@ -122,13 +112,6 @@ char 	*vars(char *request)
 	}
 	return (NULL);
 }
-
-
-
-
-
-
-
 
 int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans env
 {
@@ -254,7 +237,7 @@ int		main(void)
 		line = get_lst(line); // PROTECTED UNTILL HERE
 		if (line == NULL)
 			continue ;
-		checkinput_ls();
+		checkinput_ls(line);
 		ft_lstclear(&g_mshell.ls);
 		free(line);
 		line = 0;
