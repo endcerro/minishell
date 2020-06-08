@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 15:49:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 17:20:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* void	ft_lstprint(t_list *lst)
+/*void	ft_lstprint(t_list *lst)
 {
 	if (lst)
 	{
@@ -32,29 +32,19 @@
 		ft_putchar('|');
 	}
 	ft_putchar('\n');
-} */
+}*/
 
 t_list	*tag_lst(t_list *lst)
 {
 	t_list	*cr;
-	t_list	*cpy;
 
 	cr = lst;
 	while (cr)
 	{
-		if (ft_strcmp(cr->content, ">") == 0 && (cr->type = 2))
-		{
-			if (cr->next && ft_strcmp(cr->next->content, ">") == 0)
-			{
-				cr->type = 4;
-				cr->content = ft_strjoinft(cr->content, cr->next->content);
-				if (cr->content == NULL)
-					return (NULL);
-				cpy = cr->next->next;
-				free(cr->next);
-				cr->next = cpy;
-			}
-		}
+		if (ft_strcmp(cr->content, ">") == 0)
+			cr->type = 2;
+		else if (ft_strcmp(cr->content, ">>") == 0)
+			cr->type = 4;
 		else if (ft_strcmp(cr->content, ";") == 0)
 			cr->type = 3;
 		else if (ft_strcmp(cr->content, "<") == 0)
@@ -72,7 +62,7 @@ void	ft_lstdelone(t_list *lst)
 	free(lst);
 }
 
-int 	ft_lstclear(t_list **lst)
+int		ft_lstclear(t_list **lst)
 {
 	t_list *cache;
 	t_list *cache2;

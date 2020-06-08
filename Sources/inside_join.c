@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 15:49:53 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 16:49:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*inside_join(char *base, char *add, int mode)	//MALLOC PROC OK
 			select_free(base, add, mode);
 			return (0);
 		}
-
 	}
 	else
 		out = ft_strdup(base);

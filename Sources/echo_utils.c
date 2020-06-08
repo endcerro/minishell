@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 15:16:22 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 16:47:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,29 @@ void	swap_char(char *str, char c)
 	}
 }
 
-void	check_exitcode(char **str)
+int		check_exitcode(char **str)
 {
 	char	*pos;
 	char	*tmp;
 
 	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	tmp = ft_itoaa(g_mshell.exitcode);
-	if(tmp == 0)
+	if (tmp == 0)
 	{
 		free(*str);
 		*str = 0;
-		return ;
+		return (1);
 	}
-	
 	if (pos)
 	{
 		*str = inside_join(pos, tmp, 0);
-		if(*str == 0)
-			return ;
+		if (*str == 0)
+			return (1);
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
 	}
 	else
 		free(tmp);
-	// free(tmp);
+	return (0);
 }
 
 void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
@@ -57,24 +56,20 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 	int		len;
 
 	len = 0;
-	check_exitcode(str);
-	if(*str == 0)
-	{
+	if (check_exitcode(str))
 		return ;
-	}
 	d_pos = ft_strchr(*str, '$');
 	while (d_pos != NULL)
 	{
-		while (d_pos[len + 1] && ft_isalnum(d_pos[len + 1]))
+		while (ft_isalnum(d_pos[len + 1]))
 			len++;
-		query = ft_substr(d_pos, 1, len);
-		if(query == 0)
+		// query = ft_substr(d_pos, 1, len);
+		if((query = ft_substr(d_pos, 1, len)) == 0)
 		{
 			free(*str);
 			*str = 0;
 			return ;
 		}
-		printf("QUERY = %s\n",query );
 		if (*query == 0 || ft_isspace(*query))
 			*(d_pos) = -1;
 		else
@@ -84,7 +79,7 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 			else
 				*str = inside_join(*str, vars(query), 1);
 			if(*str == 0)
-			{
+			{	
 				free(query);
 				return ;
 			}

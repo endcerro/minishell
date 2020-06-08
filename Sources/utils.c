@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:20:30 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:44:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 16:51:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	freechar2ptr(char **ptr)
 	free(ptr);
 }
 
-int 	freeret(void *ptr, int ret)
+int		freeret(void *ptr, int ret)
 {
 	free(ptr);
 	return (ret);

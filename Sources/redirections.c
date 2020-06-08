@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:17:03 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 16:50:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,19 @@ void	open_pipe_n(t_list *curr)
 	int		*pipes;
 
 	pipes = g_mshell.pipes;
-
 	if (pipes[2] != -1)
 		pipes += sizeof(int) * 3;
 	pipe(pipes);
 	pipes[2] = 1;
-
-	if(g_mshell.rdirout == 1)
+	if (g_mshell.rdirout == 1)
 	{
-		close(pipes[1]); 		//Closing the read end of pipe
-		pipes[2] = 0;			//Setting it as closed 
+		close(pipes[1]);
+		pipes[2] = 0;
 	}
 	else
 	{
 		dup2(pipes[1], 1);
-		g_mshell.rdirout = 2;		
+		g_mshell.rdirout = 2;
 	}
 	curr->type = 3;
 }
@@ -41,7 +39,6 @@ void	close_pipe_n(void)
 	int		*pipes;
 
 	pipes = g_mshell.pipes;
-
 	if (g_mshell.rdirin == 2)
 	{
 		dup2(g_mshell.oldfdin, 0);

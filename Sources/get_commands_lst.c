@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 15:26:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 16:26:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	checkinput_ls(char *line)
 	{
 		return ;
 	}
-
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ft_putstr("exit\n");

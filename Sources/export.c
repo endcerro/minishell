@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:32:26 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 17:09:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		unset(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-
 	i = 0;
 	if (curr == 0 || curr->next != 0)
 	{
@@ -27,7 +26,7 @@ int		unset(void)
 	}
 	while (g_mshell.env[i])
 	{
-		if(!check_match(g_mshell.env[i], curr->content))
+		if (!check_match(g_mshell.env[i], curr->content))
 		{
 			free(g_mshell.env[i]);
 			while (g_mshell.env[++i])
@@ -40,38 +39,17 @@ int		unset(void)
 	return (0);
 }
 
-void	exportlst(char **envi)					//MALLOC PROTECTED
+void	print_export(char **env2)
 {
-	int		x;
-	int		y;
-	char	**env2;
+	int x;
+	int y;
 
-	x = 0;
-	while (envi[x])
-		++x;
-	if ((env2 = (char **)malloc(sizeof(char *) * (x + 1))) == NULL)
-	{
-		ft_putstr(strerror(errno));
-		return ;
-	}
-	y = -1;
-	while (envi[++y])
-	{
-		env2[y] = ft_strdup(envi[y]);
-		if(env2[y] == 0)
-		{
-			freechar2ptr(env2);
-			return ;
-		}
-	}
-	env2[y] = NULL;
-	quicks(env2, 0, y - 1);
 	x = -1;
 	while (env2[++x])
 	{
 		y = 0;
 		ft_putstr("declare -x ");
-		while (env2[x][y] && env2[x][y] != '=' )
+		while (env2[x][y] && env2[x][y] != '=')
 			++y;
 		write(1, env2[x], y);
 		if (env2[x][y] == '=' && env2[x][y + 1] == 0)
@@ -84,6 +62,33 @@ void	exportlst(char **envi)					//MALLOC PROTECTED
 		}
 		write(1, "\n", 1);
 	}
+}
+
+void	exportlst(char **envi)					//MALLOC PROTECTED
+{
+	int		y;
+	char	**env2;
+
+	y = 0;
+	while (envi[y])
+		++y;
+	if ((env2 = (char **)malloc(sizeof(char *) * (y + 1))) == NULL)
+	{
+		ft_putstr(strerror(errno));
+		return ;
+	}
+	y = -1;
+	while (envi[++y])
+	{
+		if ((env2[y] = ft_strdup(envi[y])) == 0)
+		{
+			freechar2ptr(env2);
+			return ;
+		}
+	}
+	env2[y] = NULL;
+	quicks(env2, 0, y - 1);
+	print_export(env2);
 	freechar2ptr(env2);
 }
 
@@ -95,7 +100,7 @@ int		unset_var(char *target)			//PROTECTED
 	if (g_mshell.vars != NULL)
 		while (g_mshell.vars[i])
 		{
-			if(!check_match(g_mshell.vars[i], target))
+			if (!check_match(g_mshell.vars[i], target))
 			{
 				free(g_mshell.vars[i]);
 				while (g_mshell.vars[++i])
@@ -112,12 +117,12 @@ int		export(char *param)			//PROTECTED
 {
 	int		i;
 	char	**n_envi;
+	char	*tmp;
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
 	if (param != NULL)
 	{
-		printf("Param input = %s\n",param );
 		curr = ft_lstnew(param);
 	}
 	i = 0;
@@ -126,50 +131,44 @@ int		export(char *param)			//PROTECTED
 		exportlst(g_mshell.env); // PROTECTED
 		return (0);
 	}
-
-	char *tmp;
 	if (ft_strchr(curr->content, '=') == NULL)
 	{
 		tmp = vars(curr->content);
 		if (tmp)
 		{
 			curr->content = ft_strjoinf1(curr->content, "=");
-			if(curr->content == 0)
+			if (curr->content == 0)
 				return (1);
 			curr->content = ft_strjoinf1(curr->content, tmp);
-			if(curr->content == 0)
+			if (curr->content == 0)
 				return (1);
 		}
 	}
 	unset_var(curr->content);
-	char *cpy;
 	while (g_mshell.env[i])
 	{
-		if(!check_match(g_mshell.env[i], curr->content))
+		if (!check_match(g_mshell.env[i], curr->content))
 		{
-			cpy = g_mshell.env[i]; 
-			
+			tmp = g_mshell.env[i];
 			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
-			
-			if(g_mshell.env[i] == 0)
+			if (g_mshell.env[i] == 0)
 			{
-				g_mshell.env[i] = cpy;
+				g_mshell.env[i] = tmp;
 				return (1);
 			}
-			free(cpy);
 			if (param != NULL)
 				free(curr);
-			return (0);
+			return (freeret(tmp, 0));
 		}
 		i++;
 	}
-	if(!(n_envi = malloc(sizeof(char *) * (i + 2))))
+	if (!(n_envi = malloc(sizeof(char *) * (i + 2))))
 		return (1);
 	i = -1;
 	while (g_mshell.env[++i])
 		n_envi[i] = g_mshell.env[i];
 	n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
-	if(n_envi[i] == 0)
+	if (n_envi[i] == 0)
 	{
 		freechar2ptr(n_envi);
 		return (1);
