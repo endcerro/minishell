@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:34:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 17:30:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*getcwdwrap(void)				//MALLOC PROTECTED
 	str = NULL;
 	while (i < UINT_MAX)
 	{
-		if (!(str = (char *)malloc(i)))				
+		if (!(str = (char *)malloc(i)))
 			return (NULL);
 		if (getcwd(str, i) != NULL)
 			break ;
@@ -30,7 +30,6 @@ char	*getcwdwrap(void)				//MALLOC PROTECTED
 	}
 	return (str);
 }
-
 
 char	*rethomedir(void)
 {
@@ -65,7 +64,6 @@ int		pwd(void)
 	return (0);
 }
 
-
 int		cd(void)
 {
 	int		oldpwd;
@@ -76,7 +74,9 @@ int		cd(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-
+	oldpwd = -1;
+	pwd = -1;
+	x = -1;
 	if (curr && curr->next != 0)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
@@ -92,16 +92,11 @@ int		cd(void)
 		}
 	}
 	else
-	{
 		if (chdir((home = rethomedir())) == -1)
 		{
 			ft_putstr("minishell: cd: $HOME not set\n");
 			return (1);
 		}
-	}
-	oldpwd = -1;
-	pwd = -1;
-	x = -1;
 	while (g_mshell.env[++x] && (pwd == -1 || oldpwd == -1))
 		if (ft_strncmp(g_mshell.env[x], "PWD=", 4) == 0)
 			pwd = x;
@@ -111,7 +106,7 @@ int		cd(void)
 		return (0);
 	free(g_mshell.env[oldpwd]);
 	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // FREE F2?
-	if(g_mshell.env[oldpwd] == 0)
+	if (g_mshell.env[oldpwd] == 0)
 	{
 		return (1);
 	}

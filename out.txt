@@ -1,0 +1,8 @@
+Includes
+Libft
+Makefile
+minishell
+Objets
+out.txt
+Sources
+test 

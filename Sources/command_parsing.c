@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:21:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 17:44:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,39 +79,39 @@ char	*check_finished_lst(char *line)
 	return (out);
 }
 
-void	check_rdir(void)
+void	rdirout(t_list *curr, int mode)
 {
-	t_list	*curr;
+	int fd;
+
+	if (curr->next == 0 || curr->next->type != 1)
+		return ;
+	if (g_mshell.rdirout == 1)
+	{
+		g_mshell.rdirout = 0;
+		close(1);
+	}
+	if (mode == 0)
+		fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
+			, 0644);
+	else
+		fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT, 0644);
+	if (fd == -1)
+	{
+		ft_putstr_fd("Oh no no no.. FD ERROR\n", 2);
+		return ;
+	}
+	dup2(fd, 1);
+	g_mshell.rdirout = 1;
+}
+
+void	check_rdir(t_list *curr)
+{
 	int		fd;
 
-	fd = 0;
-	curr = g_mshell.ls;
 	while (curr && curr->type != 3)
 	{
-		if (curr->type == 2 && curr->next && curr->next->type == 1)
-		{
-			if (g_mshell.rdirout == 1)
-				close(1);
-			g_mshell.rdirout = 1;
-			fd = open(curr->next->content,
-				O_APPEND | O_TRUNC | O_WRONLY | O_CREAT, 0644);
-			if (fd == -1)
-				ft_putstr_fd("Oh no no no.. FD ERROR\n", 2);
-			else
-				dup2(fd, 1);
-		}
-		else if (curr->type == 4 && curr->next && curr->next->type == 1)
-		{
-			if (g_mshell.rdirout == 1)
-				close(1);
-			g_mshell.rdirout = 1;
-			fd = open(curr->next->content,
-				O_APPEND | O_WRONLY | O_CREAT, 0644);
-			if (fd == -1)
-				ft_putstr_fd("Oh no no no.. FD ERROR\n", 2);
-			else
-				dup2(fd, 1);
-		}
+		if (curr->type == 2 || curr->type == 4)
+			rdirout(curr, (curr->type == 4));
 		else if (curr->type == 5 && curr->next && curr->next->type == 1)
 		{
 			if (g_mshell.rdirin == 1)

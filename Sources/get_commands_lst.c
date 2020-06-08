@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:26:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/08 17:37:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	checkinput_ls(char *line)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	check_rdir();						
+	check_rdir(curr);						
 	if(expand_vars(curr))
 	{
 		return ;
