@@ -77,13 +77,19 @@ int		cd(void)
 	oldpwd = -1;
 	pwd = -1;
 	x = -1;
-	if (curr && curr->next != 0)
+	if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
 	{
 		ft_putstr("minishell: cd: wrond number of arguments\n");
 		return (1);
 	}
-	if (curr)
+	if (curr && curr->type == 1)
 	{
+		if (curr->content[0] == '~')
+		{
+			curr->content[0] = '/';
+			if (!(curr->content = ft_strjoinf2(rethomedir(), curr->content)))
+				return (1);
+		}
 		if (chdir(curr->content) == -1)
 		{
 			ft_putstr(strerror(errno));
