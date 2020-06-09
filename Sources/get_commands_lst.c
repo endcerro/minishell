@@ -60,15 +60,27 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 	return (0);
 }
 
+int		isstrdigit(char *str)
+{
+	while (*str)
+	{
+		if (ft_isdigit(*str) == 0)
+			return (0);
+		++str;
+	}
+	return (1);
+}
+
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
 	t_list	*copy;
+	int		ex;
 
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	check_rdir(curr);						
+	check_rdir(curr);
 	if(expand_vars(curr))
 	{
 		return ;
@@ -76,15 +88,21 @@ void	checkinput_ls(char *line)
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ft_putstr("exit\n");
+		ex = 0;
 		if (g_mshell.ls->next)
-			ft_putstr("minishell: exit: too many arguments\n");
+		{
+			if (isstrdigit(g_mshell.ls->next->content) == 0)
+				ft_putstr("minishell: exit: numeric argument needed\n");
+			else
+				ex = ft_atoi(g_mshell.ls->next->content);
+		}
 		freechar2ptr(g_mshell.env);
 		freechar2ptr(g_mshell.vars);
 		ft_lstclear(&g_mshell.ls);
 		free(line);
-		exit(0);
+		exit(ex);
 	}
-	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0) 
+	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();						//PROTECTED
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) //PROTECTED UNTILL HERE
 	{
