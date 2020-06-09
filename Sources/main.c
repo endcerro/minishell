@@ -80,8 +80,8 @@ char 	*env(char *request)
 	if (request == NULL && g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
 		ft_putstr_fd("minishell: env: too many arguments\n", 2);
-		return (NULL);	
-	}	
+		return (NULL);
+	}
 	while (g_mshell.env[x])
 	{
 		if(request != NULL)
@@ -232,7 +232,7 @@ int		main(void)
 	while (prompt(&line) > 0)
 	{
 		// if (line == NULL && *line == 0)
-		if (line == NULL || *line == 0)
+		if (line == NULL)
 			break ;
 		line = get_lst(line); // PROTECTED UNTILL HERE
 		if (line == NULL)
