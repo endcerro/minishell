@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 13:41:28 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/10 13:50:19 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*getcwdwrap(void)				//MALLOC PROTECTED
+char	*getcwdwrap(void)
 {
 	char			*str;
 	unsigned int	i;
@@ -64,19 +64,11 @@ int		pwd(void)
 	return (0);
 }
 
-int		cd(void)
+int		cdbis(void)
 {
-	int		oldpwd;
-	int		pwd;
-	int		x;
-	char	*home;
-	char	*str;
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-	oldpwd = -1;
-	pwd = -1;
-	x = -1;
 	if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
 	{
 		ft_putstr_fd("minishell: cd: wrond number of arguments\n", 2);
@@ -100,11 +92,28 @@ int		cd(void)
 		}
 	}
 	else
-		if (chdir((home = rethomedir())) == -1)
+	{
+		if (chdir(rethomedir()) == -1)
 		{
 			ft_putstr_fd("minishell: cd: $HOME not set\n", 2);
 			return (1);
 		}
+	}
+	return (0);
+}
+
+int		cd(void)
+{
+	int		oldpwd;
+	int		pwd;
+	int		x;
+	char	*str;
+
+	if (cdbis())
+		return (1);
+	oldpwd = -1;
+	pwd = -1;
+	x = -1;
 	while (g_mshell.env[++x] && (pwd == -1 || oldpwd == -1))
 		if (ft_strncmp(g_mshell.env[x], "PWD=", 4) == 0)
 			pwd = x;
@@ -120,7 +129,7 @@ int		cd(void)
 		return (1);
 	}
 	free(g_mshell.env[pwd]);
-	g_mshell.env[pwd] = (char *) -1;
+	g_mshell.env[pwd] = (char *)-1;
 	if ((str = getcwdwrap()) == NULL)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
@@ -132,7 +141,7 @@ int		cd(void)
 		{
 			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putendl_fd(strerror(errno), 2);
-			g_mshell.env[pwd] = (char *) -1;
+			g_mshell.env[pwd] = (char *)-1;
 			return (1);
 		}
 	}

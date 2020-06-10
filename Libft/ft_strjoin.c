@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 14:08:05 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/06 18:02:51 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 15:04:23 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void 	free_strs(char *str1, char *str2, int mode)
+void	free_strs(char *str1, char *str2, int mode)
 {
 	if (mode == 1)
 		free(str1);
@@ -36,17 +36,13 @@ char	*ft_strjoinf1(char *s1, char const *s2)
 	if (!(ret = (char *)malloc(sizeof(char) *
 							(ft_strlen(s1) + ft_strlen(s2) + 1))))
 	{
-		free_strs(s1,(char *)s2, 1);
+		free_strs(s1, (char *)s2, 1);
 		return (NULL);
 	}
-		
-	i = 0;
+	i = -1;
 	j = 0;
-	while (s1[i])
-	{
+	while (s1[++i])
 		ret[i] = s1[i];
-		++i;
-	}
 	while (s2[j])
 	{
 		ret[i] = s2[j];
@@ -97,7 +93,6 @@ char	*ft_strjoinft(char *s1, char *s2)
 		free_strs(s1, s2, 3);
 		return (NULL);
 	}
-		
 	i = -1;
 	j = 0;
 	while (s1[++i])

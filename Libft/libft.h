@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:05:22 by hpottier          #+#    #+#             */
-/*   Updated: 2020/04/28 18:06:31 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 15:01:33 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <limits.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <stdarg.h>
 
+int				ft_printh(int fd, int ret, const char *format, ...);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *dst, const void *src, size_t n);

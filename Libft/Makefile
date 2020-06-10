@@ -6,7 +6,7 @@
 #    By: hpottier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 14:27:31 by hpottier          #+#    #+#              #
-#    Updated: 2020/01/04 18:18:49 by hpottier         ###   ########.fr        #
+#    Updated: 2020/06/10 14:58:31 by hpottier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -57,7 +57,8 @@ SRC			=	ft_bzero.c \
 				ft_split.c \
 				ft_itoa.c \
 				ft_strmapi.c \
-				get_next_line.c
+				get_next_line.c \
+				ft_printh.c
 
 OBJ			=	$(SRC:.c=.o)
 
