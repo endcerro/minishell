@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:22:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 13:36:25 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <signal.h>
 
 #include <stdio.h>
 
@@ -38,7 +39,7 @@ typedef struct 	s_mshell
 	char		**env;
 	char		**vars;
 	t_list		*ls;
-	
+
 	pid_t		pid;
 	int			exitcode;
 

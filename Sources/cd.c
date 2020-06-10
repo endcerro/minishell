@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:30:58 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 13:34:29 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int		pwd(void)
 
 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
-		ft_putstr("minishell: pwd: too many arguments\n");
+		ft_putstr_fd("minishell: pwd: too many arguments\n", 2);
 		return (1);
 	}
 	if ((str = getcwdwrap()) == NULL)
 	{
-		ft_putstr("minishell: pwd: ");
-		ft_putstr(strerror(errno));
+		ft_putstr_fd("minishell: pwd: ", 2);
+		ft_putstr_fd(strerror(errno), 2);
 		return (1);
 	}
 	ft_putstr(str);
@@ -79,7 +79,7 @@ int		cd(void)
 	x = -1;
 	if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
 	{
-		ft_putstr("minishell: cd: wrond number of arguments\n");
+		ft_putstr_fd("minishell: cd: wrond number of arguments\n", 2);
 		return (1);
 	}
 	if (curr && curr->type == 1)
@@ -92,15 +92,17 @@ int		cd(void)
 		}
 		if (chdir(curr->content) == -1)
 		{
-			ft_putstr(strerror(errno));
-			write(1, "\n", 1);
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(curr->content, 2);
+			write(2, ": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
 			return (1);
 		}
 	}
 	else
 		if (chdir((home = rethomedir())) == -1)
 		{
-			ft_putstr("minishell: cd: $HOME not set\n");
+			ft_putstr_fd("minishell: cd: $HOME not set\n", 2);
 			return (1);
 		}
 	while (g_mshell.env[++x] && (pwd == -1 || oldpwd == -1))
@@ -111,16 +113,23 @@ int		cd(void)
 	if (g_mshell.env[x] == NULL)
 		return (0);
 	free(g_mshell.env[oldpwd]);
-	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]); // FREE F2?
+	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]);
 	if (g_mshell.env[oldpwd] == 0)
 	{
+		ft_putstr_fd("minishell: cd: $PWD problem\n", 2);
 		return (1);
 	}
 	free(g_mshell.env[pwd]);
-	g_mshell.env[pwd] = (char *) -1;		//SKIP THIS IN FREECHAR2PTR if issue on getcwdwrap
+	g_mshell.env[pwd] = (char *) -1;
 	if ((str = getcwdwrap()) == NULL)
-		ft_putstr(strerror(errno));
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+	}
 	else
-		g_mshell.env[pwd] = ft_strjoinf2("PWD=", str); // PAS PROTEGE
+	{
+		if ((g_mshell.env[pwd] = ft_strjoinf2("PWD=", str)) == NULL)
+			g_mshell.env[pwd] = (char *) -1;
+	}
 	return (0);
 }
