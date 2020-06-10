@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 13:34:29 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/10 13:41:28 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,12 @@ int		cd(void)
 	else
 	{
 		if ((g_mshell.env[pwd] = ft_strjoinf2("PWD=", str)) == NULL)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putendl_fd(strerror(errno), 2);
 			g_mshell.env[pwd] = (char *) -1;
+			return (1);
+		}
 	}
 	return (0);
 }
