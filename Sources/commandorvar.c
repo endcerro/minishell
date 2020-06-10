@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/01 17:31:46 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 16:49:10 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	freevarsreste(int size)
 	g_mshell.vars = NULL;
 }
 
-void	addvar(char *str)
+int		addvar(char *str)
 {
 	int		size;
 	char	**newvars;
@@ -38,33 +38,24 @@ void	addvar(char *str)
 	if (g_mshell.vars != NULL)
 		while (g_mshell.vars[size])
 		{
-			if (ft_strncmp(g_mshell.vars[size], str, ft_strchr(str, '=') - str) == 0)
+			if (ft_strncmp(g_mshell.vars[size], str,
+						ft_strchr(str, '=') - str) == 0)
 			{
 				if ((tmp = ft_strdup(str)) == NULL)
-				{
-					ft_putstr("minishell: ");
-					ft_putendl(strerror(errno));
-					return ;
-				}
+					return (ft_printh(2, 1, "minishel: %s\n", strerror(errno)));
 				free(g_mshell.vars[size]);
 				g_mshell.vars[size] = tmp;
-				return ;
+				return (0);
 			}
 			++size;
 		}
-	if (!(newvars = (char **)malloc(sizeof (char *) * (size + 2))))
-	{
-		ft_putstr("minishell: ");
-		ft_putendl(strerror(errno));
-		return ;
-	}
+	if (!(newvars = (char **)malloc(sizeof(char *) * (size + 2))))
+		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	newvars[size + 1] = NULL;
 	if (!(newvars[size] = ft_strdup(str)))
 	{
 		free(newvars);
-		ft_putstr("minishell: ");
-		ft_putendl(strerror(errno));
-		return ;
+		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	}
 	if (g_mshell.vars != NULL)
 	{
@@ -77,17 +68,15 @@ void	addvar(char *str)
 				while (--size >= 0)
 					free(newvars[size]);
 				free(newvars);
-				ft_putstr("minishell: ");
-				ft_putendl(strerror(errno));
-				return ;
+				return (ft_printh(2, 1, "minishell: ", strerror(errno)));
 			}
 			free(g_mshell.vars[size]);
 		}
 		free(g_mshell.vars);
 	}
 	g_mshell.vars = newvars;
+	return (0);
 }
-
 
 char	*checkpath(int j, char **params)
 {
@@ -113,7 +102,8 @@ char	*checkpath(int j, char **params)
 		if (g_mshell.env[x][i] == ':')
 		{
 			g_mshell.env[x][i] = 0;
-			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"), params[j]);
+			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"),
+							params[j]);
 			g_mshell.env[x][i] = ':';
 			if (stat(str, &sta) != -1)
 				return (str);
@@ -151,6 +141,7 @@ void	execsomestuff(int x, char **params)
 		}
 	}
 	else
+	{
 		if ((str = checkpath(x, params)) == NULL)
 		{
 			ft_putstr("minishell: ");
@@ -158,6 +149,7 @@ void	execsomestuff(int x, char **params)
 			ft_putstr(": command not found\n");
 			return ;
 		}
+	}
 	g_mshell.pid = fork();
 	if (g_mshell.pid == 0)
 	{
@@ -185,14 +177,11 @@ void	execsomestuff(int x, char **params)
 		return ;
 	}
 	free(str);
-	// Gerer les signals
-	/* wait(&g_mshell.exitcode); */
 	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
 		;
-	/* write(1, "\n", 1); */
 }
 
-char	**ls_params()
+char	**ls_params(void)
 {
 	char	**out;
 	int		i;
@@ -200,13 +189,13 @@ char	**ls_params()
 
 	curr = g_mshell.ls;
 	i = 0;
-	while(curr && curr->type == 1 && ++i)
+	while (curr && curr->type == 1 && ++i)
 		curr = curr->next;
 	if ((out = malloc(sizeof(char*) * (i + 1))) == NULL)
 		return (NULL);
 	curr = g_mshell.ls;
 	i = 0;
-	while(curr && curr->type == 1)
+	while (curr && curr->type == 1)
 	{
 		out[i++] = curr->content;
 		curr = curr->next;
@@ -215,18 +204,14 @@ char	**ls_params()
 	return (out);
 }
 
-void	commandorvar(void)
+int		commandorvar(void)
 {
 	int		x;
 	int		i;
 	char	**params;
 
 	if ((params = ls_params()) == NULL)
-	{
-		ft_putstr("minishell: ");
-		ft_putendl(strerror(errno));
-		return ;
-	}
+		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	x = -1;
 	while (params[++x])
 	{

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 13:36:25 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/10 16:49:32 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int				cd();
 int				unset();
 int				export(char *params);
 char 			*env(char *request);
-void			commandorvar(void);
+int				commandorvar(void);
 //BUILTIN UTILS
 void 			checkinput_ls(char *line);
 void 			parse_env_ls(char **param);
