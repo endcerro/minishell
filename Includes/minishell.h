@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 16:49:32 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/10 17:17:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ char			*getcwdwrap(void);
 //COMMAND PARSING
 char			*get_lst(char *line);
 int 			get_blocks(char *line);
-char			**getfiller(int depth, int *cpt);
-void 			parse_qts(char *str, int *cpt);
+char			**getfiller(int depth, char *cpt);
+void 			parse_qts(char *str, char *cpt);
 int				parse_bs(char *str);
 int				parse_esc(char *str, int i);
 char			*check_finished_lst(char *line);
 //IO
 void 			check_rdir();
-void 			check_pipe(char *str, int *cpt);
+void 			check_pipe(char *str, char *cpt);
 void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
 //LST UTILS

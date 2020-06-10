@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:47:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 17:17:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int		parse_bs(char *str)
 	return (0);
 }
 
-void	parse_qts(char *str, int *cpt)
+void	parse_qts(char *str, char *cpt)
 {
 	int		j;
 	int		v;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:20:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 19:04:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		ft_lstclear(t_list **lst)
 	t_list *cache2;
 
 	cache = *lst;
-	if (lst == 0)
+	if (lst == 0 || *lst == 0)
 		return (0);
 	if (cache != NULL)
 	{

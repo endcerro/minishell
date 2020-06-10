@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:44:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 17:51:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_pipe(char *str, int *cpt)
+void	check_pipe(char *str, char *cpt)
 {
 	int i;
 	int pipefound;
@@ -61,7 +61,7 @@ char	*add_filler(char **fill)
 
 char	*check_finished_lst(char *line)
 {
-	int		cpt[3];
+	char	cpt[3];
 	char	**fill;
 	char	*out;
 

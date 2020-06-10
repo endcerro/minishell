@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 15:44:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/10 17:16:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		prompt(char **line)
 	return (get_next_line(0, line));
 }
 
-char	**getfiller(int depth, int *cpt)		//MALLOC PROTECTED
+char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 {
 	char *tmp;
 	char **out;

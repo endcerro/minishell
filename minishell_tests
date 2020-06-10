@@ -1,0 +1,221 @@
+echo							OK
+echo simple						OK
+echo -n simple					OK
+echo simple text				OK
+echo $PATH						OK	
+echo "$PATH"					Remove quotes
+echo '$PATH'					Remove quotes and not exand
+echo '\'						Not expand so no need for another '	
+echo "\\"						Remove quotes and use escape char to do so
+echo "\n \n \n"					Remove quotes
+echo "\n \\n \\\n"				Remove quotes and escape chars
+echo hi; echo hihi;				OK	
+echo ;;							Should throw bad syntax error
+echo hi";" hihi					CRASH
+echo hi "   ;   " hihi			Remove quotes
+echo one; echo two; echo three;	OK
+cd								OK
+cd								OK
+cd .							OK
+cd ..							OK
+cd ~							OK
+cd 								OK
+cd no_file						OK
+cd a b c d						Too many args / Wrong umber of aargs
+pwd								OK
+pwd								OK
+pwd a							Should work
+pwd a b c d 					Should work
+
+XXXX export && env && unset
+
+export							OK
+export LOL						OK
+export LOL=lol					OK
+export LOL	 					Not ok, should not remove LOL=lol entry in env + other
+unset LOL
+export LOL=lala ROR=rara  		Should export both
+unset LOL ROR					OK
+export "HI= hi"					Remove quotes
+export "HI =hi"  				Should error
+
+XXXX non built-in command
+
+binls							OK
+ls								OK
+ls -al							OK
+clear							OK
+whoami							OK
+
+XXXX pipe
+
+| echo							Should error
+echo | | echo					Should error
+
+XXXX redirection
+
+cat < >							Should error and not read stdin
+cat < <							Should error and not read stdin
+cat < Makefile > test1 > test2	OK
+cat < no_file > test1 > test2 	Error not handled
+cat < no_file > test1 echo asdf	Error not handled
+
+XXXX pipe & redirection
+
+cat < Makefile | grep gcc > output Should not exit
+cat < nofile | grep gcc > output   Error not handled
+
+
+XXXX Commandes valides et basiques
+	
+/bin/ls 									OK
+/bin/echo -n \"Hello\"						OK but quotes and escp char
+/bin/echo -n \" \$PATH \"					Not expand
+/bin/ls -a  								OK
+/bin/ls -a ../								OK
+awk											OK
+echo										OK
+echo -n 									OK
+echo -n -n -n -n 							Should not print any of them
+echo hello                                  OK
+echo A B C D E F -n G H I 					OK
+/bin/ls filethatdoesntexist                 OK
+echo /s/a/l/u/tXXXX 						OK
+echo \$PATH:abc 							Don't expand due to escape char
+echo \$PATH.abc								Echo is fucked at this point
+echo \$PATH\ abc							Echo is fucked at this point
+echo \$PATH\\abc							Echo is fucked at this point
+echo \$PATH+abc								Echo is fucked at this point
+echo \$PATH,abc								Echo is fucked at this point
+
+XXXX Commandes valides et + complexes
+
+ls ; pwd ; echo Hello 						OK
+ls ; pwd ; 									OK
+pwd;ls  									OK
+\"echo\" \"hello\"							Remove the quotes but err
+\"echo\" \"he;llo\"							Should double error
+echo \"\ls\"ls  							I'm not testing echo anymore
+
+unset qd sdfbdqfgqdfgsdg
+
+XXXX Commandes echo + variables d environnement
+
+echo \$PATH
+echo \"PATH\"
+echo PATH
+echo \'PATH\'
+echo \" PATH \"
+echo \" \$PATH \"
+echo \" \$PATH \$_system_name\"
+echo \'\$PATH\'
+echo \' \$PATH \'
+echo \"\$PATH\" \$SHELL Hello \"\$1\"
+
+XXXX Test PWD
+
+pwd
+\"pwd\"
+pwd .
+pwd ..
+ pwd .. 
+pwd ; echo \$?
+
+XXXX Test Simple Quotes
+
+'/bin/ls'
+l''s
+
+XXXX Test Pipe
+
+cat file | grep bla | more
+ls filethatdoesntexist | grep bla | more
+ls | grep Makefile | rev
+/bin/ls \"|\" /usr/bin/grep microshell
+pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42 
+
+ pwd | cut -c7- | rev | tail | echo \$PWD
+
+XXXX Impossible de tester en récupérant PWD car on exit aussitôt
+XXXX Donc on teste via un ls pour check si on est au bon endroit
+
+cd ; ls
+cd . ; ls
+cd .. ; ls
+cd ~ ; ls
+cd ~/ ; ls
+cd .. ; pwd
+cd .. ; pwd ; echo \$?
+cd ; /bin/ls
+cd ; ../../bin/ls
+
+XXXX BUILTIN EXIT ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>><><><
+
+exit
+exit 1
+exit A
+exit 1 2
+exit A B C
+exit A1 B2
+exit 1A 2B
+exit -1
+exit -A
+exit 1-A
+exit 1A-
+exit 100000000000000000
+exit -100000000000000000
+
+XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+;
+;;;
+<
+>
+;;;;;
+\"; ; ;\"
+\"; < ;\"
+\"; > ;\"
+; pwd ; echo Hello
+pwd;;;ls
+;;ls;;
+;ls;pwd;
+\"
+\"\"
+''
+\"\"\"\"\"\"
+ \"  \" 
+|
+  |;
+;|
+;|<
+<;
+>;
+;<
+;>
+ ;< ls ; 
+ ;> ls ; 
+'';
+>>
+  \"|\" ;
+'|'
+  '|' 
+|.
+< \" \" < ' '<
+\" \" ' ' > < > ''
+<
+>
+<<<<<<<<
+<<<
+>>>
+
+cat fddsqffgfhds
+cd ; ../../bin/cdfg
+cd ; ../../bin/ls
+
+XXXX multi lignes
+
+'''''
+'
+\";"\
+echo "\"
+echo |
