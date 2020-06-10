@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 13:50:19 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/10 16:10:15 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,7 @@ int		pwd(void)
 		return (1);
 	}
 	if ((str = getcwdwrap()) == NULL)
-	{
-		ft_putstr_fd("minishell: pwd: ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		return (1);
-	}
+		return (ft_printh(2, 1, "minishell: pwd: %s\n", strerror(errno)));
 	ft_putstr(str);
 	write(1, "\n", 1);
 	free(str);
@@ -70,10 +66,7 @@ int		cdbis(void)
 
 	curr = g_mshell.ls->next;
 	if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
-	{
-		ft_putstr_fd("minishell: cd: wrond number of arguments\n", 2);
-		return (1);
-	}
+		return (ft_printh(2, 1, "minishell: cd: wrond number of arguments\n"));
 	if (curr && curr->type == 1)
 	{
 		if (curr->content[0] == '~')
@@ -83,20 +76,29 @@ int		cdbis(void)
 				return (1);
 		}
 		if (chdir(curr->content) == -1)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(curr->content, 2);
-			write(2, ": ", 2);
-			ft_putendl_fd(strerror(errno), 2);
-			return (1);
-		}
+			return (ft_printh(2, 1, "minishell: cd: %s: %s\n", curr->content,
+							strerror(errno)));
 	}
 	else
 	{
 		if (chdir(rethomedir()) == -1)
+			return (ft_printh(2, 1, "minishell: cd: $HOME not set\n"));
+	}
+	return (0);
+}
+
+int		cdter(int pwd)
+{
+	char *str;
+
+	if ((str = getcwdwrap()) == NULL)
+		return (ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno)));
+	else
+	{
+		if ((g_mshell.env[pwd] = ft_strjoinf2("PWD=", str)) == NULL)
 		{
-			ft_putstr_fd("minishell: cd: $HOME not set\n", 2);
-			return (1);
+			g_mshell.env[pwd] = (char *)-1;
+			return (ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno)));
 		}
 	}
 	return (0);
@@ -107,7 +109,6 @@ int		cd(void)
 	int		oldpwd;
 	int		pwd;
 	int		x;
-	char	*str;
 
 	if (cdbis())
 		return (1);
@@ -124,26 +125,8 @@ int		cd(void)
 	free(g_mshell.env[oldpwd]);
 	g_mshell.env[oldpwd] = ft_strjoin("OLD", g_mshell.env[pwd]);
 	if (g_mshell.env[oldpwd] == 0)
-	{
-		ft_putstr_fd("minishell: cd: $PWD problem\n", 2);
-		return (1);
-	}
+		return (ft_printh(2, 1, "minishell: cd: $PWD problem\n"));
 	free(g_mshell.env[pwd]);
 	g_mshell.env[pwd] = (char *)-1;
-	if ((str = getcwdwrap()) == NULL)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-	}
-	else
-	{
-		if ((g_mshell.env[pwd] = ft_strjoinf2("PWD=", str)) == NULL)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putendl_fd(strerror(errno), 2);
-			g_mshell.env[pwd] = (char *)-1;
-			return (1);
-		}
-	}
-	return (0);
+	return (cdter(pwd));
 }
