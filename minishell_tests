@@ -2,14 +2,14 @@ echo							OK
 echo simple						OK
 echo -n simple					OK
 echo simple text				OK
-echo $PATH						OK	
+echo $PATH						OK
 echo "$PATH"					Remove quotes
 echo '$PATH'					Remove quotes and not exand
-echo '\'						Not expand so no need for another '	
+echo '\'						Not expand so no need for another '
 echo "\\"						Remove quotes and use escape char to do so
 echo "\n \n \n"					Remove quotes
 echo "\n \\n \\\n"				Remove quotes and escape chars
-echo hi; echo hihi;				OK	
+echo hi; echo hihi;				OK
 echo ;;							Should throw bad syntax error
 echo hi";" hihi					CRASH
 echo hi "   ;   " hihi			Remove quotes
@@ -24,8 +24,8 @@ cd no_file						OK
 cd a b c d						Too many args / Wrong umber of aargs
 pwd								OK
 pwd								OK
-pwd a							Should work
-pwd a b c d 					Should work
+pwd a							OK
+pwd a b c d 					OK
 
 XXXX export && env && unset
 
@@ -67,7 +67,7 @@ cat < nofile | grep gcc > output   Error not handled
 
 
 XXXX Commandes valides et basiques
-	
+
 /bin/ls 									OK
 /bin/echo -n \"Hello\"						OK but quotes and escp char
 /bin/echo -n \" \$PATH \"					Not expand
@@ -114,11 +114,12 @@ echo \"\$PATH\" \$SHELL Hello \"\$1\"
 
 XXXX Test PWD
 
-pwd
-\"pwd\"
-pwd .
-pwd ..
- pwd .. 
+pwd											OK
+\"pwd\"										Only print "pwd" in error message
+"pwd"										Ne marche pas
+pwd .										OK
+pwd ..										OK
+ pwd ..										OK
 pwd ; echo \$?
 
 XXXX Test Simple Quotes
@@ -128,54 +129,54 @@ l''s
 
 XXXX Test Pipe
 
-cat file | grep bla | more
-ls filethatdoesntexist | grep bla | more
-ls | grep Makefile | rev
+cat file | grep bla | more					OK
+ls filethatdoesntexist | grep bla | more	OK
+ls | grep Makefile | rev					OK
 /bin/ls \"|\" /usr/bin/grep microshell
-pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42 
+pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42
 
  pwd | cut -c7- | rev | tail | echo \$PWD
 
 XXXX Impossible de tester en récupérant PWD car on exit aussitôt
 XXXX Donc on teste via un ls pour check si on est au bon endroit
 
-cd ; ls
-cd . ; ls
-cd .. ; ls
-cd ~ ; ls
-cd ~/ ; ls
-cd .. ; pwd
-cd .. ; pwd ; echo \$?
-cd ; /bin/ls
-cd ; ../../bin/ls
+cd ; ls										OK
+cd . ; ls									OK
+cd .. ; ls									OK
+cd ~ ; ls									OK
+cd ~/ ; ls									OK
+cd .. ; pwd									OK
+cd .. ; pwd ; echo \$?						OK
+cd ; /bin/ls								OK
+cd ; ../../bin/ls							OK
 
 XXXX BUILTIN EXIT ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>><><><
 
-exit
-exit 1
-exit A
-exit 1 2
-exit A B C
-exit A1 B2
-exit 1A 2B
-exit -1
-exit -A
-exit 1-A
-exit 1A-
-exit 100000000000000000
-exit -100000000000000000
+exit										OK
+exit 1										OK
+exit A										OK
+exit 1 2									OK
+exit A B C									OK
+exit A1 B2									OK
+exit 1A 2B									OK
+exit -1										OK
+exit -A										OK
+exit 1-A									OK
+exit 1A-									OK
+exit 100000000000000000						OK
+exit -100000000000000000					OK
 
 XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
-;
-;;;
-<
->
-;;;;;
+;											Not OK
+;;;											Not OK
+<											Not OK
+>											Not OK
+;;;;;										Not OK
 \"; ; ;\"
 \"; < ;\"
 \"; > ;\"
-; pwd ; echo Hello
+; pwd ; echo Hello							Not OK
 pwd;;;ls
 ;;ls;;
 ;ls;pwd;
@@ -183,7 +184,7 @@ pwd;;;ls
 \"\"
 ''
 \"\"\"\"\"\"
- \"  \" 
+ \"  \"
 |
   |;
 ;|
@@ -192,13 +193,13 @@ pwd;;;ls
 >;
 ;<
 ;>
- ;< ls ; 
- ;> ls ; 
+ ;< ls ;
+ ;> ls ;
 '';
 >>
   \"|\" ;
 '|'
-  '|' 
+  '|'
 |.
 < \" \" < ' '<
 \" \" ' ' > < > ''

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:37:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/11 17:25:32 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 
 int		isstrdigit(char *str)
 {
+	while (*str && (*str == '-' || *str == '+'))
+		++str;
 	while (*str)
 	{
-		if (ft_isdigit(*str) == 0)
+		if (ft_isdigit(*str) == 0 )
 			return (0);
 		++str;
 	}
@@ -87,12 +89,17 @@ void	checkinput_ls(char *line)
 	}
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
-		ft_putstr("exit\n");
 		ex = 0;
-		if (g_mshell.ls->next)
+		if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 		{
+			ft_putstr("exit\n");
 			if (isstrdigit(g_mshell.ls->next->content) == 0)
-				ft_putstr("minishell: exit: numeric argument needed\n");
+				ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n", g_mshell.ls->next->content);
+			else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)
+			{
+				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+				return ;
+			}
 			else
 				ex = ft_atoi(g_mshell.ls->next->content);
 		}
