@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:10:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:45:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,83 @@ char	*get_word_lst(char *line, int *p)
 	return (ft_substr(line, cp, len));
 }
 
-t_list	*split_line_lst(char *line)
+void 	testfun(char *line)
+{
+	int i;
+	int bscpt;
+	int sqnb;
+
+	bscpt = 0;
+	i = 0;
+	sqnb = 0;
+	while(line[i])
+	{
+		bscpt = 0;
+		while(line[i] && line[i] == '\\')
+		{
+			bscpt++;
+			i++;
+		}
+		if (line[i] == '\"' && bscpt % 2)
+		{
+			line[i] = -4;
+		}
+		else if(line[i] == '\'' && bscpt % 2)
+		{
+			if(sqnb == 0)
+				line[i] = -3;
+			else
+				sqnb = 0;
+		}
+		else if (line[i] == '$' && bscpt % 2)
+		{
+			line[i] = -2;
+		}
+		else if(line[i] == '\'')
+		{
+			if (sqnb == 0)
+				sqnb++;	
+			else
+				sqnb--;
+		}
+		i++;
+	}
+}
+void 	testfun2(char *line)
+{
+	int i;
+
+	i = 0;
+	while(line[i])
+	{
+		if (line[i] == -4)
+		{
+			line[i] = '\"';
+		}
+		else if (line[i] == -2)
+		{
+
+			line[i] = '$';
+		}
+		else if (line[i] == -3)
+		{
+
+			line[i] = '\'';
+		}
+		i++;
+	}
+}
+
+void correctlst(t_list *lst)
+{
+	while(lst && lst->content)
+	{
+		testfun2(lst->content);
+		lst = lst->next;
+	}
+}
+
+t_list	*split_line_lst(char *line)					//ICI
 {
 	t_list	*f_lst;
 	t_list	*lst;
@@ -117,6 +193,7 @@ t_list	*split_line_lst(char *line)
 
 	i = 0;
 	f_lst = NULL;
+	testfun(line);
 	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
@@ -134,6 +211,9 @@ t_list	*split_line_lst(char *line)
 	}
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
+	// correctlst(f_lst);
+	// testfun2(line);
+
 	return (f_lst);
 }
 
@@ -141,7 +221,7 @@ char	*get_lst(char *line)		//PROTECTED
 {
 	char	*filler;
 	t_list	*out;
-
+	// printf("Line = %s\n",line );
 	if ((filler = check_finished_lst(line)) != NULL)
 	{
 		if ((line = ft_strjoinft(line, filler)) == NULL)
@@ -155,6 +235,7 @@ char	*get_lst(char *line)		//PROTECTED
 		ft_lstclear(&out);
 		return (NULL);
 	}
+	// printf("Line = %s\n",line );
 	g_mshell.ls = out;
 	return (line);
 }

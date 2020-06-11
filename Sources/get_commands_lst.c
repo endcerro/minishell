@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:37:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:44:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,28 @@
 
 
 
-int		echo_ls(void)
-{
-	int		ret;
-	t_list	*curr;
+// int		echo_ls(void)
+// {
+// 	int		ret;
+// 	t_list	*curr;
 
-	ret = 0;
-	curr = g_mshell.ls->next;
-	if (curr && ft_strcmp(curr->content, "-n") == 0)
-		curr = curr->next;
-	else
-		ret = 1;
-	while (curr && curr->type == 1)
-	{
-		ft_putstr(curr->content);
-		if (curr->next)
-			write(1, " ", 1);
-		curr = curr->next;
-	}
-	if (ret)
-		write(1, "\n", 1);
-	return (0);
-}
+// 	ret = 0;
+// 	curr = g_mshell.ls->next;
+// 	if (curr && ft_strcmp(curr->content, "-n") == 0)
+// 		curr = curr->next;
+// 	else
+// 		ret = 1;
+// 	while (curr && curr->type == 1)
+// 	{
+// 		ft_putstr(curr->content);
+// 		if (curr->next)
+// 			write(1, " ", 1);
+// 		curr = curr->next;
+// 	}
+// 	if (ret)
+// 		write(1, "\n", 1);
+// 	return (0);
+// }
 
 int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 {
@@ -50,7 +50,8 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 	curr = lst;
 	while (curr && curr->type != 3)
 	{
-		parse_env_ls(&(curr->content));
+		if(curr->content[0] != '\'')
+			parse_env_ls(&(curr->content));
 		if(curr->content == 0)
 		{
 			return (1);
@@ -80,11 +81,15 @@ void	checkinput_ls(char *line)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
+	
 	check_rdir(curr);
+	
 	if(expand_vars(curr))
 	{
 		return ;
 	}
+	correctlst(curr);
+	ft_lstprint(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ft_putstr("exit\n");

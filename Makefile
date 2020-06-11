@@ -28,6 +28,7 @@ SRC			=	main.c \
 				n_itoa.c \
 				export.c \
 				cd.c \
+				echo.c \
 				lst_creat.c \
 				utils.c \
 				redirections.c \

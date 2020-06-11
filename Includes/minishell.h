@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 17:17:50 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/11 18:18:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_mshell		g_mshell;
 int				pwd();
 int				cd();
 int				unset();
+int 			echo_ls();
 int				export(char *params);
 char 			*env(char *request);
 int				commandorvar(void);
@@ -98,5 +99,8 @@ void			quicks(char **tab, int lo, int hi);
 char			*ft_itoaa(int n);
 int 			wordlen(char *str);
 
+void 	testfun(char *line);
+void 	correctlst(t_list *lst);
+void 	testfun2(char *line);
 
 #endif

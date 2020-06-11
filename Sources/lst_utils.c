@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/10 19:04:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/11 17:24:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*void	ft_lstprint(t_list *lst)
+void	ft_lstprint(t_list *lst)
 {
 	if (lst)
 	{
@@ -32,7 +32,7 @@
 		ft_putchar('|');
 	}
 	ft_putchar('\n');
-}*/
+}
 
 t_list	*tag_lst(t_list *lst)
 {
