@@ -124,8 +124,8 @@ pwd ; echo \$?
 
 XXXX Test Simple Quotes
 
-'/bin/ls'
-l''s
+'/bin/ls'									Not OK
+l''s										Not OK
 
 XXXX Test Pipe
 
@@ -209,9 +209,9 @@ pwd;;;ls
 <<<
 >>>
 
-cat fddsqffgfhds
-cd ; ../../bin/cdfg
-cd ; ../../bin/ls
+cat fddsqffgfhds							OK
+cd ; ../../bin/cdfg							OK
+cd ; ../../bin/ls							OK
 
 XXXX multi lignes
 
