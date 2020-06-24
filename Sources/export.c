@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 17:09:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/24 19:21:29 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,28 @@ int		unset(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-	i = 0;
-	if (curr == 0 || curr->next != 0)
+	
+	// if (curr == 0 || curr->next != 0)
+	// {
+	// 	ft_putstr("minishell: unset: wrong number of arguments\n");
+	// 	return (1);
+	// }
+	while (curr && curr->type == 1)
 	{
-		ft_putstr("minishell: unset: wrong number of arguments\n");
-		return (1);
-	}
-	while (g_mshell.env[i])
-	{
-		if (!check_match(g_mshell.env[i], curr->content))
+		i = 0;	
+		while (g_mshell.env[i])
 		{
-			free(g_mshell.env[i]);
-			while (g_mshell.env[++i])
-				g_mshell.env[i - 1] = g_mshell.env[i];
-			g_mshell.env[i - 1] = 0;
-			return (0);
+			if (!check_match(g_mshell.env[i], curr->content))
+			{
+				free(g_mshell.env[i]);
+				while (g_mshell.env[++i])
+					g_mshell.env[i - 1] = g_mshell.env[i];
+				g_mshell.env[i - 1] = 0;
+				break ;
+			}
+			i++;
 		}
-		i++;
+		curr = curr->next;
 	}
 	return (0);
 }
@@ -131,50 +136,59 @@ int		export(char *param)			//PROTECTED
 		exportlst(g_mshell.env); // PROTECTED
 		return (0);
 	}
-	if (ft_strchr(curr->content, '=') == NULL)
+	while (curr && curr->type == 1)
 	{
-		tmp = vars(curr->content);
-		if (tmp)
+		if (ft_strchr(curr->content, '=') == NULL)
 		{
-			curr->content = ft_strjoinf1(curr->content, "=");
-			if (curr->content == 0)
-				return (1);
-			curr->content = ft_strjoinf1(curr->content, tmp);
-			if (curr->content == 0)
-				return (1);
-		}
-	}
-	unset_var(curr->content);
-	while (g_mshell.env[i])
-	{
-		if (!check_match(g_mshell.env[i], curr->content))
-		{
-			tmp = g_mshell.env[i];
-			g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
-			if (g_mshell.env[i] == 0)
+			tmp = vars(curr->content);
+			if (tmp)
 			{
-				g_mshell.env[i] = tmp;
-				return (1);
+				curr->content = ft_strjoinf1(curr->content, "=");
+				if (curr->content == 0)
+					return (1);
+				curr->content = ft_strjoinf1(curr->content, tmp);
+				if (curr->content == 0)
+					return (1);
 			}
-			if (param != NULL)
-				free(curr);
-			return (freeret(tmp, 0));
+			else if (env(curr->content))
+			{
+				curr = curr->next;
+				continue ;
+			}
 		}
-		i++;
+		unset_var(curr->content);
+		while (g_mshell.env[i])
+		{
+			if (!check_match(g_mshell.env[i], curr->content))
+			{
+				tmp = g_mshell.env[i];
+				g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
+				if (g_mshell.env[i] == 0)
+				{
+					g_mshell.env[i] = tmp;
+					return (1);
+				}
+				if (param != NULL)
+					free(curr);
+				return (freeret(tmp, 0));
+			}
+			i++;
+		}
+		if (!(n_envi = malloc(sizeof(char *) * (i + 2))))
+			return (1);
+		i = -1;
+		while (g_mshell.env[++i])
+			n_envi[i] = g_mshell.env[i];
+		n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
+		if (n_envi[i] == 0)
+		{
+			freechar2ptr(n_envi);
+			return (1);
+		}
+		n_envi[++i] = 0;
+		free(g_mshell.env);
+		g_mshell.env = n_envi;
+		curr = curr->next;
 	}
-	if (!(n_envi = malloc(sizeof(char *) * (i + 2))))
-		return (1);
-	i = -1;
-	while (g_mshell.env[++i])
-		n_envi[i] = g_mshell.env[i];
-	n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
-	if (n_envi[i] == 0)
-	{
-		freechar2ptr(n_envi);
-		return (1);
-	}
-	n_envi[++i] = 0;
-	free(g_mshell.env);
-	g_mshell.env = n_envi;
 	return (0);
 }

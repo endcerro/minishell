@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 16:50:16 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/24 18:06:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int		cdbis(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-	if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
-		return (ft_printh(2, 1, "minishell: cd: wrond number of arguments\n"));
+	// if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
+	// 	return (ft_printh(2, 1, "minishell: cd: wrond number of arguments\n"));
 	if (curr && curr->type == 1)
 	{
 		if (curr->content[0] == '~')

@@ -3,12 +3,12 @@ echo simple						OK
 echo -n simple					OK
 echo simple text				OK
 echo $PATH						OK
-echo "$PATH"					Remove quotes
-echo '$PATH'					Remove quotes and not exand
-echo '\'						Not expand so no need for another '
-echo "\\"						Remove quotes and use escape char to do so
-echo "\n \n \n"					Remove quotes
-echo "\n \\n \\\n"				Remove quotes and escape chars
+echo "$PATH"					Expand vars KO ?
+echo '$PATH'					OK
+echo '\'						OK
+echo "\\"						remove BS
+echo "\n \n \n"					OK
+echo "\n \\n \\\n"				remove BS
 echo hi; echo hihi;				OK
 echo ;;							Should throw bad syntax error
 echo hi";" hihi					CRASH
@@ -21,7 +21,7 @@ cd ..							OK
 cd ~							OK
 cd 								OK
 cd no_file						OK
-cd a b c d						Too many args / Wrong umber of aargs
+cd a b c d						OK
 pwd								OK
 pwd								OK
 pwd a							OK
@@ -32,11 +32,11 @@ XXXX export && env && unset
 export							OK
 export LOL						OK
 export LOL=lol					OK
-export LOL	 					Not ok, should not remove LOL=lol entry in env + other
+export LOL	 					OK
 unset LOL
-export LOL=lala ROR=rara  		Should export both
+export LOL=lala ROR=rara  		OK
 unset LOL ROR					OK
-export "HI= hi"					Remove quotes
+export "HI= hi"					Remove extraneous quotes
 export "HI =hi"  				Should error
 
 XXXX non built-in command
