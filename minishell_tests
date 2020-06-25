@@ -12,7 +12,7 @@ echo "\n \\n \\\n"				remove BS
 echo hi; echo hihi;				OK
 echo ;;							Should throw bad syntax error
 echo hi";" hihi					CRASH
-echo hi "   ;   " hihi			Remove quotes
+echo hi "   ;   " hihi			OK
 echo one; echo two; echo three;	OK
 cd								OK
 cd								OK
@@ -36,7 +36,7 @@ export LOL	 					OK
 unset LOL
 export LOL=lala ROR=rara  		OK
 unset LOL ROR					OK
-export "HI= hi"					Remove extraneous quotes
+export "HI= hi"					OK
 export "HI =hi"  				Should error
 
 XXXX non built-in command
@@ -69,8 +69,8 @@ cat < nofile | grep gcc > output   Error not handled
 XXXX Commandes valides et basiques
 
 /bin/ls 									OK
-/bin/echo -n \"Hello\"						OK but quotes and escp char
-/bin/echo -n \" \$PATH \"					Not expand
+/bin/echo -n \"Hello\"						Remove BS
+/bin/echo -n \" \$PATH \"					Remove BS
 /bin/ls -a  								OK
 /bin/ls -a ../								OK
 awk											OK
@@ -220,3 +220,14 @@ XXXX multi lignes
 \";"\
 echo "\"
 echo |
+
+ORIGINAL BUGS
+Should be packed in one block
+{
+	minishell @>echo Sample"
+	dquote> This is some text \"
+	STR B4 = \�
+	STR AF = \�
+	dquote> "
+	|echo:1||Sample":1||This:1||is:1||some:1||text:1||\":1||":1|
+}

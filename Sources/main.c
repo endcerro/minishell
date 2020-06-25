@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 19:37:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/25 14:03:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	testfun(tmp);
 	parse_qts(tmp, cpt);
 	check_pipe(tmp, cpt);
-	parse_bs(tmp);
+//	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
 		out = getfiller(depth + 1, cpt);

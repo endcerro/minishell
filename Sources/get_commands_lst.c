@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 17:25:32 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/25 15:06:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,69 @@ int		isstrdigit(char *str)
 	return (1);
 }
 
+void deconechar(char *str)
+{
+	int i;
+
+	i = 0;
+	if (*str == 0)
+		return ;
+	while (str[++i])
+	{
+		str[i - 1] = str[i];
+	}
+	str[i - 1] = str[i];
+}
+
+void trimbs(t_list *curr)
+{
+	int i;
+	int j;
+	int qtcp;
+
+	while (curr && curr->content && curr->type == 1)
+	{
+		i = 0;
+		if (curr->content[0] != '\'')
+			while (curr->content[i])
+			{
+				if (curr->content[i] == '\\')
+				{
+					qtcp = 0;
+					j = i;
+					while (curr->content[j] == '\\')
+					{
+						qtcp++;
+						j++;
+					}
+					printf("qtcp = %d\n",qtcp);
+					// qtcp = (qtcp % 2 == 0) ? qtcp : qtcp - 1;
+			
+					if ((qtcp != 1 && qtcp % 2 == 0) || curr->content[0] == '\"')
+					{
+						qtcp /= 2;
+					}
+					else if (qtcp != 1)
+					{
+						qtcp--;
+						qtcp /= 2;
+						qtcp++;
+					}				
+
+					printf("qtcp2 = %d\n",qtcp);
+					if (curr->content[0] == '\"' && curr->content[j] < 0)
+						qtcp++;
+					for (int z = 0; z < qtcp; z++)
+						deconechar(curr->content + i);
+
+					i += qtcp;
+				}
+				i++;
+			}
+		curr = curr->next;
+	}
+}
+
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
@@ -90,6 +153,7 @@ void	checkinput_ls(char *line)
 	{
 		return ;
 	}
+	trimbs(curr);
 	correctlst(curr);
 	ft_lstprint(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)

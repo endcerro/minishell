@@ -27,8 +27,8 @@ int		echo_ls(void)
 			curr = curr->next;
 	else
 		ret = 1;
-	if(curr->content[0] == '\"' || curr->content[0] == '\'')
-		trim_quotes(curr->content);
+	// if(curr->content[0] == '\"' || curr->content[0] == '\'')
+	// 	trim_quotes(curr->content);
 	while (curr && curr->type == 1)
 	{
 		ft_putstr(curr->content);

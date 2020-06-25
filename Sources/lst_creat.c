@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/24 19:22:53 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/25 15:03:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,20 @@ void 	testfun(char *line)
 		i++;
 	}
 }
+
+void decalstr(char *str)
+{
+	int i;
+
+	i = 1;
+	while (str[i])
+	{
+		str[i - 1] = str[i];
+		i++;
+	}
+	str[i - 1] = str[i];
+}
+
 void 	testfun2(char *line)
 {
 	int i;
@@ -168,7 +182,6 @@ void 	testfun2(char *line)
 		}
 		else if (line[i] == -3)
 		{
-
 			line[i] = '\'';
 		}
 		i++;
@@ -179,6 +192,10 @@ void correctlst(t_list *lst)
 {
 	while(lst && lst->content)
 	{
+		if(lst->content[0] == '\"' || lst->content[0] == '\'')
+			trim_quotes(lst->content);
+//		parse_bs(lst->content);
+		printf("%s\n",lst->content );
 		testfun2(lst->content);
 		lst = lst->next;
 	}

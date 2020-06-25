@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 18:32:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/25 10:53:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int		parse_esc(char *str, int j)
 
 	r = 0;
 	tra = 0;
+	printf("STR B4 = %s\n",str );
 	if (*(str + 1) == '\\')
 	{
 		while (*(str + r) == '\\')
@@ -159,5 +160,6 @@ int		parse_esc(char *str, int j)
 		while (str[++i])
 			str[i] = str[i + 1];
 	}
+	printf("STR AF = %s\n",str );
 	return (r);
 }
