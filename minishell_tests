@@ -3,12 +3,12 @@ echo simple						OK
 echo -n simple					OK
 echo simple text				OK
 echo $PATH						OK
-echo "$PATH"					Expand vars KO ?
+echo "$PATH"					Wrong variable ?
 echo '$PATH'					OK
 echo '\'						OK
-echo "\\"						remove BS
+echo "\\"						OK
 echo "\n \n \n"					OK
-echo "\n \\n \\\n"				remove BS
+echo "\n \\n \\\n"				OK
 echo hi; echo hihi;				OK
 echo ;;							Should throw bad syntax error
 echo hi";" hihi					CRASH
@@ -69,41 +69,42 @@ cat < nofile | grep gcc > output   Error not handled
 XXXX Commandes valides et basiques
 
 /bin/ls 									OK
-/bin/echo -n \"Hello\"						Remove BS
-/bin/echo -n \" \$PATH \"					Remove BS
+/bin/echo -n \"Hello\"						OK
+/bin/echo -n \" \$PATH \"					OK
 /bin/ls -a  								OK
 /bin/ls -a ../								OK
 awk											OK
 echo										OK
 echo -n 									OK
-echo -n -n -n -n 							Should not print any of them
+echo -n -n -n -n 							OK
 echo hello                                  OK
 echo A B C D E F -n G H I 					OK
 /bin/ls filethatdoesntexist                 OK
 echo /s/a/l/u/tXXXX 						OK
-echo \$PATH:abc 							Don't expand due to escape char
-echo \$PATH.abc								Echo is fucked at this point
-echo \$PATH\ abc							Echo is fucked at this point
-echo \$PATH\\abc							Echo is fucked at this point
-echo \$PATH+abc								Echo is fucked at this point
-echo \$PATH,abc								Echo is fucked at this point
+echo \$PATH:abc 							OK
+echo \$PATH.abc								OK
+echo \$PATH\ abc							OK
+echo \$PATH\\abc							OK
+echo \$PATH+abc								OK
+echo "\$PATH+abc"							OK
+echo \$PATH,abc								OK
 
 XXXX Commandes valides et + complexes
 
 ls ; pwd ; echo Hello 						OK
 ls ; pwd ; 									OK
 pwd;ls  									OK
-\"echo\" \"hello\"							Remove the quotes but err
+\"echo\" \"hello\"							OK
 \"echo\" \"he;llo\"							Should double error
-echo \"\ls\"ls  							I'm not testing echo anymore
+echo \"\ls\"ls  							One too much but why
 
 unset qd sdfbdqfgqdfgsdg
 
 XXXX Commandes echo + variables d environnement
 
-echo \$PATH
-echo \"PATH\"
-echo PATH
+echo \$PATH									OK
+echo \"PATH\"								OK
+echo PATH 									OK
 echo \'PATH\'
 echo \" PATH \"
 echo \" \$PATH \"
@@ -115,16 +116,16 @@ echo \"\$PATH\" \$SHELL Hello \"\$1\"
 XXXX Test PWD
 
 pwd											OK
-\"pwd\"										Only print "pwd" in error message
-"pwd"										Ne marche pas
+\"pwd\"										OK
+"pwd" 										OK
 pwd .										OK
 pwd ..										OK
- pwd ..										OK
-pwd ; echo \$?
+pwd ..										OK
+pwd ; echo \$?								OK
 
 XXXX Test Simple Quotes
 
-'/bin/ls'									Not OK
+'/bin/ls'									OK
 l''s										Not OK
 
 XXXX Test Pipe

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/17 19:21:47 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 19:32:32 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 14:01:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		check_match(char *env, char *param)		//PROTECTED
 	int i ;
 
 	i = 0;
-	// printf("strlen = %d\n",ft_strlen(ft_strnstr(env, "=", ft_strlen(env) )));
+
 
 	while (env[i] && env[i] != '=')
 		i++;
@@ -33,7 +33,7 @@ int		check_match(char *env, char *param)		//PROTECTED
 
 	ret = ft_strncmp(env, param, i);
 
-	// printf("ret = %d\n",ret );
+
 
 	return (ret);
 }

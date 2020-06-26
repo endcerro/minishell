@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/25 15:03:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 14:02:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,16 @@ char	*get_word_lst(char *line, int *p)
 	return (ft_substr(line, cp, len));
 }
 
-void 	testfun(char *line)
+void    escape_lst (t_list *curr)
+{
+	while (curr && curr->type == 1)
+	{
+		escape_chars(curr->content);
+		curr = curr->next;
+	}
+}
+
+void 	escape_chars(char *line)
 {
 	int i;
 	int bscpt;
@@ -165,12 +174,12 @@ void decalstr(char *str)
 	str[i - 1] = str[i];
 }
 
-void 	testfun2(char *line)
+void 	de_escape_chars(char *line)
 {
 	int i;
 
 	i = 0;
-	while(line[i])
+	while (line[i] != 0)
 	{
 		if (line[i] == -4)
 		{
@@ -194,9 +203,9 @@ void correctlst(t_list *lst)
 	{
 		if(lst->content[0] == '\"' || lst->content[0] == '\'')
 			trim_quotes(lst->content);
-//		parse_bs(lst->content);
-		printf("%s\n",lst->content );
-		testfun2(lst->content);
+		//parse_bs(lst->content);
+
+		de_escape_chars(lst->content);
 		lst = lst->next;
 	}
 }
@@ -209,7 +218,7 @@ t_list	*split_line_lst(char *line)					//ICI
 
 	i = 0;
 	f_lst = NULL;
-	testfun(line);
+	escape_chars(line);
 	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
@@ -228,7 +237,7 @@ t_list	*split_line_lst(char *line)					//ICI
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
 	// correctlst(f_lst);
-	// testfun2(line);
+	// de_escape_chars(line);
 
 	return (f_lst);
 }
@@ -237,7 +246,6 @@ char	*get_lst(char *line)		//PROTECTED
 {
 	char	*filler;
 	t_list	*out;
-	// printf("Line = %s\n",line );
 	if ((filler = check_finished_lst(line)) != NULL)
 	{
 		if ((line = ft_strjoinft(line, filler)) == NULL)
@@ -251,7 +259,7 @@ char	*get_lst(char *line)		//PROTECTED
 		ft_lstclear(&out);
 		return (NULL);
 	}
-	// printf("Line = %s\n",line );
+
 	g_mshell.ls = out;
 	return (line);
 }

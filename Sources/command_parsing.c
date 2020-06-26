@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/25 10:53:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 14:01:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ char	*check_finished_lst(char *line)
 	fill = 0;
 	out = 0;
 	ft_bzero(cpt, 3);
-	testfun(line);
+	escape_chars(line);
 	parse_qts(line, cpt);
-	// testfun2(line);
+	// de_escape_chars(line);
 	check_pipe(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 		if ((fill = getfiller(0, cpt)) == 0)
@@ -142,7 +142,7 @@ int		parse_esc(char *str, int j)
 
 	r = 0;
 	tra = 0;
-	printf("STR B4 = %s\n",str );
+
 	if (*(str + 1) == '\\')
 	{
 		while (*(str + r) == '\\')
@@ -160,6 +160,6 @@ int		parse_esc(char *str, int j)
 		while (str[++i])
 			str[i] = str[i + 1];
 	}
-	printf("STR AF = %s\n",str );
+
 	return (r);
 }

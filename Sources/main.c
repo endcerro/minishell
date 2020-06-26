@@ -29,7 +29,7 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	get_next_line(0, &tmp);
 	if (tmp == NULL)
 		return (NULL);
-	testfun(tmp);
+	escape_chars(tmp);
 	parse_qts(tmp, cpt);
 	check_pipe(tmp, cpt);
 //	parse_bs(tmp);

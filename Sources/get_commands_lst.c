@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/25 15:06:44 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 14:02:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 	curr = lst;
 	while (curr && curr->type != 3)
 	{
-		if(curr->content[0] != '\'')
+		if (curr->content[0] != '\'')
 			parse_env_ls(&(curr->content));
 		if(curr->content == 0)
 		{
@@ -109,7 +109,7 @@ void trimbs(t_list *curr)
 						qtcp++;
 						j++;
 					}
-					printf("qtcp = %d\n",qtcp);
+
 					// qtcp = (qtcp % 2 == 0) ? qtcp : qtcp - 1;
 			
 					if ((qtcp != 1 && qtcp % 2 == 0) || curr->content[0] == '\"')
@@ -123,7 +123,7 @@ void trimbs(t_list *curr)
 						qtcp++;
 					}				
 
-					printf("qtcp2 = %d\n",qtcp);
+
 					if (curr->content[0] == '\"' && curr->content[j] < 0)
 						qtcp++;
 					for (int z = 0; z < qtcp; z++)
@@ -146,14 +146,16 @@ void	checkinput_ls(char *line)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	
+	escape_lst(curr);
 	check_rdir(curr);
 	
 	if(expand_vars(curr))
 	{
 		return ;
 	}
+	
 	trimbs(curr);
+	
 	correctlst(curr);
 	ft_lstprint(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
@@ -205,7 +207,7 @@ void	checkinput_ls(char *line)
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
 
-		// printf("p1 %d p2 %d\n",g_mshell.pipes[2], g_mshell.pipes[5] );
+
 		if(g_mshell.pipes[2] == 0)
 		{
 			test = 1;

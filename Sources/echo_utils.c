@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 17:56:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 14:02:05 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		check_exitcode(char **str)
 	}
 	if (pos)
 	{
-		*str = inside_join(pos, tmp, 0);
+		*str = inside_join(pos, tmp, 2);
 		if (*str == 0)
 			return (1);
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
@@ -59,6 +59,7 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 	if (check_exitcode(str))
 		return ;
 	d_pos = ft_strchr(*str, '$');
+
 	while (d_pos != NULL)
 	{
 		while (ft_isalnum(d_pos[len + 1]))
@@ -74,19 +75,28 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 			*(d_pos) = -1;
 		else
 		{
+
 			if (env(query))
+			{
 				*str = inside_join(*str, env(query) + 1, 1);
+
+			}
 			else
+			{
 				*str = inside_join(*str, vars(query), 1);
+
+			}
 			if(*str == 0)
 			{	
 				free(query);
 				return ;
 			}
+
 		}
 		d_pos = ft_strchr(*str, '$');
 		free(query);
 	}				
+
 	swap_char(*str, '$');
 }
 
