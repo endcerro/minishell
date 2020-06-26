@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 14:02:05 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 18:05:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 	if (check_exitcode(str))
 		return ;
 	d_pos = ft_strchr(*str, '$');
-
+	// printf("PB ICI%s\n",*str );
 	while (d_pos != NULL)
 	{
 		while (ft_isalnum(d_pos[len + 1]))
@@ -79,7 +79,7 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 			if (env(query))
 			{
 				*str = inside_join(*str, env(query) + 1, 1);
-
+				// printf("STR = %s\n",*str );
 			}
 			else
 			{
@@ -96,7 +96,6 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 		d_pos = ft_strchr(*str, '$');
 		free(query);
 	}				
-
 	swap_char(*str, '$');
 }
 

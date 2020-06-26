@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:50:50 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 19:04:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	open_pipe_n(t_list *curr)
 	pipes = g_mshell.pipes;
 	if (pipes[2] != -1)
 		pipes += sizeof(int) * 3;
-	pipe(pipes);
+	if (pipe(pipes) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
 	pipes[2] = 1;
 	if (g_mshell.rdirout == 1)
 	{
@@ -28,7 +32,11 @@ void	open_pipe_n(t_list *curr)
 	}
 	else
 	{
-		dup2(pipes[1], 1);
+		if (dup2(pipes[1], 1) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
 		g_mshell.rdirout = 2;
 	}
 	curr->type = 3;
@@ -41,7 +49,11 @@ void	close_pipe_n(void)
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirin == 2)
 	{
-		dup2(g_mshell.oldfdin, 0);
+		if(dup2(g_mshell.oldfdin, 0) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
 		if (pipes[2] != 0)
 			pipes += sizeof(int) * 3;
 		close(pipes[0]);
@@ -53,8 +65,16 @@ void	close_pipe_n(void)
 	{
 		if (pipes[2] != 1)
 			pipes += sizeof(int) * 3;
-		dup2(pipes[0], 0);
-		dup2(g_mshell.oldfdout, 1);
+		if (dup2(pipes[0], 0) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
+		if (dup2(g_mshell.oldfdout, 1) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
 		close(pipes[1]);
 		pipes[2] = 0;
 		g_mshell.rdirout = 0;

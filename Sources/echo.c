@@ -5,6 +5,11 @@ void 	trim_quotes(char *str)
 {
 	int i;
 
+	if(str[1] == 0)
+	{
+		str[0] = 0;	
+		return ;
+	}
 	i = 1;
 	while(str[i])
 	{

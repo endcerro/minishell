@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 14:02:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 17:56:03 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ void	iniside_join_loop(char *base, char *add, char *out)
 
 	if (out[0] == '\"')
 	{
-
 		out[p] = '\"';
 	}
+	else
+		out[p] = 0;
 	out[++p] = 0;
 }
 

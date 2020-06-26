@@ -96,22 +96,22 @@ ls ; pwd ; 									OK
 pwd;ls  									OK
 \"echo\" \"hello\"							OK
 \"echo\" \"he;llo\"							Should double error
-echo \"\ls\"ls  							One too much but why
+echo \"\ls\"ls  							OK
 
-unset qd sdfbdqfgqdfgsdg
+unset qd sdfbdqfgqdfgsdg					OK
 
 XXXX Commandes echo + variables d environnement
 
 echo \$PATH									OK
 echo \"PATH\"								OK
 echo PATH 									OK
-echo \'PATH\'
-echo \" PATH \"
-echo \" \$PATH \"
-echo \" \$PATH \$_system_name\"
-echo \'\$PATH\'
-echo \' \$PATH \'
-echo \"\$PATH\" \$SHELL Hello \"\$1\"
+echo \'PATH\'								OK
+echo \" PATH \"								OK
+echo \" \$PATH \"							OK
+echo \" \$PATH \$_system_name\"				OK
+echo \'\$PATH\'								OK
+echo \' \$PATH \'							OK
+echo \"\$PATH\" \$SHELL Hello \"\$1\"		OK
 
 XXXX Test PWD
 

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 14:02:12 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 18:54:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 		{
 			return (1);
 		}
+		// printf("%s\n",curr->content);
 		curr = curr->next;
 	}
 	return (0);
@@ -95,13 +96,15 @@ void trimbs(t_list *curr)
 	int qtcp;
 
 	while (curr && curr->content && curr->type == 1)
-	{
+	{	
+		// printf("IN trimbs %s\n",curr->content );
 		i = 0;
 		if (curr->content[0] != '\'')
 			while (curr->content[i])
 			{
 				if (curr->content[i] == '\\')
 				{
+					// printf("\\ found\n");
 					qtcp = 0;
 					j = i;
 					while (curr->content[j] == '\\')
@@ -126,12 +129,17 @@ void trimbs(t_list *curr)
 
 					if (curr->content[0] == '\"' && curr->content[j] < 0)
 						qtcp++;
+					// printf("qtcp = %d\n",qtcp );
 					for (int z = 0; z < qtcp; z++)
+					{
+						// printf("Trimming one char qt pos %d \n", i);
 						deconechar(curr->content + i);
+					}
 
 					i += qtcp;
 				}
-				i++;
+				else
+					i++;
 			}
 		curr = curr->next;
 	}
@@ -161,9 +169,9 @@ void	checkinput_ls(char *line)
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;
+		ft_putstr("exit\n");
 		if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 		{
-			ft_putstr("exit\n");
 			if (isstrdigit(g_mshell.ls->next->content) == 0)
 				ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n", g_mshell.ls->next->content);
 			else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)

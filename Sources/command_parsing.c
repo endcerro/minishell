@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 14:01:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 15:45:53 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*check_finished_lst(char *line)
 	fill = 0;
 	out = 0;
 	ft_bzero(cpt, 3);
-	escape_chars(line);
+//	escape_chars(line);
 	parse_qts(line, cpt);
 	// de_escape_chars(line);
 	check_pipe(line, cpt);

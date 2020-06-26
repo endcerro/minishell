@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 14:02:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/26 18:51:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ char	*get_word_lst(char *line, int *p)
 
 	cp = *p;
 	len = 0;
-	if (line[*p] == '"' && ++(*p))
+	if (line[*p] == '\"' && ++(*p))
 	{
-		while (line[*p] && line[*p] != '"' && ++len)
+		while (line[*p] && line[*p] != '\"' && ++len)
 			++(*p);
 		++(*p);
 		return (ft_substr(line, cp, len + 2));
@@ -197,8 +197,85 @@ void 	de_escape_chars(char *line)
 	}
 }
 
+int isquote(char c)
+{
+	if(c == '\'')
+		return '\'';
+	if(c == '\"')
+		return '\"';
+	return 0;
+}
+
+int isclosed(char *str)
+{
+	if (isquote(str[0]) != isquote(str[ft_strlen(str) - 1]))
+	{
+		// printf("Notclosed\n");
+		return 1;
+	}
+	// printf("closed\n");
+	return 0;
+}
+
+void remake_lst(int depth, t_list *pbs, char c)
+{
+	char *new;
+	t_list *cp;
+	new = ft_strdup("");
+	cp = pbs;
+	int i;
+
+	i = 0;
+	while (i < depth + 1)
+	{
+		new = ft_strjoinf1(new, cp->content);
+		cp = cp->next;
+		i++;
+	}
+	printf("NEW STR BUILT IS %s %d\n",new, depth);
+
+}
+
+int check_integrity(t_list *lst)
+{
+	t_list *cpy = lst;
+	t_list *pbs;
+	int depth = 0;
+	char c;
+
+	while (cpy)
+	{
+		if(depth == 0 && isclosed(cpy->content))
+		{
+			c = isclosed(cpy->content);
+			// printf("%s is problematic\n",cpy->content);
+			pbs = cpy;
+			depth = 1;
+			// printf("Oh nono no\n");
+		}
+		else if (depth != 0 && !isclosed(cpy->content))
+		{
+			// printf("%s is In between\n",cpy->content);
+			// printf("depth++\n");
+			depth++;
+		}
+		else if (depth != 0 && isclosed(cpy->content))
+		{
+			// printf("%s is end of it %d\n",cpy->content, depth);
+			remake_lst(depth, pbs, isclosed(cpy->content));
+			depth = 0;
+		}
+
+		cpy = cpy->next;
+	}
+}
+
+
+
 void correctlst(t_list *lst)
 {
+	// ft_lstprint(lst);
+	// check_integrity(lst);
 	while(lst && lst->content)
 	{
 		if(lst->content[0] == '\"' || lst->content[0] == '\'')
