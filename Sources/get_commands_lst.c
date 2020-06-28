@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 18:54:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:40:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	checkinput_ls(char *line)
 	trimbs(curr);
 	
 	correctlst(curr);
-	ft_lstprint(curr);
+	// ft_lstprint(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;
@@ -211,7 +211,10 @@ void	checkinput_ls(char *line)
 	int test = 0;
 	if (g_mshell.rdirout == 1)
 	{
-		close(dup(1));
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(dup(1)) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		// close(dup(1));
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
 
@@ -225,7 +228,10 @@ void	checkinput_ls(char *line)
 	}
 	if (g_mshell.rdirin == 1)
 	{
-		close(dup(0));
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(dup(0)) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		// close(dup(0));
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}

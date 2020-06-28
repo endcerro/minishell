@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/11 17:24:12 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:34:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ void	ft_lstprint(t_list *lst)
 	{
 		 while (lst->next)
 		{
-		 	ft_putchar('|');
-		 	ft_putstr(lst->content);
-		 	ft_putchar(':');
-		 	ft_putnbr(lst->type);
-			ft_putchar('|');
+		 	ft_putchar_fd('|',2);
+		 	ft_putstr_fd(lst->content,2);
+		 	ft_putchar_fd(':',2);
+		 	ft_putnbr_fd(lst->type,2);
+			ft_putchar_fd('|',2);
 			lst = lst->next;
 		}
-		ft_putchar('|');
-		ft_putstr(lst->content);
-		ft_putchar(':');
-		ft_putnbr(lst->type);
-		ft_putchar('|');
+		ft_putchar_fd('|',2);
+		ft_putstr_fd(lst->content,2);
+		ft_putchar_fd(':',2);
+		ft_putnbr_fd(lst->type,2);
+		ft_putchar_fd('|',2);
 	}
 	ft_putchar('\n');
 }

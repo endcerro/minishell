@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 19:04:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:26:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	open_pipe_n(t_list *curr)
 	pipes[2] = 1;
 	if (g_mshell.rdirout == 1)
 	{
-		close(pipes[1]);
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(pipes[1]) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		// close(pipes[1]);
 		pipes[2] = 0;
 	}
 	else
@@ -56,7 +59,10 @@ void	close_pipe_n(void)
 		}
 		if (pipes[2] != 0)
 			pipes += sizeof(int) * 3;
-		close(pipes[0]);
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(pipes[0]) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		// close(pipes[0]);
 		pipes[2] = -1;
 		g_mshell.rdirin = 0;
 	}
@@ -75,7 +81,10 @@ void	close_pipe_n(void)
 			ft_putendl(strerror(errno));
 			exit(0);
 		}
-		close(pipes[1]);
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(pipes[1]) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		// close(pipes[1]);
 		pipes[2] = 0;
 		g_mshell.rdirout = 0;
 		g_mshell.rdirin = 2;

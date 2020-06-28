@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/10 17:19:19 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:22:54 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void	execsomestuff(int x, char **params)
 		return ;
 	}
 	free(str);
+	write(0,"",1);
 	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
 		;
 }

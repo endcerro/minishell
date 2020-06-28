@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 15:45:53 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:35:54 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ void	rdirout(t_list *curr, int mode)
 	if (g_mshell.rdirout == 1)
 	{
 		g_mshell.rdirout = 0;
-		close(1);
+		//ft_putstr_fd("CLOSING FD\n", 2);
+		if (close(1) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
 	}
 	if (mode == 0)
 		fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
@@ -117,7 +119,10 @@ void	check_rdir(t_list *curr)
 		else if (curr->type == 5 && curr->next && curr->next->type == 1)
 		{
 			if (g_mshell.rdirin == 1)
-				close(0);
+				//ft_putstr_fd("CLOSING FD\n", 2);
+				if (close(0) == -1)
+					ft_putstr_fd("ERROR CLOSING FD", 2);
+				// close(0);
 			g_mshell.rdirin = 1;
 			fd = open(curr->next->content, O_RDONLY);
 			if (fd == -1)
