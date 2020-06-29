@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 19:31:46 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:20:31 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		isstrdigit(char *str)
 	return (1);
 }
 
-void deconechar(char *str)
+void	deconechar(char *str)
 {
 	int i;
 
@@ -72,7 +72,7 @@ void deconechar(char *str)
 	str[i - 1] = str[i];
 }
 
-void trimbs(t_list *curr)
+void	trimbs(t_list *curr)
 {
 	int i;
 	int j;

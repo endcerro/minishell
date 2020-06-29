@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 17:17:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:21:37 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void 	escape_chars(char *line)
 		else if(line[i] == '\'')
 		{
 			if (sqnb == 0)
-				sqnb++;	
+				sqnb++;
 			else
 				sqnb--;
 		}
@@ -173,7 +173,7 @@ void 	escape_chars(char *line)
 	}
 }
 
-void decalstr(char *str)
+void	decalstr(char *str)
 {
 	int i;
 
@@ -209,7 +209,7 @@ void 	de_escape_chars(char *line)
 	}
 }
 
-int isquote(char c)
+int		isquote(char c)
 {
 	if(c == '\'')
 		return '\'';
@@ -218,7 +218,7 @@ int isquote(char c)
 	return 0;
 }
 
-char *list_to_str(t_list *lst, int depth)
+char	*list_to_str(t_list *lst, int depth)
 {
 	char *out;
 	int i;
@@ -233,7 +233,7 @@ char *list_to_str(t_list *lst, int depth)
 	return out;
 }
 
-void correctlst(t_list *lst)
+void	correctlst(t_list *lst)
 {
 	t_list *prev;
 	prev = 0;
@@ -249,8 +249,8 @@ void correctlst(t_list *lst)
 			{
 				prev->content = ft_strjoinf1(prev->content, lst->next->content);
 				prev->next = lst->next->next;
-				ft_lstdelone(lst->next);	
-				ft_lstdelone(lst);	
+				ft_lstdelone(lst->next);
+				ft_lstdelone(lst);
 			}
 			else
 			{
