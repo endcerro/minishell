@@ -6,42 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 15:36:53 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 16:30:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
-
-
-
-
-
-
-// int		echo_ls(void)
-// {
-// 	int		ret;
-// 	t_list	*curr;
-
-// 	ret = 0;
-// 	curr = g_mshell.ls->next;
-// 	if (curr && ft_strcmp(curr->content, "-n") == 0)
-// 		curr = curr->next;
-// 	else
-// 		ret = 1;
-// 	while (curr && curr->type == 1)
-// 	{
-// 		ft_putstr(curr->content);
-// 		if (curr->next)
-// 			write(1, " ", 1);
-// 		curr = curr->next;
-// 	}
-// 	if (ret)
-// 		write(1, "\n", 1);
-// 	return (0);
-// }
 
 int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 {

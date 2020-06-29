@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 16:27:16 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 16:32:31 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,9 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 
 	new = 0;
 	split = 0;
-	// printf("Looking at %s, searching for %s\n",curr->content, buff );
-	// if (ft_isalnum(curr->content[0]) && curr->content[1])
 	if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[0] != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
-			// printf("IN\n");
 			split = ft_split(curr->content, buff[0]);
 			while (curr->content[j])
 			{
@@ -55,16 +52,10 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 					j++;
 				if (split[++i])
 				{
-					// printf("addr = %p\n", split[i]);
-					// printf("Looking at %s\n",split[i] );
 					ft_lstadd_back(&new, ft_lstnew(split[i]));
 				}
 			}
 		}
-		// else
-		// {
-		// 	printf("NOT IN\n");
-		// }
 	free(split);
 	if (new == 0)
 		return (0);
@@ -242,120 +233,8 @@ char *list_to_str(t_list *lst, int depth)
 	return out;
 }
 
-// int is_closed(t_list *item)
-// {
-// 	int i = 0;
-// 	char c = 0;
-// 	char qtnb = 0;
-// 	int found = 0;
-// 	t_list *cpy = item;
-	
-// 	while (cpy->content[i])
-// 	{
-// 		if (qtnb == 0 && (cpy->content[i] == '\'' || cpy->content[i] == '\"'))
-// 		{
-// 			qtnb++;
-// 			c = cpy->content[i];
-// 			printf("Found single quote %c \n",c );
-// 		}
-// 		else if (qtnb > 0 && cpy->content[i] == c)
-// 		{
-// 			found++;
-// 			qtnb = 0;
-// 			// c = 0;
-// 		}
-// 		i++;
-// 	}
-
-// 	char *oldstr = cpy->content;
-// 	cpy->content = ft_strdup("");
-// 	if (found)
-// 	{
-// 		int j = 0;
-// 		while (oldstr[j])
-// 		{
-// 			while(oldstr[j] != c)
-// 			{
-// 				cpy->content = 
-// 			}
-// 		}
-// 	}
-
-
-
-// }
-
-int check_integrity(t_list *lst)
-{
-	t_list *cpy = lst;
-	t_list *cache;
-	printf("JERE\n");
-	ft_lstprint(lst);
-	int depth = 0;
-	char c;
-
-	t_list *subject = 0;
-
-	char *newstr = ft_strdup("");
-	int open = 0;
-	while (cpy)
-	{
-		if(open == 0 && cpy->content[0] == '\"' && cpy->content[1] == 0)
-		{
-			subject = cpy;
-			open = 1;
-			depth++;
-			printf("FOUND OPEN BLOCK\n");
-			newstr = ft_strjoinf1(newstr, cpy->content);
-		}
-		else if (open == 1 && cpy->content[0] == '\"' && cpy->content[1] == 0)
-		{
-			open = 0;
-			depth++;
-			printf("FOUND CLOSE BLOCK\n");
-			newstr = ft_strjoinf1(newstr, cpy->content);	
-		}
-		else if (open == 1)
-		{
-			depth++;
-			printf("FOUND INSIDE BLOCK\n");
-			newstr = ft_strjoinf1(newstr, " ");
-			newstr = ft_strjoinf1(newstr, cpy->content);		
-		}
-		cpy = cpy->next;
-	}
-	printf("NEW STR BUILT IS %s\n",newstr );
-	if (subject)
-	{
-		free(subject->content);
-		subject->content = newstr;
-		int k = 0;
-		while (k < depth - 1)
-		{
-			t_list *tmp;
-			tmp = subject->next->next;
-			printf("deleting %s\n",subject->next->content);
-			ft_lstdelone(subject->next);
-			subject->next = tmp;
-			k++;
-		}
-	}
-	else
-		free(newstr);
-	// 	if(cpy)
-	// 		cpy = cpy->next;
-	// }
-
-}
-
-
-
 void correctlst(t_list *lst)
 {
-	// ft_lstprint(lst);
-	// check_integrity(lst);
-	// printf("AF INTEGR\n");
-	// ft_lstprint(lst);
 	while(lst && lst->content)
 	{
 		if(lst->content[0] == '\"' || lst->content[0] == '\'')
@@ -390,13 +269,9 @@ t_list	*split_line_lst(char *line)					//MODIF
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
-	// printf("LST BEFORE INNER SPLIT \n");
-	// ft_lstprint(f_lst);
+
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
-	// correctlst(f_lst);
-	// de_escape_chars(line);
-
 	return (f_lst);
 }
 
