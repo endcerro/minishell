@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 15:33:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:48:49 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void 			parse_env_ls(char **param);
 char 			*vars(char *request);
 int				check_match(char *env, char *param);
 char 			*inside_join(char *base, char *add, int mode);
-int 			check_valid_export(char **params);
+int 			check_valid_export(char *str);
 char			*getcwdwrap(void);
 //COMMAND PARSING
 char			*get_lst(char *line);

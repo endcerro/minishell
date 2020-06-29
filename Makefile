@@ -6,7 +6,7 @@
 #    By: hpottier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 14:27:31 by hpottier          #+#    #+#              #
-#    Updated: 2020/06/26 19:21:17 by edal--ce         ###   ########.fr        #
+#    Updated: 2020/06/29 18:52:41 by hpottier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -37,7 +37,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra  -g #-fsanitize=address #-Werror
+CFLAGS		=	-Wall -Wextra  -g -fsanitize=address #-Werror
 
 CC			=	gcc
 RM			=	rm -f

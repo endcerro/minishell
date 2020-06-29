@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/24 19:21:29 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:56:43 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		unset(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-	
+
 	// if (curr == 0 || curr->next != 0)
 	// {
 	// 	ft_putstr("minishell: unset: wrong number of arguments\n");
@@ -26,7 +26,7 @@ int		unset(void)
 	// }
 	while (curr && curr->type == 1)
 	{
-		i = 0;	
+		i = 0;
 		while (g_mshell.env[i])
 		{
 			if (!check_match(g_mshell.env[i], curr->content))
@@ -118,6 +118,17 @@ int		unset_var(char *target)			//PROTECTED
 	return (0);
 }
 
+int		check_valid_export(char *str)
+{
+	while (*str && *str != '=')
+	{
+		if (ft_isspace(*str) == 1)
+			return (0);
+		++str;
+	}
+	return (1);
+}
+
 int		export(char *param)			//PROTECTED
 {
 	int		i;
@@ -127,8 +138,14 @@ int		export(char *param)			//PROTECTED
 
 	curr = g_mshell.ls->next;
 	if (param != NULL)
-	{
 		curr = ft_lstnew(param);
+	if (check_valid_export(curr->content) == 0)
+	{
+		if (param != NULL)
+			free(curr);
+		else
+			param = curr->content;
+		return (ft_printh(2, 1, "minishell: export: \'%s\': not a valid identifier\n", param));
 	}
 	i = 0;
 	if (curr == 0)
