@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 16:32:31 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 17:07:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,12 +235,30 @@ char *list_to_str(t_list *lst, int depth)
 
 void correctlst(t_list *lst)
 {
+	t_list *prev;
 	while(lst && lst->content)
 	{
 		if(lst->content[0] == '\"' || lst->content[0] == '\'')
 			trim_quotes(lst->content);
 		parse_bs(lst->content);
 		de_escape_chars(lst->content);
+		if(lst->content[0] == 0)
+		{
+			if(lst->next)
+			{
+				prev->content = ft_strjoinf1(prev->content, lst->next->content);
+				prev->next = lst->next->next;
+				ft_lstdelone(lst->next);	
+				ft_lstdelone(lst);	
+			}
+			else
+			{
+				ft_lstdelone(lst);
+				prev->next = 0;
+			}
+			lst = prev;
+		}
+		prev = lst;
 		lst = lst->next;
 	}
 }

@@ -167,13 +167,13 @@ exit 1A 2B									OK
 exit -1										OK
 exit -A										OK
 exit 1-A									OK
-exit 1A-									O
+exit 1A-									OK
 exit 100000000000000000						OK
 exit -100000000000000000					OK
 
 XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
-;											Not OK
+;											OK
 ;;;											Not OK
 <											Not OK
 >											Not OK
