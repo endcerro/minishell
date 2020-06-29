@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 18:51:55 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 16:27:16 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,14 @@ void	find_char(char *buff)
 	else if (buff[0] == '<')
 		buff[0] = '|';
 	else if (buff[0] == '|')
+		buff[0] = '\'';
+	else if (buff[0] == '\'')
+		buff[0] = '\"';
+	else if (buff[0] == '\"')
 		buff[0] = 0;
+	// else if (buff[0] == '\"')
+	// 	buff[0] = 0;
+	// buff[1] = 0;
 }
 
 t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
@@ -33,9 +40,12 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 
 	new = 0;
 	split = 0;
-	if (ft_isalnum(curr->content[0]) && curr->content[1])
+	// printf("Looking at %s, searching for %s\n",curr->content, buff );
+	// if (ft_isalnum(curr->content[0]) && curr->content[1])
+	if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[0] != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
+			// printf("IN\n");
 			split = ft_split(curr->content, buff[0]);
 			while (curr->content[j])
 			{
@@ -44,9 +54,17 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 				while (curr->content[j] && curr->content[j] != buff[0])
 					j++;
 				if (split[++i])
+				{
+					// printf("addr = %p\n", split[i]);
+					// printf("Looking at %s\n",split[i] );
 					ft_lstadd_back(&new, ft_lstnew(split[i]));
+				}
 			}
 		}
+		// else
+		// {
+		// 	printf("NOT IN\n");
+		// }
 	free(split);
 	if (new == 0)
 		return (0);
@@ -54,6 +72,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 	curr->content = new->content;
 	return (new);
 }
+
 
 t_list	*inner_split(t_list *lst)
 {
@@ -104,8 +123,10 @@ char	*get_word_lst(char *line, int *p)
 		return (ft_substr(line, cp, len + 2));
 	}
 	else
-		while (line[*p] && !ft_isspace(line[*p]) && ++len)
+	{
+		while (line[*p] && !ft_isspace(line[*p]) && line[*p] != '\'' && line[*p] != '\"' && ++len)
 			++(*p);
+	}
 	return (ft_substr(line, cp, len));
 }
 
@@ -206,68 +227,125 @@ int isquote(char c)
 	return 0;
 }
 
-int isclosed(char *str)
+char *list_to_str(t_list *lst, int depth)
 {
-	if (isquote(str[0]) != isquote(str[ft_strlen(str) - 1]))
-	{
-		// printf("Notclosed\n");
-		return 1;
-	}
-	// printf("closed\n");
-	return 0;
-}
-
-void remake_lst(int depth, t_list *pbs, char c)
-{
-	char *new;
-	t_list *cp;
-	new = ft_strdup("");
-	cp = pbs;
+	char *out;
 	int i;
-
+	out = ft_strdup("");
 	i = 0;
-	while (i < depth + 1)
+	while (lst && i < depth)
 	{
-		new = ft_strjoinf1(new, cp->content);
-		cp = cp->next;
+		out = ft_strjoinf1(out, lst->content);
+		lst = lst->next;
 		i++;
 	}
-	printf("NEW STR BUILT IS %s %d\n",new, depth);
-
+	return out;
 }
+
+// int is_closed(t_list *item)
+// {
+// 	int i = 0;
+// 	char c = 0;
+// 	char qtnb = 0;
+// 	int found = 0;
+// 	t_list *cpy = item;
+	
+// 	while (cpy->content[i])
+// 	{
+// 		if (qtnb == 0 && (cpy->content[i] == '\'' || cpy->content[i] == '\"'))
+// 		{
+// 			qtnb++;
+// 			c = cpy->content[i];
+// 			printf("Found single quote %c \n",c );
+// 		}
+// 		else if (qtnb > 0 && cpy->content[i] == c)
+// 		{
+// 			found++;
+// 			qtnb = 0;
+// 			// c = 0;
+// 		}
+// 		i++;
+// 	}
+
+// 	char *oldstr = cpy->content;
+// 	cpy->content = ft_strdup("");
+// 	if (found)
+// 	{
+// 		int j = 0;
+// 		while (oldstr[j])
+// 		{
+// 			while(oldstr[j] != c)
+// 			{
+// 				cpy->content = 
+// 			}
+// 		}
+// 	}
+
+
+
+// }
 
 int check_integrity(t_list *lst)
 {
 	t_list *cpy = lst;
-	t_list *pbs;
+	t_list *cache;
+	printf("JERE\n");
+	ft_lstprint(lst);
 	int depth = 0;
 	char c;
 
+	t_list *subject = 0;
+
+	char *newstr = ft_strdup("");
+	int open = 0;
 	while (cpy)
 	{
-		if(depth == 0 && isclosed(cpy->content))
+		if(open == 0 && cpy->content[0] == '\"' && cpy->content[1] == 0)
 		{
-			c = isclosed(cpy->content);
-			// printf("%s is problematic\n",cpy->content);
-			pbs = cpy;
-			depth = 1;
-			// printf("Oh nono no\n");
-		}
-		else if (depth != 0 && !isclosed(cpy->content))
-		{
-			// printf("%s is In between\n",cpy->content);
-			// printf("depth++\n");
+			subject = cpy;
+			open = 1;
 			depth++;
+			printf("FOUND OPEN BLOCK\n");
+			newstr = ft_strjoinf1(newstr, cpy->content);
 		}
-		else if (depth != 0 && isclosed(cpy->content))
+		else if (open == 1 && cpy->content[0] == '\"' && cpy->content[1] == 0)
 		{
-			// printf("%s is end of it %d\n",cpy->content, depth);
-			remake_lst(depth, pbs, isclosed(cpy->content));
-			depth = 0;
+			open = 0;
+			depth++;
+			printf("FOUND CLOSE BLOCK\n");
+			newstr = ft_strjoinf1(newstr, cpy->content);	
 		}
-
+		else if (open == 1)
+		{
+			depth++;
+			printf("FOUND INSIDE BLOCK\n");
+			newstr = ft_strjoinf1(newstr, " ");
+			newstr = ft_strjoinf1(newstr, cpy->content);		
+		}
 		cpy = cpy->next;
 	}
+	printf("NEW STR BUILT IS %s\n",newstr );
+	if (subject)
+	{
+		free(subject->content);
+		subject->content = newstr;
+		int k = 0;
+		while (k < depth - 1)
+		{
+			t_list *tmp;
+			tmp = subject->next->next;
+			printf("deleting %s\n",subject->next->content);
+			ft_lstdelone(subject->next);
+			subject->next = tmp;
+			k++;
+		}
+	}
+	else
+		free(newstr);
+	// 	if(cpy)
+	// 		cpy = cpy->next;
+	// }
+
 }
 
 
@@ -276,18 +354,19 @@ void correctlst(t_list *lst)
 {
 	// ft_lstprint(lst);
 	// check_integrity(lst);
+	// printf("AF INTEGR\n");
+	// ft_lstprint(lst);
 	while(lst && lst->content)
 	{
 		if(lst->content[0] == '\"' || lst->content[0] == '\'')
 			trim_quotes(lst->content);
-		//parse_bs(lst->content);
-
+		parse_bs(lst->content);
 		de_escape_chars(lst->content);
 		lst = lst->next;
 	}
 }
 
-t_list	*split_line_lst(char *line)					//ICI
+t_list	*split_line_lst(char *line)					//MODIF
 {
 	t_list	*f_lst;
 	t_list	*lst;
@@ -311,6 +390,8 @@ t_list	*split_line_lst(char *line)					//ICI
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
+	// printf("LST BEFORE INNER SPLIT \n");
+	// ft_lstprint(f_lst);
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
 	// correctlst(f_lst);

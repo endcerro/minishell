@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/28 15:40:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 15:36:53 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	checkinput_ls(char *line)
 	trimbs(curr);
 	
 	correctlst(curr);
-	// ft_lstprint(curr);
+	ft_lstprint(curr);
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/28 15:34:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 10:37:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_lstprint(t_list *lst)
 		ft_putnbr_fd(lst->type,2);
 		ft_putchar_fd('|',2);
 	}
-	ft_putchar('\n');
+	ft_putchar_fd('\n',2);
 }
 
 t_list	*tag_lst(t_list *lst)
@@ -72,7 +72,7 @@ int		ft_lstclear(t_list **lst)
 		return (0);
 	if (cache != NULL)
 	{
-		while (cache->next)
+		while (cache && cache->next)
 		{
 			cache2 = cache->next;
 			ft_lstdelone(cache);

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 13:58:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 15:33:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
 //LST UTILS
 t_list			*tag_lst(t_list *lst);
-char			*get_lst(char *line);
 t_list			*ft_lstnew(char *content);
 t_list			*ft_lstnew_p(char *content);
 int				ft_lstclear(t_list **lst);
@@ -100,6 +99,8 @@ char			*ft_itoaa(int n);
 int 			wordlen(char *str);
 void 			trim_quotes(char *str);
 
+
+t_list	*split_line_lst(char *line);
 void 	escape_chars(char *line);
 void 	correctlst(t_list *lst);
 void 	de_escape_chars(char *line);

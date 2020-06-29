@@ -134,11 +134,13 @@ cat file | grep bla | more					OK
 ls filethatdoesntexist | grep bla | more	OK
 ls | grep Makefile | rev					OK
 /bin/ls \"|\" /usr/bin/grep microshell
-pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42 !!!!!!!!
+pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42  | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42 | tr e 42
 
-77 Commandes
+	OK
 
- pwd | cut -c7- | rev | tail | echo \$PWD
+
+
+pwd | cut -c7- | rev | tail | echo \$PWD	OK
 
 XXXX Impossible de tester en récupérant PWD car on exit aussitôt
 XXXX Donc on teste via un ls pour check si on est au bon endroit
@@ -165,7 +167,7 @@ exit 1A 2B									OK
 exit -1										OK
 exit -A										OK
 exit 1-A									OK
-exit 1A-									OK
+exit 1A-									O
 exit 100000000000000000						OK
 exit -100000000000000000					OK
 

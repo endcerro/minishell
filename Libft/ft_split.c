@@ -1,3 +1,4 @@
+  
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -5,80 +6,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/02 16:55:09 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/04 19:15:32 by edal--ce         ###   ########.fr       */
+/*   Created: 2019/11/07 15:45:03 by edal--ce          #+#    #+#             */
+/*   Updated: 2019/12/28 08:18:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int			count_word(char const *str, char c)
+static int	countwords(char const *str, char sep)
 {
+	int cpt;
 	int i;
-	int count;
+	int reading;
 
+	reading = 0;
 	i = 0;
-	count = 1;
-	while (str[i] && str[i] == c)
-		++i;
+	cpt = 0;
 	while (str[i])
 	{
-		if (str[i] == c && str[i + 1] && str[i + 1] == c)
+		if (str[i] == sep)
 		{
-			while (str[i] && str[i] == c)
-				++i;
-			if (str[i])
-				++count;
+			if (reading)
+				cpt++;
+			reading = 0;
 		}
-		++i;
+		else
+			reading = 1;
+		i++;
 	}
-	return (count + 1);
+	if (reading)
+		cpt++;
+	return (cpt);
 }
 
-static char			*ret_word(char const *str, char c)
+static char	*cpy(char *str, char sep)
 {
-	char	*ret;
-	size_t	i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		++i;
-	if (!(ret = (char *)malloc(sizeof(char) * (i + 1))))
-		return (NULL);
-	ret[i] = 0;
-	i = 0;
-	while (str[i] && str[i] != c)
-	{
-		ret[i] = str[i];
-		++i;
-	}
-	return (ret);
-}
-
-char				**ft_split(char const *str, char c)
-{
-	char	**tab;
+	char	*out;
 	int		i;
-	int		g;
 
-	if (str == NULL)
-		return (NULL);
-	if (!(tab = (char **)malloc(sizeof(char *) * count_word(str, c))))
-		return (NULL);
 	i = 0;
-	g = 0;
-	while (str[g])
+	while (str[i] != sep && str[i])
+		i++;
+	if (!(out = malloc(sizeof(char) * (i + 1))))
+		return (0);
+	i = 0;
+	while (str[i] != sep && str[i])
 	{
-		while (str[g] && str[g] == c)
-			++g;
-		if (str[g])
-		{
-			tab[i] = ret_word(&str[g], c);
-			i++;
-			while (str[g] && !(str[g] == c))
-				++g;
-		}
+		out[i] = str[i];
+		i++;
 	}
-	tab[i] = 0;
-	return (tab);
+	out[i] = 0;
+	return (out);
+}
+
+static char	**clearsplit(char **in, int cpt)
+{
+	int i;
+
+	i = 0;
+	while (i < cpt)
+	{
+		free(in[i]);
+		in[i] = 0;
+		i++;
+	}
+	free(in);
+	return (0);
+}
+
+char		**ft_split(char const *str, char sep)
+{
+	char	**out;
+	int		cpt;
+	int		nbout;
+	char	*tmp;
+
+	if (!str)
+		return (0);
+	tmp = (char *)str;
+	cpt = 0;
+	nbout = countwords(str, sep);
+	if (!(out = malloc(sizeof(char *) * (nbout + 1))))
+		return (0);
+	while (*tmp == sep && *tmp)
+		tmp++;
+	while (cpt < nbout && *tmp)
+	{
+		while (*tmp == sep && *tmp)
+			tmp++;
+		out[cpt++] = cpy(tmp, sep);
+		if (out[cpt - 1] == 0)
+			return (clearsplit(out, cpt - 1));
+		tmp += ft_strlen(out[cpt - 1]);
+	}
+	out[cpt] = 0;
+	return (out);
 }
