@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 18:05:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:00:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,15 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 
 			if (env(query))
 			{
-				*str = inside_join(*str, env(query) + 1, 1);
-				// printf("STR = %s\n",*str );
+				printf("FOUND %p\n",env(query));
+				if(env(query)[0] != 0)
+					*str = inside_join(*str, env(query) + 1, 1);
+				else
+				{
+					free(*str);
+					*str = ft_strdup("");
+				}
+				printf("STR = %s\n",*str );
 			}
 			else
 			{

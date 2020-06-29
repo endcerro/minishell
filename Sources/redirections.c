@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/28 15:26:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:36:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	close_pipe_n(void)
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirin == 2)
 	{
+		// ft_putstr_fd("BLOCK 1\n", 2);
 		if(dup2(g_mshell.oldfdin, 0) == -1)
 		{
 			ft_putendl(strerror(errno));
@@ -69,6 +70,7 @@ void	close_pipe_n(void)
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirout == 2)
 	{
+		// ft_putstr_fd("BLOCK 2\n", 2);
 		if (pipes[2] != 1)
 			pipes += sizeof(int) * 3;
 		if (dup2(pipes[0], 0) == -1)
@@ -89,4 +91,5 @@ void	close_pipe_n(void)
 		g_mshell.rdirout = 0;
 		g_mshell.rdirin = 2;
 	}
+	// ft_putstr_fd("PIPE CLOSED", 2);
 }

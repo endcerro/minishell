@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 17:13:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:38:30 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,31 @@
 int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 {
 	t_list *curr;
+	t_list *prev;
 
 	curr = lst;
+	prev = 0;
 	while (curr && curr->type != 3)
 	{
 		if (curr->content[0] != '\'')
+		{
 			parse_env_ls(&(curr->content));
+			if (curr->content[0] == 0)
+			{
+				if (prev)
+				{
+					prev->next = curr->next;
+					ft_lstdelone(curr);
+				}
+			curr = prev;
+			}
+
+		}
 		if(curr->content == 0)
 		{
 			return (1);
 		}
-		// printf("%s\n",curr->content);
+		prev = curr;
 		curr = curr->next;
 	}
 	return (0);
@@ -184,34 +198,39 @@ void	checkinput_ls(char *line)
 		commandorvar();
 	copy = g_mshell.ls;
 	int test = 0;
+
 	if (g_mshell.rdirout == 1)
 	{
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(dup(1)) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
-		// close(dup(1));
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
 
 
 		if(g_mshell.pipes[2] == 0)
 		{
-			test = 1;
-			dup2(g_mshell.pipes[0], 0);
-			g_mshell.rdirin = 2;
+			if(g_mshell.rdirin != 2)
+			{
+				test = 1;
+				dup2(g_mshell.pipes[0], 0);
+				g_mshell.rdirin = 2;
+			}
+			
 		}
 	}
 	if (g_mshell.rdirin == 1)
 	{
 		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(dup(0)) == -1)
-			ft_putstr_fd("ERROR CLOSING FD", 2);
+			ft_putstr_fd("ERROR CLOSING FD\n", 2);
 		// close(dup(0));
+		// ft_putstr_fd("0 CLOSED\n", 2);
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
 	if (test == 0)
 		close_pipe_n();
+	// if(test == 1 &&  )
 	while (curr)
 	{
 		if (curr->type == 3 && curr->next != NULL)
