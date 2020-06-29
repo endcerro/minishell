@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 18:38:30 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:31:46 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void trimbs(t_list *curr)
 	int qtcp;
 
 	while (curr && curr->content && curr->type == 1)
-	{	
+	{
 		// printf("IN trimbs %s\n",curr->content );
 		i = 0;
 		if (curr->content[0] != '\'')
@@ -97,7 +97,7 @@ void trimbs(t_list *curr)
 					}
 
 					// qtcp = (qtcp % 2 == 0) ? qtcp : qtcp - 1;
-			
+
 					if ((qtcp != 1 && qtcp % 2 == 0) || curr->content[0] == '\"')
 					{
 						qtcp /= 2;
@@ -107,8 +107,7 @@ void trimbs(t_list *curr)
 						qtcp--;
 						qtcp /= 2;
 						qtcp++;
-					}				
-
+					}
 
 					if (curr->content[0] == '\"' && curr->content[j] < 0)
 						qtcp++;
@@ -140,21 +139,21 @@ void	checkinput_ls(char *line)
 	escape_lst(curr);
 	if (g_mshell.ls->type != 1)
 	{
-		ft_putstr("INVALID COMMAND\n");
+		ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", g_mshell.ls->content);
 		return ;
 	}
 	check_rdir(curr);
-	
+
 	if(expand_vars(curr))
 	{
 		return ;
 	}
-	
+
 	trimbs(curr);
-	
+
 	correctlst(curr);
 	ft_lstprint(curr);
-	
+
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;
@@ -215,7 +214,7 @@ void	checkinput_ls(char *line)
 				dup2(g_mshell.pipes[0], 0);
 				g_mshell.rdirin = 2;
 			}
-			
+
 		}
 	}
 	if (g_mshell.rdirin == 1)

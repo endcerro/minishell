@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/28 15:22:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:13:55 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,8 @@ void	freevarsreste(int size)
 	g_mshell.vars = NULL;
 }
 
-int		addvar(char *str)
+int		addvarbis(char **newvars, int size, char *str)
 {
-	int		size;
-	char	**newvars;
-	char	*tmp;
-
-	size = 0;
-	if (env(str) != NULL)
-	{
-		export(str);
-		return (0);
-	}
-	if (g_mshell.vars != NULL)
-		while (g_mshell.vars[size])
-		{
-			if (ft_strncmp(g_mshell.vars[size], str,
-						ft_strchr(str, '=') - str) == 0)
-			{
-				if ((tmp = ft_strdup(str)) == NULL)
-					return (ft_printh(2, 1, "minishel: %s\n", strerror(errno)));
-				free(g_mshell.vars[size]);
-				g_mshell.vars[size] = tmp;
-				return (0);
-			}
-			++size;
-		}
-	if (!(newvars = (char **)malloc(sizeof(char *) * (size + 2))))
-		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
-	newvars[size + 1] = NULL;
 	if (!(newvars[size] = ft_strdup(str)))
 	{
 		free(newvars);
@@ -61,7 +34,6 @@ int		addvar(char *str)
 	{
 		size = -1;
 		while (g_mshell.vars[++size])
-		{
 			if (!(newvars[size] = ft_strdup(g_mshell.vars[size])))
 			{
 				freevarsreste(size);
@@ -70,32 +42,47 @@ int		addvar(char *str)
 				free(newvars);
 				return (ft_printh(2, 1, "minishell: ", strerror(errno)));
 			}
-			free(g_mshell.vars[size]);
-		}
+			else
+				free(g_mshell.vars[size]);
 		free(g_mshell.vars);
 	}
 	g_mshell.vars = newvars;
 	return (0);
 }
 
-char	*checkpath(int j, char **params)
+int		addvar(char *str)
 {
-	int			x;
+	int		size;
+	char	**newvars;
+	char	*tmp;
+
+	if (env(str) != NULL)
+		return (export(str));
+	size = -1;
+	if (g_mshell.vars != NULL)
+		while (g_mshell.vars[++size])
+			if (ft_strncmp(g_mshell.vars[size], str,
+						ft_strchr(str, '=') - str) == 0)
+			{
+				if ((tmp = ft_strdup(str)) == NULL)
+					return (ft_printh(2, 1, "minishel: %s\n", strerror(errno)));
+				free(g_mshell.vars[size]);
+				g_mshell.vars[size] = tmp;
+				return (0);
+			}
+	if (!(newvars = (char **)malloc(sizeof(char *) * (size + 2))))
+		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+	newvars[size + 1] = NULL;
+	return (addvarbis(newvars, size, str));
+}
+
+char	*checkpathbis(char **params, int j, int x)
+{
 	int			i;
 	int			prev;
 	struct stat	sta;
 	char		*str;
 
-	x = 0;
-	while (g_mshell.env[x] && ft_strncmp(g_mshell.env[x], "PATH=", 5) != 0)
-		++x;
-	if (g_mshell.env[x] == 0)
-	{
-		str = ft_strjoin("/bin/", params[j]);
-		if (stat(str, &sta) != -1)
-			return (str);
-		return (NULL);
-	}
 	i = 4;
 	prev = 5;
 	while (g_mshell.env[x][++i])
@@ -113,6 +100,25 @@ char	*checkpath(int j, char **params)
 	return (NULL);
 }
 
+char	*checkpath(int j, char **params)
+{
+	int			x;
+	struct stat	sta;
+	char		*str;
+
+	x = 0;
+	while (g_mshell.env[x] && ft_strncmp(g_mshell.env[x], "PATH=", 5) != 0)
+		++x;
+	if (g_mshell.env[x] == 0)
+	{
+		str = ft_strjoin("/bin/", params[j]);
+		if (stat(str, &sta) != -1)
+			return (str);
+		return (NULL);
+	}
+	return (checkpathbis(params, j, x));
+}
+
 int		checkslash(char *str)
 {
 	int x;
@@ -122,6 +128,32 @@ int		checkslash(char *str)
 		if (str[x] == '/')
 			return (1);
 	return (0);
+}
+
+void	execsomestuffbis(int x, char **params, char *str)
+{
+	if (g_mshell.pid == 0)
+	{
+		if (str)
+			execve(str, &(params[x]), g_mshell.env);
+		else
+			execve(params[x], &(params[x]), g_mshell.env);
+		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno));
+		free(str);
+		freechar2ptr(g_mshell.env);
+		freechar2ptr(params);
+		freechar2ptr(g_mshell.vars);
+		exit(0);
+	}
+	else if (g_mshell.pid < 0)
+	{
+		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno));
+		free(str);
+		return ;
+	}
+	free(str);
+	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
+		;
 }
 
 void	execsomestuff(int x, char **params)
@@ -134,9 +166,8 @@ void	execsomestuff(int x, char **params)
 	{
 		if (stat(params[x], &sta) == -1)
 		{
-			ft_putstr("minishell: ");
-			ft_putstr(params[x]);
-			ft_putstr(": No such file or directory\n");
+			ft_printh(2, 1, "minishell: %s: No such file or directory\n",
+					params[x]);
 			return ;
 		}
 	}
@@ -144,42 +175,12 @@ void	execsomestuff(int x, char **params)
 	{
 		if ((str = checkpath(x, params)) == NULL)
 		{
-			ft_putstr("minishell: ");
-			ft_putstr(params[x]);
-			ft_putstr(": command not found\n");
+			ft_printh(2, 1, "minishell: %s: command not found\n", params[x]);
 			return ;
 		}
 	}
 	g_mshell.pid = fork();
-	if (g_mshell.pid == 0)
-	{
-		if (str)
-			execve(str, &(params[x]), g_mshell.env);
-		else
-			execve(params[x], &(params[x]), g_mshell.env);
-		ft_putstr("minishell: ");
-		ft_putstr(params[x]);
-		ft_putstr(": ");
-		ft_putendl(strerror(errno));
-		free(str);
-		freechar2ptr(g_mshell.env);
-		freechar2ptr(params);
-		freechar2ptr(g_mshell.vars);
-		exit(0);
-	}
-	else if (g_mshell.pid < 0)
-	{
-		ft_putstr("minishell: ");
-		ft_putstr(params[x]);
-		ft_putstr(": ");
-		ft_putendl(strerror(errno));
-		free(str);
-		return ;
-	}
-	free(str);
-	write(0,"",1);
-	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
-		;
+	execsomestuffbis(x, params, str);
 }
 
 char	**ls_params(void)
@@ -230,4 +231,5 @@ int		commandorvar(void)
 		}
 	}
 	free(params);
+	return (0);
 }
