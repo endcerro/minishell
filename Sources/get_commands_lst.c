@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 16:47:59 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/06/29 17:13:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,11 @@ void	checkinput_ls(char *line)
 	if (curr == 0)
 		return ;
 	escape_lst(curr);
+	if (g_mshell.ls->type != 1)
+	{
+		ft_putstr("INVALID COMMAND\n");
+		return ;
+	}
 	check_rdir(curr);
 	
 	if(expand_vars(curr))
@@ -135,12 +140,8 @@ void	checkinput_ls(char *line)
 	
 	correctlst(curr);
 	ft_lstprint(curr);
-	if (g_mshell.ls->type != 1)
-	{
-		ft_putstr("INVALID COMMAND\n");
-		return ;
-	}
-	else if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+	
+	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;
 		ft_putstr("exit\n");

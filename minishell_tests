@@ -3,7 +3,7 @@ echo simple						OK
 echo -n simple					OK
 echo simple text				OK
 echo $PATH						OK
-echo "$PATH"					Wrong variable ?
+echo "$PATH"					OK
 echo '$PATH'					OK
 echo '\'						OK
 echo "\\"						OK
@@ -11,7 +11,7 @@ echo "\n \n \n"					OK
 echo "\n \\n \\\n"				OK
 echo hi; echo hihi;				OK
 echo ;;							Should throw bad syntax error
-echo hi";" hihi					CRASH
+echo hi";" hihi					One too much space
 echo hi "   ;   " hihi			OK
 echo one; echo two; echo three;	OK
 cd								OK
@@ -49,8 +49,8 @@ whoami							OK
 
 XXXX pipe
 
-| echo							Should error
-echo | | echo					Should error
+| echo							Change err msg
+echo | | echo					Weird stuff
 
 XXXX redirection
 
@@ -95,7 +95,7 @@ ls ; pwd ; echo Hello 						OK
 ls ; pwd ; 									OK
 pwd;ls  									OK
 \"echo\" \"hello\"							OK
-\"echo\" \"he;llo\"							Should double error
+\"echo\" \"he;llo\"							OK
 echo \"\ls\"ls  							OK
 
 unset qd sdfbdqfgqdfgsdg					OK
@@ -126,7 +126,7 @@ pwd ; echo \$?								OK
 XXXX Test Simple Quotes
 
 '/bin/ls'									OK
-l''s										Not OK
+l''s										OK
 
 XXXX Test Pipe
 
@@ -173,27 +173,27 @@ exit -100000000000000000					OK
 
 XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
-;											OK
-;;;											Not OK
-<											Not OK
->											Not OK
-;;;;;										Not OK
+;											Change message
+;;;											Change message
+<											Change message
+>											Change message
+;;;;;										Change message
 \"; ; ;\"
 \"; < ;\"
-\"; > ;\"
-; pwd ; echo Hello							Not OK
-pwd;;;ls
+\"; > ;\"									
+; pwd ; echo Hello							Change message
+pwd;;;ls 									Should not exec
 ;;ls;;
 ;ls;pwd;
-\"
-\"\"
-''
-\"\"\"\"\"\"
- \"  \"
-|
-  |;
-;|
-;|<
+\"											OK
+\"\"										OK
+'' 											Kinda OK
+\"\"\"\"\"\" 								OK
+ \"  \" 									OK
+|											Why read ?
+  |;										Change message
+;| 											Why read ?
+;|<											Change message
 <;
 >;
 ;<
