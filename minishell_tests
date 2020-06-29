@@ -1,69 +1,69 @@
-echo							OK
-echo simple						OK
-echo -n simple					OK
-echo simple text				OK
-echo $PATH						OK
-echo "$PATH"					OK
-echo '$PATH'					OK
-echo '\'						OK
-echo "\\"						OK
-echo "\n \n \n"					OK
-echo "\n \\n \\\n"				OK
-echo hi; echo hihi;				OK
-echo ;;							Should throw bad syntax error
-echo hi";" hihi					One too much space
-echo hi "   ;   " hihi			OK
-echo one; echo two; echo three;	OK
-cd								OK
-cd								OK
-cd .							OK
-cd ..							OK
-cd ~							OK
-cd 								OK
-cd no_file						OK
-cd a b c d						OK
-pwd								OK
-pwd								OK
-pwd a							OK
-pwd a b c d 					OK
+echo										OK
+echo simple									OK
+echo -n simple								OK
+echo simple text							OK
+echo $PATH									OK
+echo "$PATH"								OK
+echo '$PATH'								OK
+echo '\'									OK
+echo "\\"									OK
+echo "\n \n \n"								OK
+echo "\n \\n \\\n"							OK
+echo hi; echo hihi;							OK
+echo ;;										Should throw bad syntax error
+echo hi";" hihi								One too much space
+echo hi "   ;   " hihi						OK
+echo one; echo two; echo three;				OK
+cd											OK
+cd											OK
+cd .										OK
+cd ..										OK
+cd ~										OK
+cd 											OK
+cd no_file									OK
+cd a b c d									OK
+pwd											OK
+pwd											OK
+pwd a										OK
+pwd a b c d 								OK
 
 XXXX export && env && unset
 
-export							OK
-export LOL						OK
-export LOL=lol					OK
-export LOL	 					OK
+export										OK
+export LOL									OK
+export LOL=lol								OK
+export LOL	 								OK
 unset LOL
-export LOL=lala ROR=rara  		OK
-unset LOL ROR					OK
-export "HI= hi"					OK
-export "HI =hi"  				Should error
+export LOL=lala ROR=rara					OK
+unset LOL ROR								OK
+export "HI= hi"								OK
+export "HI =hi"  							OK
 
 XXXX non built-in command
 
-binls							OK
-ls								OK
-ls -al							OK
-clear							OK
-whoami							OK
+binls										OK
+ls											OK
+ls -al										OK
+clear										OK
+whoami										OK
 
 XXXX pipe
 
-| echo							Change err msg
-echo | | echo					Weird stuff
+| echo										Change err msg
+echo | | echo								Weird stuff
 
 XXXX redirection
 
-cat < >							Should error and not read stdin
-cat < <							Should error and not read stdin
-cat < Makefile > test1 > test2	OK
-cat < no_file > test1 > test2 	Error not handled
-cat < no_file > test1 echo asdf	Error not handled
+cat < >										Should error and not read stdin
+cat < <								   		Should error and not read stdin
+cat < Makefile > test1 > test2		   		OK
+cat < no_file > test1 > test2				Error not handled
+cat < no_file > test1 echo asdf				Error not handled
 
 XXXX pipe & redirection
 
 cat < Makefile | grep gcc > output			OK
-cat < nofile | grep gcc > output   Error not handled
+cat < nofile | grep gcc > output  			Error not handled
 
 
 XXXX Commandes valides et basiques
@@ -182,7 +182,7 @@ XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 ;;;;;										Change message
 \"; ; ;\"
 \"; < ;\"
-\"; > ;\"									
+\"; > ;\"
 ; pwd ; echo Hello							Change message
 pwd;;;ls 									Should not exec
 ;;ls;;
