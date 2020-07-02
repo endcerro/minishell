@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:25:22 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 18:49:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int isquote(char c)
+int		isquote(char c)
 {
 	if (c == '\'' || c == '\"')
 		return (c);
@@ -35,9 +35,6 @@ void	find_char(char *buff)
 		buff[0] = '\"';
 	else if (buff[0] == '\"')
 		buff[0] = 0;
-	// else if (buff[0] == '\"')
-	// 	buff[0] = 0;
-	// buff[1] = 0;
 }
 
 t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
@@ -47,7 +44,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 
 	new = 0;
 	split = 0;
-	if (isquote(curr->content[0]) == 0 && curr->content[0] != ' ' && curr->content[1])
+	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
 			split = ft_split(curr->content, buff[0]);
@@ -96,13 +93,11 @@ t_list	*inner_split(t_list *lst)
 	return (lst);
 }
 
-char	*get_word_lst(char *line, int *p)
+char	*get_word_lst(char *line, int *p, size_t len)
 {
-	size_t	len;
 	int		cp;
 
 	cp = *p;
-	len = 0;
 	if (line[*p] == '\"' && ++(*p))
 	{
 		while (line[*p] && line[*p] != '\"' && ++len)
@@ -118,57 +113,41 @@ char	*get_word_lst(char *line, int *p)
 		return (ft_substr(line, cp, len + 2));
 	}
 	else
-	{
-		while (line[*p] && !ft_isspace(line[*p]) && line[*p] != '\'' && line[*p] != '\"' && ++len)
+		while (line[*p] && !ft_isspace(line[*p]) && !isquote(line[*p]) && ++len)
 			++(*p);
-	}
 	return (ft_substr(line, cp, len));
 }
 
-void    escape_lst (t_list *curr)
+void	escape_lst(t_list *curr)
 {
 	while (curr && curr->type == 1)
 	{
-		escape_chars(curr->content);
+		escape_chars(curr->content, 0, 0);
 		curr = curr->next;
 	}
 }
 
-void 	escape_chars(char *line)
+void	escape_chars(char *line, int bscpt, int sqnb)
 {
 	int i;
-	int bscpt;
-	int sqnb;
 
-	bscpt = 0;
 	i = 0;
-	sqnb = 0;
 	while (line[i])
 	{
 		bscpt = 0;
-		while (line[i] && line[i] == '\\')
-		{
-			bscpt++;
+		while (line[i] && line[i] == '\\' && ++bscpt)
 			i++;
-		}
 		if (line[i] == '\"' && bscpt % 2)
 			line[i] = -4;
 		else if (line[i] == '\'' && bscpt % 2)
-		{
 			if (sqnb == 0)
 				line[i] = -3;
 			else
 				sqnb = 0;
-		}
 		else if (line[i] == '$' && bscpt % 2)
 			line[i] = -2;
 		else if (line[i] == '\'')
-		{
-			if (sqnb == 0)
-				sqnb++;
-			else
-				sqnb--;
-		}
+			sqnb = (sqnb == 0) ? sqnb + 1 : sqnb - 1;
 		i++;
 	}
 }
@@ -186,7 +165,7 @@ void	decalstr(char *str)
 	str[i - 1] = str[i];
 }
 
-void 	de_escape_chars(char *line)
+void	de_escape_chars(char *line)
 {
 	int i;
 
@@ -209,13 +188,14 @@ void 	de_escape_chars(char *line)
 	}
 }
 
-int 	mergelst(t_list *curr)
+int		mergelst(t_list *curr)
 {
 	t_list *tmp;
 
 	while (curr)
 	{
-		if (curr->nospace == 1 && curr->next && curr->type == 1 && curr->next->type == 1)
+		if (curr->nospace == 1 && curr->next && curr->type == 1
+			&& curr->next->type == 1)
 		{
 			curr->content = ft_strjoinf1(curr->content, curr->next->content);
 			if (curr->content == 0)
@@ -278,7 +258,7 @@ t_list	*split_line_lst(char *line, int i)					//MODIF
 			++i;
 		else
 		{
-			if ((lst = ft_lstnew_p(get_word_lst(line, &i))) == NULL
+			if ((lst = ft_lstnew_p(get_word_lst(line, &i, 0))) == NULL
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
 			else if (line[i] != ' ' && line[i] != 0)
@@ -304,7 +284,7 @@ char	*get_lst(char *line)		//PROTECTED
 		if ((line = ft_strjoinft(line, filler)) == NULL)
 			return (NULL);
 	}
-	escape_chars(line);
+	escape_chars(line, 0, 0);
 	if ((out = split_line_lst(line, 0)) == NULL)
 		return ((char *)(long)freeret(line, 0));
 	if (tag_lst(out) == NULL)
