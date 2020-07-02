@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/24 18:06:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 17:11:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ int		pwd(void)
 {
 	char *str;
 
-/* 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1) */
-/* 	{ */
-/* 		ft_putstr_fd("minishell: pwd: too many arguments\n", 2); */
-/* 		return (1); */
-/* 	} */
 	if ((str = getcwdwrap()) == NULL)
 		return (ft_printh(2, 1, "minishell: pwd: %s\n", strerror(errno)));
 	ft_putstr(str);
@@ -65,8 +60,6 @@ int		cdbis(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-	// if (curr && curr->type == 1 && curr->next != 0 && curr->next->type == 1)
-	// 	return (ft_printh(2, 1, "minishell: cd: wrond number of arguments\n"));
 	if (curr && curr->type == 1)
 	{
 		if (curr->content[0] == '~')

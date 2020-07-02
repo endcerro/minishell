@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 18:56:43 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/02 17:01:04 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ int		unset(void)
 	t_list	*curr;
 
 	curr = g_mshell.ls->next;
-
-	// if (curr == 0 || curr->next != 0)
-	// {
-	// 	ft_putstr("minishell: unset: wrong number of arguments\n");
-	// 	return (1);
-	// }
 	while (curr && curr->type == 1)
 	{
 		i = 0;
@@ -120,7 +114,7 @@ int		unset_var(char *target)			//PROTECTED
 
 int		check_valid_export(char *str)
 {
-	while (*str && *str != '=')
+	while (str && *str && *str != '=')
 	{
 		if (ft_isspace(*str) == 1)
 			return (0);
@@ -139,7 +133,7 @@ int		export(char *param)			//PROTECTED
 	curr = g_mshell.ls->next;
 	if (param != NULL)
 		curr = ft_lstnew(param);
-	if (check_valid_export(curr->content) == 0)
+	if (curr && check_valid_export(curr->content) == 0)
 	{
 		if (param != NULL)
 			free(curr);

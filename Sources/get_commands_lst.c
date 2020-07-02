@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 16:13:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 17:30:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,23 @@ int check_valid(t_list *lst)
 	return 1;
 }
 
+int 	prep_ls(t_list *curr)
+{
+	escape_lst(curr);
+	if (check_valid(curr) == 0)
+		return (1) ;
+	if (expand_vars(curr))
+		return (1) ;
+	if (correctlst(curr))
+		return (1);	
+	trimbs(curr);
+	if (mergelst(curr))
+		return (1);
+	if (check_rdir(curr) == 1)
+		return (1);
+	return (0);
+}
+
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
@@ -168,33 +185,9 @@ void	checkinput_ls(char *line)
 	curr = g_mshell.ls;
 	if (curr == 0)
 		return ;
-	escape_lst(curr);
-	ft_lstprint(curr);
-	if (g_mshell.ls->type != 1)
-	{
-		ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", g_mshell.ls->content);
+	
+	if (prep_ls(curr))
 		return ;
-	}
-	if (check_valid(curr) == 0)
-	{
-		return ;
-	}
-
-	if(expand_vars(curr))
-	{
-		return ;
-	}
-
-	trimbs(curr);
-
-	correctlst(curr);
-	mergelst(curr);
-
-
-	if (check_rdir(curr) == 1)
-		return;	
-	// ft_lstprint(curr);
-
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{
 		ex = 0;
@@ -260,17 +253,13 @@ void	checkinput_ls(char *line)
 	}
 	if (g_mshell.rdirin == 1)
 	{
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(dup(0)) == -1)
 			ft_putstr_fd("ERROR CLOSING FD\n", 2);
-		// close(dup(0));
-		// ft_putstr_fd("0 CLOSED\n", 2);
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
 	if (test == 0)
 		close_pipe_n();
-	// if(test == 1 &&  )
 	while (curr)
 	{
 		if (curr->type == 3 && curr->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/26 17:56:03 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 17:14:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,22 @@ void	iniside_join_loop(char *base, char *add, char *out)
 	j = 0;
 	p = 0;
 	i = 0;
-
 	while (base[i])
 	{
 		if (j == 0 && base[i] == '$')
 		{
 			while (add && add[j])
-			{
 				out[p++] = add[j++];
-
-			}
-
 			i++;
 			while (++j && base[i] && !ft_isspace(base[i]))
 				i++;
 		}
 		else
-		{
 			out[p++] = base[i++];
-		}
 	}
-
+	out[p] = 0;
 	if (out[0] == '\"')
-	{
 		out[p] = '\"';
-	}
-	else
-		out[p] = 0;
 	out[++p] = 0;
 }
 

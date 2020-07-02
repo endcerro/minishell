@@ -6,11 +6,18 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 16:08:03 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 18:25:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int isquote(char c)
+{
+	if (c == '\'' || c == '\"')
+		return (c);
+	return (0);
+}
 
 void	find_char(char *buff)
 {
@@ -40,7 +47,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 
 	new = 0;
 	split = 0;
-	if (curr->content[0] != '\'' && curr->content[0] != '\"' && curr->content[0] != ' ' && curr->content[1])
+	if (isquote(curr->content[0]) == 0 && curr->content[0] != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
 			split = ft_split(curr->content, buff[0]);
@@ -51,9 +58,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 				while (curr->content[j] && curr->content[j] != buff[0])
 					j++;
 				if (split[++i])
-				{
 					ft_lstadd_back(&new, ft_lstnew(split[i]));
-				}
 			}
 		}
 	free(split);
@@ -138,30 +143,26 @@ void 	escape_chars(char *line)
 	bscpt = 0;
 	i = 0;
 	sqnb = 0;
-	while(line[i])
+	while (line[i])
 	{
 		bscpt = 0;
-		while(line[i] && line[i] == '\\')
+		while (line[i] && line[i] == '\\')
 		{
 			bscpt++;
 			i++;
 		}
 		if (line[i] == '\"' && bscpt % 2)
-		{
 			line[i] = -4;
-		}
-		else if(line[i] == '\'' && bscpt % 2)
+		else if (line[i] == '\'' && bscpt % 2)
 		{
-			if(sqnb == 0)
+			if (sqnb == 0)
 				line[i] = -3;
 			else
 				sqnb = 0;
 		}
 		else if (line[i] == '$' && bscpt % 2)
-		{
 			line[i] = -2;
-		}
-		else if(line[i] == '\'')
+		else if (line[i] == '\'')
 		{
 			if (sqnb == 0)
 				sqnb++;
@@ -208,31 +209,7 @@ void 	de_escape_chars(char *line)
 	}
 }
 
-int		isquote(char c)
-{
-	if(c == '\'')
-		return '\'';
-	if(c == '\"')
-		return '\"';
-	return 0;
-}
-
-char	*list_to_str(t_list *lst, int depth)
-{
-	char *out;
-	int i;
-	out = ft_strdup("");
-	i = 0;
-	while (lst && i < depth)
-	{
-		out = ft_strjoinf1(out, lst->content);
-		lst = lst->next;
-		i++;
-	}
-	return out;
-}
-
-void mergelst(t_list *curr)
+int 	mergelst(t_list *curr)
 {
 	t_list *tmp;
 
@@ -241,6 +218,8 @@ void mergelst(t_list *curr)
 		if (curr->nospace == 1 && curr->next && curr->type == 1 && curr->next->type == 1)
 		{
 			curr->content = ft_strjoinf1(curr->content, curr->next->content);
+			if (curr->content == 0)
+				return (1);
 			curr->nospace = curr->next->nospace;
 			tmp = curr->next->next;
 			ft_lstdelone(curr->next);
@@ -249,48 +228,50 @@ void mergelst(t_list *curr)
 		}
 		curr = curr->next;
 	}
+	return (0);
 }
 
-void	correctlst(t_list *lst)
+int		void_lst(t_list *lst, t_list *prev)
+{
+	if (lst->next)
+	{
+		prev->content = ft_strjoinf1(prev->content, lst->next->content);
+		if (prev->content == 0)
+			return (1);
+		prev->next = lst->next->next;
+		ft_lstdelone(lst->next);
+		ft_lstdelone(lst);
+	}
+	else
+	{
+		ft_lstdelone(lst);
+		prev->next = 0;
+	}
+	return (0);
+}
+
+int		correctlst(t_list *lst)
 {
 	t_list *prev;
+
 	prev = 0;
-	while(lst && lst->content)
+	while (lst && lst->content)
 	{
-		if(lst->content[0] == '\"' || lst->content[0] == '\'')
-			trim_quotes(lst->content);
+		trim_quotes(lst->content);
 		parse_bs(lst->content);
 		de_escape_chars(lst->content);
-		if(lst->content[0] == 0 && prev)
-		{
-			if(lst->next)
-			{
-				prev->content = ft_strjoinf1(prev->content, lst->next->content);
-				prev->next = lst->next->next;
-				ft_lstdelone(lst->next);
-				ft_lstdelone(lst);
-			}
-			else
-			{
-				ft_lstdelone(lst);
-				prev->next = 0;
-			}
-			lst = prev;
-		}
 		prev = lst;
 		lst = lst->next;
 	}
+	return (0);
 }
 
-t_list	*split_line_lst(char *line)					//MODIF
+t_list	*split_line_lst(char *line, int i)					//MODIF
 {
 	t_list	*f_lst;
 	t_list	*lst;
-	int		i;
 
-	i = 0;
 	f_lst = NULL;
-	escape_chars(line);
 	while ((size_t)i < ft_strlen(line))
 	{
 		if (ft_isspace(line[i]))
@@ -308,7 +289,6 @@ t_list	*split_line_lst(char *line)					//MODIF
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
-
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
 	return (f_lst);
@@ -318,12 +298,14 @@ char	*get_lst(char *line)		//PROTECTED
 {
 	char	*filler;
 	t_list	*out;
+
 	if ((filler = check_finished_lst(line)) != NULL)
 	{
 		if ((line = ft_strjoinft(line, filler)) == NULL)
 			return (NULL);
 	}
-	if ((out = split_line_lst(line)) == NULL)
+	escape_chars(line);
+	if ((out = split_line_lst(line, 0)) == NULL)
 		return ((char *)(long)freeret(line, 0));
 	if (tag_lst(out) == NULL)
 	{
@@ -331,7 +313,6 @@ char	*get_lst(char *line)		//PROTECTED
 		ft_lstclear(&out);
 		return (NULL);
 	}
-
 	g_mshell.ls = out;
 	return (line);
 }
