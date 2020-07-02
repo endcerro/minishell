@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 18:48:49 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/02 15:35:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct		s_list
 {
 	struct s_list	*next;
 	char			*content;
+	int				nospace;
 	int 			type;
 }					t_list;
 
@@ -78,7 +79,7 @@ int				parse_bs(char *str);
 int				parse_esc(char *str, int i);
 char			*check_finished_lst(char *line);
 //IO
-void 			check_rdir();
+int 			check_rdir();
 void 			check_pipe(char *str, char *cpt);
 void 			close_pipe_n();
 void 			open_pipe_n(t_list *curr);
@@ -105,5 +106,6 @@ void 	escape_chars(char *line);
 void 	correctlst(t_list *lst);
 void 	de_escape_chars(char *line);
 void 	escape_lst(t_list *lst);
+void 	mergelst(t_list *curr);
 
 #endif

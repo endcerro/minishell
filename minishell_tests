@@ -10,8 +10,8 @@ echo "\\"									OK
 echo "\n \n \n"								OK
 echo "\n \\n \\\n"							OK
 echo hi; echo hihi;							OK
-echo ;;										Should throw bad syntax error
-echo hi";" hihi								One too much space
+echo ;;										Change error ?
+echo hi";" hihi								OK
 echo hi "   ;   " hihi						OK
 echo one; echo two; echo three;				OK
 cd											OK
@@ -49,21 +49,20 @@ whoami										OK
 
 XXXX pipe
 
-| echo										Change err msg
-echo | | echo								Weird stuff
+| echo										OK
+echo | | echo								OK
 
 XXXX redirection
 
-cat < >										Should error and not read stdin
-cat < <								   		Should error and not read stdin
-cat < Makefile > test1 > test2		   		OK
-cat < no_file > test1 > test2				Error not handled
-cat < no_file > test1 echo asdf				Error not handled
+cat < >										OK
+cat < <								   		OK
+cat < Makefile > test1 > test2 > test2		OK
+cat < no_file > test1 echo asdf				OK
 
 XXXX pipe & redirection
 
 cat < Makefile | grep gcc > output			OK
-cat < nofile | grep gcc > output  			Error not handled
+cat < nofile | grep gcc > output  			OK
 
 
 XXXX Commandes valides et basiques
@@ -175,30 +174,32 @@ exit -100000000000000000					OK
 
 XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
+											NEED TO SET ERRNO ?
+
 ;											OK
-;;;											Change message
-<											Change message
->											Change message
-;;;;;										Change message
-\"; ; ;\"
-\"; < ;\"
-\"; > ;\"
-; pwd ; echo Hello							Change message
-pwd;;;ls 									Should not exec
+;;;											Change message ?
+<											Change message ?
+>											Change message ?
+;;;;;										Change message ?
+\"; ; ;\"									OK
+\"; < ;\"									OK
+\"; > ;\"									OK
+; pwd ; echo Hello							OK
+pwd;;;ls 									Change message ?
 ;;ls;;
 ;ls;pwd;
-\"											OK
+\"											Change message ?
 \"\"										OK
 '' 											Kinda OK
 \"\"\"\"\"\" 								OK
  \"  \" 									OK
-|											Why read ?
-  |;										Change message
-;| 											Why read ?
-;|<											Change message
-<;
->;
-;<
+|											OK
+  |;										OK
+;| 											OK
+;|<											OK
+<;											Change message ?
+>;											Change message ?
+;<											OK
 ;>
  ;< ls ;
  ;> ls ;
@@ -228,13 +229,3 @@ XXXX multi lignes
 echo "\"
 echo |
 
-ORIGINAL BUGS
-Should be packed in one block
-{
-	minishell @>echo Sample"
-	dquote> This is some text \"
-	STR B4 = \�
-	STR AF = \�
-	dquote> "
-	|echo:1||Sample":1||This:1||is:1||some:1||text:1||\":1||":1|
-}

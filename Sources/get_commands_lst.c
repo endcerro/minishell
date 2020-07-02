@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 20:20:31 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/02 15:19:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,38 @@ void	trimbs(t_list *curr)
 	}
 }
 
+
+int check_valid(t_list *lst)
+{
+	int cp_r;
+	int cp_d;
+
+	cp_r = 0;
+	cp_d = 0;
+
+	while (lst)
+	{
+		if (lst->type == 3 || lst->type == 6)
+		{
+			cp_d++;
+		}
+		else if (lst->type != 1)
+			cp_r++;
+		else
+		{
+			cp_r = 0;
+			cp_d = 0;
+		}
+		if (cp_d > 1 || cp_r > 1)
+		{
+			ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", lst->content);		
+			return (0);
+		}
+		lst = lst->next;
+	}
+	return 1;
+}
+
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
@@ -142,7 +174,11 @@ void	checkinput_ls(char *line)
 		ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", g_mshell.ls->content);
 		return ;
 	}
-	check_rdir(curr);
+	if (check_valid(curr) == 0)
+	{
+		return ;
+	}
+
 
 	if(expand_vars(curr))
 	{
@@ -152,6 +188,11 @@ void	checkinput_ls(char *line)
 	trimbs(curr);
 
 	correctlst(curr);
+	mergelst(curr);
+
+
+	if (check_rdir(curr) == 1)
+		return;	
 	ft_lstprint(curr);
 
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)

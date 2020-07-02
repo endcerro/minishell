@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 20:21:37 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/02 15:05:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,9 +233,29 @@ char	*list_to_str(t_list *lst, int depth)
 	return out;
 }
 
+void mergelst(t_list *curr)
+{
+	t_list *tmp;
+
+	while (curr)
+	{
+		if (curr->nospace == 1 && curr->next && curr->type == 1 && curr->next->type == 1)
+		{
+			curr->content = ft_strjoinf1(curr->content, curr->next->content);
+			curr->nospace = curr->next->nospace;
+			tmp = curr->next->next;
+			ft_lstdelone(curr->next);
+			curr->next = tmp;
+			continue;
+		}
+		curr = curr->next;
+	}
+}
+
 void	correctlst(t_list *lst)
 {
 	t_list *prev;
+	t_list *tmp;
 	prev = 0;
 	while(lst && lst->content)
 	{
@@ -282,6 +302,8 @@ t_list	*split_line_lst(char *line)					//MODIF
 			if ((lst = ft_lstnew_p(get_word_lst(line, &i))) == NULL
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
+			else if (line[i] != ' ' && line[i] != 0)
+				lst->nospace = 1;
 			if (f_lst == NULL && (f_lst = lst))
 				lst = NULL;
 			else

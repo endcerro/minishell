@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 10:37:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 14:49:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ t_list	*ft_lstnew(char *content)			//MALLOC PROTECTED
 	out->content = content;
 	out->next = NULL;
 	out->type = 1;
+	out->nospace = 0;
 	return (out);
 }
 
