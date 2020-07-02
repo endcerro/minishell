@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/29 18:36:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 18:53:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ void	open_pipe_n(t_list *curr)
 	pipes[2] = 1;
 	if (g_mshell.rdirout == 1)
 	{
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(pipes[1]) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
-		// close(pipes[1]);
 		pipes[2] = 0;
 	}
 	else
@@ -52,7 +50,6 @@ void	close_pipe_n(void)
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirin == 2)
 	{
-		// ft_putstr_fd("BLOCK 1\n", 2);
 		if(dup2(g_mshell.oldfdin, 0) == -1)
 		{
 			ft_putendl(strerror(errno));
@@ -60,17 +57,14 @@ void	close_pipe_n(void)
 		}
 		if (pipes[2] != 0)
 			pipes += sizeof(int) * 3;
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(pipes[0]) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
-		// close(pipes[0]);
 		pipes[2] = -1;
 		g_mshell.rdirin = 0;
 	}
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirout == 2)
 	{
-		// ft_putstr_fd("BLOCK 2\n", 2);
 		if (pipes[2] != 1)
 			pipes += sizeof(int) * 3;
 		if (dup2(pipes[0], 0) == -1)
@@ -83,13 +77,10 @@ void	close_pipe_n(void)
 			ft_putendl(strerror(errno));
 			exit(0);
 		}
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(pipes[1]) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
-		// close(pipes[1]);
 		pipes[2] = 0;
 		g_mshell.rdirout = 0;
 		g_mshell.rdirin = 2;
 	}
-	// ft_putstr_fd("PIPE CLOSED", 2);
 }

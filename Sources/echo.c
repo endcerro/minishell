@@ -6,27 +6,25 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/02 17:41:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 18:52:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	trim_quotes(char *str)
+void	trim_quotes(char *str)
 {
 	int i;
 
-	if(str[0] != '\'' && str[0] != '\"')
+	i = 1;
+	if (str[0] != '\'' && str[0] != '\"')
 		return ;
-	if(str[1] == 0)
+	if (str[1] == 0)
 	{
 		str[0] = 0;
 		return ;
 	}
-
-
-	i = 1;
-	while(str[i])
+	while (str[i])
 	{
 		str[i - 1] = str[i];
 		i++;
@@ -41,14 +39,11 @@ int		echo_ls(void)
 
 	ret = 0;
 	curr = g_mshell.ls->next;
-
 	if (curr && ft_strcmp(curr->content, "-n") == 0)
 		while (curr && ft_strcmp(curr->content, "-n") == 0)
 			curr = curr->next;
 	else
 		ret = 1;
-	// if(curr->content[0] == '\"' || curr->content[0] == '\'')
-	// 	trim_quotes(curr->content);
 	while (curr && curr->type == 1)
 	{
 		ft_putstr(curr->content);

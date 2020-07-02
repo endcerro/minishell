@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:39:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 18:55:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	escape_chars(tmp, 0, 0);
 	parse_qts(tmp, cpt);
 	check_pipe(tmp, cpt);
-//	parse_bs(tmp);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
 		out = getfiller(depth + 1, cpt);
@@ -187,11 +186,8 @@ void	sigint(int sig)
 	{
 		kill(g_mshell.pid, sig);
 		g_mshell.pid = 0;
-		/* write(1, "\n", 1); */
 	}
 	g_mshell.exitcode = 130;
-	/* signal(sig, SIG_IGN); */
-	/* write(1, "\n", 1); */
 }
 
 void	sigquit(int sig)
@@ -200,11 +196,8 @@ void	sigquit(int sig)
 	{
 		kill(g_mshell.pid, sig);
 		g_mshell.pid = 0;
-		/* write(1, "\n", 1); */
 	}
 	g_mshell.exitcode = 131;
-	/* signal(sig, SIG_IGN); */
-	/* write(1, "\n", 1); */
 }
 
 void 	init_mshell(void)
@@ -232,7 +225,6 @@ int		main(void)
 		return (1);
 	while (prompt(&line) > 0)
 	{
-		// if (line == NULL && *line == 0)
 		if (line == NULL)
 			break ;
 		line = get_lst(line); // PROTECTED UNTILL HERE
