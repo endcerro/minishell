@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 16:58:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 19:04:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,11 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 	if (check_exitcode(str))
 		return ;
 	d_pos = ft_strchr(*str, '$');
-	// printf("PB ICI%s\n",*str );
 	while (d_pos != NULL)
 	{
 		while (ft_isalnum(d_pos[len + 1]))
 			len++;
-		// query = ft_substr(d_pos, 1, len);
-		if((query = ft_substr(d_pos, 1, len)) == 0)
+		if ((query = ft_substr(d_pos, 1, len)) == 0)
 		{
 			free(*str);
 			*str = 0;
@@ -75,34 +73,27 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 			*(d_pos) = -1;
 		else
 		{
-
 			if (env(query))
 			{
-				// printf("FOUND %p\n",env(query));
-				if(env(query)[0] != 0)
+				if (env(query)[0] != 0)
 					*str = inside_join(*str, env(query) + 1, 1);
 				else
 				{
 					free(*str);
 					*str = ft_strdup("");
 				}
-				// printf("STR = %s\n",*str );
 			}
 			else
-			{
 				*str = inside_join(*str, vars(query), 1);
-
-			}
-			if(*str == 0)
-			{	
+			if (*str == 0)
+			{
 				free(query);
 				return ;
 			}
-
 		}
 		d_pos = ft_strchr(*str, '$');
 		free(query);
-	}				
+	}		
 	swap_char(*str, '$');
 }
 
@@ -124,16 +115,12 @@ void	parse_qts(char *str, char *cpt)
 
 	j = -1;
 	while (str[++j])
+	{
 		if ((str[j] == '\'' || str[j] == '\"'))
 		{
 			v = 0;
-			// if (j > 0 && str[j - 1] == '\\' && (v = 1))
-			// {
-			// 	while (j - v >= 0 && str[j - v] == '\\')
-			// 		v++;
-			// 	v--;
-			// }
 			if ((v % 2 == 0) && !(cpt[str[j] == '\"'] % 2))
 				cpt[!(str[j] == '\"')]++;
 		}
+	}
 }

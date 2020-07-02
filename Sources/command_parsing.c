@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:40:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 19:01:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	rdirout(t_list *curr, int mode)
 	if (g_mshell.rdirout == 1)
 	{
 		g_mshell.rdirout = 0;
-		//ft_putstr_fd("CLOSING FD\n", 2);
 		if (close(1) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
 	}
@@ -100,10 +99,9 @@ int	rdirout(t_list *curr, int mode)
 	else
 		fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT, 0644);
 	if (fd == -1)
-	{	
+	{
 		close(fd);
-		ft_printh(2,1,"%s: No such file or directory\n", curr->next->content);
-		// ft_putstr_fd("Oh no no no.. FD ERROR\n", 2);
+		ft_printh(2, 1, "%s: No such file or directory\n", curr->next->content);
 		return (1);
 	}
 	dup2(fd, 1);
@@ -125,18 +123,15 @@ int	check_rdir(t_list *curr)
 		else if (curr->type == 5 && curr->next && curr->next->type == 1)
 		{
 			if (g_mshell.rdirin == 1)
-				//ft_putstr_fd("CLOSING FD\n", 2);
 				if (close(0) == -1)
 					ft_putstr_fd("ERROR CLOSING FD", 2);
-				// close(0);
 			g_mshell.rdirin = 1;
 			fd = open(curr->next->content, O_RDONLY);
 			if (fd == -1)
 			{
 				close(fd);
-				ft_printh(2,1,"%s: No such file or directory\n", curr->next->content);
+				ft_printh(2, 1, "%s: No such file or directory\n", curr->next->content);
 				g_mshell.rdirin = 0;
-				// ft_putstr_fd("Oh no no no.. FD ERROR\n", 2);
 				return (1);
 			}
 			else
@@ -149,7 +144,7 @@ int	check_rdir(t_list *curr)
 		}
 		curr = curr->next;
 	}
-	return 0;
+	return (0);
 }
 
 int		parse_esc(char *str, int j)
@@ -160,7 +155,6 @@ int		parse_esc(char *str, int j)
 
 	r = 0;
 	tra = 0;
-
 	if (*(str + 1) == '\\')
 	{
 		while (*(str + r) == '\\')
@@ -178,6 +172,5 @@ int		parse_esc(char *str, int j)
 		while (str[++i])
 			str[i] = str[i + 1];
 	}
-
 	return (r);
 }
