@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 15:19:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 16:13:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 
 	curr = lst;
 	prev = 0;
-	while (curr && curr->type != 3)
+	while (curr && curr->type != 3 && curr->type != 6)
 	{
 		if (curr->content[0] != '\'')
 		{
@@ -169,6 +169,7 @@ void	checkinput_ls(char *line)
 	if (curr == 0)
 		return ;
 	escape_lst(curr);
+	ft_lstprint(curr);
 	if (g_mshell.ls->type != 1)
 	{
 		ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", g_mshell.ls->content);
@@ -178,7 +179,6 @@ void	checkinput_ls(char *line)
 	{
 		return ;
 	}
-
 
 	if(expand_vars(curr))
 	{
@@ -193,7 +193,7 @@ void	checkinput_ls(char *line)
 
 	if (check_rdir(curr) == 1)
 		return;	
-	ft_lstprint(curr);
+	// ft_lstprint(curr);
 
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 15:05:58 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/02 16:08:03 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 	curr->content = new->content;
 	return (new);
 }
-
 
 t_list	*inner_split(t_list *lst)
 {
@@ -255,7 +254,6 @@ void mergelst(t_list *curr)
 void	correctlst(t_list *lst)
 {
 	t_list *prev;
-	t_list *tmp;
 	prev = 0;
 	while(lst && lst->content)
 	{
