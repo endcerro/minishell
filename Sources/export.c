@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 17:01:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:24:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		unset(void)
+int		unset(void)								//PROTECTED
 {
 	int		i;
 	t_list	*curr;
@@ -38,7 +38,7 @@ int		unset(void)
 	return (0);
 }
 
-void	print_export(char **env2)
+void	print_export(char **env2)				//PROTECTED
 {
 	int x;
 	int y;
@@ -63,7 +63,7 @@ void	print_export(char **env2)
 	}
 }
 
-void	exportlst(char **envi)					//MALLOC PROTECTED
+void	exportlst(char **envi)					//PROTECTED
 {
 	int		y;
 	char	**env2;
@@ -82,6 +82,7 @@ void	exportlst(char **envi)					//MALLOC PROTECTED
 		if ((env2[y] = ft_strdup(envi[y])) == 0)
 		{
 			freechar2ptr(env2);
+			ft_putstr(strerror(errno));
 			return ;
 		}
 	}
@@ -123,7 +124,7 @@ int		check_valid_export(char *str)
 	return (1);
 }
 
-int		export(char *param)			//PROTECTED
+int		export(char *param)				//PROTECTED
 {
 	int		i;
 	char	**n_envi;
@@ -144,7 +145,7 @@ int		export(char *param)			//PROTECTED
 	i = 0;
 	if (curr == 0)
 	{
-		exportlst(g_mshell.env); // PROTECTED
+		exportlst(g_mshell.env);
 		return (0);
 	}
 	while (curr && curr->type == 1)
@@ -173,7 +174,7 @@ int		export(char *param)			//PROTECTED
 			if (!check_match(g_mshell.env[i], curr->content))
 			{
 				tmp = g_mshell.env[i];
-				g_mshell.env[i] = ft_strdup(curr->content); // PAS PROTEGE
+				g_mshell.env[i] = ft_strdup(curr->content);
 				if (g_mshell.env[i] == 0)
 				{
 					g_mshell.env[i] = tmp;
@@ -190,7 +191,7 @@ int		export(char *param)			//PROTECTED
 		i = -1;
 		while (g_mshell.env[++i])
 			n_envi[i] = g_mshell.env[i];
-		n_envi[i] = ft_strdup(curr->content); // PAS PROTEGE
+		n_envi[i] = ft_strdup(curr->content);
 		if (n_envi[i] == 0)
 		{
 			freechar2ptr(n_envi);

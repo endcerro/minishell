@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/02 18:52:58 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:18:41 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	trim_quotes(char *str)
+void	trim_quotes(char *str)					//PROTECTED
 {
 	int i;
 
@@ -32,7 +32,7 @@ void	trim_quotes(char *str)
 	str[i - 2] = 0;
 }
 
-int		echo_ls(void)
+int		echo_ls(void)						//PROTECTED
 {
 	int		ret;
 	t_list	*curr;

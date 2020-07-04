@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 14:49:58 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:49:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstprint(t_list *lst)
+void	ft_lstprint(t_list *lst)								//PROTECTED
 {
 	if (lst)
 	{
@@ -34,7 +34,7 @@ void	ft_lstprint(t_list *lst)
 	ft_putchar_fd('\n',2);
 }
 
-t_list	*tag_lst(t_list *lst)
+t_list	*tag_lst(t_list *lst)									//PROTECTED
 {
 	t_list	*cr;
 
@@ -56,13 +56,13 @@ t_list	*tag_lst(t_list *lst)
 	return (lst);
 }
 
-void	ft_lstdelone(t_list *lst)
+void	ft_lstdelone(t_list *lst)								//PROTECTED
 {
 	free(lst->content);
 	free(lst);
 }
 
-int		ft_lstclear(t_list **lst)
+int		ft_lstclear(t_list **lst)								//PROTECTED
 {
 	t_list *cache;
 	t_list *cache2;
@@ -84,7 +84,7 @@ int		ft_lstclear(t_list **lst)
 	return (0);
 }
 
-t_list	*ft_lstnew(char *content)			//MALLOC PROTECTED
+t_list	*ft_lstnew(char *content)			//PROTECTED
 {
 	t_list *out;
 
@@ -97,7 +97,7 @@ t_list	*ft_lstnew(char *content)			//MALLOC PROTECTED
 	return (out);
 }
 
-t_list	*ft_lstnew_p(char *content)		//MALLOC PROTECTED
+t_list	*ft_lstnew_p(char *content)		//PROTECTED
 {
 	t_list *out;
 
@@ -112,7 +112,7 @@ t_list	*ft_lstnew_p(char *content)		//MALLOC PROTECTED
 	return (out);
 }
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_lstadd_back(t_list **alst, t_list *new) //PROTECTED
 {
 	t_list *tmp;
 
@@ -128,13 +128,4 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 		else
 			*alst = new;
 	}
-}
-
-void	ft_lstadd_next(t_list *alst, t_list *new)
-{
-	t_list *copy;
-
-	copy = alst->next;
-	alst->next = new;
-	new->next = copy;
 }

@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:53:58 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:50:39 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_pipe_n(t_list *curr)
+void	open_pipe_n(t_list *curr)				//PROTECTED
 {
 	int		*pipes;
 
@@ -43,7 +43,7 @@ void	open_pipe_n(t_list *curr)
 	curr->type = 3;
 }
 
-void	close_pipe_n(void)
+void	close_pipe_n(void)					//PROTECTED
 {
 	int		*pipes;
 

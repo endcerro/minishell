@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:55:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:49:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		prompt(char **line)
+int		prompt(char **line)									//PROTECTED
 {
 	ft_putstr("\033[31mminishell \033[33m@>\033[0m");
 	return (get_next_line(0, line));
@@ -49,8 +49,8 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	}
 	if(depth == 0)
 	{
-		tmp = ft_strjoinf2("\n", tmp);
-		if(tmp == 0)
+		// tmp = ft_strjoinf2("\n", tmp);
+		if(!(tmp = ft_strjoinf2("\n", tmp)))
 		{
 			free (out);
 			return (0);

@@ -6,20 +6,20 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 18:49:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:48:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		isquote(char c)
+int		isquote(char c)															//PROTECTED
 {
 	if (c == '\'' || c == '\"')
 		return (c);
 	return (0);
 }
 
-void	find_char(char *buff)
+void	find_char(char *buff)													//PROTECTED
 {
 	if (buff[0] == 0)
 		buff[0] = ';';
@@ -37,28 +37,63 @@ void	find_char(char *buff)
 		buff[0] = 0;
 }
 
-t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
+t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)				//PROTECTED
 {
 	char	**split;
 	t_list	*new;
+	t_list 	*tmplst;
+	char 	*tmpstr;
 
 	new = 0;
 	split = 0;
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
-			split = ft_split(curr->content, buff[0]);
+			if ((split = ft_split(curr->content, buff[0])) == 0)
+				return (0);
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
-					ft_lstadd_back(&new, ft_lstnew(ft_strdup(buff)));
+				{
+					if (0 == (tmpstr = ft_strdup(buff)))
+					{
+						ft_lstclear(&new);
+						freechar2ptr(split);
+						return (0);
+					}
+					else if (0 == (tmplst = ft_lstnew(tmpstr)))
+					{
+						free(tmpstr);
+						ft_lstclear(&new);
+						freechar2ptr(split);
+						return (0);
+					}
+					ft_lstadd_back(&new, tmplst);
+				}
 				while (curr->content[j] && curr->content[j] != buff[0])
+				{
 					j++;
+				}
 				if (split[++i])
-					ft_lstadd_back(&new, ft_lstnew(split[i]));
+				{
+					if (0 == (tmpstr = ft_strdup(split[i])))
+					{
+						ft_lstclear(&new);
+						freechar2ptr(split);
+						return (0);
+					}
+					else if (0 == (tmplst = ft_lstnew(tmpstr)))
+					{
+						free(tmpstr);
+						ft_lstclear(&new);
+						freechar2ptr(split);
+						return (0);
+					}
+					ft_lstadd_back(&new, tmplst);
+				}
 			}
 		}
-	free(split);
+	freechar2ptr(split);
 	if (new == 0)
 		return (0);
 	free(curr->content);
@@ -66,7 +101,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 	return (new);
 }
 
-t_list	*inner_split(t_list *lst)
+t_list	*inner_split(t_list *lst)								//PROTECTED
 {
 	t_list	*curr;
 	t_list	*new;
@@ -93,7 +128,7 @@ t_list	*inner_split(t_list *lst)
 	return (lst);
 }
 
-char	*get_word_lst(char *line, int *p, size_t len)
+char	*get_word_lst(char *line, int *p, size_t len)			//PROTECTED
 {
 	int		cp;
 
@@ -118,7 +153,7 @@ char	*get_word_lst(char *line, int *p, size_t len)
 	return (ft_substr(line, cp, len));
 }
 
-void	escape_lst(t_list *curr)
+void	escape_lst(t_list *curr)								//PROTECTED
 {
 	while (curr && curr->type == 1)
 	{
@@ -127,7 +162,7 @@ void	escape_lst(t_list *curr)
 	}
 }
 
-void	escape_chars(char *line, int bscpt, int sqnb)
+void	escape_chars(char *line, int bscpt, int sqnb)			//PROTECTED
 {
 	int i;
 
@@ -152,7 +187,7 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 	}
 }
 
-void	decalstr(char *str)
+void	decalstr(char *str)										//PROTECTED
 {
 	int i;
 
@@ -165,7 +200,7 @@ void	decalstr(char *str)
 	str[i - 1] = str[i];
 }
 
-void	de_escape_chars(char *line)
+void	de_escape_chars(char *line)								//PROTECTED
 {
 	int i;
 
@@ -188,7 +223,7 @@ void	de_escape_chars(char *line)
 	}
 }
 
-int		mergelst(t_list *curr)
+int		mergelst(t_list *curr)									//PROTECTED
 {
 	t_list *tmp;
 
@@ -211,26 +246,7 @@ int		mergelst(t_list *curr)
 	return (0);
 }
 
-int		void_lst(t_list *lst, t_list *prev)
-{
-	if (lst->next)
-	{
-		prev->content = ft_strjoinf1(prev->content, lst->next->content);
-		if (prev->content == 0)
-			return (1);
-		prev->next = lst->next->next;
-		ft_lstdelone(lst->next);
-		ft_lstdelone(lst);
-	}
-	else
-	{
-		ft_lstdelone(lst);
-		prev->next = 0;
-	}
-	return (0);
-}
-
-int		correctlst(t_list *lst)
+int		correctlst(t_list *lst)									//PROTECTED
 {
 	t_list *prev;
 
@@ -246,7 +262,7 @@ int		correctlst(t_list *lst)
 	return (0);
 }
 
-t_list	*split_line_lst(char *line, int i)					//MODIF
+t_list	*split_line_lst(char *line, int i)						//PROTECTED
 {
 	t_list	*f_lst;
 	t_list	*lst;
@@ -274,7 +290,7 @@ t_list	*split_line_lst(char *line, int i)					//MODIF
 	return (f_lst);
 }
 
-char	*get_lst(char *line)		//PROTECTED
+char	*get_lst(char *line)									//PROTECTED
 {
 	char	*filler;
 	t_list	*out;

@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 19:01:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:18:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_pipe(char *str, char *cpt)
+void	check_pipe(char *str, char *cpt)			//PROTECTED
 {
 	int i;
 	int pipefound;
@@ -34,7 +34,7 @@ void	check_pipe(char *str, char *cpt)
 	cpt[2] = pipefound;
 }
 
-char	*add_filler(char **fill)
+char	*add_filler(char **fill)					//PROTECTED
 {
 	int		i;
 	char	*out;
@@ -59,7 +59,7 @@ char	*add_filler(char **fill)
 	return (out);
 }
 
-char	*check_finished_lst(char *line)
+char	*check_finished_lst(char *line)				//PROTECTED
 {
 	char	cpt[3];
 	char	**fill;
@@ -70,8 +70,6 @@ char	*check_finished_lst(char *line)
 	ft_bzero(cpt, 3);
 	escape_chars(line, 0, 0);
 	parse_qts(line, cpt);
-	// de_escape_chars(line);
-	// check_pipe(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 		if ((fill = getfiller(0, cpt)) == 0)
 			return (0);
@@ -81,7 +79,7 @@ char	*check_finished_lst(char *line)
 	return (out);
 }
 
-int	rdirout(t_list *curr, int mode)
+int	rdirout(t_list *curr, int mode)					//PROTECTED
 {
 	int fd;
 
@@ -101,6 +99,7 @@ int	rdirout(t_list *curr, int mode)
 	if (fd == -1)
 	{
 		close(fd);
+		errno = 1;
 		ft_printh(2, 1, "%s: No such file or directory\n", curr->next->content);
 		return (1);
 	}
@@ -109,7 +108,7 @@ int	rdirout(t_list *curr, int mode)
 	return (0);
 }
 
-int	check_rdir(t_list *curr)
+int	check_rdir(t_list *curr)				//PROTECTED
 {
 	int		fd;
 
@@ -147,7 +146,7 @@ int	check_rdir(t_list *curr)
 	return (0);
 }
 
-int		parse_esc(char *str, int j)
+int		parse_esc(char *str, int j)							//PROTECTED
 {
 	int		i;
 	int		r;

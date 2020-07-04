@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 19:04:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:21:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	swap_char(char *str, char c)
+void	swap_char(char *str, char c)				//PROTECTED
 {
 	int		i;
 
@@ -24,7 +24,7 @@ void	swap_char(char *str, char c)
 	}
 }
 
-int		check_exitcode(char **str)
+int		check_exitcode(char **str)				
 {
 	char	*pos;
 	char	*tmp;
@@ -49,7 +49,7 @@ int		check_exitcode(char **str)
 	return (0);
 }
 
-void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
+void	parse_env_ls(char **str)					//PROTECTED
 {
 	char	*d_pos;
 	char	*query;
@@ -97,7 +97,7 @@ void	parse_env_ls(char **str)				//PROTECTED AND LEAK FREE
 	swap_char(*str, '$');
 }
 
-int		parse_bs(char *str)
+int		parse_bs(char *str)							//PROTECTED
 {
 	int		i;
 
@@ -108,7 +108,7 @@ int		parse_bs(char *str)
 	return (0);
 }
 
-void	parse_qts(char *str, char *cpt)
+void	parse_qts(char *str, char *cpt)				//PROTECTED
 {
 	int		j;
 	int		v;

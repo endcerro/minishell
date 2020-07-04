@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 10:20:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/07 18:05:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:50:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		getlen(int n)
+static int		getlen(int n)			//PROTECTED
 {
 	int		i;
 
@@ -27,7 +27,7 @@ static int		getlen(int n)
 	return (i);
 }
 
-int				ft_pow(int nb, int pow)
+int				ft_pow(int nb, int pow)		//PROTECTED
 {
 	int		i;
 	int		dest;
@@ -39,7 +39,7 @@ int				ft_pow(int nb, int pow)
 	return (dest);
 }
 
-char			*ft_itoaa(int n)		//MALLOC PROTECTED
+char			*ft_itoaa(int n)		//PROTECTED
 {
 	char	*out;
 	int		len;

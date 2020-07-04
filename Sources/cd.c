@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 17:11:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:14:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*getcwdwrap(void)
+char	*getcwdwrap(void)						//PROTECTED
 {
 	char			*str;
 	unsigned int	i;
@@ -31,7 +31,7 @@ char	*getcwdwrap(void)
 	return (str);
 }
 
-char	*rethomedir(void)
+char	*rethomedir(void)						//PROTECTED
 {
 	int	x;
 
@@ -43,7 +43,7 @@ char	*rethomedir(void)
 	return (NULL);
 }
 
-int		pwd(void)
+int		pwd(void)								//PROTECTED
 {
 	char *str;
 
@@ -55,7 +55,7 @@ int		pwd(void)
 	return (0);
 }
 
-int		cdbis(void)
+int		cdbis(void)								//PROTECTED
 {
 	t_list	*curr;
 
@@ -80,7 +80,7 @@ int		cdbis(void)
 	return (0);
 }
 
-int		cdter(int pwd)
+int		cdter(int pwd)							//PROTECTED
 {
 	char *str;
 
@@ -97,7 +97,7 @@ int		cdter(int pwd)
 	return (0);
 }
 
-int		cd(void)
+int		cd(void)								//PROTECTED
 {
 	int		oldpwd;
 	int		pwd;

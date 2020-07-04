@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/02 17:30:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 14:54:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
+int		expand_vars(t_list *lst)					//PROTECTED
 {
 	t_list *curr;
 	t_list *prev;
@@ -45,7 +45,7 @@ int		expand_vars(t_list *lst)			//PROTECTED AND LEAK FREE
 	return (0);
 }
 
-int		isstrdigit(char *str)
+int		isstrdigit(char *str)						//PROTECTED
 {
 	while (*str && (*str == '-' || *str == '+'))
 		++str;
@@ -58,7 +58,7 @@ int		isstrdigit(char *str)
 	return (1);
 }
 
-void	deconechar(char *str)
+void	deconechar(char *str)						//PROTECTED
 {
 	int i;
 
@@ -72,7 +72,7 @@ void	deconechar(char *str)
 	str[i - 1] = str[i];
 }
 
-void	trimbs(t_list *curr)
+void	trimbs(t_list *curr)					//PROTECTED
 {
 	int i;
 	int j;
@@ -80,24 +80,16 @@ void	trimbs(t_list *curr)
 
 	while (curr && curr->content && curr->type == 1)
 	{
-		// printf("IN trimbs %s\n",curr->content );
 		i = 0;
 		if (curr->content[0] != '\'')
 			while (curr->content[i])
 			{
 				if (curr->content[i] == '\\')
 				{
-					// printf("\\ found\n");
 					qtcp = 0;
-					j = i;
-					while (curr->content[j] == '\\')
-					{
+					j = i - 1;
+					while (curr->content[++j] == '\\')
 						qtcp++;
-						j++;
-					}
-
-					// qtcp = (qtcp % 2 == 0) ? qtcp : qtcp - 1;
-
 					if ((qtcp != 1 && qtcp % 2 == 0) || curr->content[0] == '\"')
 					{
 						qtcp /= 2;
@@ -108,16 +100,11 @@ void	trimbs(t_list *curr)
 						qtcp /= 2;
 						qtcp++;
 					}
-
 					if (curr->content[0] == '\"' && curr->content[j] < 0)
 						qtcp++;
-					// printf("qtcp = %d\n",qtcp );
-					for (int z = 0; z < qtcp; z++)
-					{
-						// printf("Trimming one char qt pos %d \n", i);
+					j = -1;
+					while (++j < qtcp)
 						deconechar(curr->content + i);
-					}
-
 					i += qtcp;
 				}
 				else
@@ -128,7 +115,7 @@ void	trimbs(t_list *curr)
 }
 
 
-int check_valid(t_list *lst)
+int check_valid(t_list *lst)				//PROTECTED
 {
 	int cp_r;
 	int cp_d;
@@ -152,6 +139,7 @@ int check_valid(t_list *lst)
 		if (cp_d > 1 || cp_r > 1)
 		{
 			ft_printh(2,1, "minishell: syntax error near unexpected token \'%s\'\n", lst->content);		
+			errno = 258;
 			return (0);
 		}
 		lst = lst->next;
@@ -159,16 +147,16 @@ int check_valid(t_list *lst)
 	return 1;
 }
 
-int 	prep_ls(t_list *curr)
+int 	prep_ls(t_list *curr)				//PROTECTED
 {
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
 		return (1) ;
 	if (expand_vars(curr))
 		return (1) ;
+	trimbs(curr);
 	if (correctlst(curr))
 		return (1);	
-	trimbs(curr);
 	if (mergelst(curr))
 		return (1);
 	if (check_rdir(curr) == 1)
@@ -212,7 +200,7 @@ void	checkinput_ls(char *line)
 	}
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();						//PROTECTED
-	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) //PROTECTED UNTILL HERE
+	else if (ft_strcmp(g_mshell.ls->content, "env") == 0) 	//PROTECTED
 	{
 		env(NULL);
 		g_mshell.exitcode = 0;
@@ -230,25 +218,21 @@ void	checkinput_ls(char *line)
 	else
 		commandorvar();
 	copy = g_mshell.ls;
-	int test = 0;
-
+	ex = 0;
 	if (g_mshell.rdirout == 1)
 	{
 		if (close(dup(1)) == -1)
 			ft_putstr_fd("ERROR CLOSING FD", 2);
 		dup2(g_mshell.oldfdout, 1);
 		g_mshell.rdirout = 0;
-
-
 		if(g_mshell.pipes[2] == 0)
 		{
 			if(g_mshell.rdirin != 2)
 			{
-				test = 1;
+				ex = 1;
 				dup2(g_mshell.pipes[0], 0);
 				g_mshell.rdirin = 2;
 			}
-
 		}
 	}
 	if (g_mshell.rdirin == 1)
@@ -258,7 +242,7 @@ void	checkinput_ls(char *line)
 		dup2(g_mshell.oldfdin, 0);
 		g_mshell.rdirin = 0;
 	}
-	if (test == 0)
+	if (ex == 0)
 		close_pipe_n();
 	while (curr)
 	{
