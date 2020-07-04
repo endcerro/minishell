@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 18:31:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 18:41:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,23 @@ void	find_char(char *buff)										//PROTECTED
 		buff[0] = 0;
 }
 
-int protect_pone(t_list **new, char **split)
+int		protect_pone(t_list **new, char **split)
 {
 	ft_lstclear(new);
 	freechar2ptr(split, 0);
 	return (0);
 }
 
-int protect_ptwo(t_list **new, char **split, char *str)
+int		protect_ptwo(t_list **new, char **split, char *str)
 {
 	free(str);
 	return (protect_pone(new, split));
 }
 
-int 	do_the_thing(t_list **new, char *buff, char **split)
+int		do_the_thing(t_list **new, char *buff, char **split)
 {
 	char	*tmpstr;
 	t_list	*tmplst;
-
 
 	if (0 == (tmpstr = ft_strdup(buff)))
 		return (protect_pone(new, split));
