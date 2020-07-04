@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:24:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:08:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exportlst(char **envi)					//PROTECTED
 	{
 		if ((env2[y] = ft_strdup(envi[y])) == 0)
 		{
-			freechar2ptr(env2);
+			freechar2ptr(env2, 0);
 			ft_putstr(strerror(errno));
 			return ;
 		}
@@ -89,7 +89,7 @@ void	exportlst(char **envi)					//PROTECTED
 	env2[y] = NULL;
 	quicks(env2, 0, y - 1);
 	print_export(env2);
-	freechar2ptr(env2);
+	freechar2ptr(env2, 0);
 }
 
 int		unset_var(char *target)			//PROTECTED
@@ -194,7 +194,7 @@ int		export(char *param)				//PROTECTED
 		n_envi[i] = ft_strdup(curr->content);
 		if (n_envi[i] == 0)
 		{
-			freechar2ptr(n_envi);
+			freechar2ptr(n_envi, 0);
 			return (1);
 		}
 		n_envi[++i] = 0;

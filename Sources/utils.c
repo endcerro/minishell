@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:20:30 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/06/08 16:51:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:18:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ int		wordlen(char *str)
 	return (i);
 }
 
-void	freechar2ptr(char **ptr)
+int		freechar2ptr(char **ptr, int ret)
 {
 	int i;
 
 	i = 0;
 	if (ptr == 0)
-		return ;
+		return (ret);
 	while (ptr[i])
 	{
 		if (ptr[i] != (char *)-1)
@@ -78,6 +78,7 @@ void	freechar2ptr(char **ptr)
 		++i;
 	}
 	free(ptr);
+	return (ret);
 }
 
 int		freeret(void *ptr, int ret)

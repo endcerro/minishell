@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 15:01:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:12:04 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void			ft_lstdelone(t_list *lst);
 void			ft_lstadd_back(t_list **alst, t_list *new);
 //UTILS
 int 			freeret(void *ptr, int ret);
-void			freechar2ptr(char **ptr);
+int				freechar2ptr(char **ptr, int ret);
 void			quicks(char **tab, int lo, int hi);
 char			*ft_itoaa(int n);
 int 			wordlen(char *str);

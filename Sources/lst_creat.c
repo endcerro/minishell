@@ -6,20 +6,20 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:48:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 18:31:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		isquote(char c)															//PROTECTED
+int		isquote(char c)												//PROTECTED
 {
 	if (c == '\'' || c == '\"')
 		return (c);
 	return (0);
 }
 
-void	find_char(char *buff)													//PROTECTED
+void	find_char(char *buff)										//PROTECTED
 {
 	if (buff[0] == 0)
 		buff[0] = ';';
@@ -37,12 +37,37 @@ void	find_char(char *buff)													//PROTECTED
 		buff[0] = 0;
 }
 
-t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)				//PROTECTED
+int protect_pone(t_list **new, char **split)
+{
+	ft_lstclear(new);
+	freechar2ptr(split, 0);
+	return (0);
+}
+
+int protect_ptwo(t_list **new, char **split, char *str)
+{
+	free(str);
+	return (protect_pone(new, split));
+}
+
+int 	do_the_thing(t_list **new, char *buff, char **split)
+{
+	char	*tmpstr;
+	t_list	*tmplst;
+
+
+	if (0 == (tmpstr = ft_strdup(buff)))
+		return (protect_pone(new, split));
+	else if (0 == (tmplst = ft_lstnew(tmpstr)))
+		return (protect_ptwo(new, split, tmpstr));
+	ft_lstadd_back(new, tmplst);
+	return (1);
+}
+
+t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 {
 	char	**split;
 	t_list	*new;
-	t_list 	*tmplst;
-	char 	*tmpstr;
 
 	new = 0;
 	split = 0;
@@ -54,46 +79,16 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)				//PROTECTED
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
-				{
-					if (0 == (tmpstr = ft_strdup(buff)))
-					{
-						ft_lstclear(&new);
-						freechar2ptr(split);
+					if (do_the_thing(&new, buff, split) == 1)
 						return (0);
-					}
-					else if (0 == (tmplst = ft_lstnew(tmpstr)))
-					{
-						free(tmpstr);
-						ft_lstclear(&new);
-						freechar2ptr(split);
-						return (0);
-					}
-					ft_lstadd_back(&new, tmplst);
-				}
 				while (curr->content[j] && curr->content[j] != buff[0])
-				{
 					j++;
-				}
 				if (split[++i])
-				{
-					if (0 == (tmpstr = ft_strdup(split[i])))
-					{
-						ft_lstclear(&new);
-						freechar2ptr(split);
+					if (do_the_thing(&new, split[i], split) == 0)
 						return (0);
-					}
-					else if (0 == (tmplst = ft_lstnew(tmpstr)))
-					{
-						free(tmpstr);
-						ft_lstclear(&new);
-						freechar2ptr(split);
-						return (0);
-					}
-					ft_lstadd_back(&new, tmplst);
-				}
 			}
 		}
-	freechar2ptr(split);
+	freechar2ptr(split, 0);
 	if (new == 0)
 		return (0);
 	free(curr->content);

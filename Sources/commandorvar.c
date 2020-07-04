@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/29 20:13:55 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:08:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,9 @@ void	execsomestuffbis(int x, char **params, char *str)
 			execve(params[x], &(params[x]), g_mshell.env);
 		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno));
 		free(str);
-		freechar2ptr(g_mshell.env);
-		freechar2ptr(params);
-		freechar2ptr(g_mshell.vars);
+		freechar2ptr(g_mshell.env, 0);
+		freechar2ptr(params, 0);
+		freechar2ptr(g_mshell.vars, 0);
 		exit(0);
 	}
 	else if (g_mshell.pid < 0)

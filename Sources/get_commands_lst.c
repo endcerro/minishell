@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 16:29:32 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:08:54 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,39 +146,35 @@ int		prep_ls(t_list *curr)				//PROTECTED
 	return (0);
 }
 
-void	checkinput_ls(char *line)
+void	ms_exit(char *line)
 {
-	t_list	*curr;
-	t_list	*copy;
-	int		ex;
+	int ex;
 
-	curr = g_mshell.ls;
-	if (curr == 0)
-		return ;
-	if (prep_ls(curr))
-		return ;
-	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+	ex = 0;
+	ft_putstr("exit\n");
+	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
-		ex = 0;
-		ft_putstr("exit\n");
-		if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
+		if (isstrdigit(g_mshell.ls->next->content) == 0)
+			ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n", g_mshell.ls->next->content);
+		else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)
 		{
-			if (isstrdigit(g_mshell.ls->next->content) == 0)
-				ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n", g_mshell.ls->next->content);
-			else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)
-			{
-				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-				return ;
-			}
-			else
-				ex = ft_atoi(g_mshell.ls->next->content);
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			return ;
 		}
-		freechar2ptr(g_mshell.env);
-		freechar2ptr(g_mshell.vars);
-		ft_lstclear(&g_mshell.ls);
-		free(line);
-		exit(ex);
+		else
+			ex = ft_atoi(g_mshell.ls->next->content);
 	}
+	freechar2ptr(g_mshell.env, 0);
+	freechar2ptr(g_mshell.vars, 0);
+	ft_lstclear(&g_mshell.ls);
+	free(line);
+	exit(ex);
+}
+
+void	exec_command(char *line)
+{
+	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+		ms_exit(line);
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
@@ -198,8 +194,10 @@ void	checkinput_ls(char *line)
 		ft_putstr("\033c");
 	else
 		commandorvar();
-	copy = g_mshell.ls;
-	ex = 0;
+}
+
+void	prep_rdir(int ex)
+{
 	if (g_mshell.rdirout == 1)
 	{
 		if (close(dup(1)) == -1)
@@ -225,6 +223,23 @@ void	checkinput_ls(char *line)
 	}
 	if (ex == 0)
 		close_pipe_n();
+}
+
+void	checkinput_ls(char *line)
+{
+	t_list	*curr;
+	t_list	*copy;
+	int		ex;
+
+	curr = g_mshell.ls;
+	if (g_mshell.ls == 0)
+		return ;
+	if (prep_ls(g_mshell.ls))
+		return ;
+	exec_command(line);
+	copy = g_mshell.ls;
+	ex = 0;
+	prep_rdir(0);
 	while (curr)
 	{
 		if (curr->type == 3 && curr->next != NULL)

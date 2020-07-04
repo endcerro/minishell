@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 16:11:59 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 17:41:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,30 @@ char	*vars(char *request)
 	return (NULL);
 }
 
-int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans env
+int		newenvironnext(char *keys, int x)
+{
+	int z;
+
+	z = 0;
+	if (keys[0] == 0)
+	{
+		if ((g_mshell.env[x + z] = ft_strjoinf2("PWD=", getcwdwrap())) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
+		++z;
+	}
+	if (keys[1] == 0)
+	{
+		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
+		++z;
+	}
+	if (keys[2] == 0)
+		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
+	return (0);
+}
+
+int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 {
 	int		x;
 	int		z;
@@ -130,37 +153,9 @@ int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans en
 	x = -1;
 	while (environ[++x])
 		if ((g_mshell.env[x] = ft_strdup(environ[x])) == NULL)
-		{
-			freechar2ptr(g_mshell.env);
-			return (-1);
-		}
+			return (freechar2ptr(g_mshell.env, -1));
 	g_mshell.env[x + z] = NULL;
-	z = 0;
-	if (keys[0] == 0)
-	{
-		if ((g_mshell.env[x + z] = ft_strjoinf2("PWD=", getcwdwrap())) == NULL)
-		{
-			freechar2ptr(g_mshell.env);
-			return (-1);
-		}
-		++z;
-	}
-	if (keys[1] == 0)
-	{
-		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
-		{
-			freechar2ptr(g_mshell.env);
-			return (-1);
-		}
-		++z;
-	}
-	if (keys[2] == 0)
-		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
-		{
-			freechar2ptr(g_mshell.env);
-			return (-1);
-		}
-	return (0);
+	return (newenvironnext(keys, x));
 }
 
 void	sigint(int sig)
@@ -222,6 +217,6 @@ int		main(void)
 	if (g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
 	free(line);
-	freechar2ptr(g_mshell.env);
-	freechar2ptr(g_mshell.vars);
+	freechar2ptr(g_mshell.env, 0);
+	freechar2ptr(g_mshell.vars, 0);
 }
