@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:50:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 15:01:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_pipe_n(t_list *curr)				//PROTECTED
+int		open_pipe_n(t_list *curr)				//PROTECTED
 {
 	int		*pipes;
 
@@ -22,7 +22,7 @@ void	open_pipe_n(t_list *curr)				//PROTECTED
 	if (pipe(pipes) == -1)
 		{
 			ft_putendl(strerror(errno));
-			exit(0);
+			return (1);
 		}
 	pipes[2] = 1;
 	if (g_mshell.rdirout == 1)
@@ -36,11 +36,12 @@ void	open_pipe_n(t_list *curr)				//PROTECTED
 		if (dup2(pipes[1], 1) == -1)
 		{
 			ft_putendl(strerror(errno));
-			exit(0);
+			return (1);
 		}
 		g_mshell.rdirout = 2;
 	}
 	curr->type = 3;
+	return (0);
 }
 
 void	close_pipe_n(void)					//PROTECTED

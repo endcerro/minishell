@@ -6,33 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:18:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 15:08:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	check_pipe(char *str, char *cpt)			//PROTECTED
-{
-	int i;
-	int pipefound;
-
-	pipefound = 0;
-	i = 0;
-	if (cpt[0] % 2 || cpt[1] % 2)
-		return ;
-	while (str[i])
-	{
-		if (str[i] == '|')
-			++pipefound;
-		else if (!ft_isspace(str[i]))
-			pipefound = 0;
-		i++;
-	}
-	if (pipefound >= 2)
-		ft_putstr_fd("ERROR TOO MANY PIPES\n", 2);
-	cpt[2] = pipefound;
-}
 
 char	*add_filler(char **fill)					//PROTECTED
 {
@@ -79,9 +57,9 @@ char	*check_finished_lst(char *line)				//PROTECTED
 	return (out);
 }
 
-int	rdirout(t_list *curr, int mode)					//PROTECTED
+int		rdirout(t_list *curr, int mode)					//PROTECTED
 {
-	int fd;
+	int		fd;
 
 	if (curr->next == 0 || curr->next->type != 1)
 		return (1);
@@ -108,39 +86,44 @@ int	rdirout(t_list *curr, int mode)					//PROTECTED
 	return (0);
 }
 
-int	check_rdir(t_list *curr)				//PROTECTED
+int		check_rdir_loop(t_list *curr)
 {
 	int		fd;
 
+	if ((curr->type == 2 || curr->type == 4)
+		&& rdirout(curr, (curr->type == 4)))
+		return (1);
+	else if (curr->type == 5 && curr->next && curr->next->type == 1)
+	{
+		if (g_mshell.rdirin == 1)
+			if (close(0) == -1)
+				ft_putstr_fd("ERROR CLOSING FD", 2);
+		g_mshell.rdirin = 1;
+		if ((fd = open(curr->next->content, O_RDONLY)) == -1)
+		{
+			close(fd);
+			ft_printh(2, 1, "%s: No such file or directory\n",
+				curr->next->content);
+			g_mshell.rdirin = 0;
+			return (1);
+		}
+		else
+			dup2(fd, 0);
+	}
+	else if (curr->type == 6 && curr->next && curr->next->type == 1)
+		return (open_pipe_n(curr));
+	return (2);
+}
+
+int		check_rdir(t_list *curr)				//PROTECTED
+{
+	int		ret;
+
 	while (curr && curr->type != 3)
 	{
-		if (curr->type == 2 || curr->type == 4)
-		{
-			if (rdirout(curr, (curr->type == 4)))
-				return (1);
-		}
-		else if (curr->type == 5 && curr->next && curr->next->type == 1)
-		{
-			if (g_mshell.rdirin == 1)
-				if (close(0) == -1)
-					ft_putstr_fd("ERROR CLOSING FD", 2);
-			g_mshell.rdirin = 1;
-			fd = open(curr->next->content, O_RDONLY);
-			if (fd == -1)
-			{
-				close(fd);
-				ft_printh(2, 1, "%s: No such file or directory\n", curr->next->content);
-				g_mshell.rdirin = 0;
-				return (1);
-			}
-			else
-				dup2(fd, 0);
-		}
-		else if (curr->type == 6 && curr->next && curr->next->type == 1)
-		{
-			open_pipe_n(curr);
-			break ;
-		}
+		ret = check_rdir_loop(curr);
+		if (ret != 2)
+			return (ret);
 		curr = curr->next;
 	}
 	return (0);

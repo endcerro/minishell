@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:21:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 15:35:13 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	swap_char(char *str, char c)				//PROTECTED
 	}
 }
 
-int		check_exitcode(char **str)				
+int		check_exitcode(char **str)
 {
 	char	*pos;
 	char	*tmp;
@@ -49,6 +49,33 @@ int		check_exitcode(char **str)
 	return (0);
 }
 
+int		parse_env_ls_two(char *query, char **str, char *d_pos)
+{
+	if (*query == 0 || ft_isspace(*query))
+		*(d_pos) = -1;
+	else
+	{
+		if (env(query))
+		{
+			if (env(query)[0] != 0)
+				*str = inside_join(*str, env(query) + 1, 1);
+			else
+			{
+				free(*str);
+				*str = ft_strdup("");
+			}
+		}
+		else
+			*str = inside_join(*str, vars(query), 1);
+		if (*str == 0)
+		{
+			free(query);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	parse_env_ls(char **str)					//PROTECTED
 {
 	char	*d_pos;
@@ -69,31 +96,11 @@ void	parse_env_ls(char **str)					//PROTECTED
 			*str = 0;
 			return ;
 		}
-		if (*query == 0 || ft_isspace(*query))
-			*(d_pos) = -1;
-		else
-		{
-			if (env(query))
-			{
-				if (env(query)[0] != 0)
-					*str = inside_join(*str, env(query) + 1, 1);
-				else
-				{
-					free(*str);
-					*str = ft_strdup("");
-				}
-			}
-			else
-				*str = inside_join(*str, vars(query), 1);
-			if (*str == 0)
-			{
-				free(query);
-				return ;
-			}
-		}
+		if (parse_env_ls_two(query, str, d_pos))
+			return ;
 		d_pos = ft_strchr(*str, '$');
 		free(query);
-	}		
+	}
 	swap_char(*str, '$');
 }
 
