@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 11:49:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 15:01:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 15:56:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int		open_pipe_n(t_list *curr)				//PROTECTED
 	if (pipes[2] != -1)
 		pipes += sizeof(int) * 3;
 	if (pipe(pipes) == -1)
-		{
-			ft_putendl(strerror(errno));
-			return (1);
-		}
+		return (ft_printh(2, 1, "%s", strerror(errno)));
 	pipes[2] = 1;
 	if (g_mshell.rdirout == 1)
 	{
@@ -34,35 +31,17 @@ int		open_pipe_n(t_list *curr)				//PROTECTED
 	else
 	{
 		if (dup2(pipes[1], 1) == -1)
-		{
-			ft_putendl(strerror(errno));
-			return (1);
-		}
+			return (ft_printh(2, 1, "%s", strerror(errno)));
 		g_mshell.rdirout = 2;
 	}
 	curr->type = 3;
 	return (0);
 }
 
-void	close_pipe_n(void)					//PROTECTED
+void	close_pipe_rdro(void)
 {
-	int		*pipes;
+	int *pipes;
 
-	pipes = g_mshell.pipes;
-	if (g_mshell.rdirin == 2)
-	{
-		if(dup2(g_mshell.oldfdin, 0) == -1)
-		{
-			ft_putendl(strerror(errno));
-			exit(0);
-		}
-		if (pipes[2] != 0)
-			pipes += sizeof(int) * 3;
-		if (close(pipes[0]) == -1)
-			ft_putstr_fd("ERROR CLOSING FD", 2);
-		pipes[2] = -1;
-		g_mshell.rdirin = 0;
-	}
 	pipes = g_mshell.pipes;
 	if (g_mshell.rdirout == 2)
 	{
@@ -84,4 +63,26 @@ void	close_pipe_n(void)					//PROTECTED
 		g_mshell.rdirout = 0;
 		g_mshell.rdirin = 2;
 	}
+}
+
+void	close_pipe_n(void)					//PROTECTED
+{
+	int		*pipes;
+
+	pipes = g_mshell.pipes;
+	if (g_mshell.rdirin == 2)
+	{
+		if (dup2(g_mshell.oldfdin, 0) == -1)
+		{
+			ft_putendl(strerror(errno));
+			exit(0);
+		}
+		if (pipes[2] != 0)
+			pipes += sizeof(int) * 3;
+		if (close(pipes[0]) == -1)
+			ft_putstr_fd("ERROR CLOSING FD", 2);
+		pipes[2] = -1;
+		g_mshell.rdirin = 0;
+	}
+	close_pipe_rdro();
 }

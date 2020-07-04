@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:49:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 15:57:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ void	ft_lstprint(t_list *lst)								//PROTECTED
 {
 	if (lst)
 	{
-		 while (lst->next)
+		while (lst->next)
 		{
-		 	ft_putchar_fd('|',2);
-		 	ft_putstr_fd(lst->content,2);
-		 	ft_putchar_fd(':',2);
-		 	ft_putnbr_fd(lst->type,2);
-			ft_putchar_fd('|',2);
+			ft_putchar_fd('|', 2);
+			ft_putstr_fd(lst->content, 2);
+			ft_putchar_fd(':', 2);
+			ft_putnbr_fd(lst->type, 2);
+			ft_putchar_fd('|', 2);
 			lst = lst->next;
 		}
-		ft_putchar_fd('|',2);
-		ft_putstr_fd(lst->content,2);
-		ft_putchar_fd(':',2);
-		ft_putnbr_fd(lst->type,2);
-		ft_putchar_fd('|',2);
+		ft_putchar_fd('|', 2);
+		ft_putstr_fd(lst->content, 2);
+		ft_putchar_fd(':', 2);
+		ft_putnbr_fd(lst->type, 2);
+		ft_putchar_fd('|', 2);
 	}
-	ft_putchar_fd('\n',2);
+	ft_putchar_fd('\n', 2);
 }
 
 t_list	*tag_lst(t_list *lst)									//PROTECTED

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 15:07:16 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/04 16:11:59 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,18 @@ int		prompt(char **line)									//PROTECTED
 	return (get_next_line(0, line));
 }
 
+void	promptnextline(char **str)
+{
+	write(1, "dquote> ", 8);
+	get_next_line(0, str);
+}
+
 char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 {
 	char *tmp;
 	char **out;
 
-	out = 0;
-
-	write(1, "dquote> ", 8);
-	get_next_line(0, &tmp);
+	promptnextline(&tmp);
 	if (tmp == NULL)
 		return (NULL);
 	escape_chars(tmp, 0, 0);
@@ -39,22 +42,13 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	}
 	else
 	{
-		if(!(out = malloc(sizeof(char *) * (depth + 2))))
-		{
-			free(tmp);
-			return (NULL);
-		}
+		if (!(out = malloc(sizeof(char *) * (depth + 2))))
+			return ((char **)(long)freeret(tmp, 0));
 		out[depth + 1] = 0;
 	}
-	if(depth == 0)
-	{
-		// tmp = ft_strjoinf2("\n", tmp);
-		if(!(tmp = ft_strjoinf2("\n", tmp)))
-		{
-			free (out);
-			return (0);
-		}
-	}
+	if (depth == 0)
+		if (!(tmp = ft_strjoinf2("\n", tmp)))
+			return ((char **)(long)freeret(out, 0));
 	out[depth] = tmp;
 	return (out);
 }
@@ -71,7 +65,7 @@ int		checkexport(char *var)
 	return (1);
 }
 
-char 	*env(char *request)
+char	*env(char *request)
 {
 	int x;
 
@@ -83,7 +77,7 @@ char 	*env(char *request)
 	}
 	while (g_mshell.env[x])
 	{
-		if(request != NULL)
+		if (request != NULL)
 		{
 			if (!ft_strncmp(g_mshell.env[x], request, wordlen(request)))
 				return (g_mshell.env[x] + wordlen(request));
@@ -95,7 +89,7 @@ char 	*env(char *request)
 	return (NULL);
 }
 
-char 	*vars(char *request)
+char	*vars(char *request)
 {
 	int x;
 
@@ -118,27 +112,17 @@ int		newenviron(void) // Il faut gerer la variable _= qui n'apparait que dans en
 	int		z;
 	char	keys[3];
 
-	x = 0;
+	x = -1;
 	z = 3;
 	ft_bzero(keys, 3);
-	while (environ[x])
+	while (environ[++x])
 	{
-		if (ft_strncmp("PWD=", environ[x], 4) == 0)
-		{
+		if (ft_strncmp("PWD=", environ[x], 4) == 0 && z--)
 			keys[0] = 1;
-			--z;
-		}
-		if (ft_strncmp("SHLVL=", environ[x], 4) == 0)
-		{
+		if (ft_strncmp("SHLVL=", environ[x], 4) == 0 && z--)
 			keys[1] = 1;
-			--z;
-		}
-		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0)
-		{
+		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0 && z--)
 			keys[2] = 1;
-			--z;
-		}
-		++x;
 	}
 	++x;
 	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z))) == NULL)
@@ -199,7 +183,7 @@ void	sigquit(int sig)
 	g_mshell.exitcode = 131;
 }
 
-void 	init_mshell(void)
+void	init_mshell(void)
 {
 	g_mshell.pid = 0;
 	g_mshell.exitcode = 0;
@@ -235,7 +219,7 @@ int		main(void)
 		line = 0;
 	}
 	write(1, "exit\n", 5);
-	if(g_mshell.ls)
+	if (g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
 	free(line);
 	freechar2ptr(g_mshell.env);

@@ -1,0 +1,132 @@
+Norme: ./Sources/echo.c
+Error (line 15): C++ comment
+Error (line 35): C++ comment
+Norme: ./Sources/cd.c
+Error: 6 functions in the file
+Error (line 15): C++ comment
+Error (line 34): C++ comment
+Error (line 46): C++ comment
+Error (line 58): C++ comment
+Error (line 83): C++ comment
+Error (line 100): C++ comment
+Norme: ./Sources/echo_utils.c
+Error: 6 functions in the file
+Error (line 15): C++ comment
+Error (line 79): C++ comment
+Error (line 107): C++ comment
+Error (line 118): C++ comment
+Norme: ./Sources/command_parsing.c
+Error: 6 functions in the file
+Error (line 15): C++ comment
+Error (line 40): C++ comment
+Error (line 60): C++ comment
+Error (line 118): C++ comment
+Error (line 132): C++ comment
+Norme: ./Sources/export_utils.c
+Error (line 15): C++ comment
+Norme: ./Sources/inside_join.c
+Error (line 15): C++ comment
+Error (line 28): C++ comment
+Error (line 56): C++ comment
+Norme: ./Sources/commandorvar.c
+Error: 10 functions in the file
+Norme: ./Sources/export.c
+Error: 6 functions in the file
+Error (line 15): C++ comment
+Error (line 41): C++ comment
+Error (line 66): C++ comment
+Error (line 95): C++ comment
+Error (line 127): function export has 77 lines
+Error (line 127): C++ comment
+Error (line 143): line has 96 characters
+Norme: ./Sources/lst_utils.c
+Error: 7 functions in the file
+Error (line 15): C++ comment
+Error (line 37): C++ comment
+Error (line 59): C++ comment
+Error (line 65): C++ comment
+Error (line 87): C++ comment
+Error (line 100): C++ comment
+Error (line 115): C++ comment
+Norme: ./Sources/n_itoa.c
+Error (line 15): C++ comment
+Error (line 30): C++ comment
+Error (line 42): C++ comment
+Norme: ./Sources/get_commands_lst.c
+Error: global scope bad aligned
+Error: 7 functions in the file
+Error (line 15): C++ comment
+Error (line 43): C++ comment
+Error (line 56): C++ comment
+Error (line 68): function trimbs has 38 lines
+Error (line 68): C++ comment
+Error (line 68): bad spacing after trimbs
+Error (line 86): line has 82 characters
+Error (line 110): multiple empty lines
+Error (line 111): Space before function name
+Error (line 111): function check_valid has 28 lines
+Error (line 111): C++ comment
+Error (line 111): bad spacing before check_valid
+Error (line 118): Empty line
+Error (line 134): spaces at the end of line
+Error (line 134): line has 105 characters
+Error (line 134, col 14): bad character after ,
+Error (line 134, col 89): bad character after ;
+Error (line 140, col 8): missing parentheses in return statement
+Error (line 143): Space before function name
+Error (line 143): C++ comment
+Error (line 143, col 3): bad spacing
+Error (line 147, col 13): space before ;
+Error (line 149, col 13): space before ;
+Error (line 152): spaces at the end of line
+Error (line 152, col 12): bad character after ;
+Error (line 160): function checkinput_ls has 89 lines
+Error (line 169): bad indentation
+Error (line 169): spaces at the end of line
+Error (line 179): line has 111 characters
+Error (line 180): line has 84 characters
+Error (line 195): C++ comment
+Error (line 195, col 31): bad character after ;
+Error (line 196): missing newline after if
+Error (line 196): C++ comment
+Error (line 202): C++ comment
+Error (line 202, col 26): bad character after ;
+Error (line 206): C++ comment
+Error (line 206, col 31): bad character after ;
+Error (line 208): C++ comment
+Error (line 208, col 29): bad character after ;
+Error (line 221, col 2): missing space after if
+Error (line 223, col 3): missing space after if
+Norme: ./Sources/redirections.c
+Error (line 15): C++ comment
+Error (line 68): C++ comment
+Norme: ./Sources/utils.c
+Norme: ./Sources/main.c
+Error: 11 functions in the file
+Error (line 15): C++ comment
+Error (line 27): C++ comment
+Error (line 109): function newenviron has 53 lines
+Error (line 109): C++ comment
+Error (line 109): line has 85 characters
+Error (line 213): C++ comment
+Norme: ./Sources/lst_creat.c
+Error: 13 functions in the file
+Error (line 15): C++ comment
+Error (line 15): line has 92 characters
+Error (line 22): C++ comment
+Error (line 22): line has 92 characters
+Error (line 40): function inner_split_loop has 60 lines
+Error (line 40): C++ comment
+Error (line 40): line has 92 characters
+Error (line 44, col 7): bad spacing
+Error (line 45, col 5): bad spacing
+Error (line 104): C++ comment
+Error (line 131): C++ comment
+Error (line 156): C++ comment
+Error (line 165): C++ comment
+Error (line 190): C++ comment
+Error (line 203): C++ comment
+Error (line 226): C++ comment
+Error (line 249): C++ comment
+Error (line 265): C++ comment
+Error (line 293): C++ comment
