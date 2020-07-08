@@ -155,7 +155,8 @@ void	ms_exit(char *line)
 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
 		if (isstrdigit(g_mshell.ls->next->content) == 0)
-			ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n", g_mshell.ls->next->content);
+			ft_printh(2, 0, "minishell: exit: %s: numeric argument needed\n",
+					g_mshell.ls->next->content);
 		else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);

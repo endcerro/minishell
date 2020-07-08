@@ -68,8 +68,8 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 	char	**split;
 	t_list	*new;
 
-	new = 0;
-	split = 0;
+	new = NULL;
+	split = NULL;
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
