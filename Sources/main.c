@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 17:41:46 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:50:43 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ char	*vars(char *request)
 
 int		newenvironnext(char *keys, int x)
 {
-	int z;
+	int		z;
+	char	*str;
 
 	z = 0;
 	if (keys[0] == 0)
@@ -117,23 +118,33 @@ int		newenvironnext(char *keys, int x)
 			return (freechar2ptr(g_mshell.env, -1));
 		++z;
 	}
+	if (keys[2] == 0)
+		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
 	if (keys[1] == 0)
 	{
 		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
 		++z;
 	}
-	if (keys[2] == 0)
-		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
+	else
+	{
+		str = env("SHLVL") + 1;
+		if ((str = ft_itoa(ft_atoi(str) + 1)) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
+		if ((str = ft_strjoinf2("SHLVL=", str)) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
+		export(str);
+	}
 	return (0);
 }
 
 int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 {
-	int		x;
-	int		z;
-	char	keys[3];
+	int			x;
+	int			z;
+	char		keys[3];
+	extern char	**environ;
 
 	x = -1;
 	z = 3;
@@ -147,8 +158,7 @@ int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0 && z--)
 			keys[2] = 1;
 	}
-	++x;
-	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z))) == NULL)
+	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z + 1))) == NULL)
 		return (-1);
 	x = -1;
 	while (environ[++x])

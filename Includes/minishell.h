@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 19:31:04 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:34:45 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include <signal.h>
 
 # define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
-
-extern char			**environ;
 
 typedef struct		s_list
 {

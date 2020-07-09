@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 19:14:55 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/09 20:41:22 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,10 @@ int		export(char *param)				//PROTECTED
 
 	n_envi = NULL;
 	tmp = NULL;
-	curr = g_mshell.ls->next;
 	if (param != NULL)
 		curr = ft_lstnew(param);
+	else
+		curr = g_mshell.ls->next;
 	if (curr && check_valid_export(curr->content) == 0)
 	{
 		if (param != NULL)
