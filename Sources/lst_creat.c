@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 18:41:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/09 18:11:34 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ int		do_the_thing(t_list **new, char *buff, char **split)
 	return (1);
 }
 
+t_list	*inner_split_loop_bis(t_list *new, t_list *curr)			//PROTECTED
+{
+	if (new == NULL)
+		return (NULL);
+	free(curr->content);
+	curr->content = new->content;
+	return (new);
+}
+
 t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 {
 	char	**split;
@@ -73,26 +82,22 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
-			if ((split = ft_split(curr->content, buff[0])) == 0)
-				return (0);
+			if ((split = ft_split(curr->content, buff[0])) == NULL)
+				return (NULL);
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
 					if (do_the_thing(&new, buff, split) == 1)
-						return (0);
+						return (NULL);
 				while (curr->content[j] && curr->content[j] != buff[0])
-					j++;
+					++j;
 				if (split[++i])
 					if (do_the_thing(&new, split[i], split) == 0)
-						return (0);
+						return (NULL);
 			}
 		}
 	freechar2ptr(split, 0);
-	if (new == 0)
-		return (0);
-	free(curr->content);
-	curr->content = new->content;
-	return (new);
+	return (inner_split_loop_bis(new, curr));
 }
 
 t_list	*inner_split(t_list *lst)								//PROTECTED

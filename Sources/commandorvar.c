@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/04 17:08:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/09 18:27:36 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ int		addvar(char *str)
 
 	if (env(str) != NULL)
 		return (export(str));
-	size = -1;
+	size = 0;
 	if (g_mshell.vars != NULL)
-		while (g_mshell.vars[++size])
+		while (g_mshell.vars[size])
+		{
 			if (ft_strncmp(g_mshell.vars[size], str,
 						ft_strchr(str, '=') - str) == 0)
 			{
@@ -70,6 +71,8 @@ int		addvar(char *str)
 				g_mshell.vars[size] = tmp;
 				return (0);
 			}
+			++size;
+		}
 	if (!(newvars = (char **)malloc(sizeof(char *) * (size + 2))))
 		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	newvars[size + 1] = NULL;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 17:08:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/09 18:01:00 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		check_valid(t_list *lst)				//PROTECTED
 			cp_d = 0;
 		}
 		if ((cp_d > 1 || cp_r > 1))
-			return (ft_printh(2, 0, "minishell: syntax error near unexpected token \'%s\'\n", lst->content));
+			return (ft_printh(2, 0, SYNTERR, lst->content));
 		lst = lst->next;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 17:12:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/09 18:00:16 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <signal.h>
+
+# define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
 
 #include <stdio.h>
 
