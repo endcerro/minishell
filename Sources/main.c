@@ -106,35 +106,30 @@ char	*vars(char *request)
 	return (NULL);
 }
 
-int		newenvironnext(char *keys, int x)
+int		newenvironnext(char *keys, int x, int z)
 {
-	int		z;
 	char	*str;
 
-	z = 0;
 	if (keys[0] == 0)
-	{
-		if ((g_mshell.env[x + z] = ft_strjoinf2("PWD=", getcwdwrap())) == NULL)
-			return (freechar2ptr(g_mshell.env, -1));
-		++z;
-	}
-	if (keys[2] == 0)
-		if ((g_mshell.env[x + z] = ft_strdup("OLDPWD")) == NULL)
+		if ((g_mshell.env[x + z++] = ft_strjoinf2("PWD=", getcwdwrap())) == 0)
 			return (freechar2ptr(g_mshell.env, -1));
 	if (keys[1] == 0)
+		if ((g_mshell.env[x + z++] = ft_strdup("OLDPWD")) == NULL)
+			return (freechar2ptr(g_mshell.env, -1));
+	if (keys[2] == 0)
 	{
 		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
-		++z;
 	}
 	else
 	{
 		str = env("SHLVL") + 1;
-		if ((str = ft_itoa(ft_atoi(str) + 1)) == NULL)
+		if ((str = ft_itoaa(ft_atoi(str) + 1)) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
 		if ((str = ft_strjoinf2("SHLVL=", str)) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
 		export(str);
+		free(str);
 	}
 	return (0);
 }
@@ -154,9 +149,9 @@ int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 		if (ft_strncmp("PWD=", environ[x], 4) == 0 && z--)
 			keys[0] = 1;
 		if (ft_strncmp("SHLVL=", environ[x], 4) == 0 && z--)
-			keys[1] = 1;
-		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0 && z--)
 			keys[2] = 1;
+		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0 && z--)
+			keys[1] = 1;
 	}
 	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z + 1))) == NULL)
 		return (-1);
@@ -165,7 +160,7 @@ int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 		if ((g_mshell.env[x] = ft_strdup(environ[x])) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
 	g_mshell.env[x + z] = NULL;
-	return (newenvironnext(keys, x));
+	return (newenvironnext(keys, x, 0));
 }
 
 void	sigint(int sig)

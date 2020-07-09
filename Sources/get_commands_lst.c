@@ -230,7 +230,6 @@ void	checkinput_ls(char *line)
 {
 	t_list	*curr;
 	t_list	*copy;
-	int		ex;
 
 	curr = g_mshell.ls;
 	if (g_mshell.ls == 0)
@@ -239,7 +238,6 @@ void	checkinput_ls(char *line)
 		return ;
 	exec_command(line);
 	copy = g_mshell.ls;
-	ex = 0;
 	prep_rdir(0);
 	while (curr)
 	{

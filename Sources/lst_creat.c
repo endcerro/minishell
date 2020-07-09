@@ -247,15 +247,11 @@ int		mergelst(t_list *curr)									//PROTECTED
 
 int		correctlst(t_list *lst)									//PROTECTED
 {
-	t_list *prev;
-
-	prev = 0;
 	while (lst && lst->content)
 	{
 		trim_quotes(lst->content);
 		parse_bs(lst->content);
 		de_escape_chars(lst->content);
-		prev = lst;
 		lst = lst->next;
 	}
 	return (0);
