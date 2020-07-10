@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:14:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*getcwdwrap(void)						//PROTECTED
 	str = NULL;
 	while (i < UINT_MAX)
 	{
-		if (!(str = (char *)malloc(i)))
+		if (!(str = (char *)xmalloc(i)))
 			return (NULL);
 		if (getcwd(str, i) != NULL)
 			break ;

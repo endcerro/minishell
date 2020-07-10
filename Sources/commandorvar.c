@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/09 18:27:36 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int		addvar(char *str)
 			}
 			++size;
 		}
-	if (!(newvars = (char **)malloc(sizeof(char *) * (size + 2))))
+	if (!(newvars = (char **)xmalloc(sizeof(char *) * (size + 2))))
 		return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	newvars[size + 1] = NULL;
 	return (addvarbis(newvars, size, str));
@@ -196,7 +196,7 @@ char	**ls_params(void)
 	i = 0;
 	while (curr && curr->type == 1 && ++i)
 		curr = curr->next;
-	if ((out = malloc(sizeof(char*) * (i + 1))) == NULL)
+	if ((out = xmalloc(sizeof(char*) * (i + 1))) == NULL)
 		return (NULL);
 	curr = g_mshell.ls;
 	i = 0;

@@ -47,7 +47,7 @@ static char	*cpy(char *str, char sep)
 	i = 0;
 	while (str[i] != sep && str[i])
 		i++;
-	if (!(out = malloc(sizeof(char) * (i + 1))))
+	if (!(out = xmalloc(sizeof(char) * (i + 1))))
 		return (0);
 	i = 0;
 	while (str[i] != sep && str[i])
@@ -86,7 +86,7 @@ char		**ft_split(char const *str, char sep)
 	tmp = (char *)str;
 	cpt = 0;
 	nbout = countwords(str, sep);
-	if (!(out = malloc(sizeof(char *) * (nbout + 1))))
+	if (!(out = xmalloc(sizeof(char *) * (nbout + 1))))
 		return (0);
 	while (*tmp == sep && *tmp)
 		tmp++;

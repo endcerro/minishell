@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 20:41:22 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:16 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		exportlst(char **envi)					//PROTECTED
 	y = 0;
 	while (envi[y])
 		++y;
-	if ((env2 = (char **)malloc(sizeof(char *) * (y + 1))) == NULL)
+	if ((env2 = (char **)xmalloc(sizeof(char *) * (y + 1))) == NULL)
 		return (ft_printh(2, 1, "%s\n", strerror(errno)));
 	y = -1;
 	while (envi[++y])
@@ -140,7 +140,7 @@ int		exportstuff(t_list *curr, char **tmp, char ***n_envi, char *param)
 				free(curr);
 			return (freeret(*tmp, 0));
 		}
-	if (!(*n_envi = malloc(sizeof(char *) * (i + 2))))
+	if (!(*n_envi = xmalloc(sizeof(char *) * (i + 2))))
 		return (1);
 	return (-1);
 }

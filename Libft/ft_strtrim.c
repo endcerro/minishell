@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 14:48:02 by hpottier          #+#    #+#             */
-/*   Updated: 2019/12/01 21:48:01 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:02:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char			*ft_strtrim(char const *s1, char const *set)
 
 	if (s1 == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) * (count_char(s1, set) + 1))))
+	if (!(ret = (char *)xmalloc(sizeof(char) * (count_char(s1, set) + 1))))
 		return (NULL);
 	i = 0;
 	g = 0;

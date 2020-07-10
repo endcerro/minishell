@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:06:37 by hpottier          #+#    #+#             */
-/*   Updated: 2019/11/05 10:57:27 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:02:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_calloc(size_t count, size_t size)
 	size_t	i;
 
 	i = size * count;
-	if (!(ptr = malloc(i)))
+	if (!(ptr = xmalloc(i)))
 		return (NULL);
 	if (i == 0)
 		return (ptr);

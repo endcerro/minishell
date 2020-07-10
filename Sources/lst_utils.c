@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 15:57:42 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_list	*ft_lstnew(char *content)			//PROTECTED
 {
 	t_list *out;
 
-	if (!(out = malloc(sizeof(t_list))))
+	if (!(out = xmalloc(sizeof(t_list))))
 		return (NULL);
 	out->content = content;
 	out->next = NULL;
@@ -101,7 +101,7 @@ t_list	*ft_lstnew_p(char *content)		//PROTECTED
 {
 	t_list *out;
 
-	if (!(out = malloc(sizeof(t_list))))
+	if (!(out = xmalloc(sizeof(t_list))))
 	{
 		free(content);
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printh.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <hpottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 14:05:33 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/10 15:01:11 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:02:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static ssize_t	strccpy_perc(const char **src, char **dst)
 	size = 0;
 	while (*(*src + size) && *(*src + size) != '%')
 		++size;
-	if (!(*dst = (char *)malloc(sizeof(char) * (size + 1))))
+	if (!(*dst = (char *)xmalloc(sizeof(char) * (size + 1))))
 		return (-1);
 	i = 0;
 	while (i < size)

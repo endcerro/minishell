@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 18:01:00 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 22:30:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int		expand_vars(t_list *curr)					//PROTECTED
 	prev = 0;
 	while (curr && curr->type != 3 && curr->type != 6)
 	{
-		if (curr->content[0] != '\'')
+		if (curr->content && curr->content[0] != '\'')
 		{
 			parse_env_ls(&(curr->content));
-			if (curr->content[0] == 0)
+			if (curr->content && curr->content[0] == 0)
 			{
 				if (prev)
 				{
@@ -87,7 +87,7 @@ void	trimbs_loop(t_list *curr, int i)
 			j = -1;
 			while (++j < qtcp)
 				deconechar(curr->content + i);
-			i += qtcp;
+			i += qtcp != 0 ? qtcp : 1;
 		}
 		else
 			i++;

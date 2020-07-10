@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 18:11:34 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:40:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 
 	new = NULL;
 	split = NULL;
+
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
@@ -87,7 +88,7 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)	//PROTECTED
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
-					if (do_the_thing(&new, buff, split) == 1)
+					if (do_the_thing(&new, buff, split) == 0)
 						return (NULL);
 				while (curr->content[j] && curr->content[j] != buff[0])
 					++j;

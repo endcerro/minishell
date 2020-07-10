@@ -51,7 +51,7 @@ char			*ft_itoaa(int n)		//PROTECTED
 	i = -1;
 	len = getlen(n);
 	neg = -1;
-	if (!(out = malloc(sizeof(char) * (len + 1))))
+	if (!(out = xmalloc(sizeof(char) * (len + 1))))
 		return (0);
 	if (n < 0)
 	{

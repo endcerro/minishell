@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 14:08:05 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/10 15:04:23 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:02:39 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strjoinf1(char *s1, char const *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) *
+	if (!(ret = (char *)xmalloc(sizeof(char) *
 							(ft_strlen(s1) + ft_strlen(s2) + 1))))
 	{
 		free_strs(s1, (char *)s2, 1);
@@ -62,7 +62,7 @@ char	*ft_strjoinf2(char const *s1, char *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) *
+	if (!(ret = (char *)xmalloc(sizeof(char) *
 							(ft_strlen(s1) + ft_strlen(s2) + 1))))
 	{
 		free_strs((char *)s1, s2, 2);
@@ -87,7 +87,7 @@ char	*ft_strjoinft(char *s1, char *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) *
+	if (!(ret = (char *)xmalloc(sizeof(char) *
 							(ft_strlen(s1) + ft_strlen(s2) + 1))))
 	{
 		free_strs(s1, s2, 3);
@@ -113,7 +113,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) *
+	if (!(ret = (char *)xmalloc(sizeof(char) *
 							(ft_strlen(s1) + ft_strlen(s2) + 1))))
 		return (NULL);
 	i = -1;

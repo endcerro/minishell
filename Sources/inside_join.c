@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:28:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*inside_join(char *base, char *add, int mode)				//PROTECTED
 
 	if (add != 0)
 	{
-		if (!(out = malloc(sizeof(char) *
+		if (!(out = xmalloc(sizeof(char) *
 				(ft_strlen(base) + ft_strlen(add) + 1))))
 		{
 			select_free(base, add, mode);

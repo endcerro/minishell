@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/09 20:50:43 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:03:03 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	promptnextline(char **str)
 	get_next_line(0, str);
 }
 
-char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
+char	**getfiller(int depth, char *cpt)		//xmalloc PROTECTED
 {
 	char *tmp;
 	char **out;
@@ -42,7 +42,7 @@ char	**getfiller(int depth, char *cpt)		//MALLOC PROTECTED
 	}
 	else
 	{
-		if (!(out = malloc(sizeof(char *) * (depth + 2))))
+		if (!(out = xmalloc(sizeof(char *) * (depth + 2))))
 			return ((char **)(long)freeret(tmp, 0));
 		out[depth + 1] = 0;
 	}
@@ -157,7 +157,7 @@ int		newenviron(void) //Il faut gerer la variable _= qui n'apparait que dans env
 		if (ft_strncmp("OLDPWD=", environ[x], 4) == 0 && z--)
 			keys[1] = 1;
 	}
-	if ((g_mshell.env = (char **)malloc(sizeof(char *) * (x + z + 1))) == NULL)
+	if ((g_mshell.env = (char **)xmalloc(sizeof(char *) * (x + z + 1))) == NULL)
 		return (-1);
 	x = -1;
 	while (environ[++x])
@@ -231,15 +231,3 @@ int		main(void)
 }
 
 
-static int fail_after = 5;
-static int num_allocs = 0;
-
-static void *xmalloc(size_t size)
-{
-    if (fail_after > 0 && num_allocs++ >= fail_after)
-    {
-        ft_putstr("Out of memory\n");
-        return 0;
-    }
-    return malloc(size);
-}

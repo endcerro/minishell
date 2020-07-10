@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 14:22:32 by hpottier          #+#    #+#             */
-/*   Updated: 2020/06/07 17:35:12 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:02:34 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (s == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) * (len + 1))))
+	if (!(ret = (char *)xmalloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	if (ft_strlen(s) < start)
 	{
@@ -47,7 +47,7 @@ char	*ft_substrf1(char *s, unsigned int start, size_t len)
 
 	if (s == NULL)
 		return (NULL);
-	if (!(ret = (char *)malloc(sizeof(char) * (len + 1))))
+	if (!(ret = (char *)xmalloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	if (ft_strlen(s) < start)
 	{

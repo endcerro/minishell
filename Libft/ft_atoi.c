@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2019/11/12 17:03:45 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/10 21:47:44 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,17 @@ int	ft_atoi(const char *str)
 		++i;
 	}
 	return ((long)(ret * neg));
+}
+
+void *xmalloc(size_t size)
+{
+	static int fail_after = 50;
+	static int num_allocs = 0;
+    
+    if (fail_after > 0 && num_allocs++ >= fail_after)
+    {
+        ft_putstr("Out of memory\n");
+        return 0;
+    }
+    return malloc(size);
 }
