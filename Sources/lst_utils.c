@@ -109,6 +109,7 @@ t_list	*ft_lstnew_p(char *content)		//PROTECTED
 	out->content = content;
 	out->next = NULL;
 	out->type = 1;
+	out->nospace = 0;
 	return (out);
 }
 

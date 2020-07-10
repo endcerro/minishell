@@ -111,11 +111,15 @@ int		newenvironnext(char *keys, int x, int z)
 	char	*str;
 
 	if (keys[0] == 0)
+	{
 		if ((g_mshell.env[x + z++] = ft_strjoinf2("PWD=", getcwdwrap())) == 0)
 			return (freechar2ptr(g_mshell.env, -1));
+	}
 	if (keys[1] == 0)
+	{
 		if ((g_mshell.env[x + z++] = ft_strdup("OLDPWD")) == NULL)
 			return (freechar2ptr(g_mshell.env, -1));
+	}
 	if (keys[2] == 0)
 	{
 		if ((g_mshell.env[x + z] = ft_strdup("SHLVL=1")) == NULL)
@@ -224,4 +228,18 @@ int		main(void)
 	free(line);
 	freechar2ptr(g_mshell.env, 0);
 	freechar2ptr(g_mshell.vars, 0);
+}
+
+
+static int fail_after = 5;
+static int num_allocs = 0;
+
+static void *xmalloc(size_t size)
+{
+    if (fail_after > 0 && num_allocs++ >= fail_after)
+    {
+        ft_putstr("Out of memory\n");
+        return 0;
+    }
+    return malloc(size);
 }
