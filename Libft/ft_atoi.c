@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:47:44 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/10 23:03:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ int	ft_atoi(const char *str)
 	return ((long)(ret * neg));
 }
 
+#include <limits.h>
+
 void *xmalloc(size_t size)
 {
-	static int fail_after = 50;
+	static int fail_after = INT_MAX;
 	static int num_allocs = 0;
     
-    if (fail_after > 0 && num_allocs++ >= fail_after)
+    if (fail_after > 0 && num_allocs >= fail_after)
     {
         ft_putstr("Out of memory\n");
         return 0;
