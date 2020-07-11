@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 17:52:09 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 18:37:28 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,57 +92,63 @@ void	init_mshell(void)
 	g_mshell.linestate = 0;
 }
 
+int		checklstate(char **oline, char **line)
+{
+	if (g_mshell.linestate == 1)
+	{
+		*oline = ft_strjoinft(*oline, *line);
+		ft_putstr("  \b\b");
+		return (1);
+	}
+	else if (**line)
+	{
+		g_mshell.linestate = 1;
+		*oline = *line;
+		ft_putstr("  \b\b");
+		return (1);
+	}
+	return (0);
+}
+
+void	mainloop(int ret, char *oline, char **line)
+{
+	while (1 | (ret = prompt(line)))
+	{
+		if (*line == NULL || ret < 0)
+			return ;
+		if (ret == 0)
+		{
+			if (checklstate(&oline, line) == 1)
+				continue ;
+			else
+				return ;
+		}
+		else if (oline)
+		{
+			*line = ft_strjoinft(oline, *line);
+			oline = NULL;
+			g_mshell.linestate = 0;
+		}
+		*line = get_lst(*line);
+		if (*line == NULL)
+			continue ;
+		checkinput_ls(*line);
+		ft_lstclear(&g_mshell.ls);
+		free(*line);
+		*line = NULL;
+	}
+}
+
 int		main(void)
 {
-	char	*line;
-	int		ret;
-	char	*oline;
+	char *line;
 
 	init_mshell();
 	signal(SIGINT, &sigint);
 	signal(SIGQUIT, &sigquit);
-	oline = NULL;
 	if (newenviron() == -1)
 		return (1);
-	while (1)
-	{
-		ret = prompt(&line);
-		if (ret < 0)
-			break ;
-		else if (ret == 0)
-		{
-			if (g_mshell.linestate == 1)
-			{
-				oline = ft_strjoinft(oline, line);
-				ft_putstr("  \b\b");
-				continue ;
-			}
-			else if (*line)
-			{
-				g_mshell.linestate = 1;
-				oline = line;
-				ft_putstr("  \b\b");
-				continue ;
-			}
-			else
-				break ;
-		}
-		else if (oline)
-		{
-			line = ft_strjoinft(oline, line);
-			oline = NULL;
-			g_mshell.linestate = 0;
-		}
-		if (line == NULL)
-			break ;
-		line = get_lst(line);
-		if (line == NULL)
-			continue ;
-		checkinput_ls(line);
-		ft_lstclear(&g_mshell.ls);
-		free(line);
-		line = 0;
-	}
+	mainloop(0, NULL, &line);
 	write(1, "exit\n", 5);
 	if (g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
