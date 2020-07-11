@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:42 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 17:21:45 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 17:36:02 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	sigquit(int sig)
 		g_mshell.pid = 0;
 	}
 	if (g_mshell.pid == 0)
+	{
+		g_mshell.exitcode = 0;
 		ft_putstr("\b\b  \b\b");
+	}
 	else
 		g_mshell.sigswitch = 131;
 }

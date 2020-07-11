@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/11 17:08:46 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 17:37:48 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int		commandorvar(void)
 		while (params[x][++i])
 			if (params[x][i] == '=' && params[x][i - 1] != '\\')
 			{
-				addvar(params[x]);
+				g_mshell.exitcode = addvar(params[x]);
 				break ;
 			}
 		if (params[x][i] == 0)
