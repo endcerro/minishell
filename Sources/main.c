@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 18:54:52 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 19:06:56 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		prompt(char **line)
 {
+	g_mshell.pid = 0;
 	if (g_mshell.linestate == 0)
 		ft_putstr("\033[31mminishell \033[33m@>\033[0m");
 	return (get_next_line(0, line));
