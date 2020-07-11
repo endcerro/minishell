@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 17:12:51 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:38:59 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*add_filler(char **fill)					//PROTECTED
+char	*add_filler(char **fill)
 {
 	int		i;
 	char	*out;
@@ -34,7 +34,7 @@ char	*add_filler(char **fill)					//PROTECTED
 	return (out);
 }
 
-char	*check_finished_lst(char *line)				//PROTECTED
+char	*check_finished_lst(char *line)
 {
 	char	cpt[3];
 	char	**fill;
@@ -54,7 +54,7 @@ char	*check_finished_lst(char *line)				//PROTECTED
 	return (out);
 }
 
-int		rdirout(t_list *curr, int mode)					//PROTECTED
+int		rdirout(t_list *curr, int mode)
 {
 	int		fd;
 
@@ -112,7 +112,7 @@ int		check_rdir_loop(t_list *curr)
 	return (2);
 }
 
-int		check_rdir(t_list *curr)				//PROTECTED
+int		check_rdir(t_list *curr)
 {
 	int		ret;
 
@@ -124,32 +124,4 @@ int		check_rdir(t_list *curr)				//PROTECTED
 		curr = curr->next;
 	}
 	return (0);
-}
-
-int		parse_esc(char *str, int j)							//PROTECTED
-{
-	int		i;
-	int		r;
-	int		tra;
-
-	r = 0;
-	tra = 0;
-	if (*(str + 1) == '\\')
-	{
-		while (*(str + r) == '\\')
-			r++;
-		if (*(str + r) == '"' || *(str + r) == '\'')
-			r++;
-		tra = (r % 2 == 0) ? r - r / 2 : r - (r + 1) / 2;
-		r = -tra;
-	}
-	else if ((*(str + 1) == '\'' || *(str + 1) == '\"') && (tra = 1))
-		*str = (*(str + 1) == '\'') ? '\'' : '\"';
-	while (++j < tra)
-	{
-		i = -1;
-		while (str[++i])
-			str[i] = str[i + 1];
-	}
-	return (r);
 }

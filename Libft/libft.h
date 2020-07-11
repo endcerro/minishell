@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 11:05:22 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:16:29 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:33:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdarg.h>
-// # include "xmalloc.h"
 
 int				ft_printh(int fd, int ret, const char *format, ...);
 void			*ft_memset(void *b, int c, size_t len);
@@ -72,7 +71,5 @@ char			*ft_itoa(int n);
 char			*ft_itoa_base(int nb, char *base);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				get_next_line(int fd, char **line);
-
-void *xmalloc(size_t size);
 
 #endif

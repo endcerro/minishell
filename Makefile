@@ -6,7 +6,7 @@
 #    By: hpottier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 14:27:31 by hpottier          #+#    #+#              #
-#    Updated: 2020/07/09 20:51:24 by hpottier         ###   ########.fr        #
+#    Updated: 2020/07/11 15:01:47 by hpottier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -32,12 +32,20 @@ SRC			=	main.c \
 				lst_creat.c \
 				utils.c \
 				redirections.c \
+				more_functions.c \
+				lst_creat2.c \
+				lst_creat3.c \
+				export2.c \
+				commandorvar2.c \
+				get_commandslst2.c \
+				main2.c \
+				maincreat.c \
 				lst_utils.c
 
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra -g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -O3
 
 CC			=	gcc
 RM			=	rm -f
@@ -74,6 +82,8 @@ fclean		:	clean
 				-@$(RM) $(NAME)
 				@$(ECHO) "\033[94m> Minishell cleaned all\033[0m"
 
+bonus		:	all
+
 re			:	fclean all
 
-.PHONY		:	all clean re fclean
+.PHONY		:	all clean re fclean bonus

@@ -6,35 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/10 21:03:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:40:47 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_lstprint(t_list *lst)								//PROTECTED
-{
-	if (lst)
-	{
-		while (lst->next)
-		{
-			ft_putchar_fd('|', 2);
-			ft_putstr_fd(lst->content, 2);
-			ft_putchar_fd(':', 2);
-			ft_putnbr_fd(lst->type, 2);
-			ft_putchar_fd('|', 2);
-			lst = lst->next;
-		}
-		ft_putchar_fd('|', 2);
-		ft_putstr_fd(lst->content, 2);
-		ft_putchar_fd(':', 2);
-		ft_putnbr_fd(lst->type, 2);
-		ft_putchar_fd('|', 2);
-	}
-	ft_putchar_fd('\n', 2);
-}
-
-t_list	*tag_lst(t_list *lst)									//PROTECTED
+t_list	*tag_lst(t_list *lst)
 {
 	t_list	*cr;
 
@@ -56,13 +34,7 @@ t_list	*tag_lst(t_list *lst)									//PROTECTED
 	return (lst);
 }
 
-void	ft_lstdelone(t_list *lst)								//PROTECTED
-{
-	free(lst->content);
-	free(lst);
-}
-
-int		ft_lstclear(t_list **lst)								//PROTECTED
+int		ft_lstclear(t_list **lst)
 {
 	t_list *cache;
 	t_list *cache2;
@@ -84,11 +56,11 @@ int		ft_lstclear(t_list **lst)								//PROTECTED
 	return (0);
 }
 
-t_list	*ft_lstnew(char *content)			//PROTECTED
+t_list	*ft_lstnew(char *content)
 {
 	t_list *out;
 
-	if (!(out = xmalloc(sizeof(t_list))))
+	if (!(out = malloc(sizeof(t_list))))
 		return (NULL);
 	out->content = content;
 	out->next = NULL;
@@ -97,11 +69,11 @@ t_list	*ft_lstnew(char *content)			//PROTECTED
 	return (out);
 }
 
-t_list	*ft_lstnew_p(char *content)		//PROTECTED
+t_list	*ft_lstnew_p(char *content)
 {
 	t_list *out;
 
-	if (!(out = xmalloc(sizeof(t_list))))
+	if (!(out = malloc(sizeof(t_list))))
 	{
 		free(content);
 		return (NULL);
@@ -113,7 +85,7 @@ t_list	*ft_lstnew_p(char *content)		//PROTECTED
 	return (out);
 }
 
-void	ft_lstadd_back(t_list **alst, t_list *new) //PROTECTED
+void	ft_lstadd_back(t_list **alst, t_list *new)
 {
 	t_list *tmp;
 

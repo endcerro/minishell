@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/10 21:16:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 17:16:27 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct		s_mshell
 
 	pid_t		pid;
 	int			exitcode;
+	int			sigswitch;
 
 	int			pipes[6];
 	char		rdirin;
@@ -127,5 +128,21 @@ int					correctlst(t_list *lst);
 void				de_escape_chars(char *line);
 void				escape_lst(t_list *lst);
 int					mergelst(t_list *curr);
+void				sigint(int sig);
+void				sigquit(int sig);
+char				*checkpath(int j, char **params);
+int					addvar(char *str);
+void				swap_char(char *str, char c);
+int					check_valid(t_list *lst);
+int					expand_vars(t_list *curr);
+void				trimbs(t_list *curr);
+int					isstrdigit(char *str);
+int					unset_var(char *target);
+int					exportlst(char **envi);
+char				*get_word_lst(char *line, int *p, size_t len);
+t_list				*inner_split(t_list *lst);
+int					isquote(char c);
+void				find_char(char *buff);
+t_list				*inner_split_loop(t_list *curr, char *buff, int i, int j);
 
 #endif

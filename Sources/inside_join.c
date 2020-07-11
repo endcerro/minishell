@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/10 21:03:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:27:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	select_free(char *str1, char *str, int mode)				//PROTECTED
+void	select_free(char *str1, char *str, int mode)
 {
 	if (mode == 1)
 		free(str1);
@@ -25,7 +25,7 @@ void	select_free(char *str1, char *str, int mode)				//PROTECTED
 	}
 }
 
-void	iniside_join_loop(char *base, char *add, char *out)			//PROTECTED
+void	iniside_join_loop(char *base, char *add, char *out)
 {
 	int i;
 	int j;
@@ -53,13 +53,13 @@ void	iniside_join_loop(char *base, char *add, char *out)			//PROTECTED
 	out[++p] = 0;
 }
 
-char	*inside_join(char *base, char *add, int mode)				//PROTECTED
+char	*inside_join(char *base, char *add, int mode)
 {
 	char	*out;
 
 	if (add != 0)
 	{
-		if (!(out = xmalloc(sizeof(char) *
+		if (!(out = malloc(sizeof(char) *
 				(ft_strlen(base) + ft_strlen(add) + 1))))
 		{
 			select_free(base, add, mode);

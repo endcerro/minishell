@@ -1,6 +1,6 @@
 test.c
 aloop
-
+.DS*
 # Executable
 minishell
 # Prerequisites

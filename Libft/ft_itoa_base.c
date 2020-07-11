@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 18:24:08 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:02:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:33:58 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char		*ft_alloc(int size, int neg)
 {
 	char *ret;
 
-	if (!(ret = (char *)xmalloc((size + neg) * sizeof(char))))
+	if (!(ret = (char *)malloc((size + neg) * sizeof(char))))
 		return (NULL);
 	if (neg)
 		ret[0] = '-';

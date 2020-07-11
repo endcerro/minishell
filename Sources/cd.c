@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/10 21:03:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:38:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*getcwdwrap(void)						//PROTECTED
+char	*getcwdwrap(void)
 {
 	char			*str;
 	unsigned int	i;
@@ -21,7 +21,7 @@ char	*getcwdwrap(void)						//PROTECTED
 	str = NULL;
 	while (i < UINT_MAX)
 	{
-		if (!(str = (char *)xmalloc(i)))
+		if (!(str = (char *)malloc(i)))
 			return (NULL);
 		if (getcwd(str, i) != NULL)
 			break ;
@@ -31,7 +31,7 @@ char	*getcwdwrap(void)						//PROTECTED
 	return (str);
 }
 
-char	*rethomedir(void)						//PROTECTED
+char	*rethomedir(void)
 {
 	int	x;
 
@@ -43,19 +43,7 @@ char	*rethomedir(void)						//PROTECTED
 	return (NULL);
 }
 
-int		pwd(void)								//PROTECTED
-{
-	char *str;
-
-	if ((str = getcwdwrap()) == NULL)
-		return (ft_printh(2, 1, "minishell: pwd: %s\n", strerror(errno)));
-	ft_putstr(str);
-	write(1, "\n", 1);
-	free(str);
-	return (0);
-}
-
-int		cdbis(void)								//PROTECTED
+int		cdbis(void)
 {
 	t_list	*curr;
 
@@ -80,7 +68,7 @@ int		cdbis(void)								//PROTECTED
 	return (0);
 }
 
-int		cdter(int pwd)							//PROTECTED
+int		cdter(int pwd)
 {
 	char *str;
 
@@ -97,7 +85,7 @@ int		cdter(int pwd)							//PROTECTED
 	return (0);
 }
 
-int		cd(void)								//PROTECTED
+int		cd(void)
 {
 	int		oldpwd;
 	int		pwd;

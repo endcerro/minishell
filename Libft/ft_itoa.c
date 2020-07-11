@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 15:32:49 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:02:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:34:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static char		*ft_alloc(int size, int neg)
 
 	if (size == 0)
 	{
-		if (!(ret = (char *)xmalloc(sizeof(char) * 2)))
+		if (!(ret = (char *)malloc(sizeof(char) * 2)))
 			return (NULL);
 		ret[0] = '0';
 		ret[1] = 0;
 		return (ret);
 	}
-	if (!(ret = (char *)xmalloc((size + neg) * sizeof(char))))
+	if (!(ret = (char *)malloc((size + neg) * sizeof(char))))
 		return (NULL);
 	if (neg)
 		ret[0] = '-';

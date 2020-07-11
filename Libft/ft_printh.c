@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 14:05:33 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:02:44 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:33:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static ssize_t	strccpy_perc(const char **src, char **dst)
 	size = 0;
 	while (*(*src + size) && *(*src + size) != '%')
 		++size;
-	if (!(*dst = (char *)xmalloc(sizeof(char) * (size + 1))))
+	if (!(*dst = (char *)malloc(sizeof(char) * (size + 1))))
 		return (-1);
 	i = 0;
 	while (i < size)

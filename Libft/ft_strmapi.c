@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 15:35:13 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/10 21:02:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:33:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	i = 0;
 	if (s == NULL)
 		return (NULL);
-	if (!(ret = (char *)xmalloc(sizeof(char) * (ft_strlen(s) + 1))))
+	if (!(ret = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))))
 		return (NULL);
 	while (s[i])
 	{

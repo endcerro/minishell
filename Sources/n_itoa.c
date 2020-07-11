@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 10:20:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/04 14:50:19 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:30:30 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		getlen(int n)			//PROTECTED
+static int		getlen(int n)
 {
 	int		i;
 
@@ -27,7 +27,7 @@ static int		getlen(int n)			//PROTECTED
 	return (i);
 }
 
-int				ft_pow(int nb, int pow)		//PROTECTED
+int				ft_pow(int nb, int pow)
 {
 	int		i;
 	int		dest;
@@ -39,7 +39,7 @@ int				ft_pow(int nb, int pow)		//PROTECTED
 	return (dest);
 }
 
-char			*ft_itoaa(int n)		//PROTECTED
+char			*ft_itoaa(int n)
 {
 	char	*out;
 	int		len;
@@ -51,7 +51,7 @@ char			*ft_itoaa(int n)		//PROTECTED
 	i = -1;
 	len = getlen(n);
 	neg = -1;
-	if (!(out = xmalloc(sizeof(char) * (len + 1))))
+	if (!(out = malloc(sizeof(char) * (len + 1))))
 		return (0);
 	if (n < 0)
 	{

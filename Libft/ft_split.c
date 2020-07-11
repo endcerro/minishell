@@ -1,4 +1,3 @@
-  
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 15:45:03 by edal--ce          #+#    #+#             */
-/*   Updated: 2019/12/28 08:18:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:35:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +46,7 @@ static char	*cpy(char *str, char sep)
 	i = 0;
 	while (str[i] != sep && str[i])
 		i++;
-	if (!(out = xmalloc(sizeof(char) * (i + 1))))
+	if (!(out = malloc(sizeof(char) * (i + 1))))
 		return (0);
 	i = 0;
 	while (str[i] != sep && str[i])
@@ -86,7 +85,7 @@ char		**ft_split(char const *str, char sep)
 	tmp = (char *)str;
 	cpt = 0;
 	nbout = countwords(str, sep);
-	if (!(out = xmalloc(sizeof(char *) * (nbout + 1))))
+	if (!(out = malloc(sizeof(char *) * (nbout + 1))))
 		return (0);
 	while (*tmp == sep && *tmp)
 		tmp++;
