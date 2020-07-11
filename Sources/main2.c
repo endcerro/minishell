@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:39:02 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 22:55:23 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-void	promptnextline(char **str, char *cpt)
+
+void	promptnextline(char **str, char *cpt, int *err)
 {
 	char c;
 	char baise[2];
@@ -23,25 +23,26 @@ void	promptnextline(char **str, char *cpt)
 		c = cpt[0] % 2 ? '\"' : '\'';
 		baise[0] = c;
 		baise[1] = 0;
-		ft_printh(2, 1, "bash: unexpected EOF while looking for matching `%s\'\nbash: syntax error: unexpected end of file", baise);
+		ft_printh(2, 1, BSTXT, baise, BSTXT2);
 		free(*str);
 		*str = NULL;
+		*err = -1;
 	}
 }
 
-char	**getfiller(int depth, char *cpt)
+char	**getfiller(int depth, char *cpt, int *err)
 {
 	char *tmp;
 	char **out;
 
-	promptnextline(&tmp, cpt);
+	promptnextline(&tmp, cpt, err);
 	if (tmp == NULL)
 		return (NULL);
 	escape_chars(tmp, 0, 0);
 	parse_qts(tmp, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
-		out = getfiller(depth + 1, cpt);
+		out = getfiller(depth + 1, cpt, err);
 		if (out == 0)
 			return ((char **)(long)freeret(tmp, 0));
 	}

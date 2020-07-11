@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 21:41:18 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 22:55:12 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <signal.h>
 
 # define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
+# define BSTXT "bash: unexpected EOF while looking for matching `%s\'\n%s"
+# define BSTXT2 "bash: syntax error: unexpected end of file\n"
 
 typedef struct		s_list
 {
@@ -85,11 +87,11 @@ char				*getcwdwrap(void);
 
 char				*get_lst(char *line);
 int					get_blocks(char *line);
-char				**getfiller(int depth, char *cpt);
+char				**getfiller(int depth, char *cpt, int *err);
 void				parse_qts(char *str, char *cpt);
 int					parse_bs(char *str);
 int					parse_esc(char *str, int i);
-char				*check_finished_lst(char *line);
+char				*check_finished_lst(char *line, int *err);
 
 /*
 **IO

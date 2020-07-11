@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:41:58 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 22:53:36 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,16 @@ char	*get_lst(char *line)
 {
 	char	*filler;
 	t_list	*out;
+	int		err;
 
-	if ((filler = check_finished_lst(line)) != NULL)
-	{
+	err = 0;
+	if ((filler = check_finished_lst(line, &err)) != NULL)
 		if ((line = ft_strjoinft(line, filler)) == NULL)
 			return (NULL);
+	if (err == -1)
+	{
+		free(line);
+		return (NULL);
 	}
 	escape_chars(line, 0, 0);
 	if ((out = split_line_lst(line, 0)) == NULL)
