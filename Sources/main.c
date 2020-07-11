@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 18:46:02 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 18:54:52 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,23 @@ int		checklstate(char **oline, char **line)
 	return (0);
 }
 
+void	dealwithlstate2(char **oline)
+{
+	if (g_mshell.linestate == 2)
+	{
+		g_mshell.linestate = 0;
+		free(*oline);
+		*oline = NULL;
+	}
+}
+
 void	mainloop(int ret, char *oline, char **line)
 {
 	while (1 | (ret = prompt(line)))
 	{
 		if (*line == NULL || ret < 0)
 			return ;
+		dealwithlstate2(&oline);
 		if (ret == 0)
 		{
 			if (checklstate(&oline, line) == 1)
@@ -129,8 +140,7 @@ void	mainloop(int ret, char *oline, char **line)
 			oline = NULL;
 			g_mshell.linestate = 0;
 		}
-		*line = get_lst(*line);
-		if (*line == NULL)
+		if ((*line = get_lst(*line)) == NULL)
 			continue ;
 		checkinput_ls(*line);
 		ft_lstclear(&g_mshell.ls);
