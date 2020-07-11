@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/10 21:45:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:17:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int		check_exitcode(char **str)
 	}
 	if (pos)
 	{
-		*str = inside_join(pos, tmp, 2);
+		tmp = inside_join(pos, tmp, 2);
+		free(*str);
+		*str = tmp;
 		if (*str == 0)
 			return (1);
 		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
