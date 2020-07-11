@@ -6,16 +6,27 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:44:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 22:39:02 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	promptnextline(char **str)
+#include <stdio.h>
+void	promptnextline(char **str, char *cpt)
 {
+	char c;
+	char baise[2];
+
 	write(1, "dquote> ", 8);
-	get_next_line(0, str);
+	if (get_next_line(0, str) == 0)
+	{
+		c = cpt[0] % 2 ? '\"' : '\'';
+		baise[0] = c;
+		baise[1] = 0;
+		ft_printh(2, 1, "bash: unexpected EOF while looking for matching `%s\'\nbash: syntax error: unexpected end of file", baise);
+		free(*str);
+		*str = NULL;
+	}
 }
 
 char	**getfiller(int depth, char *cpt)
@@ -23,7 +34,7 @@ char	**getfiller(int depth, char *cpt)
 	char *tmp;
 	char **out;
 
-	promptnextline(&tmp);
+	promptnextline(&tmp, cpt);
 	if (tmp == NULL)
 		return (NULL);
 	escape_chars(tmp, 0, 0);
