@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 21:35:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 21:53:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 			}
 		}
 		else if (query[0] == '?')
-			*str = inside_join(*str, ft_itoaa(g_mshell.exitcode), 1, 3);
+			*str = inside_join(*str, ft_itoaa(g_mshell.exitcode), 3, 1);
 		else
 			*str = inside_join(*str, vars(query), 1, 0);
 		if (*str == 0)
