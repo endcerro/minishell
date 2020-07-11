@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 17:16:27 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 17:41:36 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct		s_mshell
 	char		**env;
 	char		**vars;
 	t_list		*ls;
+
+	int			linestate;
 
 	pid_t		pid;
 	int			exitcode;

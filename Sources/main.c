@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 17:06:53 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 17:52:09 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int		prompt(char **line)
 {
-	ft_putstr("\033[31mminishell \033[33m@>\033[0m");
+	if (g_mshell.linestate == 0)
+		ft_putstr("\033[31mminishell \033[33m@>\033[0m");
 	return (get_next_line(0, line));
 }
 
@@ -88,19 +89,50 @@ void	init_mshell(void)
 	g_mshell.oldfdout = dup(1);
 	g_mshell.oldfdin = dup(0);
 	g_mshell.sigswitch = 0;
+	g_mshell.linestate = 0;
 }
 
 int		main(void)
 {
-	char *line;
+	char	*line;
+	int		ret;
+	char	*oline;
 
 	init_mshell();
 	signal(SIGINT, &sigint);
 	signal(SIGQUIT, &sigquit);
+	oline = NULL;
 	if (newenviron() == -1)
 		return (1);
-	while (prompt(&line) > 0)
+	while (1)
 	{
+		ret = prompt(&line);
+		if (ret < 0)
+			break ;
+		else if (ret == 0)
+		{
+			if (g_mshell.linestate == 1)
+			{
+				oline = ft_strjoinft(oline, line);
+				ft_putstr("  \b\b");
+				continue ;
+			}
+			else if (*line)
+			{
+				g_mshell.linestate = 1;
+				oline = line;
+				ft_putstr("  \b\b");
+				continue ;
+			}
+			else
+				break ;
+		}
+		else if (oline)
+		{
+			line = ft_strjoinft(oline, line);
+			oline = NULL;
+			g_mshell.linestate = 0;
+		}
 		if (line == NULL)
 			break ;
 		line = get_lst(line);
