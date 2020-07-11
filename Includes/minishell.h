@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 17:41:36 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 21:41:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int					commandorvar(void);
 */
 
 void				checkinput_ls(char *line);
-void				parse_env_ls(char **param);
+void				parse_env_ls(char **param, int len);
 char				*vars(char *request);
 int					check_match(char *env, char *param);
-char				*inside_join(char *base, char *add, int mode);
+char				*inside_join(char *base, char *add, int mode, int ex);
 int					check_valid_export(char *str);
 char				*getcwdwrap(void);
 
@@ -146,5 +146,9 @@ t_list				*inner_split(t_list *lst);
 int					isquote(char c);
 void				find_char(char *buff);
 t_list				*inner_split_loop(t_list *curr, char *buff, int i, int j);
+void				mainloop(int ret, char *oline, char **line);
+void				dealwithlstate2(char **oline);
+int					checklstate(char **oline, char **line);
+int					prompt(char **line);
 
 #endif

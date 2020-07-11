@@ -6,38 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:40:11 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 21:35:13 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		check_exitcode(char **str)
-{
-	char	*pos;
-	char	*tmp;
-
-	pos = ft_strnstr(*str, "$?", ft_strlen(*str));
-	tmp = ft_itoaa(g_mshell.exitcode);
-	if (tmp == 0)
-	{
-		free(*str);
-		*str = 0;
-		return (1);
-	}
-	if (pos)
-	{
-		tmp = inside_join(pos, tmp, 2);
-		free(*str);
-		*str = tmp;
-		if (*str == 0)
-			return (1);
-		pos = ft_strnstr(*str, "$?", ft_strlen(*str));
-	}
-	else
-		free(tmp);
-	return (0);
-}
 
 int		parse_env_ls_two(char *query, char **str, char *d_pos)
 {
@@ -45,18 +18,20 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 		*(d_pos) = -1;
 	else
 	{
-		if (env(query))
+		if (query[0] != '?' && env(query))
 		{
 			if (env(query)[0] != 0)
-				*str = inside_join(*str, env(query) + 1, 1);
+				*str = inside_join(*str, env(query) + 1, 1, 0);
 			else
 			{
 				free(*str);
 				*str = ft_strdup("");
 			}
 		}
+		else if (query[0] == '?')
+			*str = inside_join(*str, ft_itoaa(g_mshell.exitcode), 1, 3);
 		else
-			*str = inside_join(*str, vars(query), 1);
+			*str = inside_join(*str, vars(query), 1, 0);
 		if (*str == 0)
 		{
 			free(query);
@@ -66,19 +41,21 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 	return (0);
 }
 
-void	parse_env_ls(char **str)
+void	parse_env_ls(char **str, int len)
 {
 	char	*d_pos;
 	char	*query;
-	int		len;
 
-	len = 0;
-	if (check_exitcode(str))
-		return ;
-	d_pos = ft_strchr(*str, '$');
+	d_pos = (char *)1;
 	while (d_pos != NULL)
 	{
+		len = 0;
+		d_pos = ft_strchr(*str, '$');
+		if (d_pos == 0 || d_pos[0] == 0)
+			continue ;
 		while (ft_isalnum(d_pos[len + 1]))
+			len++;
+		if (len == 0 && d_pos[len + 1] == '?')
 			len++;
 		if ((query = ft_substr(d_pos, 1, len)) == 0)
 		{
@@ -88,7 +65,6 @@ void	parse_env_ls(char **str)
 		}
 		if (parse_env_ls_two(query, str, d_pos))
 			return ;
-		d_pos = ft_strchr(*str, '$');
 		free(query);
 	}
 	swap_char(*str, '$');

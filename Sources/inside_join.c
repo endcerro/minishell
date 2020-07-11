@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:27:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 21:31:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	select_free(char *str1, char *str, int mode)
 	}
 }
 
-void	iniside_join_loop(char *base, char *add, char *out)
+void	iniside_join_loop(char *base, char *add, char *out, int exit)
 {
 	int i;
 	int j;
@@ -41,19 +41,20 @@ void	iniside_join_loop(char *base, char *add, char *out)
 			while (add && add[j])
 				out[p++] = add[j++];
 			i++;
-			while (++j && base[i] && !ft_isspace(base[i]))
+			while (++j && base[i] && (ft_isalnum(base[i])
+			|| (exit && base[i] == '?')))
+			{
 				i++;
+				exit = 0;
+			}
 		}
 		else
 			out[p++] = base[i++];
 	}
 	out[p] = 0;
-	if (out[0] == '\"')
-		out[p] = '\"';
-	out[++p] = 0;
 }
 
-char	*inside_join(char *base, char *add, int mode)
+char	*inside_join(char *base, char *add, int mode, int exit)
 {
 	char	*out;
 
@@ -73,7 +74,7 @@ char	*inside_join(char *base, char *add, int mode)
 		select_free(base, add, mode);
 		return (0);
 	}
-	iniside_join_loop(base, add, out);
+	iniside_join_loop(base, add, out, exit);
 	select_free(base, add, mode);
 	return (out);
 }

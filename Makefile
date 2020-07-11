@@ -40,12 +40,13 @@ SRC			=	main.c \
 				get_commandslst2.c \
 				main2.c \
 				maincreat.c \
+				main3.c \
 				lst_utils.c
 
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra -Werror -O3
+CFLAGS		=	-Wall -Wextra -Werror -O3 -g -fsanitize=address
 
 CC			=	gcc
 RM			=	rm -f
