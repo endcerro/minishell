@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/11 17:37:48 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 22:02:50 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		checkslash(char *str)
 			return (1);
 	return (0);
 }
-
+#include <stdio.h>
 int		execsomestuffbis(int x, char **params, char *str)
 {
 	if (g_mshell.pid == 0)
@@ -47,6 +47,7 @@ int		execsomestuffbis(int x, char **params, char *str)
 	free(str);
 	while (waitpid(g_mshell.pid, &g_mshell.exitcode, WNOHANG) == 0)
 		;
+	g_mshell.exitcode /= 256;
 	if (g_mshell.sigswitch != 0)
 		return (g_mshell.sigswitch);
 	return (g_mshell.exitcode);
