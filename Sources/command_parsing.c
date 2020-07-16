@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:47:12 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/16 19:58:16 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int		rdirout(t_list *curr, int mode)
 		ft_printh(2, 1, "%s: No such file or directory\n", curr->next->content);
 		return (1);
 	}
+	curr->next->type = -1;
 	dup2(fd, 1);
 	g_mshell.rdirout = 1;
 	return (0);

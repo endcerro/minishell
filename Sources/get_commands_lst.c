@@ -6,11 +6,41 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 21:37:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/16 19:58:05 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void 	remove_rdir(t_list **lst)
+{
+	t_list *prev;
+	t_list *copy;
+	t_list *curr;
+	t_list *tmp;
+
+	curr = *lst;
+	copy = *lst;
+	prev = *lst;
+	while (*lst)
+	{
+		if((*lst)->type == -1)
+		{
+			if ((*lst) == copy)
+			{
+				tmp = (*lst)->next;
+				ft_lstdelone((*lst));
+				lst = &tmp;
+				continue ;
+			}
+			prev->next = (*lst)->next;
+			ft_lstdelone((*lst));
+			(*lst) = prev;
+		}
+		(*lst) = (*lst)->next;
+	}
+
+}
 
 int		prep_ls(t_list *curr)
 {
@@ -26,6 +56,7 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (check_rdir(curr) == 1)
 		return (1);
+	remove_rdir(&curr);
 	return (0);
 }
 

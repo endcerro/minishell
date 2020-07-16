@@ -62,7 +62,7 @@ SRC			=	ft_bzero.c \
 
 OBJ			=	$(SRC:.c=.o)
 
-CFLAGS		=	-Wall -Wextra -Werror -O3
+CFLAGS		=	-Wall -Wextra -Werror -O3 -g -fsanitize=address
 
 AC			=	ar rc
 RAN			=	ranlib

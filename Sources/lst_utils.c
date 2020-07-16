@@ -6,11 +6,33 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:40:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/16 20:00:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_lstprint(t_list *lst)
+{
+	if (lst)
+	{
+		 while (lst->next)
+		{
+		 	ft_putchar_fd('|',2);
+		 	ft_putstr_fd(lst->content,2);
+		 	ft_putchar_fd(':',2);
+		 	ft_putnbr_fd(lst->type,2);
+			ft_putchar_fd('|',2);
+			lst = lst->next;
+		}
+		ft_putchar_fd('|',2);
+		ft_putstr_fd(lst->content,2);
+		ft_putchar_fd(':',2);
+		ft_putnbr_fd(lst->type,2);
+		ft_putchar_fd('|',2);
+	}
+	ft_putchar('\n');
+}
 
 t_list	*tag_lst(t_list *lst)
 {
