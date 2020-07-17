@@ -66,7 +66,7 @@ CFLAGS		=	-Wall -Wextra -Werror -O3 -g -fsanitize=address
 
 AC			=	ar rc
 RAN			=	ranlib
-CC			=	gcc
+CC			=	clang
 RM			=	rm -f
 ECHO		=	echo
 

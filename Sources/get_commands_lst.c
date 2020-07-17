@@ -140,6 +140,11 @@ void	prep_rdir(int ex)
 		close_pipe_n();
 }
 
+void	checkinput_recurs()
+{
+	;
+}
+
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
@@ -150,18 +155,19 @@ void	checkinput_ls(char *line)
 		return ;
 	if (prep_ls(g_mshell.ls))
 		return ;
-	exec_command(line);
-	copy = g_mshell.ls;
-	prep_rdir(0);
-	while (curr)
-	{
-		if (curr->type == 3 && curr->next != NULL)
-		{
-			g_mshell.ls = curr->next;
-			checkinput_ls(line);
-			break ;
-		}
-		curr = curr->next;
-	}
-	g_mshell.ls = copy;
+	checkinput_recurs(); // Mettre ça dans un while qui va boucler tous les ;
+	/* exec_command(line); */
+	/* copy = g_mshell.ls; */
+	/* prep_rdir(0); */
+	/* while (curr) */
+	/* { */
+	/* 	if (curr->type == 3 && curr->next != NULL) */
+	/* 	{ */
+	/* 		g_mshell.ls = curr->next; */
+	/* 		checkinput_ls(line); */
+	/* 		break ; */
+	/* 	} */
+	/* 	curr = curr->next; */
+	/* } */
+	/* g_mshell.ls = copy; */
 }

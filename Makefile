@@ -48,7 +48,7 @@ OBJS		=	$(OBJ:%=$(OBJD)/%)
 
 CFLAGS		=	-Wall -Wextra -Werror -O3 -g -fsanitize=address
 
-CC			=	gcc
+CC			=	clang
 RM			=	rm -f
 ECHO		=	echo
 
