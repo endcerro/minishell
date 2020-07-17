@@ -54,9 +54,9 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
-	if (check_rdir(curr) == 1)
-		return (1);
-	remove_rdir(&curr);
+	/* if (check_rdir(curr) == 1) */
+	/* 	return (1); */
+	/* remove_rdir(&curr); */
 	return (0);
 }
 
@@ -88,9 +88,9 @@ void	ms_exit(char *line)
 
 void	exec_command(char *line)
 {
-	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-		ms_exit(line);
-	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
+	/* if (ft_strcmp(g_mshell.ls->content, "exit") == 0) */
+	/* 	ms_exit(line); */
+	/* else  */if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
 	{
@@ -109,6 +109,7 @@ void	exec_command(char *line)
 		ft_putstr("\033c");
 	else
 		commandorvar();
+	exit(g_mshell.exitcode);
 }
 
 void	prep_rdir(int ex)
@@ -140,25 +141,114 @@ void	prep_rdir(int ex)
 		close_pipe_n();
 }
 
-void	checkinput_recurs()
+int		countpipes(t_list *curr)
 {
-	;
+	int x;
+
+	x = 0;
+	while (curr)
+	{
+		if (curr->type == 3 && ft_strcmp(curr->content, "|") == 0)
+			++x;
+		else if (curr->type == 3  && ft_strcmp(curr->content, ";") == 0)
+			return (x);
+		curr = curr->next;
+	}
+	return (x);
 }
 
 void	checkinput_ls(char *line)
 {
 	t_list	*curr;
 	t_list	*copy;
+	t_list	*tmp;
+	int		x;
+	int		npipe;
+	int		*pipes;
 
-	curr = g_mshell.ls;
 	if (g_mshell.ls == 0)
 		return ;
 	if (prep_ls(g_mshell.ls))
 		return ;
-	checkinput_recurs(); // Mettre ça dans un while qui va boucler tous les ;
+	copy = g_mshell.ls;
+	tmp = g_mshell.ls;
+	pipes = NULL;
+	while (tmp)
+	{
+		g_mshell.ls = tmp;
+		curr = g_mshell.ls;
+		npipe = countpipes(curr);
+		if (npipe != 0)
+			if ((pipes = (int *)malloc(sizeof(int) * npipe * 2)) == NULL)
+			{
+				ft_printh(2, 1, "minishell: %s", strerror(errno));
+				g_mshell.ls = copy;
+				g_mshell.exitcode = 2;
+				return ;
+			}
+		while (curr && !(curr->type == 3 && ft_strcmp(curr->content, ";")))
+			curr = curr->next;
+		if (curr)
+		{
+			tmp = curr->next;
+			curr->next = NULL;
+		}
+		else
+			tmp = NULL;
+		curr = g_mshell.ls;
+		x = 0;
+		while (x < npipe * 2)
+		{
+			pipe(pipe + x);
+			x += 2;
+		}
+		x = 0;
+		while (g_mshell.ls)
+		{
+			if ((g_mshell.pid = fork()) == -1)
+			{
+				ft_printh(2, 1, "minishell: %s", strerror(errno));
+				g_mshell.ls = copy;
+				x = -1;
+				while (++x < npipe * 2)
+					close(pipe + x);
+				free(pipes);
+				g_mshell.exitcode = 2;
+				return ;
+			}
+			if (g_mshell.pid == 0)
+			{
+				if (npipe - x + 1 > 0)
+					dup2(pipes[x + 1], 1);
+				if (x > 0)
+					dup2(pipes[x], 0);
+				x = -1;
+				while (++x < npipe * 2)
+					close(pipe + x);
+				exec_command(line); // exec_command n'a pas encore été modifié
+			}
+			++x;
+		}
+
+
+
+
+
+		x = -1;
+		while (++x < npipe * 2)
+			close(pipe + x);
+		x = -1;
+		while (++x <= npipe)
+			wait(&g_mshell.exitcode);
+		while (curr->next)
+			curr = curr->next;
+		curr->next = tmp;
+		free(pipes);
+	}
+
+
 	/* exec_command(line); */
-	/* copy = g_mshell.ls; */
-	/* prep_rdir(0); */
+	/* /\* prep_rdir(0); *\/ */
 	/* while (curr) */
 	/* { */
 	/* 	if (curr->type == 3 && curr->next != NULL) */
@@ -169,5 +259,5 @@ void	checkinput_ls(char *line)
 	/* 	} */
 	/* 	curr = curr->next; */
 	/* } */
-	/* g_mshell.ls = copy; */
+	g_mshell.ls = copy;
 }
