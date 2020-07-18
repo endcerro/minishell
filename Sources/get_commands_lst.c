@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 13:55:19 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 14:28:34 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	checkinput_ls(char *line)
 		x = 0;
 		while (x < npipe * 2)
 		{
-			pipe(pipe + x);
+			pipe(pipes + x);
 			x += 2;
 		}
 		x = 0;
@@ -211,7 +211,7 @@ void	checkinput_ls(char *line)
 				g_mshell.ls = copy;
 				x = -1;
 				while (++x < npipe * 2)
-					close(pipe + x);
+					close(*(pipes + x));
 				free(pipes);
 				g_mshell.exitcode = 2;
 				return ;
@@ -224,7 +224,7 @@ void	checkinput_ls(char *line)
 					dup2(pipes[x], 0);
 				x = -1;
 				while (++x < npipe * 2)
-					close(pipe + x);
+					close(*(pipes + x));
 				exec_command(line); // exec_command n'a pas encore été modifié
 			}
 			++x;
@@ -236,7 +236,7 @@ void	checkinput_ls(char *line)
 
 		x = -1;
 		while (++x < npipe * 2)
-			close(pipe + x);
+			close(*(pipes + x));
 		x = -1;
 		while (++x <= npipe)
 			wait(&g_mshell.exitcode);
