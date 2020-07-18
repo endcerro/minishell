@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 19:19:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/18 19:27:51 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	remove_rdir(t_list **lst)
+void	remove_rdir(t_list **lst)
 {
 	t_list *prev;
 	t_list *copy;
@@ -24,7 +24,7 @@ void 	remove_rdir(t_list **lst)
 	prev = *lst;
 	while (*lst)
 	{
-		if((*lst)->type == -1)
+		if ((*lst)->type == -1)
 		{
 			if ((*lst) == copy)
 			{
@@ -39,7 +39,6 @@ void 	remove_rdir(t_list **lst)
 		}
 		(*lst) = (*lst)->next;
 	}
-
 }
 
 void 	addlstendblock(t_list *lst, t_list *block)
@@ -146,6 +145,7 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
+
 	correct_rdir(curr);
 	curr = g_mshell.ls;
 	trim_rdir(curr);
@@ -212,34 +212,34 @@ void	exec_command(char *line, t_list *lst)
 	exit(g_mshell.exitcode);
 }
 
-void	prep_rdir(int ex)
-{
-	if (g_mshell.rdirout == 1)
-	{
-		if (close(dup(1)) == -1)
-			ft_putstr_fd("ERROR CLOSING FD", 2);
-		dup2(g_mshell.oldfdout, 1);
-		g_mshell.rdirout = 0;
-		if (g_mshell.pipes[2] == 0)
-		{
-			if (g_mshell.rdirin != 2)
-			{
-				ex = 1;
-				dup2(g_mshell.pipes[0], 0);
-				g_mshell.rdirin = 2;
-			}
-		}
-	}
-	if (g_mshell.rdirin == 1)
-	{
-		if (close(dup(0)) == -1)
-			ft_putstr_fd("ERROR CLOSING FD\n", 2);
-		dup2(g_mshell.oldfdin, 0);
-		g_mshell.rdirin = 0;
-	}
-	if (ex == 0)
-		close_pipe_n();
-}
+/* void	prep_rdir(int ex) */
+/* { */
+/* 	if (g_mshell.rdirout == 1) */
+/* 	{ */
+/* 		if (close(dup(1)) == -1) */
+/* 			ft_putstr_fd("ERROR CLOSING FD", 2); */
+/* 		dup2(g_mshell.oldfdout, 1); */
+/* 		g_mshell.rdirout = 0; */
+/* 		if (g_mshell.pipes[2] == 0) */
+/* 		{ */
+/* 			if (g_mshell.rdirin != 2) */
+/* 			{ */
+/* 				ex = 1; */
+/* 				dup2(g_mshell.pipes[0], 0); */
+/* 				g_mshell.rdirin = 2; */
+/* 			} */
+/* 		} */
+/* 	} */
+/* 	if (g_mshell.rdirin == 1) */
+/* 	{ */
+/* 		if (close(dup(0)) == -1) */
+/* 			ft_putstr_fd("ERROR CLOSING FD\n", 2); */
+/* 		dup2(g_mshell.oldfdin, 0); */
+/* 		g_mshell.rdirin = 0; */
+/* 	} */
+/* 	if (ex == 0) */
+/* 		close_pipe_n(); */
+/* } */
 
 int		check_exit(char *line)
 {
@@ -250,7 +250,7 @@ int		check_exit(char *line)
 		curr = g_mshell.ls;
 		while (curr)
 		{
-			if (curr->type == 2 && ft_strcmp(curr->content, "|") == 0)
+			if (curr->type == 6)
 				return (0);
 			curr = curr->next;
 		}
@@ -267,9 +267,9 @@ int		countpipes(t_list *curr)
 	x = 0;
 	while (curr)
 	{
-		if (curr->type == 3 && ft_strcmp(curr->content, "|") == 0)
+		if (curr->type == 6)
 			++x;
-		else if (curr->type == 3  && ft_strcmp(curr->content, ";") == 0)
+		else if (curr->type == 3)
 			return (x);
 		curr = curr->next;
 	}
@@ -282,6 +282,7 @@ void	checkinput_ls(char *line)
 	t_list	*copy;
 	t_list	*tmp;
 	int		x;
+	int		pcount;
 	int		npipe;
 	int		*pipes;
 
@@ -308,7 +309,7 @@ void	checkinput_ls(char *line)
 				g_mshell.exitcode = 2;
 				return ;
 			}
-		while (curr && !(curr->type == 3 && ft_strcmp(curr->content, ";")))
+		while (curr && curr->type != 3)
 			curr = curr->next;
 		if (curr)
 		{
@@ -325,6 +326,7 @@ void	checkinput_ls(char *line)
 			x += 2;
 		}
 		x = 0;
+		pcount = 0;
 		while (g_mshell.ls)
 		{
 			if ((g_mshell.pid = fork()) == -1)
@@ -338,12 +340,13 @@ void	checkinput_ls(char *line)
 				g_mshell.exitcode = 2;
 				return ;
 			}
+/* 			pipe(g_mshell.envpipe); */ // Le PIPE de communication
 			if (g_mshell.pid == 0)
 			{
-				if (npipe - (x + 1) > 0)
-					dup2(pipes[x + 1], 1);
+				if (npipe > x)
+					dup2(pipes[pcount + 1], 1);
 				if (x > 0)
-					dup2(pipes[x], 0);
+					dup2(pipes[pcount - 2], 0);
 				x = -1;
 				while (++x < npipe * 2)
 					close(*(pipes + x));
@@ -351,46 +354,28 @@ void	checkinput_ls(char *line)
 			}
 			while (g_mshell.ls)
 			{
-				if (g_mshell.ls->type == 2 && ft_strcmp(g_mshell.ls->content, "|") == 0)
+				if (g_mshell.ls->type == 6)
 				{
 					g_mshell.ls = g_mshell.ls->next;
 					break ;
 				}
 				g_mshell.ls = g_mshell.ls->next;
 			}
+			pcount += 2;
 			++x;
 		}
-
-
-
-
-
 		x = -1;
 		while (++x < npipe * 2)
 			close(*(pipes + x));
 		x = -1;
 		while (++x <= npipe)
 			wait(&g_mshell.exitcode);
+		g_mshell.pid = 0;
 		while (curr->next)
 			curr = curr->next;
 		curr->next = tmp;
-		if (tmp)
-			tmp = tmp->next;
 		free(pipes);
+		pipes = NULL;
 	}
-
-
-	/* exec_command(line); */
-	/* /\* prep_rdir(0); *\/ */
-	/* while (curr) */
-	/* { */
-	/* 	if (curr->type == 3 && curr->next != NULL) */
-	/* 	{ */
-	/* 		g_mshell.ls = curr->next; */
-	/* 		checkinput_ls(line); */
-	/* 		break ; */
-	/* 	} */
-	/* 	curr = curr->next; */
-	/* } */
 	g_mshell.ls = copy;
 }

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 14:51:10 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 18:44:48 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ typedef struct		s_mshell
 	pid_t		pid;
 	int			exitcode;
 	int			sigswitch;
+	int			envpipe[2];
 
-	int			pipes[6];
+/* 	int			pipes[6]; */
 	char		rdirin;
 	char		rdirout;
 	int			oldfdout;
