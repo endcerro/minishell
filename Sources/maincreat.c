@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:42 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 19:04:57 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 13:52:45 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sigint(int sig)
 	}
 	else
 	{
-		kill(g_mshell.pid, sig);
+		kill(-1, sig);
 		g_mshell.pid = 0;
 		g_mshell.sigswitch = 130;
 		write(1, "\n", 1);
@@ -39,7 +39,7 @@ void	sigquit(int sig)
 	}
 	else
 	{
-		kill(g_mshell.pid, sig);
+		kill(-1, sig);
 		g_mshell.pid = 0;
 		g_mshell.sigswitch = 131;
 		write(1, "\n", 1);

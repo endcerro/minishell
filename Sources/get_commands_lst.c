@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/16 19:58:05 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/18 13:55:19 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	ms_exit(char *line)
 
 void	exec_command(char *line)
 {
-	/* if (ft_strcmp(g_mshell.ls->content, "exit") == 0) */
-	/* 	ms_exit(line); */
-	/* else  */if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
+	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+		;
+	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
 	{
