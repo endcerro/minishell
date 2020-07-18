@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 15:38:00 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 17:10:44 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		check_exit(char *line)
 		curr = g_mshell.ls;
 		while (curr)
 		{
-			if (curr->type == 2 && ft_strcmp(curr->content, "|") == 0)
+			if (curr->type == 6)
 				return (0);
 			curr = curr->next;
 		}
@@ -171,9 +171,9 @@ int		countpipes(t_list *curr)
 	x = 0;
 	while (curr)
 	{
-		if (curr->type == 3 && ft_strcmp(curr->content, "|") == 0)
+		if (curr->type == 6)
 			++x;
-		else if (curr->type == 3  && ft_strcmp(curr->content, ";") == 0)
+		else if (curr->type == 3)
 			return (x);
 		curr = curr->next;
 	}
@@ -186,6 +186,7 @@ void	checkinput_ls(char *line)
 	t_list	*copy;
 	t_list	*tmp;
 	int		x;
+	int		pcount;
 	int		npipe;
 	int		*pipes;
 
@@ -211,7 +212,7 @@ void	checkinput_ls(char *line)
 				g_mshell.exitcode = 2;
 				return ;
 			}
-		while (curr && !(curr->type == 3 && ft_strcmp(curr->content, ";")))
+		while (curr && curr->type != 3)
 			curr = curr->next;
 		if (curr)
 		{
@@ -228,8 +229,10 @@ void	checkinput_ls(char *line)
 			x += 2;
 		}
 		x = 0;
+		pcount = 0;
 		while (g_mshell.ls)
 		{
+			ft_lstprint(g_mshell.ls);
 			if ((g_mshell.pid = fork()) == -1)
 			{
 				ft_printh(2, 1, "minishell: %s", strerror(errno));
@@ -243,10 +246,26 @@ void	checkinput_ls(char *line)
 			}
 			if (g_mshell.pid == 0)
 			{
-				if (npipe - (x + 1) > 0)
-					dup2(pipes[x + 1], 1);
+				if (npipe > x)
+				{
+					ft_printh(2, 1, "|1*%s*1|\npcount=", g_mshell.ls->content);
+					ft_putnbr_fd(pcount, 2);
+					ft_putstr_fd("\n", 2);
+					ft_putstr_fd("x=", 2);
+					ft_putnbr_fd(x, 2);
+					ft_putstr_fd("\n", 2);
+					dup2(pipes[pcount + 1], 1);
+				}
 				if (x > 0)
-					dup2(pipes[x], 0);
+				{
+					ft_printh(2, 1, "|0*%s*0|\npcount=", g_mshell.ls->content);
+					ft_putnbr_fd(pcount, 2);
+					ft_putstr_fd("\n", 2);
+					ft_putstr_fd("x=", 2);
+					ft_putnbr_fd(x, 2);
+					ft_putstr_fd("\n", 2);
+					dup2(pipes[pcount], 0);
+				}
 				x = -1;
 				while (++x < npipe * 2)
 					close(*(pipes + x));
@@ -254,46 +273,30 @@ void	checkinput_ls(char *line)
 			}
 			while (g_mshell.ls)
 			{
-				if (g_mshell.ls->type == 2 && ft_strcmp(g_mshell.ls->content, "|") == 0)
+				if (g_mshell.ls->type == 6)
 				{
 					g_mshell.ls = g_mshell.ls->next;
 					break ;
 				}
 				g_mshell.ls = g_mshell.ls->next;
 			}
+			if (x > 0)
+				pcount += 2;
 			++x;
 		}
-
-
-
-
-
 		x = -1;
 		while (++x < npipe * 2)
 			close(*(pipes + x));
 		x = -1;
 		while (++x <= npipe)
 			wait(&g_mshell.exitcode);
+		g_mshell.pid = 0;
 		while (curr->next)
 			curr = curr->next;
 		curr->next = tmp;
-		if (tmp)
-			tmp = tmp->next;
+/* 		if (tmp) */
+/* 			tmp = tmp->next; */
 		free(pipes);
 	}
-
-
-	/* exec_command(line); */
-	/* /\* prep_rdir(0); *\/ */
-	/* while (curr) */
-	/* { */
-	/* 	if (curr->type == 3 && curr->next != NULL) */
-	/* 	{ */
-	/* 		g_mshell.ls = curr->next; */
-	/* 		checkinput_ls(line); */
-	/* 		break ; */
-	/* 	} */
-	/* 	curr = curr->next; */
-	/* } */
 	g_mshell.ls = copy;
 }
