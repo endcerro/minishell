@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 17:31:48 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 17:34:54 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,23 +248,23 @@ void	checkinput_ls(char *line)
 			{
 				if (npipe > x)
 				{
-					ft_printh(2, 1, "|1*%s*1|\npcount=", g_mshell.ls->content);
-					ft_putnbr_fd(pcount + 1, 2);
-					ft_putstr_fd("\n", 2);
-					ft_putstr_fd("x=", 2);
-					ft_putnbr_fd(x, 2);
-					ft_putstr_fd("\n", 2);
+/* 					ft_printh(2, 1, "|1*%s*1|\npcount=", g_mshell.ls->content); */
+/* 					ft_putnbr_fd(pcount + 1, 2); */
+/* 					ft_putstr_fd("\n", 2); */
+/* 					ft_putstr_fd("x=", 2); */
+/* 					ft_putnbr_fd(x, 2); */
+/* 					ft_putstr_fd("\n", 2); */
 					dup2(pipes[pcount + 1], 1);
 				}
 				if (x > 0)
 				{
-					ft_printh(2, 1, "|0*%s*0|\npcount=", g_mshell.ls->content);
-					ft_putnbr_fd(pcount, 2);
-					ft_putstr_fd("\n", 2);
-					ft_putstr_fd("x=", 2);
-					ft_putnbr_fd(x, 2);
-					ft_putstr_fd("\n", 2);
-					dup2(pipes[pcount], 0);
+/* 					ft_printh(2, 1, "|0*%s*0|\npcount=", g_mshell.ls->content); */
+/* 					ft_putnbr_fd(pcount, 2); */
+/* 					ft_putstr_fd("\n", 2); */
+/* 					ft_putstr_fd("x=", 2); */
+/* 					ft_putnbr_fd(x, 2); */
+/* 					ft_putstr_fd("\n", 2); */
+					dup2(pipes[pcount - 2], 0);
 				}
 				x = -1;
 				while (++x < npipe * 2)
@@ -280,8 +280,7 @@ void	checkinput_ls(char *line)
 				}
 				g_mshell.ls = g_mshell.ls->next;
 			}
-			if (x > 0)
-				pcount += 2;
+			pcount += 2;
 			++x;
 		}
 		x = -1;
