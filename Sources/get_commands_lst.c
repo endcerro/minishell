@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 17:37:44 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 17:40:09 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	remove_rdir(t_list **lst)
+void	remove_rdir(t_list **lst)
 {
 	t_list *prev;
 	t_list *copy;
@@ -24,7 +24,7 @@ void 	remove_rdir(t_list **lst)
 	prev = *lst;
 	while (*lst)
 	{
-		if((*lst)->type == -1)
+		if ((*lst)->type == -1)
 		{
 			if ((*lst) == copy)
 			{
@@ -39,7 +39,6 @@ void 	remove_rdir(t_list **lst)
 		}
 		(*lst) = (*lst)->next;
 	}
-
 }
 
 int		prep_ls(t_list *curr)
@@ -54,9 +53,6 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
-	/* if (check_rdir(curr) == 1) */
-	/* 	return (1); */
-	/* remove_rdir(&curr); */
 	return (0);
 }
 
@@ -232,7 +228,6 @@ void	checkinput_ls(char *line)
 		pcount = 0;
 		while (g_mshell.ls)
 		{
-			ft_lstprint(g_mshell.ls);
 			if ((g_mshell.pid = fork()) == -1)
 			{
 				ft_printh(2, 1, "minishell: %s", strerror(errno));
