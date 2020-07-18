@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/11 22:52:15 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 15:19:51 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	**ls_params(void)
 	return (out);
 }
 
-int		commandorvar(void)
+int		commandorvar(t_list *lst)
 {
 	int		x;
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:55:12 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 14:51:10 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int					unset();
 int					echo_ls();
 int					export(char *params);
 char				*env(char *request);
-int					commandorvar(void);
+int					commandorvar(t_list *lst);
 
 /*
 **BUILTIN UTILS
