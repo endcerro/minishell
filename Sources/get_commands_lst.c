@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 17:40:09 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 18:47:08 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,34 +112,34 @@ void	exec_command(char *line, t_list *lst)
 	exit(g_mshell.exitcode);
 }
 
-void	prep_rdir(int ex)
-{
-	if (g_mshell.rdirout == 1)
-	{
-		if (close(dup(1)) == -1)
-			ft_putstr_fd("ERROR CLOSING FD", 2);
-		dup2(g_mshell.oldfdout, 1);
-		g_mshell.rdirout = 0;
-		if (g_mshell.pipes[2] == 0)
-		{
-			if (g_mshell.rdirin != 2)
-			{
-				ex = 1;
-				dup2(g_mshell.pipes[0], 0);
-				g_mshell.rdirin = 2;
-			}
-		}
-	}
-	if (g_mshell.rdirin == 1)
-	{
-		if (close(dup(0)) == -1)
-			ft_putstr_fd("ERROR CLOSING FD\n", 2);
-		dup2(g_mshell.oldfdin, 0);
-		g_mshell.rdirin = 0;
-	}
-	if (ex == 0)
-		close_pipe_n();
-}
+/* void	prep_rdir(int ex) */
+/* { */
+/* 	if (g_mshell.rdirout == 1) */
+/* 	{ */
+/* 		if (close(dup(1)) == -1) */
+/* 			ft_putstr_fd("ERROR CLOSING FD", 2); */
+/* 		dup2(g_mshell.oldfdout, 1); */
+/* 		g_mshell.rdirout = 0; */
+/* 		if (g_mshell.pipes[2] == 0) */
+/* 		{ */
+/* 			if (g_mshell.rdirin != 2) */
+/* 			{ */
+/* 				ex = 1; */
+/* 				dup2(g_mshell.pipes[0], 0); */
+/* 				g_mshell.rdirin = 2; */
+/* 			} */
+/* 		} */
+/* 	} */
+/* 	if (g_mshell.rdirin == 1) */
+/* 	{ */
+/* 		if (close(dup(0)) == -1) */
+/* 			ft_putstr_fd("ERROR CLOSING FD\n", 2); */
+/* 		dup2(g_mshell.oldfdin, 0); */
+/* 		g_mshell.rdirin = 0; */
+/* 	} */
+/* 	if (ex == 0) */
+/* 		close_pipe_n(); */
+/* } */
 
 int		check_exit(char *line)
 {
@@ -239,6 +239,7 @@ void	checkinput_ls(char *line)
 				g_mshell.exitcode = 2;
 				return ;
 			}
+/* 			pipe(g_mshell.envpipe); */ // Le PIPE de communication
 			if (g_mshell.pid == 0)
 			{
 				if (npipe > x)
