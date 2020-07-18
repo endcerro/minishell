@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 15:38:00 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/18 19:19:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,98 @@ void 	remove_rdir(t_list **lst)
 
 }
 
+void 	addlstendblock(t_list *lst, t_list *block)
+{
+	t_list *prev;
+	prev = 0;
+	block->type = -2;
+	while (lst)
+	{
+		if (lst->next && (lst->next->type == 3 || lst->next->type == 6))
+		{
+			block->next->next = lst->next;
+			lst->next = block;
+			return ;	
+		}
+		prev = lst;
+		lst = lst->next;
+	}
+	prev->next = block;
+}
+
+t_list *correct_rdir(t_list *lst)
+{
+	t_list *newlst;
+	t_list *curr;
+	t_list *prev;
+	t_list *block;
+
+	ft_lstprint(lst);
+	prev = 0;
+	curr = lst;
+	newlst = lst;
+	while (curr)
+	{
+		if(curr->type == 2 && prev)
+		{
+			block = curr;
+			prev->next = block->next->next;
+			block->next->next = 0;
+			addlstendblock(prev, block);
+			curr = lst;
+		}
+		else if (curr->type == 2 && prev == 0)
+		{
+			block = curr;
+			curr = block->next->next;
+			newlst = curr;
+			block->next->next = 0;
+			addlstendblock(curr, block);
+			curr = newlst;
+			continue;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	ft_lstprint(newlst);
+	g_mshell.ls = newlst;
+	return (0);
+}
+
+int 	trim_rdir(t_list *lst)
+{
+	t_list *curr;
+	t_list *tmp;
+	t_list *prev;
+
+	curr = lst;
+	prev = 0;
+	while (curr)
+	{
+		if (curr->type == -2)
+		{
+			curr->type = 2;
+			if (curr->next->next)
+			{
+				int fd;
+
+				fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
+			, 0644);
+				close(fd);
+				prev->next = curr->next->next;
+				ft_lstdelone(curr->next);
+				ft_lstdelone(curr);
+				curr = prev;
+				continue ;
+			}
+
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	return (0);
+}
+
 int		prep_ls(t_list *curr)
 {
 	escape_lst(curr);
@@ -54,6 +146,10 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
+	correct_rdir(curr);
+	curr = g_mshell.ls;
+	trim_rdir(curr);
+	// trim_rdir(*curr);
 	/* if (check_rdir(curr) == 1) */
 	/* 	return (1); */
 	/* remove_rdir(&curr); */
@@ -193,6 +289,7 @@ void	checkinput_ls(char *line)
 		return ;
 	if (prep_ls(g_mshell.ls))
 		return ;
+	ft_lstprint(g_mshell.ls);
 	if (check_exit(line))
 		return ;
 	copy = g_mshell.ls;
