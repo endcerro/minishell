@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:42 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 16:46:05 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/20 18:10:37 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	sigint(int sig)
 {
+	g_mshell.exitcode = 130;
 	if (g_mshell.pid == 0)
 	{
-		g_mshell.exitcode = 1;
 		ft_putstr("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m");
 		g_mshell.linestate = 2;
 	}
@@ -31,9 +31,9 @@ void	sigint(int sig)
 
 void	sigquit(int sig)
 {
+	g_mshell.exitcode = 131;
 	if (g_mshell.pid == 0)
 	{
-		g_mshell.exitcode = 0;
 		ft_putstr("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m");
 		g_mshell.linestate = 2;
 	}

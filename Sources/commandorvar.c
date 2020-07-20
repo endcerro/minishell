@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/18 16:16:25 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/20 19:36:58 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,37 +23,37 @@ int		checkslash(char *str)
 	return (0);
 }
 
-/* int		execsomestuffbis(int x, char **params, char *str) */
-/* { */
-/* 	if (g_mshell.pid == 0) */
-/* 	{ */
-/* 		if (str) */
-/* 			execve(str, &(params[x]), g_mshell.env); */
-/* 		else */
-/* 			execve(params[x], &(params[x]), g_mshell.env); */
-/* 		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno)); */
-/* 		free(str); */
-/* 		freechar2ptr(g_mshell.env, 0); */
-/* 		freechar2ptr(params, 0); */
-/* 		freechar2ptr(g_mshell.vars, 0); */
-/* 		exit(0); */
-/* 	} */
-/* 	else if (g_mshell.pid < 0) */
-/* 	{ */
-/* 		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno)); */
-/* 		free(str); */
-/* 		return (1); */
-/* 	} */
-/* 	free(str); */
-/* 	waitpid(g_mshell.pid, &g_mshell.exitcode, 0); */
-/* 	g_mshell.exitcode /= 256; */
-/* 	if (g_mshell.sigswitch != 0) */
-/* 		return (g_mshell.sigswitch); */
-/* 	return (g_mshell.exitcode); */
+int		execsomestuffbis(int x, char **params, char *str)
+{
+	if (g_mshell.pid == 0)
+	{
+		if (str)
+			execve(str, &(params[x]), g_mshell.env);
+		else
+			execve(params[x], &(params[x]), g_mshell.env);
+		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno));
+		free(str);
+		freechar2ptr(g_mshell.env, 0);
+		freechar2ptr(params, 0);
+		freechar2ptr(g_mshell.vars, 0);
+		exit(0);
+	}
+	else if (g_mshell.pid < 0)
+	{
+		ft_printh(2, 1, "minishell: %s: %s\n", params[x], strerror(errno));
+		free(str);
+		return (1);
+	}
+	free(str);
+	waitpid(g_mshell.pid, &g_mshell.exitcode, 0);
+	g_mshell.exitcode /= 256;
+	if (g_mshell.sigswitch != 0)
+		return (g_mshell.sigswitch);
+	return (g_mshell.exitcode);
 /* 	return (0); */
-/* } */
+}
 
-int		execsomestuff(int x, char **params)
+int		execsomestuff(int x, char **params, int *npipe)
 {
 	struct stat	sta;
 	char		*str;
@@ -76,8 +76,12 @@ int		execsomestuff(int x, char **params)
 			return (127);
 		}
 	}
-/* 	g_mshell.pid = fork(); */
-/* 	return (execsomestuffbis(x, params, str)); */
+	if (*npipe == 0)
+	{
+		*npipe = -1;
+		g_mshell.pid = fork();
+		return (execsomestuffbis(x, params, str));
+	}
 	if (str)
 		execve(str, &(params[x]), g_mshell.env);
 	else
@@ -114,7 +118,7 @@ char	**ls_params(void)
 	return (out);
 }
 
-int		commandorvar(t_list *lst)
+int		commandorvar(int *npipe)
 {
 	int		x;
 	int		i;
@@ -134,8 +138,9 @@ int		commandorvar(t_list *lst)
 			}
 		if (params[x][i] == 0)
 		{
-			g_mshell.exitcode = execsomestuff(x, params);
-			g_mshell.sigswitch = 0;
+			g_mshell.exitcode = execsomestuff(x, params, npipe);
+			if (*npipe <= 0)
+				g_mshell.sigswitch = 0;
 			break ;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 18:44:48 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/20 19:30:58 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct		s_mshell
 	pid_t		pid;
 	int			exitcode;
 	int			sigswitch;
-	int			envpipe[2];
 
 /* 	int			pipes[6]; */
 	char		rdirin;
@@ -68,7 +67,7 @@ int					unset();
 int					echo_ls();
 int					export(char *params);
 char				*env(char *request);
-int					commandorvar(t_list *lst);
+int					commandorvar(int *npipe);
 
 /*
 **BUILTIN UTILS
@@ -137,6 +136,7 @@ void				sigint(int sig);
 void				sigquit(int sig);
 char				*checkpath(int j, char **params);
 int					addvar(char *str);
+char				**ls_params(void);
 void				swap_char(char *str, char c);
 int					check_valid(t_list *lst);
 int					expand_vars(t_list *curr);
