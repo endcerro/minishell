@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/20 20:33:04 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/22 18:25:53 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,74 @@ void	ms_exit(char *line)
 
 void	exec_command(char *line, t_list *lst, int *npipe)
 {
+	t_list	*urr;
+	char	*file;
+	int		fd;
+	int		oldfd;
+
+	urr = g_mshell.ls;
+	file = NULL;
+	while (urr)
+	{
+		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
+		{
+			if (urr->next)
+				file = urr->next->content;
+			break ;
+		}
+		urr = urr->next;
+	}
+	if (file && urr && *npipe > 0)
+	{
+		if (urr->type == 2)
+		{
+			if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC)) == -1)
+				ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+			else
+				dup2(fd, 1);
+		}
+		else if (urr->type == 4)
+		{
+			if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND)) == -1)
+				ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+			else
+				dup2(fd, 1);
+		}
+		else if (urr->type == 5)
+		{
+			if ((fd = open(file, O_RDONLY)) == -1)
+				ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
+			else
+				dup2(fd, 0);
+		}
+	}
+	else if (file && urr)
+	{
+		if (urr->type == 2)
+		{
+			oldfd = dup(1);
+			if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
+				ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+			else
+				dup2(fd, 1);
+		}
+		else if (urr->type == 4)
+		{
+			oldfd = dup(1);
+			if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
+				ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+			else
+				dup2(fd, 1);
+		}
+		else if (urr->type == 5)
+		{
+			oldfd = dup(0);
+			if ((fd = open(file, O_RDONLY)) == -1)
+				ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
+			else
+				dup2(fd, 0);
+		}
+	}
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 		ms_exit(line);
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
@@ -199,13 +267,20 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
 		g_mshell.exitcode = pwd();
 	else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
-		g_mshell.exitcode = export(0);
+		g_mshell.exitcode = export(NULL);
 	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
 		g_mshell.exitcode = unset();
 	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 		ft_putstr("\033c");
 	else
 		commandorvar(npipe);
+	if (*npipe <= 0 && file && urr)
+	{
+		if (urr->type == 5)
+			dup2(oldfd, 0);
+		else
+			dup2(oldfd, 1);
+	}
 	if (*npipe > 0)
 	{
 		free(line);
