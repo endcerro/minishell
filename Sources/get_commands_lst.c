@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 20:27:42 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 20:47:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_list *correct_rdir(t_list *lst)
 		prev = curr;
 		curr = curr->next;
 	}
-	ft_lstprint(newlst);
+	// ft_lstprint(newlst);
 	g_mshell.ls = newlst;
 	return (0);
 }
@@ -104,7 +104,7 @@ int 	islastrdir(t_list *lst, int type)
 	lst = lst->next;
 	while(lst && lst->type != 3 && lst->type != 6)
 	{
-		printf("Loop\n");
+		// printf("Loop\n");
 		if ((type == -5 && lst->type == type) || (type != -5 && (lst->type == -4 || lst->type == - 2)))
 			return 0;
 		lst = lst->next;
@@ -120,69 +120,70 @@ int 	trim_rdir(t_list *lst)
 
 	curr = lst;
 	prev = 0;
-	while (curr && curr->type != 3 && curr->type != 6)
+	while (curr && curr->type != 3)
 	{
-		if (curr->type == -2 )
+		while (curr && curr->type != 6)
 		{
-			curr->type = 2;
-			printf("IN\n");
-			if (curr->next->next && !islastrdir(curr, -2))
+			if (curr->type == -2 )
 			{
-				printf("IN\n");
-				int fd;
-
-				fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
-			, 0644);
-				close(fd);
-				prev->next = curr->next->next;
-				ft_lstdelone(curr->next);
-				ft_lstdelone(curr);
-				curr = prev;
-				continue ;
-			}
-			printf("OUT\n");
-		}
-		else if (curr->type == -4)
-		{
-			curr->type = 4;
-			if (curr->next->next && !islastrdir(curr, -4))
-			{
-				int fd;
-
-				fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
-			, 0644);
-				close(fd);
-				prev->next = curr->next->next;
-				ft_lstdelone(curr->next);
-				ft_lstdelone(curr);
-				curr = prev;
-				continue ;
-			}
-		}
-		else if (curr->type == -5)
-		{
-			curr->type = 5;
-			if (curr->next->next && !islastrdir(curr, -5))
-			{
-				int fd;
-
-				fd = open(curr->next->content, O_RDONLY);
-				if(fd == -1)
+				curr->type = 2;
+				if (curr->next->next && !islastrdir(curr, -2))
 				{
-					printf("OH NO ERROR\n");
-					return (1);
+					int fd;
+
+					fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
+				, 0644);
+					close(fd);
+					prev->next = curr->next->next;
+					ft_lstdelone(curr->next);
+					ft_lstdelone(curr);
+					curr = prev;
+					continue ;
 				}
-				close(fd);
-				prev->next = curr->next->next;
-				ft_lstdelone(curr->next);
-				ft_lstdelone(curr);
-				curr = prev;
-				continue ;
 			}
+			else if (curr->type == -4)
+			{
+				curr->type = 4;
+				if (curr->next->next && !islastrdir(curr, -4))
+				{
+					int fd;
+
+					fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
+				, 0644);
+						close(fd);
+					prev->next = curr->next->next;
+					ft_lstdelone(curr->next);
+					ft_lstdelone(curr);
+					curr = prev;
+					continue ;
+				}
+			}
+			else if (curr->type == -5)
+			{
+				curr->type = 5;
+				if (curr->next->next && !islastrdir(curr, -5))
+				{
+					int fd;
+
+					fd = open(curr->next->content, O_RDONLY);
+					if(fd == -1)
+					{
+
+						return (1);
+					}
+					close(fd);
+					prev->next = curr->next->next;
+					ft_lstdelone(curr->next);
+					ft_lstdelone(curr);
+					curr = prev;
+					continue ;
+				}
+			}
+			prev = curr;
+			curr = curr->next;
 		}
-		printf("YOOOOÓ\n");
 		prev = curr;
-		curr = curr->next;
+		curr = (curr) ? curr->next : 0;
 	}
 	return (0);
 }
@@ -247,7 +248,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	urr = g_mshell.ls;
 	file = NULL;
 	oldfd = 0;
-	while (urr)
+	while (urr && urr->type != 6)
 	{
 		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
 		{
@@ -434,7 +435,7 @@ void	checkinput_ls(char *line)
 		return ;
 	// if (prep_ls(g_mshell.ls))
 	// 	return ;
-	ft_lstprint(g_mshell.ls);
+	// ft_lstprint(g_mshell.ls);
 	if (check_exit(line))
 		return ;
 	copy = g_mshell.ls;
