@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 19:32:22 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 19:35:34 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	ms_exit(char *line)
 
 	ex = 0;
 	if (line != NULL)
-		ft_putstr("exit\n");
+		ft_putstr_fd("exit\n", 2);
 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
 		if (isstrdigit(g_mshell.ls->next->content) == 0)

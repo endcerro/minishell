@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/18 18:42:06 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 19:36:06 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		prompt(char **line)
 {
 	g_mshell.pid = 0;
 	if (g_mshell.linestate == 0)
-		ft_putstr("\033[31mminishell \033[33m@>\033[0m");
+		ft_putstr_fd("\033[31mminishell \033[33m@>\033[0m", 2);
 	return (get_next_line(0, line));
 }
 
@@ -103,7 +103,7 @@ int		main(void)
 	if (newenviron() == -1)
 		return (1);
 	mainloop(0, NULL, &line);
-	write(1, "exit\n", 5);
+	write(2, "exit\n", 5);
 	if (g_mshell.ls)
 		ft_lstclear(&(g_mshell.ls));
 	free(line);
