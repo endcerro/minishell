@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 20:09:55 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/25 20:27:42 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 
 	urr = g_mshell.ls;
 	file = NULL;
+	oldfd = 0;
 	while (urr)
 	{
 		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
@@ -281,7 +282,8 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 				{
 					if (urr->type == 2)
 					{
-						oldfd = dup(1);
+						g_mshell.oldfdout = dup(1);
+						++oldfd;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
 						else
@@ -289,7 +291,8 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					}
 					else if (urr->type == 4)
 					{
-						oldfd = dup(1);
+						g_mshell.oldfdout = dup(1);
+						++oldfd;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
 						else
@@ -297,7 +300,8 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					}
 					else if (urr->type == 5)
 					{
-						oldfd = dup(0);
+						g_mshell.oldfdin = dup(0);
+						oldfd += 2;
 						if ((fd = open(file, O_RDONLY)) == -1)
 							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
 						else
@@ -330,12 +334,17 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		ft_putstr("\033c");
 	else
 		commandorvar(npipe);
-	if (*npipe <= 0 && file && urr)
+	if (*npipe <= 0)
 	{
-		if (urr->type == 5)
-			dup2(oldfd, 0);
-		else
-			dup2(oldfd, 1);
+		if (oldfd == 2)
+			dup2(g_mshell.oldfdin, 0);
+		else if (oldfd == 1)
+			dup2(g_mshell.oldfdout, 1);
+		else if (oldfd == 3)
+		{
+			dup2(g_mshell.oldfdout, 1);
+			dup2(g_mshell.oldfdin, 0);
+		}
 	}
 	if (*npipe > 0)
 	{
