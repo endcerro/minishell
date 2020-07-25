@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:53:36 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 18:11:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ t_list	*split_line_lst(char *line, int i)
 	t_list	*f_lst;
 	t_list	*lst;
 
+	// printf("LINE IS = %s\n",line );
+
 	f_lst = NULL;
 	while ((size_t)i < ft_strlen(line))
 	{
@@ -86,16 +88,36 @@ t_list	*split_line_lst(char *line, int i)
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
 			else if (line[i] != ' ' && line[i] != 0)
+			{
+				// printf("HERE\n");
 				lst->nospace = 1;
+			}
 			if (f_lst == NULL && (f_lst = lst))
 				lst = NULL;
 			else
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
+	// ft_lstprint(f_lst);
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
+	
 	return (f_lst);
+}
+
+void joindrdir(t_list *in)
+{
+	while(in)
+	{
+		if (in->content[0] == '>'&& in->nospace && in->next && in->next->content[0] == '>')
+		{
+			in->content = ft_strdup(">>");
+			t_list *tmp = in->next->next;
+			ft_lstdelone(in->next);
+			in->next = tmp;
+		}
+		in = in->next;
+	}
 }
 
 char	*get_lst(char *line)
@@ -116,6 +138,7 @@ char	*get_lst(char *line)
 	escape_chars(line, 0, 0);
 	if ((out = split_line_lst(line, 0)) == NULL)
 		return ((char *)(long)freeret(line, 0));
+	joindrdir(out);
 	if (tag_lst(out) == NULL)
 	{
 		free(line);

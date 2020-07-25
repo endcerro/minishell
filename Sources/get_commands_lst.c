@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/22 18:25:53 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 18:46:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void 	addlstendblock(t_list *lst, t_list *block)
 {
 	t_list *prev;
 	prev = 0;
-	block->type = -2;
+	block->type = -(block->type);
 	while (lst)
 	{
 		if (lst->next && (lst->next->type == 3 || lst->next->type == 6))
@@ -67,13 +67,13 @@ t_list *correct_rdir(t_list *lst)
 	t_list *prev;
 	t_list *block;
 
-	ft_lstprint(lst);
+	// ft_lstprint(lst);
 	prev = 0;
 	curr = lst;
 	newlst = lst;
 	while (curr)
 	{
-		if(curr->type == 2 && prev)
+		if( (curr->type == 2 || curr->type == 4 || curr->type == 5) && prev)
 		{
 			block = curr;
 			prev->next = block->next->next;
@@ -81,7 +81,7 @@ t_list *correct_rdir(t_list *lst)
 			addlstendblock(prev, block);
 			curr = lst;
 		}
-		else if (curr->type == 2 && prev == 0)
+		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev == 0)
 		{
 			block = curr;
 			curr = block->next->next;
@@ -107,7 +107,7 @@ int 	trim_rdir(t_list *lst)
 
 	curr = lst;
 	prev = 0;
-	while (curr)
+	while (curr && curr->type != 3 && curr->type != 6)
 	{
 		if (curr->type == -2)
 		{
@@ -125,7 +125,44 @@ int 	trim_rdir(t_list *lst)
 				curr = prev;
 				continue ;
 			}
+		}
+		else if (curr->type == -4)
+		{
+			curr->type = 4;
+			if (curr->next->next)
+			{
+				int fd;
 
+				fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
+			, 0644);
+				close(fd);
+				prev->next = curr->next->next;
+				ft_lstdelone(curr->next);
+				ft_lstdelone(curr);
+				curr = prev;
+				continue ;
+			}
+		}
+		else if (curr->type == -5)
+		{
+			curr->type = 5;
+			if (curr->next->next)
+			{
+				int fd;
+
+				fd = open(curr->next->content, O_RDONLY);
+				if(fd == -1)
+				{
+					printf("OH NO ERROR\n");
+					return (1);				
+				}	
+				close(fd);
+				prev->next = curr->next->next;
+				ft_lstdelone(curr->next);
+				ft_lstdelone(curr);
+				curr = prev;
+				continue ;
+			}
 		}
 		prev = curr;
 		curr = curr->next;
@@ -148,7 +185,7 @@ int		prep_ls(t_list *curr)
 
 	correct_rdir(curr);
 	curr = g_mshell.ls;
-	trim_rdir(curr);
+	return (trim_rdir(curr));
 	// trim_rdir(*curr);
 	/* if (check_rdir(curr) == 1) */
 	/* 	return (1); */
@@ -194,7 +231,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	file = NULL;
 	while (urr)
 	{
-		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
+		if (urr->type == 2 || urr->type == 4 || urr->type == 5) // faire redirection ici et continuer boucle
 		{
 			if (urr->next)
 				file = urr->next->content;
@@ -320,7 +357,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 /* 		close_pipe_n(); */
 /* } */
 
-int		check_exit(char *line)
+int		check_exit(char *line) // rejouter redirections
 {
 	t_list *curr;
 
@@ -367,8 +404,8 @@ void	checkinput_ls(char *line)
 
 	if (g_mshell.ls == 0)
 		return ;
-	if (prep_ls(g_mshell.ls))
-		return ;
+	// if (prep_ls(g_mshell.ls))
+	// 	return ;
 	ft_lstprint(g_mshell.ls);
 	if (check_exit(line))
 		return ;
@@ -378,6 +415,9 @@ void	checkinput_ls(char *line)
 	while (tmp)
 	{
 		g_mshell.ls = tmp;
+		if (prep_ls(tmp))
+			return ;
+		ft_lstprint(tmp);
 		curr = g_mshell.ls;
 		npipe = countpipes(curr);
 		if (npipe != 0)

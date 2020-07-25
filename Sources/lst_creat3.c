@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:47:19 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/25 17:41:24 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ t_list	*inner_split(t_list *lst)
 	{
 		while (curr)
 		{
+			// printf("CURR = %s\n",curr->content );
 			if ((new = inner_split_loop(curr, buff, -1, 0)) != 0)
 			{
 				ft_lstadd_back(&new, curr->next);
 				curr->next = new->next;
+				// curr->nospace = 1;
 				free(new);
 			}
 			curr = curr->next;

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:46:28 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:56:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/25 18:09:08 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int		do_the_thing(t_list **new, char *buff, char **split)
 		return (protect_pone(new, split));
 	else if (0 == (tmplst = ft_lstnew(tmpstr)))
 		return (protect_ptwo(new, split, tmpstr));
+	// ft_lstprint(tmplst);
+	tmplst->nospace = -1;
 	ft_lstadd_back(new, tmplst);
 	return (1);
 }
@@ -57,8 +59,10 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
 		{
+			// printf("HERE WE GO FOR %s %c\n", curr->content, buff[0] );
 			if ((split = ft_split(curr->content, buff[0])) == NULL)
 				return (NULL);
+			curr->nospace = 1;
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
