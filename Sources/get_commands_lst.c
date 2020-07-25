@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 19:32:22 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 20:07:01 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,19 @@ t_list *correct_rdir(t_list *lst)
 	return (0);
 }
 
+int 	islastrdir(t_list *lst, int type)
+{
+	lst = lst->next;
+	while(lst && lst->type != 3 && lst->type != 6)
+	{
+		printf("Loop\n");
+		if ((type == -5 && lst->type == type) || (type != -5 && (lst->type == -4 || lst->type == - 2)))
+			return 0;
+		lst = lst->next;
+	}
+	return 1;
+}
+
 int 	trim_rdir(t_list *lst)
 {
 	t_list *curr;
@@ -109,11 +122,13 @@ int 	trim_rdir(t_list *lst)
 	prev = 0;
 	while (curr && curr->type != 3 && curr->type != 6)
 	{
-		if (curr->type == -2)
+		if (curr->type == -2 )
 		{
 			curr->type = 2;
-			if (curr->next->next)
+			printf("IN\n");
+			if (curr->next->next && !islastrdir(curr, -2))
 			{
+				printf("IN\n");
 				int fd;
 
 				fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
@@ -125,11 +140,12 @@ int 	trim_rdir(t_list *lst)
 				curr = prev;
 				continue ;
 			}
+			printf("OUT\n");
 		}
 		else if (curr->type == -4)
 		{
 			curr->type = 4;
-			if (curr->next->next)
+			if (curr->next->next && !islastrdir(curr, -4))
 			{
 				int fd;
 
@@ -146,7 +162,7 @@ int 	trim_rdir(t_list *lst)
 		else if (curr->type == -5)
 		{
 			curr->type = 5;
-			if (curr->next->next)
+			if (curr->next->next && !islastrdir(curr, -5))
 			{
 				int fd;
 
@@ -164,6 +180,7 @@ int 	trim_rdir(t_list *lst)
 				continue ;
 			}
 		}
+		printf("YOOOOÓ\n");
 		prev = curr;
 		curr = curr->next;
 	}
@@ -199,7 +216,7 @@ void	ms_exit(char *line)
 
 	ex = 0;
 	if (line != NULL)
-		ft_putstr("exit\n");
+		ft_putstr_fd("exit\n", 2);
 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
 		if (isstrdigit(g_mshell.ls->next->content) == 0)
@@ -287,6 +304,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 							dup2(fd, 0);
 					}
 				}
+				urr = urr->next;
 			}
 		}
 		urr = urr->next;
