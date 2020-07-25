@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 19:30:07 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/25 19:32:22 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	file = NULL;
 	while (urr)
 	{
-		if (urr->type == 2 || urr->type == 4 || urr->type == 5) // faire redirection ici et continuer boucle
+		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
 		{
 			if (urr->next)
 			{
