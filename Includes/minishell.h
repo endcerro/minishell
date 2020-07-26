@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/20 19:30:58 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 16:28:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_list
 	char			*content;
 	int				nospace;
 	int				type;
+	int 			rawtext;
 }					t_list;
 
 typedef struct		s_mshell
@@ -74,7 +75,7 @@ int					commandorvar(int *npipe);
 */
 
 void				checkinput_ls(char *line);
-void				parse_env_ls(char **param, int len);
+int 				parse_env_ls(char **param, int len, t_list *curr);
 char				*vars(char *request);
 int					check_match(char *env, char *param);
 char				*inside_join(char *base, char *add, int mode, int ex);

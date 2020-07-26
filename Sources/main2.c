@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 22:55:23 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:28:22 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int		checkexport(char *var)
 char	*env(char *request)
 {
 	int x;
+	int i;
+	int j;
 
 	x = 0;
 	if (request == NULL && g_mshell.ls->next && g_mshell.ls->next->type == 1)
@@ -81,12 +83,14 @@ char	*env(char *request)
 		ft_putstr_fd("minishell: env: too many arguments\n", 2);
 		return (NULL);
 	}
+	i = wordlen(request);
 	while (g_mshell.env[x])
 	{
 		if (request != NULL)
 		{
-			if (!ft_strncmp(g_mshell.env[x], request, wordlen(request)))
-				return (g_mshell.env[x] + wordlen(request));
+			j = wordlen(g_mshell.env[x]);
+			if (!ft_strncmp(g_mshell.env[x], request, i < j ? j : i))
+				return (g_mshell.env[x] + i);
 		}
 		else if (checkexport(g_mshell.env[x]) == 1)
 			ft_putsendl(g_mshell.env[x]);

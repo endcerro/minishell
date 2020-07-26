@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 17:23:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 16:29:26 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	ft_lstprint(t_list *lst)
 		 	ft_putnbr_fd(lst->type,2);
 			ft_putchar_fd('-', 2);
 			ft_putnbr_fd(lst->nospace, 2);
+			ft_putchar_fd('-', 2);
+			ft_putnbr_fd(lst->rawtext, 2);
 			ft_putchar_fd('|',2);
 			lst = lst->next;
 		}
@@ -33,6 +35,8 @@ void	ft_lstprint(t_list *lst)
 		ft_putnbr_fd(lst->type,2);
 		ft_putchar_fd('-', 2);
 		ft_putnbr_fd(lst->nospace, 2);
+		ft_putchar_fd('-', 2);
+		ft_putnbr_fd(lst->rawtext, 2);
 		ft_putchar_fd('|',2);
 	}
 	ft_putchar('\n');
@@ -92,6 +96,7 @@ t_list	*ft_lstnew(char *content)
 	out->next = NULL;
 	out->type = 1;
 	out->nospace = 0;
+	out->rawtext = 0;
 	return (out);
 }
 
@@ -108,6 +113,7 @@ t_list	*ft_lstnew_p(char *content)
 	out->next = NULL;
 	out->type = 1;
 	out->nospace = 0;
+	out->rawtext = 0;
 	return (out);
 }
 

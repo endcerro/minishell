@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 18:13:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 16:28:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		expand_vars(t_list *curr)
 	{
 		if (curr->content && curr->content[0] != '\'')
 		{
-			parse_env_ls(&(curr->content), 0);
+			parse_env_ls(&(curr->content), 0, curr);
 			if (curr->content && curr->content[0] == 0)
 			{
 				if (prev)

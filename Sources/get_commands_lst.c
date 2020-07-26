@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 20:47:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 16:52:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,44 @@ int 	trim_rdir(t_list *lst)
 	return (0);
 }
 
+int rawtext(t_list *curr)
+{
+	char **split;
+	int i;
+	t_list *tmp;
+	t_list *cache;
+
+	split = 0;
+	while (curr)
+	{
+		if (curr->rawtext == 1)
+		{
+			i = 0;
+			split = ft_split(curr->content, ' ');
+			while (split[i])
+			{
+				if (i == 0)
+				{
+					free(curr->content);
+					curr->content = split[i];
+					curr->rawtext = 0;
+				}
+				else
+				{
+					tmp = ft_lstnew(split[i]);
+					cache = curr->next;
+					tmp->next = cache;
+					curr->next = tmp;
+					curr = tmp;
+				}
+				i++;
+			}
+		}
+		curr = curr->next;
+	}
+	free(split);
+}
+
 int		prep_ls(t_list *curr)
 {
 	escape_lst(curr);
@@ -203,7 +241,12 @@ int		prep_ls(t_list *curr)
 
 	correct_rdir(curr);
 	curr = g_mshell.ls;
-	return (trim_rdir(curr));
+	
+	trim_rdir(curr); //HANDLE FD ERRRORS
+
+	rawtext(curr);
+
+
 	// trim_rdir(*curr);
 	/* if (check_rdir(curr) == 1) */
 	/* 	return (1); */
