@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:10:28 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:17:04 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +116,7 @@ int		export(char *param)
 		curr = ft_lstnew(param);
 	else
 		curr = g_mshell.ls->next;
+	dprintf(2, "param = %s\ncurr = %p\n", param, curr);
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
 	return (exportstuffquater(curr, tmp, n_envi, param));
