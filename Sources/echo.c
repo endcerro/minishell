@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/11 14:26:05 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 18:48:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ void	trim_quotes(char *str)
 	str[i - 2] = 0;
 }
 
+int 	is_n(char *str)
+{
+	int i;
+
+	i = 0;
+	if (str[i++] != '-')
+		return (0);
+	while (str[i] == 'n')
+		i++;
+	if(str[i] != 0)
+		return (0);
+	return (1);
+}
+
 int		echo_ls(void)
 {
 	int		ret;
@@ -39,8 +53,8 @@ int		echo_ls(void)
 
 	ret = 0;
 	curr = g_mshell.ls->next;
-	if (curr && ft_strcmp(curr->content, "-n") == 0)
-		while (curr && ft_strcmp(curr->content, "-n") == 0)
+	if (curr && is_n(curr->content))
+		while (curr && is_n(curr->content))
 			curr = curr->next;
 	else
 		ret = 1;
