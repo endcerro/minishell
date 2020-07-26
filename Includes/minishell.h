@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:50:14 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 18:02:13 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ typedef struct		s_mshell
 	int			exitcode;
 	int			sigswitch;
 
-/* 	int			pipes[6]; */
-/* 	char		rdirin; */
-/* 	char		rdirout; */
 	int			oldfdout;
 	int			oldfdin;
 
@@ -95,15 +92,6 @@ int					parse_esc(char *str, int i);
 char				*check_finished_lst(char *line, int *err);
 
 /*
-**IO
-*/
-
-int					check_rdir();
-void				check_pipe(char *str, char *cpt);
-void				close_pipe_n();
-int					open_pipe_n(t_list *curr);
-
-/*
 **LST UTILS
 */
 
@@ -112,7 +100,6 @@ t_list				*ft_lstnew(char *content);
 t_list				*ft_lstnew_p(char *content);
 int					ft_lstclear(t_list **lst);
 void				ft_lstprint(t_list *lst);
-void				ft_lstadd_next(t_list *alst, t_list *new);
 void				ft_lstdelone(t_list *lst);
 void				ft_lstadd_back(t_list **alst, t_list *new);
 

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:49:39 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 18:02:47 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ int 	islastrdir(t_list *lst, int type)
 int 	trim_rdir(t_list *lst)
 {
 	t_list *curr;
-	t_list *tmp;
 	t_list *prev;
 	int fd;
 
