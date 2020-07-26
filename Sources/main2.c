@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:28:22 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:40:59 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*env(char *request)
 		ft_putstr_fd("minishell: env: too many arguments\n", 2);
 		return (NULL);
 	}
-	i = wordlen(request);
+	i = request ? wordlen(request) : 0;
 	while (g_mshell.env[x])
 	{
 		if (request != NULL)
