@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 18:11:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:53:26 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ t_list	*split_line_lst(char *line, int i)
 	t_list	*f_lst;
 	t_list	*lst;
 
-	// printf("LINE IS = %s\n",line );
-
 	f_lst = NULL;
 	while ((size_t)i < ft_strlen(line))
 	{
@@ -89,7 +87,6 @@ t_list	*split_line_lst(char *line, int i)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
 			else if (line[i] != ' ' && line[i] != 0)
 			{
-				// printf("HERE\n");
 				lst->nospace = 1;
 			}
 			if (f_lst == NULL && (f_lst = lst))
@@ -98,10 +95,9 @@ t_list	*split_line_lst(char *line, int i)
 				ft_lstadd_back(&f_lst, lst);
 		}
 	}
-	// ft_lstprint(f_lst);
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
-	
+
 	return (f_lst);
 }
 

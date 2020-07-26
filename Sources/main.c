@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/25 20:10:32 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:51:51 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,6 @@ void	init_mshell(void)
 	g_mshell.exitcode = 0;
 	g_mshell.vars = NULL;
 	g_mshell.ls = 0;
-/* 	g_mshell.pipes[2] = -1; */
-/* 	g_mshell.pipes[5] = -1; */
-	g_mshell.rdirin = 0;
-	g_mshell.rdirout = 0;
 	g_mshell.oldfdout = dup(1);
 	g_mshell.oldfdin = dup(0);
 	g_mshell.sigswitch = 0;

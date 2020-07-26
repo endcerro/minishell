@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:29:01 by hpottier          #+#    #+#             */
-/*   Updated: 2020/07/20 19:36:58 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:52:03 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int		execsomestuffbis(int x, char **params, char *str)
 	if (g_mshell.sigswitch != 0)
 		return (g_mshell.sigswitch);
 	return (g_mshell.exitcode);
-/* 	return (0); */
 }
 
 int		execsomestuff(int x, char **params, int *npipe)

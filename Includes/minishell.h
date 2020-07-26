@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 16:28:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:50:14 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct		s_mshell
 	int			sigswitch;
 
 /* 	int			pipes[6]; */
-	char		rdirin;
-	char		rdirout;
+/* 	char		rdirin; */
+/* 	char		rdirout; */
 	int			oldfdout;
 	int			oldfdin;
 

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 16:28:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:49:53 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int		check_valid(t_list *lst)
 
 	cp_r = 0;
 	cp_d = 0;
-	// ft_lstprint(lst);
 	while (lst)
 	{
 		if (lst->type == 3 || lst->type == 6)
@@ -111,10 +110,7 @@ int		check_valid(t_list *lst)
 			cp_d = 0;
 		}
 		if ((cp_d > 1 || cp_r > 1))
-		{
-			// printf("HERe\n");
 			return (ft_printh(2, 0, SYNTERR, lst->content));
-		}
 		lst = lst->next;
 	}
 	return (1);

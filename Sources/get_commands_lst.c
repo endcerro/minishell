@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:42:44 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:49:39 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +60,13 @@ void 	addlstendblock(t_list *lst, t_list *block)
 	prev->next = block;
 }
 
-t_list *correct_rdir(t_list *lst)
+t_list	*correct_rdir(t_list *lst)
 {
 	t_list *newlst;
 	t_list *curr;
 	t_list *prev;
 	t_list *block;
 
-	// ft_lstprint(lst);
 	prev = 0;
 	curr = lst;
 	newlst = lst;
@@ -95,7 +93,6 @@ t_list *correct_rdir(t_list *lst)
 		prev = curr;
 		curr = curr->next;
 	}
-	// ft_lstprint(newlst);
 	g_mshell.ls = newlst;
 	return (0);
 }
@@ -105,7 +102,6 @@ int 	islastrdir(t_list *lst, int type)
 	lst = lst->next;
 	while(lst && lst->type != 3 && lst->type != 6)
 	{
-		// printf("Loop\n");
 		if ((type == -5 && lst->type == type) || (type != -5 && (lst->type == -4 || lst->type == - 2)))
 			return 0;
 		lst = lst->next;
@@ -187,7 +183,7 @@ int 	trim_rdir(t_list *lst)
 	return (0);
 }
 
-int rawtext(t_list *curr)
+int		rawtext(t_list *curr)
 {
 	char **split;
 	int i;
@@ -242,20 +238,12 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
-
 	correct_rdir(curr);
 	curr = g_mshell.ls;
 	if (trim_rdir(curr))
-		return (1); //HANDLE FD ERRRORS
-
+		return (1);
 	if(rawtext(curr))
 		return (1);
-
-
-	// trim_rdir(*curr);
-	/* if (check_rdir(curr) == 1) */
-	/* 	return (1); */
-	/* remove_rdir(&curr); */
 	return (0);
 }
 
@@ -405,54 +393,6 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	}
 }
 
-/* void	prep_rdir(int ex) */
-/* { */
-/* 	if (g_mshell.rdirout == 1) */
-/* 	{ */
-/* 		if (close(dup(1)) == -1) */
-/* 			ft_putstr_fd("ERROR CLOSING FD", 2); */
-/* 		dup2(g_mshell.oldfdout, 1); */
-/* 		g_mshell.rdirout = 0; */
-/* 		if (g_mshell.pipes[2] == 0) */
-/* 		{ */
-/* 			if (g_mshell.rdirin != 2) */
-/* 			{ */
-/* 				ex = 1; */
-/* 				dup2(g_mshell.pipes[0], 0); */
-/* 				g_mshell.rdirin = 2; */
-/* 			} */
-/* 		} */
-/* 	} */
-/* 	if (g_mshell.rdirin == 1) */
-/* 	{ */
-/* 		if (close(dup(0)) == -1) */
-/* 			ft_putstr_fd("ERROR CLOSING FD\n", 2); */
-/* 		dup2(g_mshell.oldfdin, 0); */
-/* 		g_mshell.rdirin = 0; */
-/* 	} */
-/* 	if (ex == 0) */
-/* 		close_pipe_n(); */
-/* } */
-
-/* int		check_exit(char *line) // rejouter redirections */
-/* { */
-/* 	t_list *curr; */
-
-/* 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) */
-/* 	{ */
-/* 		curr = g_mshell.ls; */
-/* 		while (curr) */
-/* 		{ */
-/* 			if (curr->type == 6) */
-/* 				return (0); */
-/* 			curr = curr->next; */
-/* 		} */
-/* 		ms_exit(line); */
-/* 		return (1); */
-/* 	} */
-/* 	return (0); */
-/* } */
-
 int		countpipes(t_list *curr)
 {
 	int x;
@@ -481,11 +421,6 @@ void	checkinput_ls(char *line)
 
 	if (g_mshell.ls == 0)
 		return ;
-	// if (prep_ls(g_mshell.ls))
-	// 	return ;
-	// ft_lstprint(g_mshell.ls);
-/* 	if (check_exit(line)) */
-/* 		return ; */
 	copy = g_mshell.ls;
 	tmp = g_mshell.ls;
 	pipes = NULL;
