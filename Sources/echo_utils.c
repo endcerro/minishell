@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:27:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:37:53 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 				*str = inside_join(*str, env(query) + 1, 1, 0);
 			else
 			{
-				free(*str);
-				*str = ft_strdup("");
+				int test = ft_strlen(query) + 1;
+				for(int j = 0; j < test; j++)
+					deconechar(*str);
+				// free(*str);
+				// *str = ft_strdup("");
 			}
 		}
 		else if (query[0] == '?')
@@ -61,17 +64,18 @@ int	parse_env_ls(char **str, int len, t_list *curr)
 			len++;
 		if ((query = ft_substr(d_pos, 1, len)) == 0)
 		{
-			// printf("here\n");
 			free(*str);
 			*str = 0;
 			return 0;
 		}
 		if (parse_env_ls_two(query, str, d_pos))
+		{
 			return 0;
+		}
 		free(query);
 	}
 	swap_char(*str, '$');
-	return 1;
+	return (1);
 }
 
 int		parse_bs(char *str)
