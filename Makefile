@@ -87,4 +87,11 @@ bonus		:	all
 
 re			:	fclean all
 
-.PHONY		:	all clean re fclean bonus
+minfclean	:
+				-@$(RM) $(OBJS)
+				-@$(RM) $(NAME)
+				@$(ECHO) "\033[94m> Minishell cleaned all\033[0m"
+
+reft		: minfclean all
+
+.PHONY		:	all clean re fclean bonus minfclean reft
