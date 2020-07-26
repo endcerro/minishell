@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 16:52:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:34:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int 	trim_rdir(t_list *lst)
 	t_list *curr;
 	t_list *tmp;
 	t_list *prev;
+	int fd;
 
 	curr = lst;
 	prev = 0;
@@ -129,10 +130,10 @@ int 	trim_rdir(t_list *lst)
 				curr->type = 2;
 				if (curr->next->next && !islastrdir(curr, -2))
 				{
-					int fd;
-
 					fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
 				, 0644);
+					if (fd == -1)
+						return (1);
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -146,11 +147,11 @@ int 	trim_rdir(t_list *lst)
 				curr->type = 4;
 				if (curr->next->next && !islastrdir(curr, -4))
 				{
-					int fd;
-
 					fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
 				, 0644);
-						close(fd);
+					if (fd == -1)
+						return (1);
+					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
 					ft_lstdelone(curr);
@@ -167,10 +168,7 @@ int 	trim_rdir(t_list *lst)
 
 					fd = open(curr->next->content, O_RDONLY);
 					if(fd == -1)
-					{
-
 						return (1);
-					}
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -201,7 +199,8 @@ int rawtext(t_list *curr)
 		if (curr->rawtext == 1)
 		{
 			i = 0;
-			split = ft_split(curr->content, ' ');
+			if(!(split = ft_split(curr->content, ' ')))
+				return (1);	
 			while (split[i])
 			{
 				if (i == 0)
@@ -213,6 +212,9 @@ int rawtext(t_list *curr)
 				else
 				{
 					tmp = ft_lstnew(split[i]);
+					if (!(tmp = ft_lstnew(split[i])))
+						return (freechar2ptr(split, 1));
+					split[i] = (char *)-1;
 					cache = curr->next;
 					tmp->next = cache;
 					curr->next = tmp;
@@ -224,6 +226,7 @@ int rawtext(t_list *curr)
 		curr = curr->next;
 	}
 	free(split);
+	return (0);
 }
 
 int		prep_ls(t_list *curr)
@@ -242,9 +245,11 @@ int		prep_ls(t_list *curr)
 	correct_rdir(curr);
 	curr = g_mshell.ls;
 	
-	trim_rdir(curr); //HANDLE FD ERRRORS
+	if (trim_rdir(curr))
+		return (1); //HANDLE FD ERRRORS
 
-	rawtext(curr);
+	if(rawtext(curr))
+		return (1);
 
 
 	// trim_rdir(*curr);
