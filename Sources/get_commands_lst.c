@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:41:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:42:44 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +201,7 @@ int rawtext(t_list *curr)
 		{
 			i = 0;
 			if(!(split = ft_split(curr->content, ' ')))
-				return (1);	
+				return (1);
 			while (split[i])
 			{
 				if (i == 0)
@@ -244,7 +245,6 @@ int		prep_ls(t_list *curr)
 
 	correct_rdir(curr);
 	curr = g_mshell.ls;
-	
 	if (trim_rdir(curr))
 		return (1); //HANDLE FD ERRRORS
 
@@ -259,12 +259,12 @@ int		prep_ls(t_list *curr)
 	return (0);
 }
 
-void	ms_exit(char *line)
+void	ms_exit(char *line, int *npipe)
 {
 	int ex;
 
 	ex = 0;
-	if (line != NULL)
+	if (*npipe == 0)
 		ft_putstr_fd("exit\n", 2);
 	if (g_mshell.ls->next && g_mshell.ls->next->type == 1)
 	{
@@ -363,7 +363,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		urr = urr->next;
 	}
 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-		ms_exit(line);
+		ms_exit(line, npipe);
 	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 		g_mshell.exitcode = echo_ls();
 	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
@@ -434,24 +434,24 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 /* 		close_pipe_n(); */
 /* } */
 
-int		check_exit(char *line) // rejouter redirections
-{
-	t_list *curr;
+/* int		check_exit(char *line) // rejouter redirections */
+/* { */
+/* 	t_list *curr; */
 
-	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-	{
-		curr = g_mshell.ls;
-		while (curr)
-		{
-			if (curr->type == 6)
-				return (0);
-			curr = curr->next;
-		}
-		ms_exit(line);
-		return (1);
-	}
-	return (0);
-}
+/* 	if (ft_strcmp(g_mshell.ls->content, "exit") == 0) */
+/* 	{ */
+/* 		curr = g_mshell.ls; */
+/* 		while (curr) */
+/* 		{ */
+/* 			if (curr->type == 6) */
+/* 				return (0); */
+/* 			curr = curr->next; */
+/* 		} */
+/* 		ms_exit(line); */
+/* 		return (1); */
+/* 	} */
+/* 	return (0); */
+/* } */
 
 int		countpipes(t_list *curr)
 {
@@ -484,8 +484,8 @@ void	checkinput_ls(char *line)
 	// if (prep_ls(g_mshell.ls))
 	// 	return ;
 	// ft_lstprint(g_mshell.ls);
-	if (check_exit(line))
-		return ;
+/* 	if (check_exit(line)) */
+/* 		return ; */
 	copy = g_mshell.ls;
 	tmp = g_mshell.ls;
 	pipes = NULL;
