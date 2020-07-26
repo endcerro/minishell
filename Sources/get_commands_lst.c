@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:34:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 17:41:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int 	trim_rdir(t_list *lst)
 					fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
 				, 0644);
 					if (fd == -1)
-						return (1);
+						return ((g_mshell.exitcode = 1));
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -150,7 +150,7 @@ int 	trim_rdir(t_list *lst)
 					fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
 				, 0644);
 					if (fd == -1)
-						return (1);
+						return ((g_mshell.exitcode = 1));
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -168,7 +168,7 @@ int 	trim_rdir(t_list *lst)
 
 					fd = open(curr->next->content, O_RDONLY);
 					if(fd == -1)
-						return (1);
+						return ((g_mshell.exitcode = 1));
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
