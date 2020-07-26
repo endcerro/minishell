@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:22:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:10:28 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,18 @@ int		exportstuffter(t_list *curr, char *tmp)
 int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
 {
 	int i;
+	int ret;
 
+	ret = 0;
 	while (curr && curr->type == 1)
 	{
+		if (curr && check_valid_export(curr->content) == 0)
+		{
+			ret = ft_printh(2, 1,
+							  "minishell: export: \'%s\': not a valid identifier\n", curr->content);
+			curr = curr->next;
+			continue ;
+		}
 		if (ft_strchr(curr->content, '=') == NULL)
 		{
 			if ((tmp = vars(curr->content)) != NULL)
@@ -89,7 +98,9 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
 		if (exportstuffbis(&n_envi, &curr) == 1)
 			return (1);
 	}
-	return (0);
+	if (param != NULL)
+		free(curr);
+	return (ret);
 }
 
 int		export(char *param)
@@ -104,15 +115,6 @@ int		export(char *param)
 		curr = ft_lstnew(param);
 	else
 		curr = g_mshell.ls->next;
-	if (curr && check_valid_export(curr->content) == 0)
-	{
-		if (param != NULL)
-			free(curr);
-		else
-			param = curr->content;
-		return (ft_printh(2, 1,
-				"minishell: export: \'%s\': not a valid identifier\n", param));
-	}
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
 	return (exportstuffquater(curr, tmp, n_envi, param));

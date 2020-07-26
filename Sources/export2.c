@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:54:24 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:06:51 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,23 @@ int		unset_var(char *target)
 
 int		check_valid_export(char *str)
 {
+	if (str == NULL || *str == '=')
+		return (0);
 	while (str && *str && *str != '=')
 	{
-		if (ft_isspace(*str) == 1)
+		if (ft_isspace(*str) || ft_isascii(*str) == 0 || ft_isdigit(*str))
+			return (0);
+		else if (ft_isalnum(*str) == 0 && *str != '_')
+			return (0);
+		else if (ft_isalpha(*str))
+			break ;
+		++str;
+	}
+	while (str && *str && *str != '=')
+	{
+		if (ft_isspace(*str) || ft_isascii(*str) == 0)
+			return (0);
+		else if (ft_isalnum(*str) == 0 && *str != '_')
 			return (0);
 		++str;
 	}
