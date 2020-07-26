@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 18:02:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:03:09 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,14 +294,14 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 				{
 					if (urr->type == 2)
 					{
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC)) == -1)
+						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 4)
 					{
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND)) == -1)
+						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
 						else
 							dup2(fd, 1);

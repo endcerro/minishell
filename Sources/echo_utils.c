@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 16:36:46 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/26 19:27:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	parse_env_ls(char **str, int len, t_list *curr)
 			len++;
 		if ((query = ft_substr(d_pos, 1, len)) == 0)
 		{
+			// printf("here\n");
 			free(*str);
 			*str = 0;
 			return 0;

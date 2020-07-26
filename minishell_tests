@@ -18,7 +18,7 @@ cd											OK
 cd											OK
 cd .										OK
 cd ..										OK
-cd ~										OK
+cd ~										OK		//EXPAND
 cd 											OK
 cd no_file									OK
 cd a b c d									OK
@@ -49,7 +49,7 @@ whoami										OK
 
 XXXX pipe
 
-| echo										OK
+| echo										KO //SHOULD NOT BE WORKING
 echo | | echo								OK
 
 XXXX redirection
@@ -57,12 +57,12 @@ XXXX redirection
 cat < >										OK
 cat < <								   		OK
 cat < Makefile > test1 > test2 > test2		OK
-cat < no_file > test1 echo asdf				OK
+cat < no_file > test1 echo asdf				KO //DOES NOT ERROR PROPERLY
 
 XXXX pipe & redirection
 
 cat < Makefile | grep gcc > output			OK
-cat < nofile | grep gcc > output  			OK
+cat < nofile | grep gcc > output  			KO	//DOES NOT ERROR PROPERLY
 
 
 XXXX Commandes valides et basiques
@@ -83,7 +83,7 @@ echo /s/a/l/u/tXXXX 						OK
 echo \$PATH:abc 							OK
 echo \$PATH.abc								OK
 echo \$PATH\ abc							OK
-echo \$PATH\\abc							OK
+echo \$PATH\\abc							KO		//SEGFAULT
 echo \$PATH+abc								OK
 echo "\$PATH+abc"							OK
 echo \$PATH,abc								OK
@@ -141,7 +141,7 @@ pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | t
 
 
 
-pwd | cut -c7- | rev | tail | echo \$PWD	OK
+pwd | cut -c7- | rev | tail | echo \$PWD	KO
 
 XXXX Impossible de tester en récupérant PWD car on exit aussitôt
 XXXX Donc on teste via un ls pour check si on est au bon endroit
@@ -176,35 +176,35 @@ XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 
 											NEED TO SET ERRNO ?
 
-;											OK
+;											SHOULD ERROR
 ;;;											Change message ?
-<											Change message ?
->											Change message ?
+<											SEGFAULT
+>											SEGFAULT
 ;;;;;										Change message ?
 \"; ; ;\"									OK
 \"; < ;\"									OK
 \"; > ;\"									OK
-; pwd ; echo Hello							OK
+; pwd ; echo Hello							SHOULD ERROR
 pwd;;;ls 									Change message ?
 ;;ls;;
-;ls;pwd;
-\"											Change message ?
+;ls;pwd;									CHQNGE MESSQGE
+\"											OK
 \"\"										OK
 '' 											Kinda OK
 \"\"\"\"\"\" 								OK
- \"  \" 									OK
-|											OK
-  |;										OK
-;| 											OK
-;|<											OK
-<;											Change message ?
->;											Change message ?
-;<											OK
-;>
- ;< ls ;
- ;> ls ;
-'';
->>
+\"  \" 										OK
+|											SHOULD ERROR
+  |;										DIFF ERROR
+;| 											DIFF ERRROR
+;|<											DIFF ERRROR
+<;											SEGFAULT
+>;											SEGFQULT
+;<											SEGFQULT
+;>											SEGFQULT
+ ;< ls ;									SHOULD ERROR
+ ;> ls ;									SHOULD ERROR
+'';											WRONG ERROR	
+>>											SEGFQULT
   \"|\" ;
 '|'
   '|'
