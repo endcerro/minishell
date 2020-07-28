@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:38:03 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 20:21:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ void	trimbs_loop(t_list *curr, int i)
 }
 
 void	trimbs(t_list *curr)
-{
+{	
+	if (curr)
+		printf("CHECKING %s\n",curr->content );
 	while (curr && curr->content && curr->type == 1)
 	{
 		if (curr->content[0] != '\'')

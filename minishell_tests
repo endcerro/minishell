@@ -204,7 +204,7 @@ pwd;;;ls 									Change message ?
  ;< ls ;									SHOULD ERROR
  ;> ls ;									SHOULD ERROR
 '';											WRONG ERROR	
->>											SEGFQULT
+>>											SHOULD ERROR
   \"|\" ;
 '|'
   '|'
