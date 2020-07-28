@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:39:46 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:40:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 20:54:56 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	*checkpathbis(char **params, int j, int x)
 		if (g_mshell.env[x][i] == ':')
 		{
 			g_mshell.env[x][i] = 0;
+			if (*(params[j]) == '\0')
+				return (NULL);
 			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"),
 							params[j]);
 			g_mshell.env[x][i] = ':';
