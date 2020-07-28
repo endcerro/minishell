@@ -27,6 +27,13 @@ pwd											OK
 pwd a										OK
 pwd a b c d 								OK
 
+
+{
+	bash-3.2$ echo > $aoueb
+	bash: $aoueb: ambiguous redirect
+}											KO avec une variable qui n'existe pas
+
+
 XXXX export && env && unset
 
 export										OK
@@ -203,7 +210,7 @@ pwd;;;ls 									Change message ?
 ;>											CHANGE ERROR
  ;< ls ;									SHOULD ERROR
  ;> ls ;									SHOULD ERROR
-'';											WRONG ERROR	
+'';											WRONG ERROR
 >>											SEGFQULT
   \"|\" ;
 '|'

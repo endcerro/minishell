@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/28 20:17:08 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/28 20:19:56 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,30 +312,21 @@ int		openrdir(int *oldfd, int *npipe)
 					if (urr->type == 2)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 4)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 5)
 					{
 						if ((fd = open(file, O_RDONLY)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s: no such file or directory\n", file));
 						else
 							dup2(fd, 0);
 					}
@@ -347,10 +338,7 @@ int		openrdir(int *oldfd, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
@@ -359,10 +347,7 @@ int		openrdir(int *oldfd, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
@@ -371,10 +356,7 @@ int		openrdir(int *oldfd, int *npipe)
 						g_mshell.oldfdin = dup(0);
 						*oldfd += 2;
 						if ((fd = open(file, O_RDONLY)) == -1)
-						{
-							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
-							return (1);
-						}
+							return (ft_printh(2, 1, "minishell: %s: no such file or directory\n", file));
 						else
 							dup2(fd, 0);
 					}
