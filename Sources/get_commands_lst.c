@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/28 20:03:52 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 20:17:08 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ int		prep_ls(t_list *curr)
 		}
 	}
 	if(rawtext(curr))
-		return (1);	
+		return (1);
 	return (0);
 }
 
@@ -293,16 +293,13 @@ void	ms_exit(char *line, int *npipe)
 	exit(ex);
 }
 
-void	exec_command(char *line, t_list *lst, int *npipe)
+int		openrdir(int *oldfd, int *npipe)
 {
 	t_list	*urr;
 	char	*file;
 	int		fd;
-	int		oldfd;
 
 	urr = g_mshell.ls;
-	file = NULL;
-	oldfd = 0;
 	while (urr && urr->type != 6)
 	{
 		if (urr->type == 2 || urr->type == 4 || urr->type == 5)
@@ -317,7 +314,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 1);
@@ -327,7 +324,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 1);
@@ -337,7 +334,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						if ((fd = open(file, O_RDONLY)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 0);
@@ -348,11 +345,11 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					if (urr->type == 2)
 					{
 						g_mshell.oldfdout = dup(1);
-						++oldfd;
+						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 1);
@@ -360,11 +357,11 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					else if (urr->type == 4)
 					{
 						g_mshell.oldfdout = dup(1);
-						++oldfd;
+						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 1);
@@ -372,11 +369,11 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					else if (urr->type == 5)
 					{
 						g_mshell.oldfdin = dup(0);
-						oldfd += 2;
+						*oldfd += 2;
 						if ((fd = open(file, O_RDONLY)) == -1)
 						{
 							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
-							return ;
+							return (1);
 						}
 						else
 							dup2(fd, 0);
@@ -387,27 +384,38 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		}
 		urr = urr->next;
 	}
-	if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-		ms_exit(line, npipe);
-	else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
-		g_mshell.exitcode = echo_ls();
-	else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
+	return (0);
+}
+
+void	exec_command(char *line, t_list *lst, int *npipe)
+{
+	int		oldfd;
+
+	oldfd = 0;
+	if (openrdir(&oldfd, npipe) == 0)
 	{
-		env(NULL);
-		g_mshell.exitcode = 0;
+		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+			ms_exit(line, npipe);
+		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
+			g_mshell.exitcode = echo_ls();
+		else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
+		{
+			env(NULL);
+			g_mshell.exitcode = 0;
+		}
+		else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
+			g_mshell.exitcode = cd();
+		else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
+			g_mshell.exitcode = pwd();
+		else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
+			g_mshell.exitcode = export(NULL);
+		else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
+			g_mshell.exitcode = unset();
+		else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
+			ft_putstr("\033c");
+		else
+			commandorvar(npipe);
 	}
-	else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
-		g_mshell.exitcode = cd();
-	else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
-		g_mshell.exitcode = pwd();
-	else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
-		g_mshell.exitcode = export(NULL);
-	else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
-		g_mshell.exitcode = unset();
-	else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
-		ft_putstr("\033c");
-	else
-		commandorvar(npipe);
 	if (*npipe <= 0)
 	{
 		if (oldfd == 2)
