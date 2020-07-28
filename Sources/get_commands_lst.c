@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:28:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 19:54:18 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,21 +295,30 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 					if (urr->type == 2)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+							return ;
+						}
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 4)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+							return ;
+						}
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 5)
 					{
 						if ((fd = open(file, O_RDONLY)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
+							return ;
+						}
 						else
 							dup2(fd, 0);
 					}
@@ -321,7 +330,10 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						++oldfd;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+							return ;
+						}
 						else
 							dup2(fd, 1);
 					}
@@ -330,7 +342,10 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						++oldfd;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s\n", strerror(errno));
+							return ;
+						}
 						else
 							dup2(fd, 1);
 					}
@@ -339,7 +354,10 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 						g_mshell.oldfdin = dup(0);
 						oldfd += 2;
 						if ((fd = open(file, O_RDONLY)) == -1)
+						{
 							ft_printh(2, 1, "minishell: %s: no such file or directory\n", file);
+							return ;
+						}
 						else
 							dup2(fd, 0);
 					}
