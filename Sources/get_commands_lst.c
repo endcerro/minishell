@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:28:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 19:58:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void 	addlstendblock(t_list *lst, t_list *block)
 {
 	t_list *prev;
 	prev = 0;
+	printf("HERE\n");
 	block->type = -(block->type);
 	while (lst)
 	{
@@ -83,9 +84,13 @@ t_list	*correct_rdir(t_list *lst)
 		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev == 0)
 		{
 			block = curr;
-			curr = block->next->next;
+			curr = 0;
+			if (block->next)
+			{
+				curr = block->next->next;
+				block->next->next = 0;
+			}
 			newlst = curr;
-			block->next->next = 0;
 			addlstendblock(curr, block);
 			curr = newlst;
 			continue;
@@ -109,7 +114,7 @@ int 	islastrdir(t_list *lst, int type)
 	return 1;
 }
 
-int 	trim_rdir(t_list *lst)
+int 		trim_rdir(t_list *lst)
 {
 	t_list *curr;
 	t_list *prev;
@@ -129,7 +134,10 @@ int 	trim_rdir(t_list *lst)
 					fd = open(curr->next->content, O_APPEND | O_TRUNC | O_WRONLY | O_CREAT
 				, 0644);
 					if (fd == -1)
+					{
+						ft_printh(2, 1, "minishell: %s: no such file or directory\n", curr->next->content);
 						return ((g_mshell.exitcode = 1));
+					}
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -146,7 +154,10 @@ int 	trim_rdir(t_list *lst)
 					fd = open(curr->next->content, O_APPEND | O_WRONLY | O_CREAT
 				, 0644);
 					if (fd == -1)
+					{
+						ft_printh(2, 1, "minishell: %s: no such file or directory\n", curr->next->content);
 						return ((g_mshell.exitcode = 1));
+					}
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
@@ -237,12 +248,18 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
-	correct_rdir(curr);
+	if(curr->next && curr->next->next)
+		correct_rdir(curr);
 	curr = g_mshell.ls;
-	if (trim_rdir(curr))
-		return (1);
+	if(curr->next && curr->next->next)
+	{
+		if (trim_rdir(curr))
+		{
+			return (1);
+		}
+	}
 	if(rawtext(curr))
-		return (1);
+		return (1);	
 	return (0);
 }
 

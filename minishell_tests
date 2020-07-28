@@ -178,8 +178,8 @@ XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 
 ;											SHOULD ERROR
 ;;;											Change message ?
-<											SEGFAULT
->											SEGFAULT
+<											NEED TO ERROR
+>											NEED TO ERROR
 ;;;;;										Change message ?
 \"; ; ;\"									OK
 \"; < ;\"									OK
@@ -197,10 +197,10 @@ pwd;;;ls 									Change message ?
   |;										DIFF ERROR
 ;| 											DIFF ERRROR
 ;|<											DIFF ERRROR
-<;											SEGFAULT
->;											SEGFQULT
-;<											SEGFQULT
-;>											SEGFQULT
+<;											CHANGE ERROR
+>;											CHANGE ERROR
+;<											CHANGE ERROR
+;>											CHANGE ERROR
  ;< ls ;									SHOULD ERROR
  ;> ls ;									SHOULD ERROR
 '';											WRONG ERROR	
