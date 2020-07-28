@@ -210,8 +210,13 @@ pwd;;;ls 									Change message ?
 ;>											CHANGE ERROR
  ;< ls ;									SHOULD ERROR
  ;> ls ;									SHOULD ERROR
+<<<<<<< HEAD
+'';											WRONG ERROR	
+>>											SHOULD ERROR
+=======
 '';											WRONG ERROR
 >>											SEGFQULT
+>>>>>>> 1f2572ee782475a82075fa7f2fa7eb0ea3af9c5d
   \"|\" ;
 '|'
   '|'
