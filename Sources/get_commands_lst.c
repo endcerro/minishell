@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/28 19:59:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/28 20:03:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void 	addlstendblock(t_list *lst, t_list *block)
 {
 	t_list *prev;
 	prev = 0;
-	printf("HERE\n");
 	block->type = -(block->type);
 	while (lst)
 	{
@@ -122,6 +121,7 @@ int 		trim_rdir(t_list *lst)
 
 	curr = lst;
 	prev = 0;
+	ft_lstprint(lst);
 	while (curr && curr->type != 3)
 	{
 		while (curr && curr->type != 6)
@@ -174,8 +174,11 @@ int 		trim_rdir(t_list *lst)
 					int fd;
 
 					fd = open(curr->next->content, O_RDONLY);
-					if(fd == -1)
+					if (fd == -1)
+					{
+						ft_printh(2, 1, "minishell: %s: no such file or directory\n", curr->next->content);
 						return ((g_mshell.exitcode = 1));
+					}
 					close(fd);
 					prev->next = curr->next->next;
 					ft_lstdelone(curr->next);
