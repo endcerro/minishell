@@ -20,6 +20,8 @@ int		unset(void)
 	curr = g_mshell.ls->next;
 	while (curr && curr->type == 1)
 	{
+		if (ft_strchr(curr->content, '=') != NULL)
+			return (ft_printh(2, 1, "minishell: unset: \"%s\": identifiant non valable\n", curr->content));
 		i = 0;
 		while (g_mshell.env[i])
 		{
