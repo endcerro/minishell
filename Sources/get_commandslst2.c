@@ -82,7 +82,7 @@ void	trimbs_loop(t_list *curr, int i)
 }
 
 void	trimbs(t_list *curr)
-{	
+{
 	while (curr && curr->content) //&& curr->type == 1)
 	{
 		if (curr->content[0] != '\'')

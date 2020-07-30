@@ -221,7 +221,7 @@ int		rawtext(t_list *curr)
 				}
 				else
 				{
-					tmp = ft_lstnew(split[i]);
+					/* tmp = ft_lstnew(split[i]); */
 					if (!(tmp = ft_lstnew(split[i])))
 						return (freechar2ptr(split, 1));
 					split[i] = (char *)-1;
@@ -243,7 +243,10 @@ int		prep_ls(t_list *curr)
 {
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
+	{
+		ft_putstr_fd("AAAAA\n", 2);
 		return (1);
+	}
 	if (expand_vars(curr))
 		return (1);
 	trimbs(curr);
