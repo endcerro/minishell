@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/28 20:26:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/01 10:09:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ t_list	*correct_rdir(t_list *lst)
 		if( (curr->type == 2 || curr->type == 4 || curr->type == 5) && prev)
 		{
 			block = curr;
-			prev->next = block->next->next;
-			block->next->next = 0;
+			prev->next = (block->next) ? block->next->next : 0;
 			addlstendblock(prev, block);
 			curr = lst;
 		}
@@ -241,6 +240,7 @@ int		rawtext(t_list *curr)
 
 int		prep_ls(t_list *curr)
 {
+	ft_lstprint(curr);
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
 	{

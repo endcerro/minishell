@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:53:26 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/01 09:40:16 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ void	de_escape_chars(char *line)
 		else if (line[i] == -3)
 		{
 			line[i] = '\'';
+		}
+		else if (line[i] == -5)
+		{
+			line[i] = ';';
 		}
 		i++;
 	}

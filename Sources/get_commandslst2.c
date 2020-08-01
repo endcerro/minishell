@@ -6,11 +6,23 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/28 20:43:50 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/01 09:41:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int expand_t(char **str)
+{
+	if (*str && (*str)[0] == '~' && (*str)[1] == 0)
+	{
+		free(*str);
+		*str = ft_strdup(rethomedir());	
+		if (*str == 0)
+			return (1);
+	}
+	return (0);
+}
 
 int		expand_vars(t_list *curr)
 {
@@ -21,6 +33,8 @@ int		expand_vars(t_list *curr)
 	{
 		if (curr->content && curr->content[0] != '\'')
 		{
+			if (expand_t(&(curr->content)))
+				return (1);
 			parse_env_ls(&(curr->content), 0, curr);
 			if (curr->content && curr->content[0] == 0)
 			{

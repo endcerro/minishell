@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:38:32 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/01 09:21:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,6 @@ void				dealwithlstate2(char **oline);
 int					checklstate(char **oline, char **line);
 int					prompt(char **line);
 void				deconechar(char *str);
+char				*rethomedir(void);
 
 #endif
