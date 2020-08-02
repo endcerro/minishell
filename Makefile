@@ -46,7 +46,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:.c=.o)
 OBJS		=	$(OBJ:%=$(OBJD)/%)
 
-CFLAGS		=	-Wall -Wextra -O3 -g -fsanitize=address #-Werror
+CFLAGS		=	-Wall -Wextra -O3 -g #-fsanitize=address #-Werror
 
 CC			=	clang
 RM			=	rm -f

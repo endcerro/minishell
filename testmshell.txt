@@ -1,83 +1,88 @@
-/ var=“bonjour\toi” -> “bonjour\\toi”;
-// var=“bonjour\\toi” -> “bonjour\\toi”;
-// var=“bonjour\“toi” -> “bonjour\“toi”;
-// var=“bonjour\’toi” -> “bonjour\\’toi”;
-// var=“bonjour’toi” -> “bonjour’toi”;
-// var=bonjour\toi -> “bonjourtoi”;
-// var=bonjour\\toi -> “bonjour\\toi”;
-// var=bonjour\“toi -> “bonjour\“toi”;
-// var=bonjour\’toi -> “bonjour’toi”;
-// var=bonjour\ toi -> “bonjour toi”;
-// var=bonjour”toi -> retour_ligne;
-// var=‘bonjour\toi’ -> “bonjour\\toi”;
-// var=‘bonjour\\toi’ -> “bonjour\\\\toi”;
-// var=‘bonjour\“toi’ -> “bonjour\\\“toi”;
-// var=‘bonjour”toi’ -> “bonjour\“toi”;
-// var=’bonjour\‘toi’ -> retour a la ligne;
-[6:59 PM] export var=… ; export
-7:42
-echo "bip | bip ; coyotte > < \" "                   				. bip | bip ; coyotte >< " 
-cat | cat | cat | ls                                               . ligne ls et 3 retour a la ligne via Entrer
-$bla (non-export)                                            		. retour a la ligne
-export var ="cat Makefile | grep >"             				 . affiche le Makefile et erreurs pour |, grep..
-export $var                                                     	   . affiche export
-export $var=test                                               . message d'erreur
-export "test=ici"=coucou                               . test="ici=coucou"
-c$var Makefile (avec $var=at)                      . equivalent a cat Makefile
-export la même variable                                 . modifie la variable (si new value
-$LESS$VAR                                                       . command not found
-/bin/echo bonjour                                           . affiche bonjour
-not_cmd                                                             . cmd not found
-sleep 5 | exit                                                      . quitte apres 5sec
-echo bonjour > $test w/ test="o1 o2"        . erreur redirection ambigue
-echo $var bonjour avec $var non export     . [bonjour]
-echo "" bonjour                                                 . [ bonjour]
-cat -e > test1 < test2                                        . meme si test2 n'existe pas test1 doit être créé
-unset =                                                                . erreur
-export test="123"" ; echo $test                   . 123"
-echo "12\""                                                       . 12"
-cd /home/user42/                                         . chemin absolu
-$                                                                          . command not found
-not_cmd bonjour > salut                                . create file but error msg on standard entry
-env puis export puis env                                . les variables ne doivent pas etre triées
-cat bla                                                                                                  . 1
-ls bonjour                                                                                            . 2
-cat Makefile | grep pr | head -n 5 | cd test        (mybin)            . 1
-cat Makefile | grep pr | head -n 5 | cat test        (bin)                . 1
-cat Makefile | grep pr | head -n 5 | hello            (NA)                . 127
-echo bonjour >>> test                                      . erreur de syntaxe && erreur 2
-echo bonjour > > out                                         . erreur de syntaxe && erreur 2
-echo 2 >> out1 > out2                                       . n'efface pas out1
-echo 2 > out1 >> out2                                       . efface out1
-cat < test                                                             . aucun fichier ou dossier de ce type
-export var puis export var=test                      . verifier pas de doublon
-echo bonjour > $test                                         . redirection ambigue si test pas set
-file_name                                                             . cmd not found (pbm avec stat() pour les binaires)
-echo ~                                                                   . /home/user42
+var=“bonjour\toi” -> “bonjour\\toi”;					KO
+var=“bonjour\\toi” -> “bonjour\\toi”;					KO
+var=“bonjour\“toi” -> “bonjour\“toi”;					OK
+var=“bonjour\’toi” -> “bonjour\\’toi”;					KO
+var=“bonjour’toi” -> “bonjour’toi”;						OK
+var=bonjour\toi -> “bonjourtoi”;						OK
+var=bonjour\\toi -> “bonjour\\toi”;						KO
+var=bonjour\“toi -> “bonjour\“toi”;						OK
+var=bonjour\’toi -> “bonjour’toi”;						OK
+var=bonjour\ toi -> “bonjour toi”;						KO
+var=bonjour”toi -> retour_ligne;						OK
+var=‘bonjour\toi’ -> “bonjour\\toi”;					KO
+var=‘bonjour\\toi’ -> “bonjour\\\\toi”;					KO
+var=‘bonjour\“toi’ -> “bonjour\\\“toi”;					KO
+var=‘bonjour”toi’ -> “bonjour\“toi”;					OK
+var=’bonjour\‘toi’ -> retour a la ligne;				KO
+export var=… ; export 		   	  						OK
 
 
 
 
-cd ~                                                                       . redirige vers /home/user42
-cd ../../../../../..                                                  . pwd : /
-ctrl-C                                                                    O 130 sur bin(ex : sleep 10)&line vide //TOCHECK
-$SHLVL                                                               . doit être incrémenté a chaque lancement de minishell
-echo bonjour ; |                                                               . 2
-echo bonjour | |                                                               . 2
-|                    SHOULD ERROR                                                                      . 2
-echo bonjour |;                                                                . 2
-echo bonjour \; ls                                                          . bonjour ; ls
-echo bonjour > test\ 1                                                  . creation du fichier "test 1"
-cd $HOME/Bureau                                                       . accède au dossier Bureau
-echo "\s" & echo "\\s"                                                . should have the exact same output.
-echo \>                                                                          . >
-echo -n -n -nnnn -nnnnm                                             . -nnnnm
-echo -n -nnn hello -n                                                     . hello -n
-cd - (écrit le nouveau cwd [current working directory])
+echo "bip | bip ; coyotte > < \" " -> bip | bip ; coyotte >< "							OK
+cat | cat | cat | ls -> ligne ls et 3 retour a la ligne via Entrer						OK
+$bla (non-export) -> retour a la ligne													OK
+export var ="cat Makefile | grep >" -> affiche le Makefile et erreurs pour |, grep..	OK
+export $var -> affiche export															OK
+export $var=test -> message d'erreur													OK
+export "test=ici"=coucou -> test="ici=coucou"											OK
+c$var Makefile (avec $var=at) -> equivalent a cat Makefile								OK
+export la même variable -> modifie la variable (si new value							OK
+$LESS$VAR -> command not found															OK
+/bin/echo bonjour -> affiche bonjour													OK
+not_cmd -> cmd not found																OK
+sleep 5 | exit -> quitte apres 5sec														OK
+echo bonjour > $test w/ test="o1 o2" -> erreur redirection ambigue						KO
+echo $var bonjour avec $var non export -> [bonjour]										OK
+echo "" bonjour -> [ bonjour]		   	  												OK
+cat -e > test1 < test2 -> meme si test2 n'existe pas test1 doit être créé				OK
+unset = -> erreur	   	  	   	  				 	 	   			 					OK
+export test="123"" ; echo $test -> 123"													OK
+echo "12\"" -> 12"																		OK
+cd /home/user42/ -> chemin absolu														OK
+$ -> command not found																	OK
+not_cmd bonjour > salut -> create file but error msg on standard entry					OK
+env puis export puis env -> les variables ne doivent pas etre triées					OK
+cat bla -> 1																			OK
+ls bonjour -> 2																			OK
+cat Makefile | grep pr | head -n 5 | cd test -> (mybin) . 1								OK
+cat Makefile | grep pr | head -n 5 | cat test -> (bin) . 1								OK
+cat Makefile | grep pr | head -n 5 | hello -> (NA) . 127 								OK
+echo bonjour >>> test -> erreur de syntaxe && erreur 2									LEAK
+echo bonjour > > out -> erreur de syntaxe && erreur 2									OK
+echo 2 >> out1 > out2 -> n'efface pas out1												OK
+echo 2 > out1 >> out2 -> efface out1													OK
+cat < test -> aucun fichier ou dossier de ce type										OK
+export var puis export var=test -> verifier pas de doublon								OK
+echo bonjour > $test -> redirection ambigue si test pas set								OK
+file_name -> cmd not found (pbm avec stat() pour les binaires)							OK
+echo ~ -> /home/user42																	OK
+
+
+
+
+cd ~ -> redirige vers /home/user42														OK
+cd ../../../../../.. -> pwd : /															OK
+ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										//TO CHECK
+$SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
+echo bonjour ; | -> 2
+echo bonjour | | -> 2
+| -> 2																					SHOULD ERROR
+echo bonjour |; -> 2
+echo bonjour \; ls -> bonjour ; ls
+echo bonjour > test\ 1 -> creation du fichier "test 1"
+cd $HOME/Bureau -> accède au dossier Bureau
+echo "\s" & echo "\\s" -> should have the exact same output.
+echo \> -> >
+echo -n -n -nnnn -nnnnm -> -nnnnm
+echo -n -nnn hello -n -> hello -n
+cd - -> (écrit le nouveau cwd [current working directory])
+
 dans cd {sans arg/~/-} : faire attentions aux variable d'env si par ex $OLDPWD n'existe pas
-cat /dev/random | head -n 1 | cat -e                          . /!\ a faire sur la VM
-unset var                                                                          . var1 ne doit pas etre unset
-export ""  et unset ""                                                     . erreur
-echo test > file test1                         //ERROR                   . = echo test test1 > file
 
-echo \>\> LOOP INFINI
+cat /dev/random | head -n 1 | cat -e	  	  		   		 . /!\ a faire sur la VM
+unset var -> var1 ne doit pas etre unset												OK
+export ""  et unset "" -> erreur
+echo test > file test1 -> = echo test test1 > file										//ERROR
+
+echo \>\>																				LOOP INFINI
