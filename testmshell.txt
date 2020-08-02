@@ -35,7 +35,7 @@ sleep 5 | exit -> quitte apres 5sec														OK
 echo bonjour > $test w/ test="o1 o2" -> erreur redirection ambigue						KO
 echo $var bonjour avec $var non export -> [bonjour]										OK
 echo "" bonjour -> [ bonjour]		   	  												OK
-cat -e > test1 < test2 -> meme si test2 n'existe pas test1 doit être créé				OK
+cat -e > test1 < test2 -> meme si test2 n'existe pas test1 doit être créé				KO tout bug
 unset = -> erreur	   	  	   	  				 	 	   			 					OK
 export test="123"" ; echo $test -> 123"													OK
 echo "12\"" -> 12"																		OK
@@ -46,43 +46,43 @@ env puis export puis env -> les variables ne doivent pas etre triées					OK
 cat bla -> 1																			OK
 ls bonjour -> 2																			OK
 cat Makefile | grep pr | head -n 5 | cd test -> (mybin) . 1								OK
-cat Makefile | grep pr | head -n 5 | cat test -> (bin) . 1								OK
+cat Makefile | grep pr | head -n 5 | cat test -> (bin) . 1								KO
 cat Makefile | grep pr | head -n 5 | hello -> (NA) . 127 								OK
 echo bonjour >>> test -> erreur de syntaxe && erreur 2									LEAK
 echo bonjour > > out -> erreur de syntaxe && erreur 2									OK
-echo 2 >> out1 > out2 -> n'efface pas out1												OK
-echo 2 > out1 >> out2 -> efface out1													OK
+echo 2 >> out1 > out2 -> n'efface pas out1												KO tout bug
+echo 2 > out1 >> out2 -> efface out1													KO tout bug
 cat < test -> aucun fichier ou dossier de ce type										OK
 export var puis export var=test -> verifier pas de doublon								OK
-echo bonjour > $test -> redirection ambigue si test pas set								OK
+echo bonjour > $test -> redirection ambigue si test pas set								KO
 file_name -> cmd not found (pbm avec stat() pour les binaires)							OK
-echo ~ -> /home/user42																	OK
+echo ~ -> /home/user42																	SEGFLT si $HOME n'existe pas
 
 
 
 
-cd ~ -> redirige vers /home/user42														OK
+cd ~ -> redirige vers /home/user42														SEGFLT si $HOME n'existe pas
 cd ../../../../../.. -> pwd : /															OK
-ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										//TO CHECK
+ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										OK
 $SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
-echo bonjour ; | -> 2
-echo bonjour | | -> 2
+echo bonjour ; | -> 2																	KO
+echo bonjour | | -> 2																	KO
 | -> 2																					SHOULD ERROR
-echo bonjour |; -> 2
-echo bonjour \; ls -> bonjour ; ls
-echo bonjour > test\ 1 -> creation du fichier "test 1"
-cd $HOME/Bureau -> accède au dossier Bureau
-echo "\s" & echo "\\s" -> should have the exact same output.
-echo \> -> >
-echo -n -n -nnnn -nnnnm -> -nnnnm
-echo -n -nnn hello -n -> hello -n
-cd - -> (écrit le nouveau cwd [current working directory])
+echo bonjour |; -> 2																	KO
+echo bonjour \; ls -> bonjour ; ls														OK
+echo bonjour > test\ 1 -> creation du fichier "test 1"									KO tout bug
+cd $HOME/Bureau -> accède au dossier Bureau	  											OK
+echo "\s" & echo "\\s" -> should have the exact same output.							OK
+echo \> -> >																			OK
+echo -n -n -nnnn -nnnnm -> -nnnnm														OK
+echo -n -nnn hello -n -> hello -n														OK
+cd - -> (écrit le nouveau cwd [current working directory])								KO
 
 dans cd {sans arg/~/-} : faire attentions aux variable d'env si par ex $OLDPWD n'existe pas
 
-cat /dev/random | head -n 1 | cat -e	  	  		   		 . /!\ a faire sur la VM
+cat /dev/random | head -n 1 | cat -e	  	  		   		 . /!\ a faire sur la VM	OK
 unset var -> var1 ne doit pas etre unset												OK
-export ""  et unset "" -> erreur
+export ""  et unset "" -> erreur														KO
 echo test > file test1 -> = echo test test1 > file										//ERROR
 
-echo \>\>																				LOOP INFINI
+echo \>\>																				OK
