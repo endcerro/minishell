@@ -14,12 +14,16 @@
 
 int expand_t(char **str)
 {
+	char *home;
+
 	if (*str && (*str)[0] == '~' && (*str)[1] == 0)
 	{
 		free(*str);
-		*str = ft_strdup(rethomedir());	
+		if ((home = rethomedir()) == NULL)
+			return (ft_printh(2, 1, "minishell: $HOME not set\n"));
+		*str = ft_strdup(home);
 		if (*str == 0)
-			return (1);
+			return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 	}
 	return (0);
 }
