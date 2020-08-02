@@ -1,19 +1,19 @@
-var=“bonjour\toi” -> “bonjour\\toi”;					KO
-var=“bonjour\\toi” -> “bonjour\\toi”;					KO
-var=“bonjour\“toi” -> “bonjour\“toi”;					OK
-var=“bonjour\’toi” -> “bonjour\\’toi”;					KO
-var=“bonjour’toi” -> “bonjour’toi”;						OK
-var=bonjour\toi -> “bonjourtoi”;						OK
-var=bonjour\\toi -> “bonjour\\toi”;						KO
-var=bonjour\“toi -> “bonjour\“toi”;						OK
-var=bonjour\’toi -> “bonjour’toi”;						OK
-var=bonjour\ toi -> “bonjour toi”;						KO
-var=bonjour”toi -> retour_ligne;						OK
-var=‘bonjour\toi’ -> “bonjour\\toi”;					KO
-var=‘bonjour\\toi’ -> “bonjour\\\\toi”;					KO
-var=‘bonjour\“toi’ -> “bonjour\\\“toi”;					KO
-var=‘bonjour”toi’ -> “bonjour\“toi”;					OK
-var=’bonjour\‘toi’ -> retour a la ligne;				KO
+var="bonjour\toi" -> "bonjour\\toi";					KO
+var="bonjour\\toi" -> "bonjour\\toi";					KO
+var="bonjour\"toi" -> "bonjour\"toi";					OK
+var="bonjour\'toi" -> "bonjour\\'toi";					KO
+var="bonjour'toi" -> "bonjour'toi";						OK
+var=bonjour\toi -> "bonjourtoi";						OK
+var=bonjour\\toi -> "bonjour\\toi";						KO
+var=bonjour\"toi -> "bonjour\"toi";						OK
+var=bonjour\'toi -> "bonjour'toi";						OK
+var=bonjour\ toi -> "bonjour toi";						KO
+var=bonjour"toi -> retour_ligne;						OK
+var='bonjour\toi' -> "bonjour\\toi";					KO
+var='bonjour\\toi' -> "bonjour\\\\toi";					KO
+var='bonjour\"toi' -> "bonjour\\\"toi";					KO
+var='bonjour"toi' -> "bonjour\"toi";					OK
+var='bonjour\'toi' -> retour a la ligne;				KO
 export var=… ; export 		   	  						OK
 
 
