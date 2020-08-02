@@ -19,6 +19,7 @@ int expand_t(char **str)
 	if (*str && (*str)[0] == '~' && (*str)[1] == 0)
 	{
 		free(*str);
+		*str = NULL;
 		if ((home = rethomedir()) == NULL)
 			return (ft_printh(2, 1, "minishell: $HOME not set\n"));
 		*str = ft_strdup(home);

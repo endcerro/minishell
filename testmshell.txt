@@ -56,12 +56,12 @@ cat < test -> aucun fichier ou dossier de ce type										OK
 export var puis export var=test -> verifier pas de doublon								OK
 echo bonjour > $test -> redirection ambigue si test pas set								KO
 file_name -> cmd not found (pbm avec stat() pour les binaires)							OK
-echo ~ -> /home/user42																	INVALID FREE si $HOME n'existe pas
+echo ~ -> /home/user42																	OK
 
 
 
 
-cd ~ -> redirige vers /home/user42														INVALID FREE si $HOME n'existe pas
+cd ~ -> redirige vers /home/user42														OK
 cd ../../../../../.. -> pwd : /															OK
 ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										OK
 $SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
