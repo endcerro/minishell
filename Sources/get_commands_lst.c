@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/01 10:09:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/03 19:33:38 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	remove_rdir(t_list **lst)
 void 	addlstendblock(t_list *lst, t_list *block)
 {
 	t_list *prev;
-	prev = 0;
+
+	prev = NULL;
 	block->type = -(block->type);
 	while (lst)
 	{
@@ -67,26 +68,28 @@ t_list	*correct_rdir(t_list *lst)
 	t_list *prev;
 	t_list *block;
 
-	prev = 0;
+	prev = NULL;
 	curr = lst;
 	newlst = lst;
 	while (curr)
 	{
-		if( (curr->type == 2 || curr->type == 4 || curr->type == 5) && prev)
+		if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev)
 		{
 			block = curr;
-			prev->next = (block->next) ? block->next->next : 0;
+			prev->next = (block->next) ? block->next->next : NULL;
+			if (block->next)
+				block->next->next = NULL;
 			addlstendblock(prev, block);
 			curr = lst;
 		}
-		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev == 0)
+		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev == NULL)
 		{
 			block = curr;
-			curr = 0;
+			curr = NULL;
 			if (block->next)
 			{
 				curr = block->next->next;
-				block->next->next = 0;
+				block->next->next = NULL;
 			}
 			newlst = curr;
 			addlstendblock(curr, block);
