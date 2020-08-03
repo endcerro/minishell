@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/03 19:33:38 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/03 20:57:41 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,8 +267,8 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
-	if(rawtext(curr))
-		return (1);
+/* 	if(rawtext(curr)) */
+/* 		return (1); */
 	return (0);
 }
 
@@ -299,6 +299,17 @@ void	ms_exit(char *line, int *npipe)
 	exit(ex);
 }
 
+int		checkspace(char *str)
+{
+	while (*str)
+	{
+		if (ft_isspace(*str))
+			return (1);
+		++str;
+	}
+	return (0);
+}
+
 int		openrdir(int *oldfd, int *npipe)
 {
 	t_list	*urr;
@@ -312,8 +323,11 @@ int		openrdir(int *oldfd, int *npipe)
 		{
 			if (urr->next)
 			{
-				file = urr->next->content;
-				if (file && urr && *npipe > 0)
+				if (urr->next->rawtext == 1 && checkspace(urr->next->content) == 1)
+					return (ft_printh(2, 1, "minishell: %s: ambiguous redirect\n", urr->next->content));
+				if (!(file = urr->next->content))
+					return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+				if (urr && *npipe > 0)
 				{
 					if (urr->type == 2)
 					{
@@ -337,7 +351,7 @@ int		openrdir(int *oldfd, int *npipe)
 							dup2(fd, 0);
 					}
 				}
-				else if (file && urr)
+				else if (urr)
 				{
 					if (urr->type == 2)
 					{
@@ -370,7 +384,8 @@ int		openrdir(int *oldfd, int *npipe)
 				urr = urr->next;
 			}
 		}
-		urr = urr->next;
+		if (urr)
+			urr = urr->next;
 	}
 	return (0);
 }
@@ -382,6 +397,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	oldfd = 0;
 	if (openrdir(&oldfd, npipe) == 0)
 	{
+		rawtext(lst);
 		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 			ms_exit(line, npipe);
 		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)

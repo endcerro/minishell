@@ -32,7 +32,7 @@ $LESS$VAR -> command not found															OK
 /bin/echo bonjour -> affiche bonjour													OK
 not_cmd -> cmd not found																OK
 sleep 5 | exit -> quitte apres 5sec														OK
-echo bonjour > $test w/ test="o1 o2" -> erreur redirection ambigue						KO
+echo bonjour > $test w/ test="o1 o2" -> erreur redirection ambigue						OK
 echo $var bonjour avec $var non export -> [bonjour]										OK
 echo "" bonjour -> [ bonjour]		   	  												OK
 cat -e > test1 < test2 -> meme si test2 n'existe pas test1 doit être créé				OK
