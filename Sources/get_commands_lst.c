@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 17:57:44 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/04 19:08:34 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ int 		trim_rdir(t_list *lst)
 
 	curr = lst;
 	prev = 0;
-	ft_lstprint(lst);
 	while (curr && curr->type != 3)
 	{
 		while (curr && curr->type != 6)
@@ -243,23 +242,31 @@ int		rawtext(t_list *curr)
 
 int		prep_ls(t_list *curr)
 {
-	ft_lstprint(curr);
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
-	{
-		ft_putstr_fd("AAAAA\n", 2);
 		return (1);
-	}
+	ft_lstprint(curr);
 	if (expand_vars(curr))
 		return (1);
+	printf("1\n");
+	ft_lstprint(curr);
 	trimbs(curr);
+	printf("2\n");
+	ft_lstprint(curr);
+	
 	if (correctlst(curr))
 		return (1);
+	// printf("3\n");
+	// ft_lstprint(curr);
 	if (mergelst(curr))
 		return (1);
+	// printf("4\n");
+	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 		correct_rdir(curr);
 	curr = g_mshell.ls;
+	// printf("5\n");
+	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 	{
 		if (trim_rdir(curr))
@@ -267,6 +274,8 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
+	// printf("E\n");
+	ft_lstprint(curr);
 /* 	if(rawtext(curr)) */
 /* 		return (1); */
 	return (0);
@@ -478,7 +487,7 @@ void	checkinput_ls(char *line)
 		g_mshell.ls = tmp;
 		if (prep_ls(tmp))
 			return ;
-		ft_lstprint(tmp);
+		// ft_lstprint(tmp);
 		curr = g_mshell.ls;
 		npipe = countpipes(curr);
 		if (npipe != 0)

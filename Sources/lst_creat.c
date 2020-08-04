@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 18:02:06 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/04 19:35:06 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ void	de_escape_chars(char *line)
 		{
 			line[i] = '|';
 		}
+		else if (line[i] == -9)
+		{
+			line[i] = ' ';
+		}
 		i++;
 	}
 }
@@ -79,7 +83,7 @@ int		correctlst(t_list *lst)
 	while (lst && lst->content)
 	{
 		trim_quotes(lst->content);
-		parse_bs(lst->content);
+		// parse_bs(lst->content); // ATTENTION DANGER !!!
 		de_escape_chars(lst->content);
 		lst = lst->next;
 	}
@@ -101,7 +105,7 @@ t_list	*split_line_lst(char *line, int i)
 			if ((lst = ft_lstnew_p(get_word_lst(line, &i, 0))) == NULL
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
-			else if (line[i] != ' ' && line[i] != 0)
+			else if (!ft_isspace(line[i]) && line[i] != 0)
 			{
 				lst->nospace = 1;
 			}

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 17:45:01 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/04 19:11:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	trimbs_loop(t_list *curr, int i)
 				qtcp /= 2;
 			else if (qtcp != 1)
 				qtcp = (qtcp - 1) / 2 + 1;
-			if (curr->content[0] == '\"' && curr->content[j] < 0)
+			if (curr->content[0] == '\"' && curr->content[j] < 0 && curr->content[j] != -3)
 				qtcp++;
 			j = -1;
 			while (++j < qtcp)
@@ -104,7 +104,8 @@ void	trimbs(t_list *curr)
 {
 	while (curr && curr->content) //&& curr->type == 1)
 	{
-		if (curr->content[0] != '\'')
+		printf("LOOKING AT %s\n",curr->content );
+		if (curr->content[0] != '\'' && !curr->rawtext)
 			trimbs_loop(curr, 0);
 		curr = curr->next;
 	}
@@ -119,7 +120,6 @@ int		check_valid(t_list *lst)
 	cp_d = 0;
 	while (lst)
 	{
-		ft_lstprint(lst);
 		if (lst->type == 3 || lst->type == 6)
 			cp_d++;
 		else if (lst->type != 1)

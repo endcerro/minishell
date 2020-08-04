@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/01 13:38:29 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/04 19:31:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,16 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 			line[i] = -8;
 		else if (line[i] == '<' && bscpt % 2)
 			line[i] = -7;
+		else if (line[i] == ' ' && bscpt % 2)
+			line[i] = -9;
+		else if (line[i] == '\t' && bscpt % 2)
+			line[i] = -10;
+		else if (line[i] == '\r' && bscpt % 2)
+			line[i] = -11;
+		else if (line[i] == '\v' && bscpt % 2)
+			line[i] = -12;
+		else if (line[i] == '\f' && bscpt % 2)
+			line[i] = -14;
 		else if (line[i] == '\'' && bscpt % 2 && line[i + 1])
 			if (sqnb == 0)
 				line[i] = -3;
