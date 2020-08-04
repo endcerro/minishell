@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/01 09:41:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/04 17:45:01 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int		check_valid(t_list *lst)
 	cp_d = 0;
 	while (lst)
 	{
+		ft_lstprint(lst);
 		if (lst->type == 3 || lst->type == 6)
 			cp_d++;
 		else if (lst->type != 1)

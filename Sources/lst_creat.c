@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/01 13:38:41 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/04 18:02:06 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,17 @@ t_list	*split_line_lst(char *line, int i)
 	return (f_lst);
 }
 
-void joindrdir(t_list *in)
+void	joindrdir(t_list *in)
 {
-	while(in)
+	t_list *tmp;
+
+	while (in)
 	{
 		if (in->content[0] == '>'&& in->nospace && in->next && in->next->content[0] == '>')
 		{
+			free(in->content);
 			in->content = ft_strdup(">>");
-			t_list *tmp = in->next->next;
+			tmp = in->next->next;
 			ft_lstdelone(in->next);
 			in->next = tmp;
 		}
