@@ -7,13 +7,13 @@ var=bonjour\toi -> bonjourtoi;															OK
 var=bonjour\\toi -> bonjour\toi															OK
 var=bonjour\"toi -> bonjour"toi															OK
 var=bonjour\'toi -> bonjour'toi															OK
-var=bonjour\ toi -> bonjour toi															-KO
+var=bonjour\ toi -> bonjour toi															OK
 var=bonjour"toi -> retour_ligne															OK
 var='bonjour\toi' -> bonjour\toi														OK
 var='bonjour\\toi' -> bonjour\\toi														OK
 var='bonjour\"toi' -> bonjour\"toi														OK
 var='bonjour"toi' -> bonjour"toi														OK
-var='bonjour\'toi' -> retour a la ligne;												-KO
+var='bonjour\'toi' -> retour a la ligne;												OK
 export var=… ; export																	OK
 
 
@@ -54,9 +54,12 @@ echo 2 >> out1 > out2 -> n'efface pas out1												OK
 echo 2 > out1 >> out2 -> efface out1													OK
 cat < test -> aucun fichier ou dossier de ce type										OK
 export var puis export var=test -> verifier pas de doublon								OK
-echo bonjour > $test -> redirection ambigue si test pas set								-KO
+echo bonjour > $test -> redirection ambigue si test pas set								OK
 file_name -> cmd not found (pbm avec stat() pour les binaires)							OK
 echo ~ -> /home/user42																	OK
+
+
+echo test >																				OK
 
 
 
@@ -65,12 +68,12 @@ cd ~ -> redirige vers /home/user42														OK
 cd ../../../../../.. -> pwd : /															OK
 ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										OK
 $SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
-echo bonjour ; | -> 2																	-KO
-echo bonjour | | -> 2																	-KO
-| -> 2																					SHOULD ERROR
-echo bonjour |; -> 2																	-KO
+echo bonjour ; | -> 2																	OK
+echo bonjour | | -> 2																	OK
+| -> 2																					OK
+echo bonjour |; -> 2																	OK
 echo bonjour \; ls -> bonjour ; ls														OK
-echo bonjour > test\ 1 -> creation du fichier "test 1"									-KO
+echo bonjour > test\ 1 -> creation du fichier "test 1"									OK
 cd $HOME/Bureau -> accède au dossier Bureau	  											OK
 echo "\s" & echo "\\s" -> should have the exact same output.							OK
 echo \> -> >																			OK
@@ -82,7 +85,7 @@ dans cd {sans arg/~/-} : faire attentions aux variable d'env si par ex $OLDPWD n
 
 cat /dev/random | head -n 1 | cat -e	  	  		   		 . /!\ a faire sur la VM	OK
 unset var -> var1 ne doit pas etre unset												OK
-export ""  et unset "" -> erreur														-KO
+export ""  et unset "" -> erreur														OK
 echo test > file test1 -> = echo test test1 > file										OK
 
 echo \>\>																				OK

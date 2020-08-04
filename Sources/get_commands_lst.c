@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 19:08:34 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/04 22:16:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,17 +308,6 @@ void	ms_exit(char *line, int *npipe)
 	exit(ex);
 }
 
-int		checkspace(char *str)
-{
-	while (*str)
-	{
-		if (ft_isspace(*str))
-			return (1);
-		++str;
-	}
-	return (0);
-}
-
 int		openrdir(int *oldfd, int *npipe)
 {
 	t_list	*urr;
@@ -332,8 +321,8 @@ int		openrdir(int *oldfd, int *npipe)
 		{
 			if (urr->next)
 			{
-				if (urr->next->rawtext == 1 && checkspace(urr->next->content) == 1)
-					return (ft_printh(2, 1, "minishell: %s: ambiguous redirect\n", urr->next->content));
+//				if (urr->next->rawtext == 1 && checkspace(urr->next->content) == 1)
+//					return (ft_printh(2, 1, "minishell: %s: ambiguous redirect\n", urr->next->content));
 				if (!(file = urr->next->content))
 					return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 				if (urr && *npipe > 0)

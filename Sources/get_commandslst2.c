@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 19:11:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/04 21:11:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ int expand_t(char **str)
 	return (0);
 }
 
+int		checkspace(char *str)
+{
+	while (*str)
+	{
+		if (ft_isspace(*str))
+			return (1);
+		++str;
+	}
+	return (0);
+}
+
 int		expand_vars(t_list *curr)
 {
 	t_list *prev;
@@ -41,9 +52,18 @@ int		expand_vars(t_list *curr)
 			if (expand_t(&(curr->content)))
 				return (1);
 			parse_env_ls(&(curr->content), 0, curr);
+			if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
+			{
+				if (checkspace(curr->content))
+					return (ft_printh(2, 1, "minishell: ambiguous redirect\n"));
+			}
 			if (curr->content && curr->content[0] == 0)
 			{
-				if (prev)
+				if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
+				{
+					return (ft_printh(2, 1, "minishell: ambiguous redirect\n"));
+				}
+				else if (prev)
 				{
 					prev->next = curr->next;
 					ft_lstdelone(curr);
@@ -104,7 +124,6 @@ void	trimbs(t_list *curr)
 {
 	while (curr && curr->content) //&& curr->type == 1)
 	{
-		printf("LOOKING AT %s\n",curr->content );
 		if (curr->content[0] != '\'' && !curr->rawtext)
 			trimbs_loop(curr, 0);
 		curr = curr->next;
@@ -113,24 +132,44 @@ void	trimbs(t_list *curr)
 
 int		check_valid(t_list *lst)
 {
-	int cp_r;
-	int cp_d;
+	int 	cp_r;
+	int 	cp_d;
+	t_list 	*first;
 
+
+	first = lst;
 	cp_r = 0;
 	cp_d = 0;
 	while (lst)
 	{
 		if (lst->type == 3 || lst->type == 6)
+		{
 			cp_d++;
+			if ((lst->type == 6 && lst->next == NULL) || lst == first)
+			{
+				g_mshell.exitcode = 258;
+				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `|'\n"));
+			}
+		}
 		else if (lst->type != 1)
+		{
 			cp_r++;
+			if (lst->next == 0 || lst->next->content == 0 || lst->next->content[0] == 0)
+			{
+				g_mshell.exitcode = 258;
+				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `newline'\n"));
+			}
+		}
 		else
 		{
 			cp_r = 0;
 			cp_d = 0;
 		}
-		if ((cp_d > 1 || cp_r > 1))
+		if ((cp_d > 1 || cp_r > 1) || (cp_r + cp_d > 1))
+		{
+			g_mshell.exitcode = 258;
 			return (ft_printh(2, 0, SYNTERR, lst->content));
+		}
 		lst = lst->next;
 	}
 	return (1);

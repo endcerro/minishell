@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:06:51 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/04 21:37:38 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,23 @@ int		unset(void)
 	curr = g_mshell.ls->next;
 	while (curr && curr->type == 1)
 	{
-		if (ft_strchr(curr->content, '=') != NULL)
-			return (ft_printh(2, 1, "minishell: unset: \"%s\": identifiant non valable\n", curr->content));
-		i = 0;
-		while (g_mshell.env[i])
+		if (ft_strchr(curr->content, '=') != NULL || *curr->content == 0)
+			ft_printh(2, 1, "minishell: unset: \"%s\": identifiant non valable\n", curr->content);
+		else
 		{
-			if (!check_match(g_mshell.env[i], curr->content))
+			i = 0;
+			while (g_mshell.env[i])
 			{
-				free(g_mshell.env[i]);
-				while (g_mshell.env[++i])
-					g_mshell.env[i - 1] = g_mshell.env[i];
-				g_mshell.env[i - 1] = 0;
-				break ;
+				if (!check_match(g_mshell.env[i], curr->content))
+				{
+					free(g_mshell.env[i]);
+					while (g_mshell.env[++i])
+						g_mshell.env[i - 1] = g_mshell.env[i];
+					g_mshell.env[i - 1] = 0;
+					break ;
+				}
+				i++;
 			}
-			i++;
 		}
 		curr = curr->next;
 	}
@@ -114,7 +117,7 @@ int		unset_var(char *target)
 
 int		check_valid_export(char *str)
 {
-	if (str == NULL || *str == '=')
+	if (str == NULL || *str == 0 || *str == '=')
 		return (0);
 	while (str && *str && *str != '=')
 	{
