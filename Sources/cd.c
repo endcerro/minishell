@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 19:39:51 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:52:12 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ int		cd(void)
 
 	pwd = getcwdwrap();
 	if ((x = cdbis()) != -1)
+	{
+		free(pwd);
 		return (x);
+	}
 	pwd = ft_strjoinf2("OLDPWD=", pwd);
 	export(pwd);
 	free(pwd);
