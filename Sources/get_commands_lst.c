@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 20:23:09 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 20:29:19 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ int		rawtext(t_list *curr)
 	int i;
 	t_list *tmp;
 	t_list *cache;
+	t_list *prev;
 
 	split = 0;
 	while (curr)
@@ -210,9 +211,15 @@ int		rawtext(t_list *curr)
 		if (curr->rawtext == 1)
 		{
 			i = 0;
+			if (prev->type == 2 || prev->type == 4 || prev->type == 5)
+			{
+				prev = curr;
+				curr = curr->next;
+				continue;
+			}
 			if(!(split = ft_split(curr->content, ' ')))
 				return (1);
-			while (split[i])
+			while (split && split[i])
 			{
 				if (i == 0)
 				{
@@ -234,6 +241,7 @@ int		rawtext(t_list *curr)
 				i++;
 			}
 		}
+		prev = curr;
 		curr = curr->next;
 	}
 	free(split);
@@ -276,8 +284,8 @@ int		prep_ls(t_list *curr)
 	}
 	printf("E\n");
 	ft_lstprint(curr);
-/* 	if(rawtext(curr)) */
-/* 		return (1); */
+ 	if(rawtext(curr)) 
+ 		return (1); 
 	return (0);
 }
 
@@ -395,7 +403,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	oldfd = 0;
 	if (openrdir(&oldfd, npipe) == 0)
 	{
-		rawtext(lst);
+		// rawtext(lst);
 		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 			ms_exit(line, npipe);
 		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
