@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 20:06:02 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/05 20:11:06 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,27 +248,6 @@ int		prep_ls(t_list *curr)
 	ft_lstprint(curr);
 	if (expand_vars(curr))
 		return (1);
-<<<<<<< HEAD
-/* 	printf("1\n"); */
-/* 	ft_lstprint(curr); */
-	trimbs(curr);
-/* 	printf("2\n"); */
-/* 	ft_lstprint(curr); */
-
-	if (correctlst(curr))
-		return (1);
-/* 	printf("3\n"); */
-/* 	ft_lstprint(curr); */
-	if (mergelst(curr))
-		return (1);
-/* 	printf("4\n"); */
-/* 	ft_lstprint(curr); */
-	if(curr->next && curr->next->next)
-		correct_rdir(curr);
-	curr = g_mshell.ls;
-/* 	printf("5\n"); */
-/* 	ft_lstprint(curr); */
-=======
 	// printf("1\n");
 	// ft_lstprint(curr);
 	trimbs(curr);
@@ -288,7 +267,6 @@ int		prep_ls(t_list *curr)
 	curr = g_mshell.ls;
 	// printf("5\n");
 	// ft_lstprint(curr);
->>>>>>> fdff51f2134ae7893d9c64cb7818f09cf90a22e6
 	if(curr->next && curr->next->next)
 	{
 		if (trim_rdir(curr))
@@ -296,13 +274,8 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
-<<<<<<< HEAD
-/* 	printf("E\n"); */
-/* 	ft_lstprint(curr); */
-=======
 	// printf("E\n");
 	// ft_lstprint(curr);
->>>>>>> fdff51f2134ae7893d9c64cb7818f09cf90a22e6
 /* 	if(rawtext(curr)) */
 /* 		return (1); */
 	return (0);
