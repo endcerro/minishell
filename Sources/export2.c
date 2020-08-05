@@ -6,18 +6,21 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 21:37:38 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:20:13 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		unset(void)
+int		unset(char *param)
 {
 	int		i;
 	t_list	*curr;
 
-	curr = g_mshell.ls->next;
+	if (param)
+		curr = ft_lstnew(param);
+	else
+		curr = g_mshell.ls->next;
 	while (curr && curr->type == 1)
 	{
 		if (ft_strchr(curr->content, '=') != NULL || *curr->content == 0)
@@ -40,6 +43,8 @@ int		unset(void)
 		}
 		curr = curr->next;
 	}
+	if (param)
+		ft_lstdelone(curr);
 	return (0);
 }
 

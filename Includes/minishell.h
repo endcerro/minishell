@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 18:42:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:19:32 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_mshell			g_mshell;
 
 int					pwd();
 int					cd();
-int					unset();
+int					unset(char *param);
 int					echo_ls();
 int					export(char *params);
 char				*env(char *request);
