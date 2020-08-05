@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 19:45:46 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:54:42 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int		prep_ls(t_list *curr)
 	trimbs(curr);
 	printf("2\n");
 	ft_lstprint(curr);
-	
+
 	if (correctlst(curr))
 		return (1);
 	printf("3\n");
@@ -412,7 +412,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
 			g_mshell.exitcode = export(NULL);
 		else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
-			g_mshell.exitcode = unset();
+			g_mshell.exitcode = unset(NULL);
 		else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 			ft_putstr("\033c");
 		else
