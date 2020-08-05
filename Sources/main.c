@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 17:30:37 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/05 20:17:47 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int		main(void)
 	signal(SIGQUIT, &sigquit);
 	if (newenviron() == -1)
 		return (1);
+	unset("OLDPWD");
+	export("OLDPWD");
 	mainloop(0, NULL, &line);
 	write(2, "exit\n", 5);
 	if (g_mshell.ls)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 19:20:13 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/05 20:18:08 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		unset(char *param)
 		curr = curr->next;
 	}
 	if (param)
-		ft_lstdelone(curr);
+		free(curr);
 	return (0);
 }
 
