@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hpottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 15:38:42 by hpottier          #+#    #+#             */
-/*   Updated: 2019/11/04 15:41:07 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:38:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_isspace(int c)
 {
 	if ((char)c == '\t' || (char)c == '\n' || (char)c == '\v' ||
-		(char)c == '\f' || (char)c == '\r' || (char)c == ' ')
+		(char)c == '\f' || (char)c == '\r' || (char)c == ' '
+		|| (char)c == '	')
 		return (1);
 	return (0);
 }

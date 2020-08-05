@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/04 22:13:36 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:52:03 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,10 @@ void getraw(char *str)
 {
 	int i;
 
-	i = 0;
-	while (str[i])
-	{
+	i = -1;
+	while (str[++i])
 		if (ft_isspace(str[i]))
-		{
 			str[i] = ' ';
-		}
-		i++;
-	}
-	printf("str = |%s|\n", str);
 	i = 0;
 	while (str[i])
 	{
@@ -77,7 +71,6 @@ int		echo_ls(void)
 
 	ret = 0;
 	curr = g_mshell.ls->next;
-	ft_lstprint(g_mshell.ls);
 	if (curr && is_n(curr->content))
 		while (curr && is_n(curr->content))
 			curr = curr->next;
@@ -85,7 +78,6 @@ int		echo_ls(void)
 		ret = 1;
 	while (curr && curr->type == 1)
 	{
-//		printf("curr->content = |%s|\nrawtext= %d\n", curr->content, curr->rawtext);
 		if (curr->rawtext)
 			getraw(curr->content);
 		ft_putstr(curr->content);

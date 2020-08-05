@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 22:16:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/05 19:45:46 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ int		rawtext(t_list *curr)
 				{
 					free(curr->content);
 					curr->content = split[i];
-					curr->rawtext = 0;
+					// curr->rawtext = 0;
 				}
 				else
 				{
@@ -256,17 +256,17 @@ int		prep_ls(t_list *curr)
 	
 	if (correctlst(curr))
 		return (1);
-	// printf("3\n");
-	// ft_lstprint(curr);
+	printf("3\n");
+	ft_lstprint(curr);
 	if (mergelst(curr))
 		return (1);
-	// printf("4\n");
-	// ft_lstprint(curr);
+	printf("4\n");
+	ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 		correct_rdir(curr);
 	curr = g_mshell.ls;
-	// printf("5\n");
-	// ft_lstprint(curr);
+	printf("5\n");
+	ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 	{
 		if (trim_rdir(curr))
@@ -274,7 +274,7 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
-	// printf("E\n");
+	printf("E\n");
 	ft_lstprint(curr);
 /* 	if(rawtext(curr)) */
 /* 		return (1); */
