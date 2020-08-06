@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/06 12:46:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/06 12:52:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,16 @@ int		unset(char *param)
 {
 	int		i;
 	t_list	*curr;
+	t_list 	*alloc;
+
+	int test = 0;
 
 	printf("PARAM IS %s\n",param);
-	if (param)
+	if (param && ++test)
+	{
 		curr = ft_lstnew(param);
+		alloc = curr;
+	}
 	else
 		curr = g_mshell.ls->next;
 	while (curr && curr->type == 1)
@@ -44,10 +50,10 @@ int		unset(char *param)
 		}
 		curr = curr->next;
 	}
-	if (param)
+	if (alloc)
 	{
 		// free(curr->content);
-		free(curr);
+		free(alloc);
 	}
 	return (0);
 }
