@@ -109,14 +109,23 @@ int		export(char *param)
 	char	**n_envi;
 	char	*tmp;
 	t_list	*curr;
+	t_list	*alloc;
+	int ret;
 
 	n_envi = NULL;
 	tmp = NULL;
+	alloc = 0;
 	if (param != NULL)
+	{
 		curr = ft_lstnew(param);
+		alloc = curr;
+	}
 	else
 		curr = g_mshell.ls->next;
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
-	return (exportstuffquater(curr, tmp, n_envi, param));
+	ret = exportstuffquater(curr, tmp, n_envi, param);
+	// if (alloc)
+	// 	free(alloc);
+	return (ret);
 }
