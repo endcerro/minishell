@@ -28,8 +28,6 @@ int		exportstuff(t_list *curr, char **tmp, char ***n_envi, char *param)
 				g_mshell.env[i] = *tmp;
 				return (1);
 			}
-			if (param != NULL)
-				free(curr);
 			return (freeret(*tmp, 0));
 		}
 	if (!(*n_envi = malloc(sizeof(char *) * (i + 2))))
@@ -99,8 +97,6 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
 		if (exportstuffbis(&n_envi, &curr) == 1)
 			return (1);
 	}
-	if (param != NULL)
-		free(curr);
 	return (ret);
 }
 
@@ -109,23 +105,18 @@ int		export(char *param)
 	char	**n_envi;
 	char	*tmp;
 	t_list	*curr;
-	t_list	*alloc;
-	int ret;
+	int		ret;
 
 	n_envi = NULL;
 	tmp = NULL;
-	alloc = 0;
 	if (param != NULL)
-	{
 		curr = ft_lstnew(param);
-		alloc = curr;
-	}
 	else
 		curr = g_mshell.ls->next;
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
 	ret = exportstuffquater(curr, tmp, n_envi, param);
-	// if (alloc)
-	// 	free(alloc);
+	if (param != NULL)
+		free(curr);
 	return (ret);
 }

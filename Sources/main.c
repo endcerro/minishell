@@ -98,8 +98,8 @@ int		main(void)
 	signal(SIGQUIT, &sigquit);
 	if (newenviron() == -1)
 		return (1);
-	unset("OLDPWD");		//LEAKING
-	export("OLDPWD");		//LEAKING
+	unset("OLDPWD");
+	export("OLDPWD");
 	mainloop(0, NULL, &line);
 	write(2, "exit\n", 5);
 	if (g_mshell.ls)
@@ -107,5 +107,5 @@ int		main(void)
 	free(line);
 	freechar2ptr(g_mshell.env, 0);
 	freechar2ptr(g_mshell.vars, 0);
-	system("leaks minishell");
+	/* system("leaks minishell"); */
 }
