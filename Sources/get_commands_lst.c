@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 20:29:19 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/06 12:38:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,13 +205,14 @@ int		rawtext(t_list *curr)
 	t_list *cache;
 	t_list *prev;
 
+	prev = 0;
 	split = 0;
 	while (curr)
 	{
 		if (curr->rawtext == 1)
 		{
 			i = 0;
-			if (prev->type == 2 || prev->type == 4 || prev->type == 5)
+			if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
 			{
 				prev = curr;
 				curr = curr->next;
@@ -259,22 +260,22 @@ int		prep_ls(t_list *curr)
 	// printf("1\n");
 	// ft_lstprint(curr);
 	trimbs(curr);
-	// printf("2\n");
-	// ft_lstprint(curr);
+	printf("2\n");
+	ft_lstprint(curr);
 
 	if (correctlst(curr))
 		return (1);
-	// printf("3\n");
-	// ft_lstprint(curr);
+	printf("3\n");
+	ft_lstprint(curr);
 	if (mergelst(curr))
 		return (1);
-	// printf("4\n");
-	// ft_lstprint(curr);
+	printf("4\n");
+	ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 		correct_rdir(curr);
 	curr = g_mshell.ls;
-	// printf("5\n");
-	// ft_lstprint(curr);
+	printf("5\n");
+	ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 	{
 		if (trim_rdir(curr))
