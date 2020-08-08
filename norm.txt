@@ -1,0 +1,135 @@
+Norme: ./Sources/command_parsing.c
+Norme: ./Sources/echo.c
+Norme: ./Sources/cd.c
+Error: 7 functions in the file
+Norme: ./Sources/commandorvar2.c
+Norme: ./Sources/echo_utils.c
+Norme: ./Sources/commandorvar.c
+Norme: ./Sources/export_utils.c
+Norme: ./Sources/export.c
+Error (line 65): function exportstuffquater has 33 lines
+Norme: ./Sources/inside_join.c
+Norme: ./Sources/export2.c
+Error: 6 functions in the file
+Norme: ./Sources/lst_creat2.c
+Norme: ./Sources/get_commandslst2.c
+Error: 7 functions in the file
+Error (line 43): function expand_vars has 35 lines
+Error (line 62): line has 85 characters
+Error (line 111): line has 92 characters
+Error (line 125): missing newline after while
+Error (line 125): C++ comment
+Error (line 133): function check_valid has 41 lines
+Error (line 133): declarations must be followed by one empty line in check_valid
+Error (line 135, col 4): bad spacing
+Error (line 136, col 4): bad spacing
+Error (line 137, col 7): bad spacing
+Error (line 139): multiple empty lines
+Error (line 139): Empty line
+Error (line 151): line has 97 characters
+Error (line 157): line has 89 characters
+Error (line 160): line has 103 characters
+Norme: ./Sources/lst_utils.c
+Error: 7 functions in the file
+Norme: ./Sources/lst_creat.c
+Error: 6 functions in the file
+Error (line 15): function de_escape_chars has 47 lines
+Error (line 94): C++ comment
+Error (line 95): C++ comment
+Error (line 101): function split_line_lst has 27 lines
+Error (line 128): Empty line
+Error (line 138): line has 92 characters
+Error (line 138, col 27): missing space around &&
+Norme: ./Sources/lst_creat3.c
+Error (line 76): function escape_chars has 40 lines
+Norme: ./Sources/main3.c
+Norme: ./Sources/main.c
+Error (line 110): comment not well formatted
+Error (line 110): comment not well placed
+Norme: ./Sources/maincreat.c
+Norme: ./Sources/more_functions.c
+Norme: ./Sources/redirections.c
+Norme: ./Sources/n_itoa.c
+Norme: ./Sources/utils.c
+Norme: ./Sources/get_commands_lst.c
+Error: global scope bad aligned
+Error: 12 functions in the file
+Error (line 44): Space before function name
+Error (line 44, col 4): bad spacing
+Error (line 64): function correct_rdir has 38 lines
+Error (line 85): line has 90 characters
+Error (line 106): Space before function name
+Error (line 106, col 3): bad spacing
+Error (line 109, col 1): missing space after while
+Error (line 111): line has 104 characters
+Error (line 111, col 91): space after negative
+Error (line 112, col 10): missing parentheses in return statement
+Error (line 115, col 8): missing parentheses in return statement
+Error (line 118): declarations in trim_rdir are bad aligned
+Error (line 118): Space before function name
+Error (line 118): function trim_rdir has 78 lines
+Error (line 118): declarations in trim_rdir must be at the top of the function
+Error (line 118, col 3): bad spacing
+Error (line 130, col 24): space before )
+Error (line 135): line has 91 characters
+Error (line 139): line has 108 characters
+Error (line 159): line has 108 characters
+Error (line 180): line has 108 characters
+Error (line 200): declarations in rawtext are bad aligned
+Error (line 200): function rawtext has 48 lines
+Error (line 221, col 3): missing space after if
+Error (line 229): C++ comment
+Error (line 233): comment not well formatted
+Error (line 233): bad indentation
+Error (line 233): comment not well placed
+Error (line 252): function prep_ls has 49 lines
+Error (line 252): declarations in prep_ls must be at the top of the function
+Error (line 252): declarations must be followed by one empty line in prep_ls
+Error (line 260): bad indentation
+Error (line 260): C++ comment
+Error (line 261): bad indentation
+Error (line 261): C++ comment
+Error (line 274, col 1): missing space after if
+Error (line 279, col 1): missing space after if
+Error (line 288): bad indentation
+Error (line 288): missing newline after if
+Error (line 288): must begin only by tabulations
+Error (line 288): spaces at the end of line
+Error (line 288, col 2): missing space after if
+Error (line 289): bad indentation
+Error (line 289): must begin only by tabulations
+Error (line 290): bad indentation
+Error (line 290): must begin only by tabulations
+Error (line 292): bad indentation
+Error (line 292): must begin only by tabulations
+Error (line 292, col 10): lst is instanciated during declaration
+Error (line 295): bad indentation
+Error (line 295): C++ comment
+Error (line 296): bad indentation
+Error (line 296): C++ comment
+Error (line 300): bad indentation
+Error (line 300): must begin only by tabulations
+Error (line 332): function openrdir has 76 lines
+Error (line 345): C++ comment
+Error (line 345): line has 84 characters
+Error (line 346): C++ comment
+Error (line 346): line has 105 characters
+Error (line 348): line has 82 characters
+Error (line 353): line has 89 characters
+Error (line 354): line has 90 characters
+Error (line 360): line has 90 characters
+Error (line 361): line has 90 characters
+Error (line 368): line has 106 characters
+Error (line 379): line has 89 characters
+Error (line 380): line has 90 characters
+Error (line 388): line has 90 characters
+Error (line 389): line has 90 characters
+Error (line 398): line has 106 characters
+Error (line 412): function exec_command has 48 lines
+Error (line 419): bad indentation
+Error (line 419): C++ comment
+Error (line 480): function checkinput_ls has 111 lines
+Error (line 480, col 0): checkinput_ls has 7 variables
+Error (line 500): bad indentation
+Error (line 500): C++ comment
+Norme: ./Sources/main2.c

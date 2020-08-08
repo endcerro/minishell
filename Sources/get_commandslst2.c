@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 21:11:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:39:28 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int expand_t(char **str)
+int		expand_t(char **str)
 {
 	char *home;
 

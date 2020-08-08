@@ -6,17 +6,33 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/06 12:53:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:34:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		unset(char *param)
+void	unset2(t_list *curr)
 {
 	int		i;
+
+	i = -1;
+	while (g_mshell.env[++i])
+	{
+		if (check_match(g_mshell.env[i], curr->content))
+			continue ;
+		free(g_mshell.env[i]);
+		while (g_mshell.env[++i])
+			g_mshell.env[i - 1] = g_mshell.env[i];
+		g_mshell.env[i - 1] = 0;
+		break ;
+	}
+}
+
+int		unset(char *param)
+{
 	t_list	*curr;
-	t_list 	*alloc;
+	t_list	*alloc;
 
 	if (param)
 	{
@@ -28,23 +44,10 @@ int		unset(char *param)
 	while (curr && curr->type == 1)
 	{
 		if (ft_strchr(curr->content, '=') != NULL || *curr->content == 0)
-			ft_printh(2, 1, "minishell: unset: \"%s\": identifiant non valable\n", curr->content);
+			ft_printh(2, 1,
+		"minishell: unset: \"%s\": identifiant non valable\n", curr->content);
 		else
-		{
-			i = 0;
-			while (g_mshell.env[i])
-			{
-				if (!check_match(g_mshell.env[i], curr->content))
-				{
-					free(g_mshell.env[i]);
-					while (g_mshell.env[++i])
-						g_mshell.env[i - 1] = g_mshell.env[i];
-					g_mshell.env[i - 1] = 0;
-					break ;
-				}
-				i++;
-			}
-		}
+			unset2(curr);
 		curr = curr->next;
 	}
 	if (alloc)

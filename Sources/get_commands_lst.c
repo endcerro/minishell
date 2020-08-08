@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 14:56:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:04:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -427,7 +427,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 			g_mshell.exitcode = 0;
 		}
 		else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
-			g_mshell.exitcode = cd();
+			g_mshell.exitcode = cd(0, 0, 0);
 		else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
 			g_mshell.exitcode = pwd();
 		else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
@@ -437,7 +437,7 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
 			ft_putstr("\033c");
 		else
-			commandorvar(npipe);
+			commandorvar(npipe, 0);
 	}
 	if (*npipe <= 0)
 	{

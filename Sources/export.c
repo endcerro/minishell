@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 19:41:43 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:24:51 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +73,7 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
 		if (curr && check_valid_export(curr->content) == 0)
 		{
 			ret = ft_printh(2, 1,
-							  "minishell: export: \'%s\': not a valid identifier\n", curr->content);
+		"minishell: export: \'%s\': not a valid identifier\n", curr->content);
 			curr = curr->next;
 			continue ;
 		}

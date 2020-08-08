@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 20:02:51 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/08 17:55:30 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,8 @@ char	*rethomedir(void)
 	return (NULL);
 }
 
-int		cdminus(char *str)
+int		cdminus(char *str, char *oldpwd, char *pwd)
 {
-	char	*oldpwd;
-	char	*pwd;
-
 	if (ft_strcmp(str, "-") != 0)
 		return (ft_printh(2, 1, "minishell: cd: %s: invalid option\n", str));
 	if ((oldpwd = env("OLDPWD")) == NULL || *oldpwd == 0)
@@ -58,7 +55,8 @@ int		cdminus(char *str)
 	if (chdir(oldpwd) == -1)
 	{
 		free(pwd);
-		return (ft_printh(2, 1, "minishell: cd: %s: %s\n", oldpwd, strerror(errno)));
+		return (ft_printh(2, 1, "minishell: cd: %s: %s\n",
+			oldpwd, strerror(errno)));
 	}
 	ft_printh(1, 0, "%s\n", oldpwd);
 	if ((oldpwd = ft_strjoin("PWD=", oldpwd)) == NULL)
@@ -74,16 +72,13 @@ int		cdminus(char *str)
 	return (0);
 }
 
-int		cdbis(void)
+int		cdbis(char *str, t_list *curr)
 {
-	t_list	*curr;
-	char	*str;
-
 	curr = g_mshell.ls->next;
 	if (curr && curr->type == 1)
 	{
 		if (curr->content[0] == '-')
-			return (cdminus(curr->content));
+			return (cdminus(curr->content, 0, 0));
 		if (curr->content[0] == '~')
 		{
 			curr->content[0] = '/';
@@ -98,8 +93,9 @@ int		cdbis(void)
 	{
 		if ((str = rethomedir()) == NULL)
 			return (ft_printh(2, 1, "minishell: cd: $HOME not set\n"));
-		if (chdir(str)== -1)
-			return (ft_printh(2, 1, "minishell: cd: %s: %s\n", str, strerror(errno)));
+		if (chdir(str) == -1)
+			return (ft_printh(2, 1, "minishell: cd: %s: %s\n", str,
+				strerror(errno)));
 	}
 	return (-1);
 }
@@ -121,30 +117,22 @@ int		cdter(int pwd)
 	return (0);
 }
 
-int		cd(void)
+int		retunset(char *str)
 {
-	char	*pwd;
-	int		x;
-	int		ret;
+	unset(str);
+	return (ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno)));
+}
 
-	ret = 0;
+int		cd(char *pwd, int x, int ret)
+{
 	if ((pwd = getcwdwrap()) == NULL)
-	{
-		ret = ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno));
-		unset("OLDPWD");
-	}
-	if ((x = cdbis()) != -1)
-	{
-		free(pwd);
-		return (x);
-	}
+		ret = retunset("OLDPWD");
+	if ((x = cdbis(0, 0)) != -1)
+		return (freeret(pwd, x));
 	if (pwd)
 	{
 		if ((pwd = ft_strjoinf2("OLDPWD=", pwd)) == NULL)
-		{
-			ret = ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno));
-			unset("OLDPWD");
-		}
+			ret = retunset("OLDPWD");
 		else
 			export(pwd);
 	}
@@ -152,10 +140,7 @@ int		cd(void)
 	if ((pwd = getcwdwrap()) != NULL)
 	{
 		if ((pwd = ft_strjoinf2("PWD=", pwd)) == NULL)
-		{
-			ret = ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno));
-			unset("PWD");
-		}
+			ret = retunset("PWD");
 		else
 			export(pwd);
 	}
@@ -164,6 +149,5 @@ int		cd(void)
 		ret = ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno));
 		unset("PWD");
 	}
-	free(pwd);
-	return (ret);
+	return (freeret(pwd, ret));
 }

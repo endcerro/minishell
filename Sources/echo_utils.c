@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 19:00:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:23:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 int		parse_env_ls_two(char *query, char **str, char *d_pos)
 {
+	int		len;
+	int		i;
+
+	i = -1;
 	if (*query == 0 || ft_isspace(*query))
 		*(d_pos) = -1;
 	else
@@ -22,29 +26,21 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 		{
 			if (env(query)[0] != 0)
 				*str = inside_join(*str, env(query) + 1, 1, 0);
-			else
-			{
-				int test = ft_strlen(query) + 1;
-				for(int j = 0; j < test; j++)
+			else if ((len = ft_strlen(query) + 1))
+				while (++i < len)
 					deconechar(*str);
-				// free(*str);
-				// *str = ft_strdup("");
-			}
 		}
 		else if (query[0] == '?')
 			*str = inside_join(*str, ft_itoaa(g_mshell.exitcode), 3, 1);
 		else
 			*str = inside_join(*str, vars(query), 1, 0);
 		if (*str == 0)
-		{
-			free(query);
-			return (1);
-		}
+			return (freeret(query, 1));
 	}
 	return (0);
 }
 
-int	parse_env_ls(char **str, int len, t_list *curr)
+int		parse_env_ls(char **str, int len, t_list *curr)
 {
 	char	*d_pos;
 	char	*query;
@@ -63,15 +59,9 @@ int	parse_env_ls(char **str, int len, t_list *curr)
 		if (len == 0 && d_pos[len + 1] == '?')
 			len++;
 		if ((query = ft_substr(d_pos, 1, len)) == 0)
-		{
-			free(*str);
-			*str = 0;
-			return 0;
-		}
+			return ((int)(*str = (char *)(long)freeret(*str, 0)));
 		if (parse_env_ls_two(query, str, d_pos))
-		{
-			return 0;
-		}
+			return (0);
 		free(query);
 	}
 	swap_char(*str, '$');

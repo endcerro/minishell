@@ -6,18 +6,18 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/08 15:41:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 15:53:04 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void getraw(char *str)
+void	getraw(char *str)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	while(str[i] && ft_isspace(str[i]))
+	while (str[i] && ft_isspace(str[i]))
 		deconechar(str + i);
 	while (str[i])
 	{
@@ -55,7 +55,7 @@ void	trim_quotes(char *str)
 	str[i - 2] = 0;
 }
 
-int 	is_n(char *str)
+int		is_n(char *str)
 {
 	int i;
 
@@ -64,7 +64,7 @@ int 	is_n(char *str)
 		return (0);
 	while (str[i] == 'n')
 		i++;
-	if(str[i] != 0)
+	if (str[i] != 0)
 		return (0);
 	return (1);
 }

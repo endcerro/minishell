@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/05 19:19:32 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/08 18:04:29 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ t_mshell			g_mshell;
 */
 
 int					pwd();
-int					cd();
+int					cd(char *pwd, int x, int ret);
 int					unset(char *param);
 int					echo_ls();
 int					export(char *params);
 char				*env(char *request);
-int					commandorvar(int *npipe);
+int					commandorvar(int *npipe, int i);
 
 /*
 **BUILTIN UTILS

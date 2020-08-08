@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 15:38:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 15:52:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ char	*check_finished_lst(char *line, int *err)
 	ft_bzero(cpt, 3);
 	escape_chars(line, 0, 0);
 	parse_qts(line, cpt);
-	// printf("LOOKING AT LINE %s\n",line);
-	// printf("With %d %d quotes \n",cpt[0], cpt[1]);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 		if ((fill = getfiller(0, cpt, err)) == NULL)
 			return (NULL);
