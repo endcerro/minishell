@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 18:04:49 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 19:05:15 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	remove_rdir(t_list **lst)
 	}
 }
 
-void 	addlstendblock(t_list *lst, t_list *block)
+void	addlstendblock(t_list *lst, t_list *block)
 {
 	t_list *prev;
 
@@ -254,28 +254,28 @@ int		prep_ls(t_list *curr)
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
 		return (1);
-	ft_lstprint(curr);
+	// ft_lstprint(curr);
 	if (expand_vars(curr))
 		return (1);
 	// printf("1\n");
 	// ft_lstprint(curr);
 	trimbs(curr);
-	printf("2\n");
-	ft_lstprint(curr);
+	// printf("2\n");
+	// ft_lstprint(curr);
 
 	if (correctlst(curr))
 		return (1);
-	printf("3\n");
-	ft_lstprint(curr);
+	// printf("3\n");
+	// ft_lstprint(curr);
 	if (mergelst(curr))
 		return (1);
-	printf("4\n");
-	ft_lstprint(curr);
+	// printf("4\n");
+	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 		correct_rdir(curr);
 	curr = g_mshell.ls;
-	printf("5\n");
-	ft_lstprint(curr);
+	// printf("5\n");
+	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 	{
 		if (trim_rdir(curr))
@@ -283,12 +283,12 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
-	printf("6\n");
-	ft_lstprint(curr);
+	// printf("6\n");
+	// ft_lstprint(curr);
  	if(rawtext(curr)) 
  		return (1);
- 	printf("7\n");
-	ft_lstprint(curr);
+ // 	printf("7\n");
+	// ft_lstprint(curr);
  	t_list *lst = g_mshell.ls;
 	while (lst && lst->content)
 	{
@@ -297,8 +297,8 @@ int		prep_ls(t_list *curr)
 		de_escape_chars(lst->content);
 		lst = lst->next;
 	}
- 	printf("E\n");
-	ft_lstprint(curr);
+ // 	printf("E\n");
+	// ft_lstprint(curr);
 	return (0);
 }
 
@@ -342,8 +342,6 @@ int		openrdir(int *oldfd, int *npipe)
 		{
 			if (urr->next)
 			{
-//				if (urr->next->rawtext == 1 && checkspace(urr->next->content) == 1)
-//					return (ft_printh(2, 1, "minishell: %s: ambiguous redirect\n", urr->next->content));
 				if (!(file = urr->next->content))
 					return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
 				if (urr && *npipe > 0)
