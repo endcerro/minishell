@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/05 20:05:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 15:41:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void getraw(char *str)
 	int i;
 
 	i = 0;
-	printf("in here\n");
+	while(str[i] && ft_isspace(str[i]))
+		deconechar(str + i);
 	while (str[i])
 	{
 		if (ft_isspace(str[i]))

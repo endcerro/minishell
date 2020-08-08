@@ -79,7 +79,7 @@ echo "\s" & echo "\\s" -> should have the exact same output.							OK
 echo \> -> >																			OK
 echo -n -n -nnnn -nnnnm -> -nnnnm														OK
 echo -n -nnn hello -n -> hello -n														OK
-cd - -> (écrit le nouveau cwd [current working directory])								-KO
+cd - -> (écrit le nouveau cwd [current working directory])								OK
 
 dans cd {sans arg/~/-} : faire attentions aux variable d'env si par ex $OLDPWD n'existe pas
 

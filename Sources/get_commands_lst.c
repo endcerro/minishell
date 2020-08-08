@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/06 12:38:55 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/08 14:56:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,10 +283,22 @@ int		prep_ls(t_list *curr)
 			return (1);
 		}
 	}
-	printf("E\n");
+	printf("6\n");
 	ft_lstprint(curr);
  	if(rawtext(curr)) 
- 		return (1); 
+ 		return (1);
+ 	printf("7\n");
+	ft_lstprint(curr);
+ 	t_list *lst = g_mshell.ls;
+	while (lst && lst->content)
+	{
+		// trim_quotes(lst->content);
+		// parse_bs(lst->content); // ATTENTION DANGER !!!
+		de_escape_chars(lst->content);
+		lst = lst->next;
+	}
+ 	printf("E\n");
+	ft_lstprint(curr);
 	return (0);
 }
 
