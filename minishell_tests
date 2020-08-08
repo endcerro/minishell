@@ -21,7 +21,7 @@ cd ..										OK
 cd ~										OK		//EXPAND
 cd 											OK
 cd no_file									OK
-cd a b c d									OK
+cd a b c d									OK 		//GO VM MODE
 pwd											OK
 pwd											OK
 pwd a										OK
@@ -31,7 +31,7 @@ pwd a b c d 								OK
 {
 	bash-3.2$ echo > $aoueb
 	bash: $aoueb: ambiguous redirect
-}											KO avec une variable qui n'existe pas
+}											OK
 
 
 XXXX export && env && unset
