@@ -54,15 +54,12 @@ void	mainloop(int ret, char *oline, char **line)
 			else
 				return ;
 		}
-		else if (oline)
-		{
-			*line = ft_strjoinft(oline, *line);
-			oline = NULL;
-			g_mshell.linestate = 0;
-		}
+		else if (oline && ((*line = ft_strjoinft(oline, *line)) || 1))
+			if ((oline = NULL) || 1)
+				g_mshell.linestate = 0;
 		if ((*line = get_lst(*line)) == NULL)
 			continue ;
-		checkinput_ls(*line, NULL, NULL, g_mshell.ls);
+		checkinput_ls(*line, g_mshell.ls, g_mshell.ls, 0);
 		ft_lstclear(&g_mshell.ls);
 		free(*line);
 		*line = NULL;

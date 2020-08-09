@@ -57,6 +57,8 @@ typedef struct		s_mshell
 	int			oldfdout;
 	int			oldfdin;
 
+	int			*pipes;
+	int			*pidtab;
 }					t_mshell;
 
 t_mshell			g_mshell;
@@ -77,8 +79,8 @@ int					commandorvar(int *npipe, int i);
 **BUILTIN UTILS
 */
 
-int					checkinput_ls(char *line, int *pipes,
-								int *pidtab, t_list *tmp);
+int					checkinput_ls(char *line, t_list *tmp,
+								t_list *copy, int npipe);
 int					parse_env_ls(char **param, int len, t_list *curr);
 char				*vars(char *request);
 int					check_match(char *env, char *param);
@@ -157,6 +159,5 @@ int					trim_rdir(t_list *lst);
 int					islastrdir(t_list *lst, int type);
 int					exportstuffter(t_list *curr, char *tmp);
 int					expand_t(char **str);
-
 
 #endif
