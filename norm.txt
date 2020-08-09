@@ -11,17 +11,17 @@ Norme: ./Sources/export.c
 Norme: ./Sources/export2.c
 Norme: ./Sources/get_commandslst3.c
 Norme: ./Sources/inside_join.c
-Norme: ./Sources/get_commandslst2.c
 Norme: ./Sources/lst_creat2.c
+Norme: ./Sources/get_commandslst2.c
 Norme: ./Sources/lst_utils.c
 Norme: ./Sources/lst_creat.c
 Norme: ./Sources/lst_creat3.c
 Norme: ./Sources/main.c
 Norme: ./Sources/main3.c
 Norme: ./Sources/maincreat.c
-Norme: ./Sources/main2.c
-Norme: ./Sources/morfuns.c
 Norme: ./Sources/more_functions.c
+Norme: ./Sources/morfuns.c
+Norme: ./Sources/main2.c
 Norme: ./Sources/n_itoa.c
 Norme: ./Sources/get_commands_lst.c
 Error: 11 functions in the file
@@ -77,6 +77,4 @@ Error (line 378): function checkinput_ls has 132 lines
 Error (line 378, col 0): checkinput_ls has 8 variables
 Error (line 403): C++ comment
 Norme: ./Sources/lstprint.c
-Error: file must end with a single empty line
-Error (line 40, col 0): no newline after block
 Norme: ./Sources/utils.c
