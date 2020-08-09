@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 20:45:03 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 21:11:12 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,11 +222,71 @@ void	ms_exit(char *line, int *npipe)
 	exit(ex);
 }
 
+int		openrdir3(t_list **urr, char *file)
+{
+	int fd;
+
+	if ((*urr)->type == 2 || (*urr)->type == 4)
+	{
+		if ((fd = open(file, O_WRONLY | O_CREAT |
+			((*urr)->type == 2 ? O_TRUNC : O_APPEND), 0644)) == -1)
+			return (ft_printh(2, 1, MERR, strerror(errno)));
+		else
+			dup2(fd, 1);
+	}
+	else if ((*urr)->type == 5)
+	{
+		if ((fd = open(file, O_RDONLY)) == -1)
+			return (ft_printh(2, 1, FORDIR, file));
+		else
+			dup2(fd, 0);
+	}
+	return (0);
+}
+
+int		openrdir4(t_list **urr, char *file, int *oldfd)
+{
+	int fd;
+
+	if ((*urr)->type == 2 || (*urr)->type == 4)
+	{
+		g_mshell.oldfdout = dup(1);
+		*oldfd += 1;
+		if ((fd = open(file, O_WRONLY | O_CREAT |
+			((*urr)->type == 2 ? O_TRUNC : O_APPEND), 0644)) == -1)
+			return (ft_printh(2, 1, MERR, strerror(errno)));
+		else
+			dup2(fd, 1);
+	}
+	else if ((*urr)->type == 5)
+	{
+		g_mshell.oldfdin = dup(0);
+		*oldfd += 2;
+		if ((fd = open(file, O_RDONLY)) == -1)
+			return (ft_printh(2, 1, FORDIR, file));
+		else
+			dup2(fd, 0);
+	}
+	return (0);
+}
+
+int		openrdir2(t_list **urr, char *file, int *npipe, int *oldfd)
+{
+	if ((*urr) && *npipe > 0)
+	{
+		if (openrdir3(urr, file) == 1)
+			return (1);
+	}
+	else if ((*urr))
+		if (openrdir4(urr, file, oldfd) == 1)
+			return (1);
+	return (0);
+}
+
 int		openrdir(int *oldfd, int *npipe)
 {
 	t_list	*urr;
 	char	*file;
-	int		fd;
 
 	urr = g_mshell.ls;
 	while (urr && urr->type != 6)
@@ -237,60 +297,8 @@ int		openrdir(int *oldfd, int *npipe)
 			{
 				if (!(file = urr->next->content))
 					return (ft_printh(2, 1, MERR, strerror(errno)));
-				if (urr && *npipe > 0)
-				{
-					if (urr->type == 2)
-					{
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-							return (ft_printh(2, 1, MERR, strerror(errno)));
-						else
-							dup2(fd, 1);
-					}
-					else if (urr->type == 4)
-					{
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-							return (ft_printh(2, 1, MERR, strerror(errno)));
-						else
-							dup2(fd, 1);
-					}
-					else if (urr->type == 5)
-					{
-						if ((fd = open(file, O_RDONLY)) == -1)
-							return (ft_printh(2, 1, "minishell: %s: no such file or directory\n", file));
-						else
-							dup2(fd, 0);
-					}
-				}
-				else if (urr)
-				{
-					if (urr->type == 2)
-					{
-						g_mshell.oldfdout = dup(1);
-						*oldfd += 1;
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-							return (ft_printh(2, 1, MERR, strerror(errno)));
-						else
-							dup2(fd, 1);
-					}
-					else if (urr->type == 4)
-					{
-						g_mshell.oldfdout = dup(1);
-						*oldfd += 1;
-						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-							return (ft_printh(2, 1, MERR, strerror(errno)));
-						else
-							dup2(fd, 1);
-					}
-					else if (urr->type == 5)
-					{
-						g_mshell.oldfdin = dup(0);
-						*oldfd += 2;
-						if ((fd = open(file, O_RDONLY)) == -1)
-							return (ft_printh(2, 1, "minishell: %s: no such file or directory\n", file));
-						else
-							dup2(fd, 0);
-					}
-				}
+				if (openrdir2(&urr, file, npipe, oldfd) == 1)
+					return (1);
 				urr = urr->next;
 			}
 		}
@@ -300,38 +308,8 @@ int		openrdir(int *oldfd, int *npipe)
 	return (0);
 }
 
-void	exec_command(char *line, t_list *lst, int *npipe)
+void	exec_command2(int *npipe, int oldfd, char *line, t_list *lst)
 {
-	int		oldfd;
-	int		ret;
-
-	oldfd = 0;
-	if ((ret = openrdir(&oldfd, npipe)) == 0)
-	{
-		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-			ms_exit(line, npipe);
-		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
-			g_mshell.exitcode = echo_ls();
-		else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
-		{
-			env(NULL);
-			g_mshell.exitcode = 0;
-		}
-		else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
-			g_mshell.exitcode = cd(0, 0, 0);
-		else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
-			g_mshell.exitcode = pwd();
-		else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
-			g_mshell.exitcode = export(NULL);
-		else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
-			g_mshell.exitcode = unset(NULL);
-		else if (ft_strcmp(g_mshell.ls->content, "clear") == 0)
-			ft_putstr("\033c");
-		else
-			commandorvar(npipe, 0);
-	}
-	if (ret)
-		g_mshell.exitcode = ret;
 	if (*npipe <= 0)
 	{
 		if (oldfd == 2)
@@ -354,6 +332,34 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	}
 }
 
+void	exec_command(char *line, t_list *lst, int *npipe, int oldfd)
+{
+	int		ret;
+
+	if ((ret = openrdir(&oldfd, npipe)) == 0)
+	{
+		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
+			ms_exit(line, npipe);
+		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
+			g_mshell.exitcode = echo_ls();
+		else if (ft_strcmp(g_mshell.ls->content, "env") == 0)
+			g_mshell.exitcode = (int)env(NULL);
+		else if (ft_strcmp(g_mshell.ls->content, "cd") == 0)
+			g_mshell.exitcode = cd(0, 0, 0);
+		else if (ft_strcmp(g_mshell.ls->content, "pwd") == 0)
+			g_mshell.exitcode = pwd();
+		else if (ft_strcmp(g_mshell.ls->content, "export") == 0)
+			g_mshell.exitcode = export(NULL);
+		else if (ft_strcmp(g_mshell.ls->content, "unset") == 0)
+			g_mshell.exitcode = unset(NULL);
+		else
+			commandorvar(npipe, 0);
+	}
+	if (ret)
+		g_mshell.exitcode = ret;
+	exec_command2(npipe, oldfd, line, lst);
+}
+
 int		countpipes(t_list *curr)
 {
 	int x;
@@ -370,23 +376,17 @@ int		countpipes(t_list *curr)
 	return (x);
 }
 
-int		checkinput_ls(char *line)
+int		checkinput_ls(char *line, int *pipes, int *pidtab, t_list *tmp)
 {
 	t_list	*curr;
 	t_list	*copy;
-	t_list	*tmp;
 	int		x;
 	int		pcount;
 	int		npipe;
-	int		*pipes;
-	int		*pidtab;
 
 	if (g_mshell.ls == 0)
 		return (1);
 	copy = g_mshell.ls;
-	tmp = g_mshell.ls;
-	pipes = NULL;
-	pidtab = NULL;
 	while (tmp)
 	{
 		g_mshell.ls = tmp;
@@ -459,7 +459,7 @@ int		checkinput_ls(char *line)
 					while (++x < npipe * 2)
 						close(*(pipes + x));
 					free(pipes);
-					exec_command(line, copy, &npipe);
+					exec_command(line, copy, &npipe, 0);
 				}
 				pidtab[x] = g_mshell.pid;
 				while (g_mshell.ls)
@@ -493,9 +493,7 @@ int		checkinput_ls(char *line)
 			free(pidtab);
 		}
 		else
-		{
-			exec_command(line, copy, &npipe);
-		}
+			exec_command(line, copy, &npipe, 0);
 		g_mshell.pid = 0;
 		while (curr->next)
 			curr = curr->next;

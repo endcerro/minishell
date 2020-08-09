@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 20:47:00 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 21:11:46 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define BSTXT "minishell: unexpected EOF while looking for matching `%s\'\n%s"
 # define BSTXT2 "minishell: syntax error: unexpected end of file\n"
 # define MERR "minishell: %s\n"
+# define FORDIR "minishell: %s: no such file or directory\n"
 
 typedef struct		s_list
 {
@@ -76,7 +77,8 @@ int					commandorvar(int *npipe, int i);
 **BUILTIN UTILS
 */
 
-int					checkinput_ls(char *line);
+int					checkinput_ls(char *line, int *pipes,
+								int *pidtab, t_list *tmp);
 int					parse_env_ls(char **param, int len, t_list *curr);
 char				*vars(char *request);
 int					check_match(char *env, char *param);
