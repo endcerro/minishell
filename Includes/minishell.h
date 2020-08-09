@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:14:45 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 19:40:33 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # include <sys/stat.h>
 # include <signal.h>
 
-# define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
+# define SYNTE "minishell: syntax error near unexpected token \'%s\'\n"
+# define SYNTERR2 "minishell: syntax error near unexpected token `%s'\n"
+# define SYNTERR3 "minishell: syntax error near unexpected token `newline'\n"
 # define NOTVALID "minishell: export: \'%s\': not a valid identifier\n"
 # define BSTXT "minishell: unexpected EOF while looking for matching `%s\'\n%s"
 # define BSTXT2 "minishell: syntax error: unexpected end of file\n"
@@ -128,7 +130,7 @@ char				*checkpath(int j, char **params);
 int					addvar(char *str);
 char				**ls_params(void);
 void				swap_char(char *str, char c);
-int					check_valid(t_list *lst);
+int					check_valid(t_list *lst, int cp_r, int cp_d, t_list *first);
 int					expand_vars(t_list *curr);
 void				trimbs(t_list *curr);
 int					isstrdigit(char *str);
@@ -148,7 +150,7 @@ char				*rethomedir(void);
 int					retunset(char *str);
 void				print_export(char **env2);
 int					checkspace(char *str);
-int 				trim_rdir(t_list *lst);
-int 				islastrdir(t_list *lst, int type);
+int					trim_rdir(t_list *lst);
+int					islastrdir(t_list *lst, int type);
 
 #endif
