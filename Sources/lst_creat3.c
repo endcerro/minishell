@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 20:25:48 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 18:14:44 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,34 +73,38 @@ void	escape_lst(t_list *curr)
 	}
 }
 
+void	escape_chars2(char **line, int i, int bscpt)
+{
+	if ((*line)[i] == '>' && bscpt % 2)
+		(*line)[i] = -6;
+	else if ((*line)[i] == '|' && bscpt % 2)
+		(*line)[i] = -8;
+	else if ((*line)[i] == '<' && bscpt % 2)
+		(*line)[i] = -7;
+	else if ((*line)[i] == ' ' && bscpt % 2)
+		(*line)[i] = -9;
+	else if ((*line)[i] == '\t' && bscpt % 2)
+		(*line)[i] = -10;
+	else if ((*line)[i] == '\"' && bscpt % 2 && (*line)[i + 1])
+		(*line)[i] = -4;
+	else if ((*line)[i] == '\r' && bscpt % 2)
+		(*line)[i] = -11;
+	else if ((*line)[i] == '\v' && bscpt % 2)
+		(*line)[i] = -12;
+}
+
 void	escape_chars(char *line, int bscpt, int sqnb)
 {
 	int i;
 
-	i = 0;
-	while (line[i])
+	i = -1;
+	while (line[++i])
 	{
 		bscpt = 0;
 		while (line[i] && line[i] == '\\' && ++bscpt)
 			i++;
 		if (line[i] == ';' && bscpt % 2)
 			line[i] = -5;
-		else if (line[i] == '\"' && bscpt % 2 && line[i + 1])
-			line[i] = -4;
-		else if (line[i] == '>' && bscpt % 2)
-			line[i] = -6;
-		else if (line[i] == '|' && bscpt % 2)
-			line[i] = -8;
-		else if (line[i] == '<' && bscpt % 2)
-			line[i] = -7;
-		else if (line[i] == ' ' && bscpt % 2)
-			line[i] = -9;
-		else if (line[i] == '\t' && bscpt % 2)
-			line[i] = -10;
-		else if (line[i] == '\r' && bscpt % 2)
-			line[i] = -11;
-		else if (line[i] == '\v' && bscpt % 2)
-			line[i] = -12;
 		else if (line[i] == '\f' && bscpt % 2)
 			line[i] = -13;
 		else if (line[i] == '\'' && bscpt % 2 && line[i + 1])
@@ -112,8 +116,7 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 			line[i] = -2;
 		else if (line[i] == '\'')
 			sqnb = (sqnb == 0) ? sqnb + 1 : sqnb - 1;
-		if (line[i])
-			i++;
+		escape_chars2(&line, i, bscpt);
 	}
 }
 
