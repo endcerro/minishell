@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 16:22:10 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 18:20:58 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int		expand_t(char **str)
 
 int		expand_vars(t_list *curr)
 {
-	t_list *prev;
+	t_list *pr;
 
-	prev = 0;
+	pr = 0;
 	while (curr && curr->type != 3 && curr->type != 6)
 	{
 		if (curr->content && curr->content[0] != '\'')
@@ -41,28 +41,28 @@ int		expand_vars(t_list *curr)
 			if (expand_t(&(curr->content)))
 				return (1);
 			parse_env_ls(&(curr->content), 0, curr);
-			if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
+			if (pr && (pr->type == 2 || pr->type == 4 || pr->type == 5))
 			{
 				if (checkspace(curr->content))
 					return (ft_printh(2, 1, "minishell: ambiguous redirect\n"));
 			}
 			if (curr->content && curr->content[0] == 0)
 			{
-				if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
+				if (pr && (pr->type == 2 || pr->type == 4 || pr->type == 5))
 				{
 					return (ft_printh(2, 1, "minishell: ambiguous redirect\n"));
 				}
-				else if (prev)
+				else if (pr)
 				{
-					prev->next = curr->next;
+					pr->next = curr->next;
 					ft_lstdelone(curr);
 				}
-				curr = prev;
+				curr = pr;
 			}
 		}
 		if (curr == 0 || curr->content == 0)
 			return (1);
-		prev = curr;
+		pr = curr;
 		curr = curr->next;
 	}
 	return (0);
@@ -109,10 +109,9 @@ void	trimbs(t_list *curr)
 
 int		check_valid(t_list *lst)
 {
-	int 	cp_r;
-	int 	cp_d;
-	t_list 	*first;
-
+	int		cp_r;
+	int		cp_d;
+	t_list	*first;
 
 	first = lst;
 	cp_r = 0;
