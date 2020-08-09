@@ -6,7 +6,7 @@
 #    By: hpottier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 14:27:31 by hpottier          #+#    #+#              #
-#    Updated: 2020/08/04 17:31:12 by hpottier         ###   ########.fr        #
+#    Updated: 2020/08/09 17:44:55 by hpottier         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -62,7 +62,7 @@ SRC			=	ft_bzero.c \
 
 OBJ			=	$(SRC:.c=.o)
 
-CFLAGS		=	-Wall -Wextra -Werror -O3 -g #-fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -O3 -g -fsanitize=address
 
 AC			=	ar rc
 RAN			=	ranlib

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 16:50:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 17:50:43 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <signal.h>
 
 # define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
+# define NOTVALID "minishell: export: \'%s\': not a valid identifier\n"
 # define BSTXT "minishell: unexpected EOF while looking for matching `%s\'\n%s"
 # define BSTXT2 "minishell: syntax error: unexpected end of file\n"
 

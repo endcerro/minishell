@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 15:32:57 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 18:07:11 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,39 +62,43 @@ int		exportstuffter(t_list *curr, char *tmp)
 	return (0);
 }
 
-int		exportstuffquater(t_list *curr, char *tmp, char **n_envi)
+int		exportstuffquater2(t_list **curr, char **tmp, char ***n_envi)
 {
 	int i;
-	int ret;
 
-	ret = 0;
+	unset_var((*curr)->content);
+	if ((i = exportstuff(*curr, tmp, n_envi)) != -1)
+		return (i);
+	if (exportstuffbis(n_envi, curr) == 1)
+		return (1);
+	return (-1);
+}
+
+int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, int ret)
+{
+	int i;
+
 	while (curr && curr->type == 1)
 	{
 		if (curr && check_valid_export(curr->content) == 0)
 		{
-			ret = ft_printh(2, 1,
-		"minishell: export: \'%s\': not a valid identifier\n", curr->content);
+			ret = ft_printh(2, 1, NOTVALID, curr->content);
 			curr = curr->next;
 			continue ;
 		}
 		if (ft_strchr(curr->content, '=') == NULL)
 		{
-			if ((tmp = vars(curr->content)) != NULL)
-			{
-				if (exportstuffter(curr, tmp) == 1)
-					return (1);
-			}
+			if ((tmp = vars(curr->content)) != NULL
+				&& exportstuffter(curr, tmp) == 1)
+				return (1);
 			else if (env(curr->content))
 			{
 				curr = curr->next;
 				continue ;
 			}
 		}
-		unset_var(curr->content);
-		if ((i = exportstuff(curr, &tmp, &n_envi)) != -1)
+		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) != -1)
 			return (i);
-		if (exportstuffbis(&n_envi, &curr) == 1)
-			return (1);
 	}
 	return (ret);
 }
@@ -114,7 +118,7 @@ int		export(char *param)
 		curr = g_mshell.ls->next;
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
-	ret = exportstuffquater(curr, tmp, n_envi);
+	ret = exportstuffquater(curr, tmp, n_envi, 0);
 	if (param != NULL)
 		free(curr);
 	return (ret);
