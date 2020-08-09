@@ -24,8 +24,8 @@
 # include <signal.h>
 
 # define SYNTERR "minishell: syntax error near unexpected token \'%s\'\n"
-# define BSTXT "bash: unexpected EOF while looking for matching `%s\'\n%s"
-# define BSTXT2 "bash: syntax error: unexpected end of file\n"
+# define BSTXT "minishell: unexpected EOF while looking for matching `%s\'\n%s"
+# define BSTXT2 "minishell: syntax error: unexpected end of file\n"
 
 typedef struct		s_list
 {
@@ -33,7 +33,7 @@ typedef struct		s_list
 	char			*content;
 	int				nospace;
 	int				type;
-	int 			rawtext;
+	int				rawtext;
 }					t_list;
 
 typedef struct		s_mshell
@@ -43,6 +43,7 @@ typedef struct		s_mshell
 	t_list		*ls;
 
 	int			linestate;
+	int			dquote;
 
 	pid_t		pid;
 	int			exitcode;
@@ -72,7 +73,7 @@ int					commandorvar(int *npipe, int i);
 */
 
 void				checkinput_ls(char *line);
-int 				parse_env_ls(char **param, int len, t_list *curr);
+int					parse_env_ls(char **param, int len, t_list *curr);
 char				*vars(char *request);
 int					check_match(char *env, char *param);
 char				*inside_join(char *base, char *add, int mode, int ex);

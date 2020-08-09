@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		exportstuff(t_list *curr, char **tmp, char ***n_envi, char *param)
+int		exportstuff(t_list *curr, char **tmp, char ***n_envi)
 {
 	int i;
 
@@ -62,7 +62,7 @@ int		exportstuffter(t_list *curr, char *tmp)
 	return (0);
 }
 
-int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
+int		exportstuffquater(t_list *curr, char *tmp, char **n_envi)
 {
 	int i;
 	int ret;
@@ -91,7 +91,7 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, char *param)
 			}
 		}
 		unset_var(curr->content);
-		if ((i = exportstuff(curr, &tmp, &n_envi, param)) != -1)
+		if ((i = exportstuff(curr, &tmp, &n_envi)) != -1)
 			return (i);
 		if (exportstuffbis(&n_envi, &curr) == 1)
 			return (1);
@@ -114,7 +114,7 @@ int		export(char *param)
 		curr = g_mshell.ls->next;
 	if (curr == 0)
 		return (exportlst(g_mshell.env));
-	ret = exportstuffquater(curr, tmp, n_envi, param);
+	ret = exportstuffquater(curr, tmp, n_envi);
 	if (param != NULL)
 		free(curr);
 	return (ret);

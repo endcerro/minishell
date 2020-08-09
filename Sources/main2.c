@@ -17,6 +17,7 @@ void	promptnextline(char **str, char *cpt, int *err)
 	char c;
 	char baise[2];
 
+	g_mshell.dquote = 1;
 	write(1, "dquote> ", 8);
 	if (get_next_line(0, str) == 0)
 	{

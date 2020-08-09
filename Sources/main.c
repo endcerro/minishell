@@ -15,8 +15,9 @@
 int		prompt(char **line)
 {
 	g_mshell.pid = 0;
-	if (g_mshell.linestate == 0)
+	if (g_mshell.linestate == 0 || g_mshell.dquote == 1)
 		ft_putstr_fd("\033[31mminishell \033[33m@>\033[0m", 2);
+	g_mshell.dquote = 0;
 	return (get_next_line(0, line));
 }
 
@@ -87,6 +88,7 @@ void	init_mshell(void)
 	g_mshell.oldfdin = dup(0);
 	g_mshell.sigswitch = 0;
 	g_mshell.linestate = 0;
+	g_mshell.dquote = 0;
 }
 
 int		main(void)

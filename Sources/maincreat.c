@@ -17,7 +17,10 @@ void	sigint(int sig)
 	g_mshell.exitcode = 130;
 	if (g_mshell.pid == 0)
 	{
-		ft_putstr_fd("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m", 2);
+		if (g_mshell.dquote == 0)
+			ft_putstr_fd("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m", 2);
+		else
+			ft_putstr_fd("\b\b  \b\b", 2);
 		g_mshell.linestate = 2;
 	}
 	else
@@ -34,7 +37,10 @@ void	sigquit(int sig)
 	g_mshell.exitcode = 131;
 	if (g_mshell.pid == 0)
 	{
-		ft_putstr_fd("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m", 2);
+		if (g_mshell.dquote == 0)
+			ft_putstr_fd("\b\b  \b\b\n\033[31mminishell \033[33m@>\033[0m", 2);
+		else
+			ft_putstr_fd("\b\b  \b\b", 2);
 		g_mshell.linestate = 2;
 	}
 	else
