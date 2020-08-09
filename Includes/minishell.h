@@ -159,5 +159,12 @@ int					trim_rdir(t_list *lst);
 int					islastrdir(t_list *lst, int type);
 int					exportstuffter(t_list *curr, char *tmp);
 int					expand_t(char **str);
+void	exec_command(char *line, t_list *lst, int *npipe, int oldfd);
+int		countpipes(t_list *curr);
+int		allocpipepid(int npipe, t_list *copy);
+int		prep_ls(t_list *curr, t_list *lst);
+t_list	*correct_rdir(t_list *lst, t_list *curr, t_list *newlst, t_list *pr);
+int		openrdir3(t_list **urr, char *file);
+void	ms_exit(char *line, int *npipe);
 
 #endif
