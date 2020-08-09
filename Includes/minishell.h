@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 17:50:43 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 19:14:45 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,7 @@ char				*rethomedir(void);
 int					retunset(char *str);
 void				print_export(char **env2);
 int					checkspace(char *str);
+int 				trim_rdir(t_list *lst);
+int 				islastrdir(t_list *lst, int type);
 
 #endif

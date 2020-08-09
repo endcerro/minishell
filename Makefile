@@ -38,6 +38,7 @@ SRC			=	main.c \
 				export2.c \
 				commandorvar2.c \
 				get_commandslst2.c \
+				get_commandslst3.c \
 				main2.c \
 				maincreat.c \
 				main3.c \
