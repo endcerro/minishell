@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:40:37 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:09:31 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,13 @@ int		check_valid(t_list *lst, int cp_r, int cp_d, t_list *first)
 {
 	while (lst)
 	{
-		if (lst->type == 3 || lst->type == 6 || ++cp_d)
+		if ((lst->type == 3 || lst->type == 6) && ++cp_d)
 		{
 			if ((lst->type == 6 && lst->next == NULL) || lst == first)
 				return ((g_mshell.exitcode = ft_printh(2, 2,
 													SYNTERR2, lst->content)));
 		}
-		else if (lst->type != 1 || ++cp_r)
+		else if (lst->type != 1 && ++cp_r)
 		{
 			if (lst->next == 0 || lst->next->content == 0
 				|| lst->next->content[0] == 0)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:35:24 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:45:03 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,106 +61,103 @@ void	addlstendblock(t_list *lst, t_list *block)
 	prev->next = block;
 }
 
-t_list	*correct_rdir(t_list *lst)
+void	correct_rdir2(t_list **block, t_list **curr, t_list **newlst)
 {
-	t_list *newlst;
-	t_list *curr;
-	t_list *prev;
+	(*block) = (*curr);
+	(*curr) = NULL;
+	if ((*block)->next)
+	{
+		(*curr) = (*block)->next->next;
+		(*block)->next->next = NULL;
+	}
+	(*newlst) = (*curr);
+	addlstendblock((*curr), (*block));
+	(*curr) = (*newlst);
+}
+
+t_list	*correct_rdir(t_list *lst, t_list *curr, t_list *newlst, t_list *pr)
+{
 	t_list *block;
 
-	prev = NULL;
-	curr = lst;
-	newlst = lst;
 	while (curr)
 	{
-		if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev)
+		if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && pr)
 		{
 			block = curr;
-			prev->next = (block->next) ? block->next->next : NULL;
+			pr->next = (block->next) ? block->next->next : NULL;
 			if (block->next)
 				block->next->next = NULL;
-			addlstendblock(prev, block);
+			addlstendblock(pr, block);
 			curr = lst;
 		}
-		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5) && prev == NULL)
+		else if ((curr->type == 2 || curr->type == 4 || curr->type == 5)
+				&& pr == NULL)
 		{
-			block = curr;
-			curr = NULL;
-			if (block->next)
-			{
-				curr = block->next->next;
-				block->next->next = NULL;
-			}
-			newlst = curr;
-			addlstendblock(curr, block);
-			curr = newlst;
-			continue;
+			correct_rdir2(&block, &curr, &newlst);
+			continue ;
 		}
-		prev = curr;
+		pr = curr;
 		curr = curr->next;
 	}
 	g_mshell.ls = newlst;
 	return (0);
 }
 
-int 	islastrdir(t_list *lst, int type)
+int		islastrdir(t_list *lst, int type)
 {
 	lst = lst->next;
-	while(lst && lst->type != 3 && lst->type != 6)
+	while (lst && lst->type != 3 && lst->type != 6)
 	{
-		if ((type == -5 && lst->type == type) || (type != -5 && (lst->type == -4 || lst->type == - 2)))
-			return 0;
+		if ((type == -5 && lst->type == type)
+			|| (type != -5 && (lst->type == -4 || lst->type == -2)))
+			return (0);
 		lst = lst->next;
 	}
-	return 1;
+	return (1);
 }
 
-
-
-int		rawtext(t_list *curr)
+int		rawtext2(t_list **curr, t_list **tmp, t_list **cache, char ***split)
 {
-	char **split;
 	int i;
-	t_list *tmp;
-	t_list *cache;
-	t_list *prev;
 
-	prev = 0;
-	split = 0;
+	i = -1;
+	while ((*split) && (*split)[++i])
+		if (i == 0)
+		{
+			free((*curr)->content);
+			(*curr)->content = (*split)[i];
+		}
+		else
+		{
+			if (!((*tmp) = ft_lstnew((*split)[i])))
+				return (freechar2ptr((*split), 1));
+			(*split)[i] = (char *)-1;
+			(*cache) = (*curr)->next;
+			(*tmp)->next = (*cache);
+			(*curr)->next = (*tmp);
+			(*curr) = (*tmp);
+		}
+	return (0);
+}
+
+int		rawtext(t_list *curr, t_list *prev, char **split, t_list *tmp)
+{
+	t_list	*cache;
+
 	while (curr)
 	{
 		if (curr->rawtext == 1)
 		{
-			i = 0;
 			if (prev && (prev->type == 2 || prev->type == 4 || prev->type == 5))
 			{
 				prev = curr;
 				curr = curr->next;
-				continue;
+				continue ;
 			}
-			if(!(split = ft_split(curr->content, ' ')))
+			if (!(split = ft_split(curr->content, ' ')))
 				return (1);
-			while (split && split[i])
-			{
-				if (i == 0)
-				{
-					free(curr->content);
-					curr->content = split[i];
-					// curr->rawtext = 0;
-				}
-				else
-				{
-					/* tmp = ft_lstnew(split[i]); */
-					if (!(tmp = ft_lstnew(split[i])))
-						return (freechar2ptr(split, 1));
-					split[i] = (char *)-1;
-					cache = curr->next;
-					tmp->next = cache;
-					curr->next = tmp;
-					curr = tmp;
-				}
-				i++;
-			}
+			if (rawtext2(&curr, &tmp, &cache, &split) == 1)
+				return (1);
 		}
 		prev = curr;
 		curr = curr->next;
@@ -169,7 +166,7 @@ int		rawtext(t_list *curr)
 	return (0);
 }
 
-int		prep_ls(t_list *curr)
+int		prep_ls(t_list *curr, t_list *lst)
 {
 	escape_lst(curr);
 	if (check_valid(curr, 0, 0, curr) != 0)
@@ -181,16 +178,15 @@ int		prep_ls(t_list *curr)
 		return (1);
 	if (mergelst(curr))
 		return (1);
-	if(curr->next && curr->next->next)
-		correct_rdir(curr);
+	if (curr->next && curr->next->next)
+		correct_rdir(curr, curr, curr, NULL);
 	curr = g_mshell.ls;
-	if(curr->next && curr->next->next)
+	if (curr->next && curr->next->next)
 		if (trim_rdir(curr))
 			return (1);
 	curr = g_mshell.ls;
- 	if(rawtext(curr))
- 		return (1);
- 	t_list *lst = g_mshell.ls;
+	if (((lst = g_mshell.ls) || 1) && rawtext(curr, NULL, NULL, NULL))
+		return (1);
 	while (lst && lst->content)
 	{
 		de_escape_chars(lst->content, -1);
@@ -240,20 +236,20 @@ int		openrdir(int *oldfd, int *npipe)
 			if (urr->next)
 			{
 				if (!(file = urr->next->content))
-					return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+					return (ft_printh(2, 1, MERR, strerror(errno)));
 				if (urr && *npipe > 0)
 				{
 					if (urr->type == 2)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+							return (ft_printh(2, 1, MERR, strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
 					else if (urr->type == 4)
 					{
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+							return (ft_printh(2, 1, MERR, strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
@@ -272,7 +268,7 @@ int		openrdir(int *oldfd, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+							return (ft_printh(2, 1, MERR, strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
@@ -281,7 +277,7 @@ int		openrdir(int *oldfd, int *npipe)
 						g_mshell.oldfdout = dup(1);
 						*oldfd += 1;
 						if ((fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644)) == -1)
-							return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
+							return (ft_printh(2, 1, MERR, strerror(errno)));
 						else
 							dup2(fd, 1);
 					}
@@ -312,7 +308,6 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 	oldfd = 0;
 	if ((ret = openrdir(&oldfd, npipe)) == 0)
 	{
-		// rawtext(lst);
 		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
 			ms_exit(line, npipe);
 		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
@@ -395,12 +390,11 @@ int		checkinput_ls(char *line)
 	while (tmp)
 	{
 		g_mshell.ls = tmp;
-		if ((npipe = prep_ls(tmp)))
+		if ((npipe = prep_ls(tmp, NULL)))
 			return ((g_mshell.exitcode = npipe));
 		if (tmp == copy)
 			copy = g_mshell.ls;
 		tmp = g_mshell.ls;
-		// ft_lstprint(tmp);
 		curr = g_mshell.ls;
 		npipe = countpipes(curr);
 		if (npipe != 0)

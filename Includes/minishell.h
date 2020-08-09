@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:40:33 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:44:33 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define NOTVALID "minishell: export: \'%s\': not a valid identifier\n"
 # define BSTXT "minishell: unexpected EOF while looking for matching `%s\'\n%s"
 # define BSTXT2 "minishell: syntax error: unexpected end of file\n"
+# define MERR "minishell: %s\n"
 
 typedef struct		s_list
 {
