@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 17:17:42 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 17:34:13 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,7 +566,6 @@ int		checkinput_ls(char *line)
 			{
 				g_mshell.exitcode = 0;
 				waitpid(pidtab[x], &g_mshell.exitcode, 0);
-				printf("fin exitcode = %d\n", g_mshell.exitcode);
 			}
 			if (g_mshell.sigswitch != 0)
 				g_mshell.exitcode = g_mshell.sigswitch;
