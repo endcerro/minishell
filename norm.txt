@@ -2,105 +2,81 @@ Norme: ./Sources/command_parsing.c
 Norme: ./Sources/echo.c
 Norme: ./Sources/cd.c
 Norme: ./Sources/commandorvar2.c
+Norme: ./Sources/evenmorefunc.c
 Norme: ./Sources/commandorvar.c
-Norme: ./Sources/echo_utils.c
 Norme: ./Sources/export_utils.c
+Norme: ./Sources/echo_utils.c
 Norme: ./Sources/functionsnstuff.c
 Norme: ./Sources/export.c
-Error (line 65): function exportstuffquater has 33 lines
-Norme: ./Sources/inside_join.c
 Norme: ./Sources/export2.c
-Norme: ./Sources/lst_creat2.c
+Norme: ./Sources/get_commandslst3.c
+Norme: ./Sources/inside_join.c
 Norme: ./Sources/get_commandslst2.c
-Error (line 32): function expand_vars has 35 lines
-Error (line 51): line has 85 characters
-Error (line 88): line has 92 characters
-Error (line 110): function check_valid has 41 lines
-Error (line 110): declarations must be followed by one empty line in check_valid
-Error (line 112, col 4): bad spacing
-Error (line 113, col 4): bad spacing
-Error (line 114, col 7): bad spacing
-Error (line 116): multiple empty lines
-Error (line 116): Empty line
-Error (line 128): line has 112 characters
-Error (line 134): line has 89 characters
-Error (line 137): line has 103 characters
-Norme: ./Sources/lst_creat.c
-Error: 6 functions in the file
-Error (line 77): function split_line_lst has 27 lines
-Error (line 104): Empty line
-Error (line 114): line has 92 characters
-Error (line 114, col 27): missing space around &&
-Norme: ./Sources/lst_creat3.c
-Error (line 76): function escape_chars has 40 lines
+Norme: ./Sources/lst_creat2.c
 Norme: ./Sources/lst_utils.c
-Error: 7 functions in the file
+Norme: ./Sources/lst_creat.c
+Norme: ./Sources/lst_creat3.c
+Norme: ./Sources/main.c
 Norme: ./Sources/main3.c
 Norme: ./Sources/maincreat.c
 Norme: ./Sources/main2.c
+Norme: ./Sources/morfuns.c
 Norme: ./Sources/more_functions.c
 Norme: ./Sources/n_itoa.c
-Norme: ./Sources/utils.c
 Norme: ./Sources/get_commands_lst.c
-Error: global scope bad aligned
-Error: 12 functions in the file
+Error: 11 functions in the file
 Error (line 64): function correct_rdir has 38 lines
 Error (line 85): line has 90 characters
 Error (line 106): Space before function name
+Error (line 106): bad spacing after islastrdir
 Error (line 106, col 3): bad spacing
 Error (line 109, col 1): missing space after while
 Error (line 111): line has 104 characters
 Error (line 111, col 91): space after negative
 Error (line 112, col 10): missing parentheses in return statement
 Error (line 115, col 8): missing parentheses in return statement
-Error (line 118): declarations in trim_rdir are bad aligned
-Error (line 118): Space before function name
-Error (line 118): function trim_rdir has 78 lines
-Error (line 118): declarations in trim_rdir must be at the top of the function
-Error (line 118, col 3): bad spacing
-Error (line 130, col 24): space before )
-Error (line 135): line has 91 characters
-Error (line 139): line has 108 characters
-Error (line 159): line has 108 characters
-Error (line 180): line has 108 characters
-Error (line 200): declarations in rawtext are bad aligned
-Error (line 200): function rawtext has 48 lines
-Error (line 221, col 3): missing space after if
-Error (line 229): C++ comment
-Error (line 233): comment not well formatted
-Error (line 233): bad indentation
-Error (line 233): comment not well placed
-Error (line 252): declarations in prep_ls must be at the top of the function
-Error (line 252): declarations must be followed by one empty line in prep_ls
-Error (line 264, col 1): missing space after if
-Error (line 267, col 1): missing space after if
-Error (line 270): bad indentation
-Error (line 270): must begin only by tabulations
-Error (line 270, col 2): missing space after if
-Error (line 271): bad indentation
-Error (line 271): must begin only by tabulations
-Error (line 272): bad indentation
-Error (line 272): must begin only by tabulations
-Error (line 272, col 10): lst is instanciated during declaration
-Error (line 308): function openrdir has 74 lines
-Error (line 322): line has 82 characters
-Error (line 327): line has 89 characters
-Error (line 328): line has 90 characters
-Error (line 334): line has 90 characters
-Error (line 335): line has 90 characters
-Error (line 342): line has 106 characters
-Error (line 353): line has 89 characters
-Error (line 354): line has 90 characters
-Error (line 362): line has 90 characters
-Error (line 363): line has 90 characters
-Error (line 372): line has 106 characters
-Error (line 386): function exec_command has 51 lines
-Error (line 394): bad indentation
-Error (line 394): C++ comment
-Error (line 457): function checkinput_ls has 112 lines
-Error (line 457, col 0): checkinput_ls has 7 variables
-Error (line 477): bad indentation
-Error (line 477): C++ comment
-Norme: ./Sources/main.c
-Error (line 112): comment not well formatted
-Error (line 112): comment not well placed
+Error (line 118): multiple empty lines
+Error (line 119): multiple empty lines
+Error (line 120): declarations in rawtext are bad aligned
+Error (line 120): function rawtext has 48 lines
+Error (line 120): bad spacing before rawtext
+Error (line 141, col 3): missing space after if
+Error (line 149): C++ comment
+Error (line 153): comment not well formatted
+Error (line 153): bad indentation
+Error (line 153): comment not well placed
+Error (line 172): function prep_ls has 26 lines
+Error (line 172): declarations in prep_ls must be at the top of the function
+Error (line 172): declarations must be followed by one empty line in prep_ls
+Error (line 184, col 1): missing space after if
+Error (line 187, col 1): missing space after if
+Error (line 191): bad indentation
+Error (line 191): must begin only by tabulations
+Error (line 191, col 2): missing space after if
+Error (line 192): bad indentation
+Error (line 192): must begin only by tabulations
+Error (line 193): bad indentation
+Error (line 193): must begin only by tabulations
+Error (line 193, col 10): lst is instanciated during declaration
+Error (line 229): function openrdir has 74 lines
+Error (line 243): line has 82 characters
+Error (line 248): line has 89 characters
+Error (line 249): line has 90 characters
+Error (line 255): line has 90 characters
+Error (line 256): line has 90 characters
+Error (line 263): line has 106 characters
+Error (line 274): line has 89 characters
+Error (line 275): line has 90 characters
+Error (line 283): line has 90 characters
+Error (line 284): line has 90 characters
+Error (line 293): line has 106 characters
+Error (line 307): function exec_command has 51 lines
+Error (line 315): bad indentation
+Error (line 315): C++ comment
+Error (line 378): function checkinput_ls has 132 lines
+Error (line 378, col 0): checkinput_ls has 8 variables
+Error (line 403): C++ comment
+Norme: ./Sources/lstprint.c
+Error: file must end with a single empty line
+Error (line 40, col 0): no newline after block
+Norme: ./Sources/utils.c

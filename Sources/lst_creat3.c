@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 18:14:44 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:11:20 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,6 @@ char	*get_word_lst(char *line, int *p, size_t len)
 		while (line[*p] && !ft_isspace(line[*p]) && !isquote(line[*p]) && ++len)
 			++(*p);
 	return (ft_substr(line, cp, len));
-}
-
-void	escape_lst(t_list *curr)
-{
-	while (curr && curr->type == 1)
-	{
-		escape_chars(curr->content, 0, 0);
-		curr = curr->next;
-	}
 }
 
 void	escape_chars2(char **line, int i, int bscpt)
