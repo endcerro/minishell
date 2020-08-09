@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 15:32:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 17:17:42 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,12 +463,14 @@ int		checkinput_ls(char *line)
 	int		pcount;
 	int		npipe;
 	int		*pipes;
+	int		*pidtab;
 
 	if (g_mshell.ls == 0)
 		return (1);
 	copy = g_mshell.ls;
 	tmp = g_mshell.ls;
 	pipes = NULL;
+	pidtab = NULL;
 	while (tmp)
 	{
 		g_mshell.ls = tmp;
@@ -483,6 +485,14 @@ int		checkinput_ls(char *line)
 			{
 				ft_printh(2, 1, "minishell: %s", strerror(errno));
 				g_mshell.ls = copy;
+				g_mshell.exitcode = 2;
+				return (1);
+			}
+			if ((pidtab = (int *)malloc(sizeof(int) * (npipe + 1))) == NULL)
+			{
+				ft_printh(2, 1, "minishell: %s", strerror(errno));
+				g_mshell.ls = copy;
+				free(pipes);
 				g_mshell.exitcode = 2;
 				return (1);
 			}
@@ -517,6 +527,7 @@ int		checkinput_ls(char *line)
 					while (++x < npipe * 2)
 						close(*(pipes + x));
 					free(pipes);
+					free(pidtab);
 					g_mshell.exitcode = 2;
 					return (1);
 				}
@@ -529,8 +540,10 @@ int		checkinput_ls(char *line)
 					x = -1;
 					while (++x < npipe * 2)
 						close(*(pipes + x));
+					free(pipes);
 					exec_command(line, copy, &npipe);
 				}
+				pidtab[x] = g_mshell.pid;
 				while (g_mshell.ls)
 				{
 					if (g_mshell.ls->type == 6)
@@ -550,12 +563,17 @@ int		checkinput_ls(char *line)
 			pipes = NULL;
 			x = -1;
 			while (++x <= npipe)
-				wait(&g_mshell.exitcode);
+			{
+				g_mshell.exitcode = 0;
+				waitpid(pidtab[x], &g_mshell.exitcode, 0);
+				printf("fin exitcode = %d\n", g_mshell.exitcode);
+			}
 			if (g_mshell.sigswitch != 0)
 				g_mshell.exitcode = g_mshell.sigswitch;
 			else
 				g_mshell.exitcode /= 256;
 			g_mshell.sigswitch = 0;
+			free(pidtab);
 		}
 		else
 		{
