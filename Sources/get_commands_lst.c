@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 17:34:13 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 19:02:24 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int 		trim_rdir(t_list *lst)
 
 	curr = lst;
 	prev = 0;
+	ft_lstprint(lst);
 	while (curr && curr->type != 3)
 	{
 		while (curr && curr->type != 6)
@@ -194,6 +195,8 @@ int 		trim_rdir(t_list *lst)
 		prev = curr;
 		curr = (curr) ? curr->next : 0;
 	}
+	g_mshell.ls = lst;
+	ft_lstprint(g_mshell.ls);
 	return (0);
 }
 
@@ -267,6 +270,7 @@ int		prep_ls(t_list *curr)
 	if(curr->next && curr->next->next)
 		if (trim_rdir(curr))
 			return (1);
+	curr = g_mshell.ls;
  	if(rawtext(curr))
  		return (1);
  	t_list *lst = g_mshell.ls;
@@ -476,6 +480,9 @@ int		checkinput_ls(char *line)
 		g_mshell.ls = tmp;
 		if ((npipe = prep_ls(tmp)))
 			return ((g_mshell.exitcode = npipe));
+		if (tmp == copy)
+			copy = g_mshell.ls;
+		tmp = g_mshell.ls;
 		// ft_lstprint(tmp);
 		curr = g_mshell.ls;
 		npipe = countpipes(curr);

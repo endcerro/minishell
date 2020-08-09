@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 18:20:58 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 19:10:37 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int		check_valid(t_list *lst)
 			cp_r = 0;
 			cp_d = 0;
 		}
-		if ((cp_d > 1 || cp_r > 1) || (cp_r + cp_d > 1))
+		if ((cp_d > 1 || cp_r > 1) || (cp_r + cp_d > 1 && lst->type != 2 && lst->type != 4 && lst->type != 5))
 		{
 			g_mshell.exitcode = 2;
 			return (ft_printh(2, 0, SYNTERR, lst->content));
