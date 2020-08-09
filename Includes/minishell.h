@@ -72,7 +72,7 @@ int					commandorvar(int *npipe, int i);
 **BUILTIN UTILS
 */
 
-void				checkinput_ls(char *line);
+int					checkinput_ls(char *line);
 int					parse_env_ls(char **param, int len, t_list *curr);
 char				*vars(char *request);
 int					check_match(char *env, char *param);

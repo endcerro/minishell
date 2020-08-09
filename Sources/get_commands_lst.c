@@ -253,7 +253,7 @@ int		prep_ls(t_list *curr)
 {
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
-		return (1);
+		return (2);
 	// ft_lstprint(curr);
 	if (expand_vars(curr))
 		return (1);
@@ -285,7 +285,7 @@ int		prep_ls(t_list *curr)
 	}
 	// printf("6\n");
 	// ft_lstprint(curr);
- 	if(rawtext(curr)) 
+ 	if(rawtext(curr))
  		return (1);
  // 	printf("7\n");
 	// ft_lstprint(curr);
@@ -410,9 +410,10 @@ int		openrdir(int *oldfd, int *npipe)
 void	exec_command(char *line, t_list *lst, int *npipe)
 {
 	int		oldfd;
+	int		ret;
 
 	oldfd = 0;
-	if (openrdir(&oldfd, npipe) == 0)
+	if ((ret = openrdir(&oldfd, npipe)) == 0)
 	{
 		// rawtext(lst);
 		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
@@ -437,6 +438,8 @@ void	exec_command(char *line, t_list *lst, int *npipe)
 		else
 			commandorvar(npipe, 0);
 	}
+	if (ret)
+		g_mshell.exitcode = ret;
 	if (*npipe <= 0)
 	{
 		if (oldfd == 2)
@@ -475,7 +478,7 @@ int		countpipes(t_list *curr)
 	return (x);
 }
 
-void	checkinput_ls(char *line)
+int		checkinput_ls(char *line)
 {
 	t_list	*curr;
 	t_list	*copy;
@@ -486,15 +489,15 @@ void	checkinput_ls(char *line)
 	int		*pipes;
 
 	if (g_mshell.ls == 0)
-		return ;
+		return (1);
 	copy = g_mshell.ls;
 	tmp = g_mshell.ls;
 	pipes = NULL;
 	while (tmp)
 	{
 		g_mshell.ls = tmp;
-		if (prep_ls(tmp))
-			return ;
+		if ((npipe = prep_ls(tmp)))
+			return ((g_mshell.exitcode = npipe));
 		// ft_lstprint(tmp);
 		curr = g_mshell.ls;
 		npipe = countpipes(curr);
@@ -505,7 +508,7 @@ void	checkinput_ls(char *line)
 				ft_printh(2, 1, "minishell: %s", strerror(errno));
 				g_mshell.ls = copy;
 				g_mshell.exitcode = 2;
-				return ;
+				return (1);
 			}
 		}
 		while (curr && curr->type != 3)
@@ -539,7 +542,7 @@ void	checkinput_ls(char *line)
 						close(*(pipes + x));
 					free(pipes);
 					g_mshell.exitcode = 2;
-					return ;
+					return (1);
 				}
 				if (g_mshell.pid == 0)
 				{
@@ -588,4 +591,5 @@ void	checkinput_ls(char *line)
 		curr->next = tmp;
 	}
 	g_mshell.ls = copy;
+	return (0);
 }

@@ -147,7 +147,7 @@ int		check_valid(t_list *lst)
 			cp_d++;
 			if ((lst->type == 6 && lst->next == NULL) || lst == first)
 			{
-				g_mshell.exitcode = 258;
+				g_mshell.exitcode = 2;
 				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `|'\n"));
 			}
 		}
@@ -156,7 +156,7 @@ int		check_valid(t_list *lst)
 			cp_r++;
 			if (lst->next == 0 || lst->next->content == 0 || lst->next->content[0] == 0)
 			{
-				g_mshell.exitcode = 258;
+				g_mshell.exitcode = 2;
 				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `newline'\n"));
 			}
 		}
@@ -167,7 +167,7 @@ int		check_valid(t_list *lst)
 		}
 		if ((cp_d > 1 || cp_r > 1) || (cp_r + cp_d > 1))
 		{
-			g_mshell.exitcode = 258;
+			g_mshell.exitcode = 2;
 			return (ft_printh(2, 0, SYNTERR, lst->content));
 		}
 		lst = lst->next;

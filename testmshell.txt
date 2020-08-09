@@ -19,7 +19,7 @@ export var=… ; export																	OK
 
 
 
-echo "bip | bip ; coyotte > < \" " -> bip | bip ; coyotte >< "							OK
+echo "bip | bip ; coyotte > < \" " -> bip | bip ; coyotte > < "							OK
 cat | cat | cat | ls -> ligne ls et 3 retour a la ligne via Entrer						OK
 $bla (non-export) -> retour a la ligne													OK
 export var ="cat Makefile | grep >" -> affiche le Makefile et erreurs pour |, grep..	OK

@@ -24,7 +24,7 @@ void	unset2(t_list *curr)
 		free(g_mshell.env[i]);
 		while (g_mshell.env[++i])
 			g_mshell.env[i - 1] = g_mshell.env[i];
-		g_mshell.env[i - 1] = 0;
+		g_mshell.env[i - 1] = NULL;
 		break ;
 	}
 }
@@ -34,6 +34,7 @@ int		unset(char *param)
 	t_list	*curr;
 	t_list	*alloc;
 
+	alloc = NULL;
 	if (param)
 	{
 		curr = ft_lstnew(param);
