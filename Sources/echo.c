@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/08 19:04:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 15:23:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ int		echo_ls(void)
 
 	ret = 0;
 	curr = g_mshell.ls->next;
-	// printf("IN ECHO\n");
-	// ft_lstprint(g_mshell.ls);
 	if (curr && is_n(curr->content))
 		while (curr && is_n(curr->content))
 			curr = curr->next;

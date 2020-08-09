@@ -31,7 +31,7 @@ SRC			=	main.c \
 				echo.c \
 				lst_creat.c \
 				utils.c \
-				redirections.c \
+				functionsnstuff.c \
 				more_functions.c \
 				lst_creat2.c \
 				lst_creat3.c \
@@ -41,6 +41,7 @@ SRC			=	main.c \
 				main2.c \
 				maincreat.c \
 				main3.c \
+				morfuns.c \
 				lst_utils.c
 
 OBJ			=	$(SRC:.c=.o)

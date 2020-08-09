@@ -6,51 +6,31 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 14:54:04 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 16:49:48 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	de_escape_chars(char *line)
+void	de_escape_chars(char *line, int i)
 {
-	int i;
-
-	i = 0;
-	while (line[i] != 0)
-	{
+	while (line[++i] != 0)
 		if (line[i] == -4)
-		{
 			line[i] = '\"';
-		}
 		else if (line[i] == -2)
-		{
 			line[i] = '$';
-		}
 		else if (line[i] == -3)
-		{
 			line[i] = '\'';
-		}
 		else if (line[i] == -5)
-		{
 			line[i] = ';';
-		}
 		else if (line[i] == -6)
-		{
 			line[i] = '>';
-		}
 		else if (line[i] == -7)
-		{
 			line[i] = '<';
-		}
 		else if (line[i] == -8)
-		{
 			line[i] = '|';
-		}
 		else if (line[i] == -9)
-		{
 			line[i] = ' ';
-		}
 		else if (line[i] == -10)
 			line[i] = '\t';
 		else if (line[i] == -11)
@@ -59,8 +39,6 @@ void	de_escape_chars(char *line)
 			line[i] = '\v';
 		else if (line[i] == -13)
 			line[i] = '\f';
-		i++;
-	}
 }
 
 int		mergelst(t_list *curr)
@@ -86,18 +64,6 @@ int		mergelst(t_list *curr)
 	return (0);
 }
 
-int		correctlst(t_list *lst)
-{
-	while (lst && lst->content)
-	{
-		trim_quotes(lst->content);
-		// parse_bs(lst->content); // ATTENTION DANGER !!!
-		// de_escape_chars(lst->content);
-		lst = lst->next;
-	}
-	return (0);
-}
-
 t_list	*split_line_lst(char *line, int i)
 {
 	t_list	*f_lst;
@@ -114,9 +80,7 @@ t_list	*split_line_lst(char *line, int i)
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
 			else if (!ft_isspace(line[i]) && line[i] != 0)
-			{
 				lst->nospace = 1;
-			}
 			if (f_lst == NULL && (f_lst = lst))
 				lst = NULL;
 			else
@@ -125,7 +89,6 @@ t_list	*split_line_lst(char *line, int i)
 	}
 	if (inner_split(f_lst) == NULL)
 		return ((t_list *)(long)ft_lstclear(&f_lst));
-
 	return (f_lst);
 }
 
@@ -135,7 +98,8 @@ void	joindrdir(t_list *in)
 
 	while (in)
 	{
-		if (in->content[0] == '>'&& in->nospace && in->next && in->next->content[0] == '>')
+		if (in->content[0] == '>' && in->nospace && in->next &&
+			in->next->content[0] == '>')
 		{
 			free(in->content);
 			in->content = ft_strdup(">>");

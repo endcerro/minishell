@@ -56,7 +56,7 @@ whoami										OK
 
 XXXX pipe
 
-| echo										KO //SHOULD NOT BE WORKING
+| echo										OK
 echo | | echo								OK
 
 XXXX redirection
@@ -64,12 +64,12 @@ XXXX redirection
 cat < >										OK
 cat < <								   		OK
 cat < Makefile > test1 > test2 > test2		OK
-cat < no_file > test1 echo asdf				KO //DOES NOT ERROR PROPERLY
+cat < no_file > test1 echo asdf				OK
 
 XXXX pipe & redirection
 
 cat < Makefile | grep gcc > output			OK
-cat < nofile | grep gcc > output  			KO	//DOES NOT ERROR PROPERLY
+cat < nofile | grep gcc > output  			OK
 
 
 XXXX Commandes valides et basiques
@@ -90,7 +90,7 @@ echo /s/a/l/u/tXXXX 						OK
 echo \$PATH:abc 							OK
 echo \$PATH.abc								OK
 echo \$PATH\ abc							OK
-echo \$PATH\\abc							KO		//SEGFAULT
+echo \$PATH\\abc							OK
 echo \$PATH+abc								OK
 echo "\$PATH+abc"							OK
 echo \$PATH,abc								OK
@@ -183,47 +183,44 @@ XXXX PARSING EXIT VALUE ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 
 											NEED TO SET ERRNO ?
 
-;											SHOULD ERROR
+CHECK ALL EXITCODES
+
+;											OK
 ;;;											Change message ?
-<											NEED TO ERROR
->											NEED TO ERROR
+<											OK
+>											OK
 ;;;;;										Change message ?
 \"; ; ;\"									OK
 \"; < ;\"									OK
 \"; > ;\"									OK
-; pwd ; echo Hello							SHOULD ERROR
+; pwd ; echo Hello							OK
 pwd;;;ls 									Change message ?
-;;ls;;
-;ls;pwd;									CHQNGE MESSQGE
+;;ls;;										Change message ?
+;ls;pwd;									OK
 \"											OK
 \"\"										OK
-'' 											Kinda OK
+'' 											OK
 \"\"\"\"\"\" 								OK
 \"  \" 										OK
-|											SHOULD ERROR
-  |;										DIFF ERROR
-;| 											DIFF ERRROR
-;|<											DIFF ERRROR
-<;											CHANGE ERROR
->;											CHANGE ERROR
-;<											CHANGE ERROR
-;>											CHANGE ERROR
- ;< ls ;									SHOULD ERROR
- ;> ls ;									SHOULD ERROR
-<<<<<<< HEAD
-'';											WRONG ERROR	
->>											SHOULD ERROR
-=======
-'';											WRONG ERROR
->>											SEGFQULT
->>>>>>> 1f2572ee782475a82075fa7f2fa7eb0ea3af9c5d
-  \"|\" ;
-'|'
-  '|'
-|.
-< \" \" < ' '<
-\" \" ' ' > < > ''
-<
+|											OK
+  |;										OK
+;| 											OK
+;|<											OK
+<;											OK
+>;											OK
+;<											OK
+;>											OK
+ ;< ls ;									OK
+ ;> ls ;									OK
+'';											OK	
+>>											OK
+  \"|\" ;									OK
+'|'											OK
+  '|'										OK
+|.											OK
+< \" \" < ' '<								OK
+\" \" ' ' > < > ''							OK
+<											WRONG EXIT CODE
 >
 <<<<<<<<
 <<<

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:41:07 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 18:34:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 15:26:53 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,6 @@ int		unset(char *param)
 	if (alloc)
 		free(alloc);
 	return (0);
-}
-
-void	print_export(char **env2)
-{
-	int x;
-	int y;
-
-	x = -1;
-	while (env2[++x])
-	{
-		y = 0;
-		ft_putstr("declare -x ");
-		while (env2[x][y] && env2[x][y] != '=')
-			++y;
-		write(1, env2[x], y);
-		if (env2[x][y] == '=' && env2[x][y + 1] == 0)
-			write(1, "=\"\"", 3);
-		else if (env2[x][y] != 0 && env2[x][y + 1] != 0)
-		{
-			write(1, "=\"", 2);
-			ft_putstr(env2[x] + y + 1);
-			write(1, "\"", 1);
-		}
-		write(1, "\n", 1);
-	}
 }
 
 int		exportlst(char **envi)

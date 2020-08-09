@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 17:55:30 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 15:25:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,6 @@ char	*getcwdwrap(void)
 		i += 100;
 	}
 	return (str);
-}
-
-char	*rethomedir(void)
-{
-	int	x;
-
-	x = 0;
-	while (g_mshell.env[x] && ft_strncmp("HOME=", g_mshell.env[x], 5) != 0)
-		++x;
-	if (g_mshell.env[x])
-		return (g_mshell.env[x] + 5);
-	return (NULL);
 }
 
 int		cdminus(char *str, char *oldpwd, char *pwd)
@@ -115,12 +103,6 @@ int		cdter(int pwd)
 		}
 	}
 	return (0);
-}
-
-int		retunset(char *str)
-{
-	unset(str);
-	return (ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno)));
 }
 
 int		cd(char *pwd, int x, int ret)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 18:39:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 16:22:10 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,6 @@ int		expand_t(char **str)
 		*str = ft_strdup(home);
 		if (*str == 0)
 			return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
-	}
-	return (0);
-}
-
-int		checkspace(char *str)
-{
-	while (*str)
-	{
-		if (ft_isspace(*str))
-			return (1);
-		++str;
 	}
 	return (0);
 }
@@ -79,18 +68,6 @@ int		expand_vars(t_list *curr)
 	return (0);
 }
 
-void	deconechar(char *str)
-{
-	int i;
-
-	i = 0;
-	if (*str == 0)
-		return ;
-	while (str[++i])
-		str[i - 1] = str[i];
-	str[i - 1] = str[i];
-}
-
 void	trimbs_loop(t_list *curr, int i)
 {
 	int j;
@@ -122,7 +99,7 @@ void	trimbs_loop(t_list *curr, int i)
 
 void	trimbs(t_list *curr)
 {
-	while (curr && curr->content) //&& curr->type == 1)
+	while (curr && curr->content)
 	{
 		if (curr->content[0] != '\'' && !curr->rawtext)
 			trimbs_loop(curr, 0);
@@ -148,7 +125,7 @@ int		check_valid(t_list *lst)
 			if ((lst->type == 6 && lst->next == NULL) || lst == first)
 			{
 				g_mshell.exitcode = 2;
-				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `|'\n"));
+				return (ft_printh(2, 0, "minishell: syntax error near unexpected token `%s'\n", lst->content));
 			}
 		}
 		else if (lst->type != 1)

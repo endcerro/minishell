@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 18:04:29 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 16:50:13 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void				trim_quotes(char *str);
 t_list				*split_line_lst(char *line, int i);
 void				escape_chars(char *line, int i, int j);
 int					correctlst(t_list *lst);
-void				de_escape_chars(char *line);
+void				de_escape_chars(char *line, int i);
 void				escape_lst(t_list *lst);
 int					mergelst(t_list *curr);
 void				sigint(int sig);
@@ -144,5 +144,8 @@ int					checklstate(char **oline, char **line);
 int					prompt(char **line);
 void				deconechar(char *str);
 char				*rethomedir(void);
+int					retunset(char *str);
+void				print_export(char **env2);
+int					checkspace(char *str);
 
 #endif

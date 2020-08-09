@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 19:05:15 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 15:32:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,51 +254,27 @@ int		prep_ls(t_list *curr)
 	escape_lst(curr);
 	if (check_valid(curr) == 0)
 		return (2);
-	// ft_lstprint(curr);
 	if (expand_vars(curr))
 		return (1);
-	// printf("1\n");
-	// ft_lstprint(curr);
 	trimbs(curr);
-	// printf("2\n");
-	// ft_lstprint(curr);
-
 	if (correctlst(curr))
 		return (1);
-	// printf("3\n");
-	// ft_lstprint(curr);
 	if (mergelst(curr))
 		return (1);
-	// printf("4\n");
-	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
 		correct_rdir(curr);
 	curr = g_mshell.ls;
-	// printf("5\n");
-	// ft_lstprint(curr);
 	if(curr->next && curr->next->next)
-	{
 		if (trim_rdir(curr))
-		{
 			return (1);
-		}
-	}
-	// printf("6\n");
-	// ft_lstprint(curr);
  	if(rawtext(curr))
  		return (1);
- // 	printf("7\n");
-	// ft_lstprint(curr);
  	t_list *lst = g_mshell.ls;
 	while (lst && lst->content)
 	{
-		// trim_quotes(lst->content);
-		// parse_bs(lst->content); // ATTENTION DANGER !!!
-		de_escape_chars(lst->content);
+		de_escape_chars(lst->content, -1);
 		lst = lst->next;
 	}
- // 	printf("E\n");
-	// ft_lstprint(curr);
 	return (0);
 }
 
