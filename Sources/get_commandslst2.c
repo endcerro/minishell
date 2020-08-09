@@ -6,28 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 20:09:31 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:47:21 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		expand_t(char **str)
-{
-	char *home;
-
-	if (*str && (*str)[0] == '~' && (*str)[1] == 0)
-	{
-		free(*str);
-		*str = NULL;
-		if ((home = rethomedir()) == NULL)
-			return (ft_printh(2, 1, "minishell: $HOME not set\n"));
-		*str = ft_strdup(home);
-		if (*str == 0)
-			return (ft_printh(2, 1, "minishell: %s\n", strerror(errno)));
-	}
-	return (0);
-}
 
 int		expand_vars2(t_list **curr, t_list *pr)
 {

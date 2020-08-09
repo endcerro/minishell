@@ -6,38 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:29:38 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 18:54:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/09 20:13:30 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	elemprint(t_list *lst, int bn)
-{
-	ft_putchar_fd('|', 2);
-	ft_putstr_fd(lst->content, 2);
-	ft_putchar_fd(':', 2);
-	ft_putnbr_fd(lst->type, 2);
-	ft_putchar_fd('-', 2);
-	ft_putnbr_fd(lst->nospace, 2);
-	ft_putchar_fd('-', 2);
-	ft_putnbr_fd(lst->rawtext, 2);
-	ft_putchar_fd('|', 2);
-	if (bn)
-		ft_putchar('\n');
-}
-
-void	ft_lstprint(t_list *lst)
-{
-	if (!lst)
-		return ;
-	while (lst->next)
-	{
-		elemprint(lst, 0);
-		lst = lst->next;
-	}
-	elemprint(lst, 1);
-}
 
 t_list	*tag_lst(t_list *lst)
 {

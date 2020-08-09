@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 18:07:11 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/09 19:47:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,6 @@ int		exportstuffbis(char ***n_envi, t_list **curr)
 	free(g_mshell.env);
 	g_mshell.env = *n_envi;
 	*curr = (*curr)->next;
-	return (0);
-}
-
-int		exportstuffter(t_list *curr, char *tmp)
-{
-	curr->content = ft_strjoinf1(curr->content, "=");
-	if (curr->content == 0)
-		return (1);
-	curr->content = ft_strjoinf1(curr->content, tmp);
-	if (curr->content == 0)
-		return (1);
 	return (0);
 }
 
