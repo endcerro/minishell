@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:47:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/10 18:42:47 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		export(char *param)
 		curr = ft_lstnew(param);
 	else
 		curr = g_mshell.ls->next;
-	if (curr == 0)
+	if (curr == 0 || curr->type != 1)
 		return (exportlst(g_mshell.env));
 	ret = exportstuffquater(curr, tmp, n_envi, 0);
 	if (param != NULL)
