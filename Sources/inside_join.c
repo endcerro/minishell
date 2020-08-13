@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/10 00:37:37 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/07/11 21:31:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*select_free(char *str1, char *str, int mode)
+void	select_free(char *str1, char *str, int mode)
 {
 	if (mode == 1)
 		free(str1);
@@ -23,7 +23,6 @@ char	*select_free(char *str1, char *str, int mode)
 		free(str1);
 		free(str);
 	}
-	return (0);
 }
 
 void	iniside_join_loop(char *base, char *add, char *out, int exit)
@@ -55,23 +54,6 @@ void	iniside_join_loop(char *base, char *add, char *out, int exit)
 	out[p] = 0;
 }
 
-char	*escape_nested_var(char *str)
-{
-	int		i;
-	char	*out;
-
-	i = 0;
-	if ((out = ft_strdup(str)) == 0)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == '$')
-			str[i] = -2;
-		i++;
-	}
-	return (out);
-}
-
 char	*inside_join(char *base, char *add, int mode, int exit)
 {
 	char	*out;
@@ -92,9 +74,6 @@ char	*inside_join(char *base, char *add, int mode, int exit)
 		select_free(base, add, mode);
 		return (0);
 	}
-	if (mode == 1 && (mode = 3))
-		if ((add = escape_nested_var(add)) == 0)
-			return (select_free(base, add, mode));
 	iniside_join_loop(base, add, out, exit);
 	select_free(base, add, mode);
 	return (out);

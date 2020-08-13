@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 13:35:30 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/10 18:42:01 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/07/11 14:33:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*ft_strdup(const char *s1)
 	char	*ret;
 
 	i = 0;
-	if (s1 == NULL)
-		return (NULL);
 	while (s1[i])
 		++i;
 	ret = (char *)malloc((i + 1) * sizeof(char));
