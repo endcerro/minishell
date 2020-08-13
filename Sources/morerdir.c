@@ -107,7 +107,7 @@ void	exec_command(char *line, t_list *lst, int *npipe, int oldfd)
 	if ((ret = openrdir(&oldfd, npipe)) == 0)
 	{
 		if (ft_strcmp(g_mshell.ls->content, "exit") == 0)
-			ms_exit(line, npipe);
+			g_mshell.exitcode = ms_exit(line, npipe);
 		else if (ft_strcmp(g_mshell.ls->content, "echo") == 0)
 			g_mshell.exitcode = echo_ls();
 		else if (ft_strcmp(g_mshell.ls->content, "env") == 0)

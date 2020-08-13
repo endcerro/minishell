@@ -91,7 +91,7 @@ int		prep_ls(t_list *curr, t_list *lst)
 	return (0);
 }
 
-void	ms_exit(char *line, int *npipe)
+int		ms_exit(char *line, int *npipe)
 {
 	int ex;
 
@@ -106,7 +106,7 @@ void	ms_exit(char *line, int *npipe)
 		else if (g_mshell.ls->next->next && g_mshell.ls->next->next->type == 1)
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-			return ;
+			return (1);
 		}
 		else
 			ex = ft_atoi(g_mshell.ls->next->content);
