@@ -1,0 +1,14 @@
+echo "\\\ " | cat -e
+'e'"$a"cho salut
+8:52
+exit 5 a -> exitcode 1
+
+echo > b$a
+8:59
+echo $PWD ; echo $OLDPWD ; unset PWD ; echo salut
+9:01
+unset PWD ; cd .. ; echo $OLDPWD -> ne rien afficher
+9:03
+echo > $"PATH"
+9:07
+echo >\|\$PATH"to"'to'\'
