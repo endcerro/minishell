@@ -31,16 +31,32 @@ char	*getcwdwrap(void)
 	return (str);
 }
 
-int		cdminus(char *str, char *oldpwd, char *pwd)
+void	cdonemore(char *pwd, int o)
+{
+	if (o)
+	{
+		if ((pwd = ft_strjoinf2("OLDPWD=", pwd)) == NULL)
+			ft_printh(2, 0, "minishell: cd: %s\n", strerror(errno));
+		else
+			export(pwd);
+	}
+	else
+	{
+		unset("OLDPWD");
+		export("OLDPWD");
+	}
+	free(pwd);
+}
+
+int		cdminus(char *str, char *oldpwd, char *pwd, int o)
 {
 	if (ft_strcmp(str, "-") != 0)
 		return (ft_printh(2, 1, "minishell: cd: %s: invalid option\n", str));
 	if ((oldpwd = env("OLDPWD")) == NULL || *oldpwd == 0)
 		return (ft_printh(2, 1, "minishell: cd: OLDPWD not set\n"));
-	++oldpwd;
 	if ((pwd = getcwdwrap()) == NULL)
 		return (ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno)));
-	if (chdir(oldpwd) == -1)
+	if (chdir(++oldpwd) == -1)
 	{
 		free(pwd);
 		return (ft_printh(2, 1, "minishell: cd: %s: %s\n",
@@ -52,11 +68,7 @@ int		cdminus(char *str, char *oldpwd, char *pwd)
 	else
 		export(oldpwd);
 	free(oldpwd);
-	if ((pwd = ft_strjoinf2("OLDPWD=", pwd)) == NULL)
-		ft_printh(2, 0, "minishell: cd: %s\n", strerror(errno));
-	else
-		export(pwd);
-	free(pwd);
+	cdonemore(pwd, o);
 	return (0);
 }
 
@@ -66,7 +78,7 @@ int		cdbis(char *str, t_list *curr)
 	if (curr && curr->type == 1)
 	{
 		if (curr->content[0] == '-')
-			return (cdminus(curr->content, 0, 0));
+			return (cdminus(curr->content, 0, 0, env("PWD") ? 1 : 0));
 		if (curr->content[0] == '~')
 		{
 			curr->content[0] = '/';
@@ -111,13 +123,15 @@ int		cd(char *pwd, int x, int ret)
 		ret = retunset("OLDPWD");
 	if ((x = cdbis(0, 0)) != -1)
 		return (freeret(pwd, x));
-	if (pwd)
+	if (env("PWD"))
 	{
 		if ((pwd = ft_strjoinf2("OLDPWD=", pwd)) == NULL)
 			ret = retunset("OLDPWD");
 		else
 			export(pwd);
 	}
+	else if (unset("OLDPWD") == 0)
+		export("OLDPWD");
 	free(pwd);
 	if ((pwd = getcwdwrap()) != NULL)
 	{
@@ -126,10 +140,7 @@ int		cd(char *pwd, int x, int ret)
 		else
 			export(pwd);
 	}
-	else
-	{
+	else if (unset("PWD") == 0)
 		ret = ft_printh(2, 1, "minishell: cd: %s\n", strerror(errno));
-		unset("PWD");
-	}
 	return (freeret(pwd, ret));
 }
