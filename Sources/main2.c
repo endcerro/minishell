@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 17:53:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 18:04:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	**getfiller(int depth, char *cpt, int *err)
 	parse_qts(tmp, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
-		printf("WE IN BOIZ\n");
 		out = getfiller(depth + 1, cpt, err);
 		if (out == 0)
 			return ((char **)(long)freeret(tmp, 0));
