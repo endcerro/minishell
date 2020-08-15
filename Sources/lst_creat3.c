@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 20:11:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 17:41:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	escape_chars2(char **line, int i, int bscpt)
 		(*line)[i] = -9;
 	else if ((*line)[i] == '\t' && bscpt % 2)
 		(*line)[i] = -10;
-	else if ((*line)[i] == '\"' && bscpt % 2 && (*line)[i + 1])
+	else if ((*line)[i] == '\"' && bscpt % 2)// && (*line)[i + 1])
 		(*line)[i] = -4;
 	else if ((*line)[i] == '\r' && bscpt % 2)
 		(*line)[i] = -11;
@@ -89,11 +89,20 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 	int i;
 
 	i = -1;
-	while (line[++i])
+	int len = ft_strlen(line);
+	// ft_putstr(line);
+	while (line && i < len && line[++i])
 	{
+		// printf("In at : %c %d\n",line[i], i );
 		bscpt = 0;
 		while (line[i] && line[i] == '\\' && ++bscpt)
 			i++;
+		if (line[i] == 0 && bscpt % 2)
+		{
+			printf("WE NEED SOME MOAR\n");
+			return ;
+		}
+		// printf("Out at : %d\n", i );
 		if (line[i] == ';' && bscpt % 2)
 			line[i] = -5;
 		else if (line[i] == '\f' && bscpt % 2)
@@ -107,7 +116,9 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 			line[i] = -2;
 		else if (line[i] == '\'')
 			sqnb = (sqnb == 0) ? sqnb + 1 : sqnb - 1;
+		// printf("Out at : %d\n", i );
 		escape_chars2(&line, i, bscpt);
+		// printf("Out at : %d\n", i );
 	}
 }
 
