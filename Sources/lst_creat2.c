@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:46:28 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/26 17:53:55 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/15 20:06:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,16 @@ int		protect_ptwo(t_list **new, char **split, char *str)
 	return (protect_pone(new, split));
 }
 
-int		do_the_thing(t_list **new, char *buff, char **split)
+int		do_the_thing(t_list **new, char *buff, char **split, t_list **tmplst)
 {
 	char	*tmpstr;
-	t_list	*tmplst;
 
 	if (0 == (tmpstr = ft_strdup(buff)))
 		return (protect_pone(new, split));
-	else if (0 == (tmplst = ft_lstnew(tmpstr)))
+	else if (0 == (*tmplst = ft_lstnew(tmpstr)))
 		return (protect_ptwo(new, split, tmpstr));
-	tmplst->nospace = -1;
-	ft_lstadd_back(new, tmplst);
+	(*tmplst)->nospace = 1;
+	ft_lstadd_back(new, *tmplst);
 	return (1);
 }
 
@@ -52,8 +51,12 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 {
 	char	**split;
 	t_list	*new;
+	int		status;
+	t_list	*tmplst;
 
+	status = curr->nospace;
 	new = NULL;
+	tmplst = NULL;
 	split = NULL;
 	if (!isquote(*curr->content) && *curr->content != ' ' && curr->content[1])
 		if (ft_strchr(curr->content, buff[0]))
@@ -64,14 +67,16 @@ t_list	*inner_split_loop(t_list *curr, char *buff, int i, int j)
 			while (curr->content[j])
 			{
 				while (curr->content[j] == buff[0] && ++j)
-					if (do_the_thing(&new, buff, split) == 0)
+					if (do_the_thing(&new, buff, split, &tmplst) == 0)
 						return (NULL);
 				while (curr->content[j] && curr->content[j] != buff[0])
 					++j;
 				if (split[++i])
-					if (do_the_thing(&new, split[i], split) == 0)
+					if (do_the_thing(&new, split[i], split, &tmplst) == 0)
 						return (NULL);
 			}
+			if (tmplst)
+				tmplst->nospace = status;
 		}
 	freechar2ptr(split, 0);
 	return (inner_split_loop_bis(new, curr));

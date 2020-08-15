@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/08 18:23:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 19:44:43 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 	int		i;
 
 	i = -1;
-	if (*query == 0 || ft_isspace(*query))
+	if ((*query == 0 || ft_isspace(*query)) && d_pos[0])
 		*(d_pos) = -1;
 	else
 	{
@@ -40,6 +40,19 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 	return (0);
 }
 
+int 	spaghetti_bolognaise(t_list *curr, char *d_pos)
+{
+	if (curr->nospace == 1)
+	{
+		if(curr->next && (curr->next->content[0] == '\'' || curr->next->content[0] == '\"' ))
+		{
+			d_pos[0] = 0;
+			return (2);
+		}
+	}
+	return (1);
+}
+
 int		parse_env_ls(char **str, int len, t_list *curr)
 {
 	char	*d_pos;
@@ -52,6 +65,8 @@ int		parse_env_ls(char **str, int len, t_list *curr)
 		d_pos = ft_strchr(*str, '$');
 		if (d_pos == 0 || d_pos[0] == 0)
 			continue ;
+		else if (d_pos[1] == 0)
+			return (spaghetti_bolognaise(curr, d_pos));
 		else if (*str[0] != '\"')
 			curr->rawtext = 1;
 		while (ft_isalnum(d_pos[len + 1]))
