@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 17:41:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 17:49:07 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	escape_chars2(char **line, int i, int bscpt)
 		(*line)[i] = -12;
 }
 
-void	escape_chars(char *line, int bscpt, int sqnb)
+void	escape_chars(char *line, int bscpt, int sqnb, char *cpt)
 {
 	int i;
 
@@ -97,9 +97,10 @@ void	escape_chars(char *line, int bscpt, int sqnb)
 		bscpt = 0;
 		while (line[i] && line[i] == '\\' && ++bscpt)
 			i++;
-		if (line[i] == 0 && bscpt % 2)
+		if (line[i] == 0 && bscpt % 2 && cpt)
 		{
 			printf("WE NEED SOME MOAR\n");
+			cpt[2]++;
 			return ;
 		}
 		// printf("Out at : %d\n", i );

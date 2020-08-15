@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/09 19:45:03 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 20:11:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 17:49:34 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	escape_lst(t_list *curr)
 {
 	while (curr && curr->type == 1)
 	{
-		escape_chars(curr->content, 0, 0);
+		escape_chars(curr->content, 0, 0, 0);
 		curr = curr->next;
 	}
 }

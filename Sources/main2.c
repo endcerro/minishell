@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/04 17:54:36 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/15 17:53:27 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	promptnextline(char **str, char *cpt, int *err)
 
 	g_mshell.dquote = 1;
 	write(1, "dquote> ", 8);
+	cpt[2] = 0;
 	if (get_next_line(0, str) == 0)
 	{
 		c = cpt[0] % 2 ? '\"' : '\'';
@@ -39,10 +40,11 @@ char	**getfiller(int depth, char *cpt, int *err)
 	promptnextline(&tmp, cpt, err);
 	if (tmp == NULL)
 		return (NULL);
-	escape_chars(tmp, 0, 0);
+	escape_chars(tmp, 0, 0, cpt);
 	parse_qts(tmp, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2])
 	{
+		printf("WE IN BOIZ\n");
 		out = getfiller(depth + 1, cpt, err);
 		if (out == 0)
 			return ((char **)(long)freeret(tmp, 0));
