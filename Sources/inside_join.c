@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 21:31:43 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/15 22:03:38 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ void	iniside_join_loop(char *base, char *add, char *out, int exit)
 			out[p++] = base[i++];
 	}
 	out[p] = 0;
+
+
+
+
+	if (ft_strcmp(base, add) == 0) // TESTEEEEEEEEEEEEEEEEEEER
+	{
+		out[0] = -248;
+		return ;
+	}
 }
 
 char	*inside_join(char *base, char *add, int mode, int exit)
