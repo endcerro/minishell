@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:27:29 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:59:14 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		expand_vars2(t_list **curr, t_list *pr)
 
 int		expand_vars(t_list *curr)
 {
-	t_list *pr;
+	t_list	*pr;
 
 	pr = 0;
 	while (curr && curr->type != 3 && curr->type != 6)
@@ -50,11 +50,11 @@ int		expand_vars(t_list *curr)
 			if (expand_vars2(&curr, pr))
 				return (1);
 		if (curr == 0 || curr->content == 0)
-			return (1);
+			return (0);
 		pr = curr;
 		curr = curr->next;
 	}
-	return (0);
+	return (-1);
 }
 
 void	trimbs_loop(t_list *curr, int i, int j)

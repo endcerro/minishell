@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 21:11:12 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/16 19:01:07 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		checkinput_ls(char *line, t_list *tmp, t_list *copy, int npipe)
 		return (1);
 	while (tmp && (g_mshell.ls = tmp))
 	{
-		if ((npipe = prep_ls(tmp, NULL)))
+		if ((npipe = prep_ls(tmp, NULL, 0)) != -1)
 			return ((g_mshell.exitcode = npipe));
 		if (checkinput_ls5(&tmp, &curr, &npipe, &copy) == 1)
 			return (1);

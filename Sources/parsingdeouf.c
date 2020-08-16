@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/16 17:26:14 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 19:01:02 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ int		rawtext(t_list *curr, t_list *prev, char **split, t_list *tmp)
 	return (0);
 }
 
-int		prep_ls(t_list *curr, t_list *lst)
+int		prep_ls(t_list *curr, t_list *lst, int ret)
 {
 	escape_lst(curr);
 	if (check_valid(curr, 0, 0, curr) != 0)
 		return (2);
-	if (expand_vars(curr))
-		return (1);
+	if ((ret = expand_vars(curr)) != -1)
+		return (ret);
 	trimbs(curr);
 	if (correctlst(curr))
 		return (1);
@@ -88,7 +88,7 @@ int		prep_ls(t_list *curr, t_list *lst)
 		de_escape_chars(lst->content, -1);
 		lst = lst->next;
 	}
-	return (0);
+	return (-1);
 }
 
 int		ms_exit(char *line, int *npipe)
@@ -115,6 +115,7 @@ int		ms_exit(char *line, int *npipe)
 	freechar2ptr(g_mshell.vars, 0);
 	ft_lstclear(&g_mshell.ls);
 	free(line);
+	system("leaks minishell");
 	exit(ex);
 }
 
