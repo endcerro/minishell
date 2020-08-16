@@ -37,7 +37,8 @@ char	*add_filler(char **fill)
 void	check_end_pipe(char *line, char *cpt)
 {
 	int i;
-
+        int c;
+        c = 0;
 	i = -1;
 	while (line && line[++i])
 	{
@@ -46,7 +47,7 @@ void	check_end_pipe(char *line, char *cpt)
 			++i;
 			while (ft_isspace(line[i]))
 				i++;
-			if (line[i] == 0)
+			if (line[i] == 0 && c)
 			{
 				cpt[3] = 1;
 				return ;
@@ -54,7 +55,7 @@ void	check_end_pipe(char *line, char *cpt)
 			else
 				cpt[3] = 0;
 		}
-		else
+		else if (++c)
 			cpt[3] = 0;
 	}
 }
