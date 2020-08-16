@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/09 20:12:58 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 19:16:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:20:12 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	ft_lstprint(t_list *lst)
 		lst = lst->next;
 	}
 	elemprint(lst, 1);
+}
+
+int		baderrorohno(void)
+{
+	ft_putstr_fd("minishell: cd: error retrieving current directory: getc", 2);
+	ft_putstr_fd("wd: cannot access parent directories: ", 2);
+	return (ft_printh(2, 1, "%s\n", strerror(errno)));
 }

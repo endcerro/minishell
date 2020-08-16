@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 18:14:59 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:20:32 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ t_list				*correct_rdir(t_list *lst, t_list *curr,
 int					openrdir3(t_list **urr, char *file);
 int					ms_exit(char *line, int *npipe);
 void				check_end_pipe(char *line, char *cpt);
+int					baderrorohno(void);
 
 #endif
