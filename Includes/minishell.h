@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 17:45:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:47:29 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ typedef struct		s_mshell
 	int			*pipes;
 	int			*pidtab;
 }					t_mshell;
+
+typedef struct		s_innsplitl
+{
+	char	**split;
+	t_list	*new;
+	int		status;
+	t_list	*tml;
+}					t_innsplitl;
 
 t_mshell			g_mshell;
 
@@ -168,5 +176,6 @@ t_list				*correct_rdir(t_list *lst, t_list *curr,
 								t_list *newlst, t_list *pr);
 int					openrdir3(t_list **urr, char *file);
 int					ms_exit(char *line, int *npipe);
+void				check_end_pipe(char *line, char *cpt);
 
 #endif
