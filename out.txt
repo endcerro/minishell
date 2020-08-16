@@ -1,0 +1,36 @@
+Norme: ./Sources/command_parsing.c
+Norme: ./Sources/cd.c
+Norme: ./Sources/echo.c
+Norme: ./Sources/commandorvar2.c
+Norme: ./Sources/evenmorefunc.c
+Norme: ./Sources/commandorvar.c
+Norme: ./Sources/export_utils.c
+Norme: ./Sources/functionsnstuff.c
+Norme: ./Sources/echo_utils.c
+Norme: ./Sources/export.c
+Norme: ./Sources/export2.c
+Norme: ./Sources/get_commandslst3.c
+Norme: ./Sources/inside_join.c
+Norme: ./Sources/lst_creat2.c
+Error (line 50): function inner_split_loop has 31 lines
+Norme: ./Sources/get_commands_lst.c
+Norme: ./Sources/get_commandslst2.c
+Norme: ./Sources/lstprint.c
+Norme: ./Sources/lst_utils.c
+Norme: ./Sources/lst_creat.c
+Norme: ./Sources/main3.c
+Norme: ./Sources/main.c
+Norme: ./Sources/maincreat.c
+Norme: ./Sources/main2.c
+Error (line 35): function getfiller has 26 lines
+Norme: ./Sources/morfuns.c
+Norme: ./Sources/lst_creat3.c
+Error (line 86): bad indentation
+Error (line 89): function escape_chars has 27 lines
+Norme: ./Sources/n_itoa.c
+Norme: ./Sources/more_functions.c
+Norme: ./Sources/plusdeplace.c
+Norme: ./Sources/utils.c
+Norme: ./Sources/morerdir.c
+Norme: ./Sources/rdirstuff.c
+Norme: ./Sources/parsingdeouf.c

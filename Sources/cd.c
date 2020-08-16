@@ -6,30 +6,11 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 15:25:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:23:18 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*getcwdwrap(void)
-{
-	char			*str;
-	unsigned int	i;
-
-	i = 256;
-	str = NULL;
-	while (i < UINT_MAX)
-	{
-		if (!(str = (char *)malloc(i)))
-			return (NULL);
-		if (getcwd(str, i) != NULL)
-			break ;
-		free(str);
-		i += 100;
-	}
-	return (str);
-}
 
 void	cdonemore(char *pwd, int o)
 {

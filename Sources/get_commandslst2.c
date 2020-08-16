@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 15:16:00 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:27:29 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	trimbs_loop(t_list *curr, int i, int j)
 			else if (qtcp != 1)
 				qtcp = (qtcp - 1) / 2 + 1;
 			if (curr->content[0] == '\"' && curr->content[j] < 0
-				&& curr->content[j] != -3)
+				&& curr->content[j] != -3 && curr->content[j] != -9)
 				qtcp++;
 			j = -1;
 			while (++j < qtcp)

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 16:24:56 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:24:13 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ int		parse_env_ls_two(char *query, char **str, char *d_pos)
 	return (0);
 }
 
-int 	spaghetti_bolognaise(t_list *curr, char *d_pos)
+int		spaghetti_bolognaise(t_list *curr, char *d_pos)
 {
 	if (curr->nospace == 1)
 	{
-		if(curr->next && (curr->next->content[0] == '\'' || curr->next->content[0] == '\"' ))
+		if (curr->next && (curr->next->content[0] == '\'' ||
+			curr->next->content[0] == '\"'))
 		{
 			d_pos[0] = 0;
 			return (2);

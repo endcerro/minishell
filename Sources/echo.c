@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 20:19:40 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/09 15:23:33 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:19:36 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		echo_ls(void)
 		if (curr->rawtext)
 			getraw(curr->content);
 		ft_putstr(curr->content);
-		if (curr->next)
+		if (curr->next && curr->next->type == 1)
 			write(1, " ", 1);
 		curr = curr->next;
 	}

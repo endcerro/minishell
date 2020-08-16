@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 16:36:06 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:26:35 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*add_filler(char **fill)
 	return (out);
 }
 
-void 	check_end_pipe(char *line, char *cpt)
+void	check_end_pipe(char *line, char *cpt)
 {
 	int i;
 
@@ -43,9 +43,8 @@ void 	check_end_pipe(char *line, char *cpt)
 	{
 		if (line[i] == '|')
 		{
-			fspace = 1;
 			++i;
-			while(ft_isspace(line[i]))
+			while (ft_isspace(line[i]))
 				i++;
 			if (line[i] == 0)
 			{
@@ -71,7 +70,6 @@ char	*check_finished_lst(char *line, int *err)
 	ft_bzero(cpt, 4);
 	escape_chars(line, 0, 0, cpt);
 	check_end_pipe(line, cpt);
-	// ft_putstr("MADE IT");
 	parse_qts(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 		if ((fill = getfiller(0, cpt, err)) == NULL)
@@ -80,4 +78,23 @@ char	*check_finished_lst(char *line, int *err)
 		return (NULL);
 	freechar2ptr(fill, 0);
 	return (out);
+}
+
+char	*getcwdwrap(void)
+{
+	char			*str;
+	unsigned int	i;
+
+	i = 256;
+	str = NULL;
+	while (i < UINT_MAX)
+	{
+		if (!(str = (char *)malloc(i)))
+			return (NULL);
+		if (getcwd(str, i) != NULL)
+			break ;
+		free(str);
+		i += 100;
+	}
+	return (str);
 }

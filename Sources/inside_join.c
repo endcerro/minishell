@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 15:23:03 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:24:52 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,18 @@ void	iniside_join_loop(char *base, char *add, char *out, int exit)
 	out[p] = 0;
 }
 
-char 	*escape_nested_vars(char *str)
+char	*escape_nested_vars(char *str)
 {
-	int	i;
-	char *new;
+	int		i;
+	char	*new;
 
 	if (str == NULL || !(new = ft_strdup(str)))
 		return (0);
 	i = -1;
-	while(new[++i])
+	while (new[++i])
 		if (new[i] == '$')
 			new[i] = -2;
-
 	return (new);
-
 }
 
 char	*inside_join(char *base, char *add, int mode, int exit)

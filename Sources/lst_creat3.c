@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 15:49:26 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:29:21 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	escape_chars2(char **line, int i, int bscpt)
 		(*line)[i] = -9;
 	else if ((*line)[i] == '\t' && bscpt % 2)
 		(*line)[i] = -10;
-	else if ((*line)[i] == '\"' && bscpt % 2)// && (*line)[i + 1])
+	else if ((*line)[i] == '\"' && bscpt % 2)
 		(*line)[i] = -4;
 	else if ((*line)[i] == '\r' && bscpt % 2)
 		(*line)[i] = -11;
@@ -93,7 +93,6 @@ void	escape_chars(char *line, int bscpt, int sqnb, char *cpt)
 
 	i = -1;
 	len = ft_strlen(line);
-	// printf("I+GOING IN\n");
 	while (line && i < len && line[++i])
 	{
 		bscpt = 0;
@@ -105,21 +104,15 @@ void	escape_chars(char *line, int bscpt, int sqnb, char *cpt)
 			line[i] = -5;
 		else if (line[i] == '\f' && bscpt % 2)
 			line[i] = -13;
-		else if (line[i] == '\'' && bscpt % 2)// && line[i + 1])
+		else if (line[i] == '\'' && bscpt % 2)
 		{
-			// printf("we here for %s\n", line);
-			// printf("we at %c %d \n", line[i], i);
 			if (sqnb == 0)
 				line[i] = -3;
 			else
 				sqnb = 0;
 		}
 		else if (line[i] == '\'')
-		{
-			// printf("We are here ?\n");
-			// printf("bscpt = %d\n",bscpt);
 			sqnb = (sqnb == 0) ? sqnb + 1 : sqnb - 1;
-		}
 		escape_chars2(&line, i, bscpt);
 	}
 }
