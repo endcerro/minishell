@@ -41,7 +41,7 @@ export LOL									OK
 export LOL=lol								OK
 export LOL	 								OK
 unset LOL
-export LOL=lala ROR=rara					OK
+export LOL=lala ROR=rara					KO Seulement si LOL existe deja
 unset LOL ROR								OK
 export "HI= hi"								OK
 export "HI =hi"  							OK
@@ -148,7 +148,7 @@ pwd | cut -c7- | rev | tr e 42 | rev | tr e 42 | tr e 42 | tr e 42 | tr e 42 | t
 
 
 
-pwd | cut -c7- | rev | tail | echo \$PWD	KO
+pwd | cut -c7- | rev | tail | echo \$PWD	OK
 
 XXXX Impossible de tester en récupérant PWD car on exit aussitôt
 XXXX Donc on teste via un ls pour check si on est au bon endroit
@@ -199,12 +199,14 @@ pwd;;;ls 									Change message ?
 ;ls;pwd;									OK
 \"											OK
 \"\"										OK
-'' 											OK
+'' 											KO Empeche de faire des commandes qui ne sont pas built-in
+"" 											KO Pareil qu'au-dessus
 \"\"\"\"\"\" 								OK
 \"  \" 										OK
 |											OK
+     |										KO
   |;										OK
-;| 											OK
+;| 											KO
 ;|<											OK
 <;											OK
 >;											OK
@@ -212,7 +214,7 @@ pwd;;;ls 									Change message ?
 ;>											OK
  ;< ls ;									OK
  ;> ls ;									OK
-'';											OK	
+'';											KO Pareil que plus haut
 >>											OK
   \"|\" ;									OK
 '|'											OK
@@ -220,11 +222,11 @@ pwd;;;ls 									Change message ?
 |.											OK
 < \" \" < ' '<								OK
 \" \" ' ' > < > ''							OK
-<											WRONG EXIT CODE
->
-<<<<<<<<
-<<<
->>>
+<											OK
+>											OK
+<<<<<<<<									OK
+<<<											OK
+>>>											OK
 
 cat fddsqffgfhds							OK
 cd ; ../../bin/cdfg							OK
@@ -232,9 +234,8 @@ cd ; ../../bin/ls							OK
 
 XXXX multi lignes
 
-'''''
-'
-\";"\
-echo "\"
-echo |
-
+'''''										OK
+'											OK
+\";"\										OK
+echo "\"									OK
+echo |										OK
