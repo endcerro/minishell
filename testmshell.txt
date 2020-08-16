@@ -22,7 +22,7 @@ export var=… ; export																	OK
 echo "bip | bip ; coyotte > < \" " -> bip | bip ; coyotte > < "							OK
 cat | cat | cat | ls -> ligne ls et 3 retour a la ligne via Entrer						OK
 $bla (non-export) -> retour a la ligne													OK
-export var ="cat Makefile | grep >" -> affiche le Makefile et erreurs pour |, grep..	OK
+export var="cat Makefile | grep >" -> affiche le Makefile et erreurs pour |, grep..		OK
 export $var -> affiche export															OK
 export $var=test -> message d'erreur													OK
 export "test=ici"=coucou -> test="ici=coucou"											OK
@@ -68,9 +68,9 @@ cd ~ -> redirige vers /home/user42														OK
 cd ../../../../../.. -> pwd : /															OK
 ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										OK
 $SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
-echo bonjour ; | -> 2																	OK
+echo bonjour ; | -> 2																	KO
 echo bonjour | | -> 2																	OK
-| -> 2																					OK
+| -> 2																					KO
 echo bonjour |; -> 2																	OK
 echo bonjour \; ls -> bonjour ; ls														OK
 echo bonjour > test\ 1 -> creation du fichier "test 1"									OK
