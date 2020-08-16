@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:29:21 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 17:37:59 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,17 @@ void	escape_chars2(char **line, int i, int bscpt)
 	else if ((*line)[i] == '\v' && bscpt % 2)
 		(*line)[i] = -12;
 	else if ((*line)[i] == '$' && bscpt % 2 && line[i + 1])
-			(*line)[i] = -2;
+		(*line)[i] = -2;
 }
 
-void	escape_chars(char *line, int bscpt, int sqnb, char *cpt)
+void	escape_chars(char *line, int i, int sqnb, char *cpt)
 {
-	int i;
+	int bscpt;
 	int len;
 
-	i = -1;
 	len = ft_strlen(line);
-	while (line && i < len && line[++i])
+	while (line && i < len && line[++i] && !(bscpt = 0))
 	{
-		bscpt = 0;
 		while (line[i] && line[i] == '\\' && ++bscpt)
 			i++;
 		if (line[i] == 0 && bscpt % 2 && cpt && ++(cpt[2]))
