@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:33:13 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:23:18 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:15:06 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int		cdter(int pwd)
 int		cd(char *pwd, int x, int ret)
 {
 	if ((pwd = getcwdwrap()) == NULL)
-		ret = retunset("OLDPWD");
+		return (ft_printh(2, 1, "minishell: cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno)));
 	if ((x = cdbis(0, 0)) != -1)
 		return (freeret(pwd, x));
 	if (env("PWD"))

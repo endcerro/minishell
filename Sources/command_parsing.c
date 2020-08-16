@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:36:47 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 18:08:08 by hpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,7 @@ char	*check_finished_lst(char *line, int *err)
 char	*getcwdwrap(void)
 {
 	char			*str;
-	unsigned int	i;
 
-	i = 256;
-	str = NULL;
-	while (i < UINT_MAX)
-	{
-		if (!(str = (char *)malloc(i)))
-			return (NULL);
-		if (getcwd(str, i) != NULL)
-			break ;
-		free(str);
-		i += 100;
-	}
+	str = getcwd(NULL, 0);
 	return (str);
 }
