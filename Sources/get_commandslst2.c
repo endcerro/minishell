@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:43:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 19:47:20 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 15:16:00 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,10 @@ int		expand_vars2(t_list **curr, t_list *pr)
 {
 	if (expand_t(&((*curr)->content)))
 		return (1);
-	elemprint(*curr);
 	if (parse_env_ls(&((*curr)->content), 0, (*curr)) == 2)
 	{
-		printf("%s\n",(*curr)->content );
 		return (0);
 	}
-	elemprint(*curr);
 	if (pr && (pr->type == 2 || pr->type == 4 || pr->type == 5))
 		if (checkspace((*curr)->content))
 			return (ft_printh(2, 1, "minishell: ambiguous redirect\n"));

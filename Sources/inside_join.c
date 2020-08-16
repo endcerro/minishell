@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 14:59:25 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 15:22:31 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,12 @@ char 	*escape_nested_vars(char *str)
 {
 	int	i;
 	char *new;
-
-	if (!str || !(new = ft_strdup(str)))
+	printf("IWIGO\n");
+	if (str == NULL || !(new = ft_strdup(str)))
+	{
+		printf("RETURN TIME\n");
 		return (0);
+	}
 	i = -1;
 	while(new[++i])
 		if (new[i] == '$')
@@ -85,7 +88,7 @@ char	*inside_join(char *base, char *add, int mode, int exit)
 		out = ft_strdup(base);
 	if (out == 0)
 		return (select_free(base, add, mode));
-	if (mode != 3)
+	if (mode != 3 && add)
 	{
 		if (!(add = escape_nested_vars(add)))
 			return (0);
