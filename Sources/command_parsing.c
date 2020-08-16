@@ -34,30 +34,31 @@ char	*add_filler(char **fill)
 	return (out);
 }
 
-void	check_end_pipe(char *line, char *cpt)
+int	check_end_pipe(char *line, char *cpt)
 {
 	int i;
-        int c;
-        c = 0;
+	int c;
+	
+	c = 0;
 	i = -1;
 	while (line && line[++i])
 	{
-		if (line[i] == '|')
+		if (line[i] != '|' && !ft_isspace(line[i]) && line[i] != ';')
 		{
-			++i;
-			while (ft_isspace(line[i]))
-				i++;
-			if (line[i] == 0 && c)
-			{
-				cpt[3] = 1;
-				return ;
-			}
-			else
-				cpt[3] = 0;
-		}
-		else if (++c)
 			cpt[3] = 0;
+			c++;
+		}
+		else if (line[i] == '|' || line[i] == ';')
+		{
+			if (c == 0)
+				return (1);
+			c = 0;
+		}
+
 	}
+	if (c == 0)
+		cpt[3]++;
+	return (0);
 }
 
 char	*check_finished_lst(char *line, int *err)
@@ -70,7 +71,8 @@ char	*check_finished_lst(char *line, int *err)
 	out = 0;
 	ft_bzero(cpt, 4);
 	escape_chars(line, -1, 0, cpt);
-	check_end_pipe(line, cpt);
+	if (check_end_pipe(line, cpt))
+		return (0);
 	parse_qts(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 		if ((fill = getfiller(0, cpt, err)) == NULL)
