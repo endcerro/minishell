@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:47:05 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 15:45:27 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 15:49:26 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void	escape_chars(char *line, int bscpt, int sqnb, char *cpt)
 				line[i] = -3;
 			else
 				sqnb = 0;
-
 		}
 		else if (line[i] == '\'')
 		{
