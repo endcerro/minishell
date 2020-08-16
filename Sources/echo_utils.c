@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 14:08:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 16:24:56 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ int		parse_env_ls(char **str, int len, t_list *curr)
 	while (d_pos != NULL)
 	{
 		len = 0;
-		// if ((d_pos = ft_strchr(*str, -248)) != NULL) // TESTEEEEEEEEEEEEEEEEEEEEER
-		// {
-		// 	d_pos[0] = '$';
-		// 	return (1);
-		// }
 		d_pos = ft_strchr(*str, '$');
 		if (d_pos == 0 || d_pos[0] == 0)
 			continue ;
@@ -84,7 +79,6 @@ int		parse_env_ls(char **str, int len, t_list *curr)
 			return (0);
 		free(query);
 	}
-	swap_char(*str, '$');
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:36:41 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/07/11 14:42:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 16:25:02 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,6 @@ int		pwd(void)
 	write(1, "\n", 1);
 	free(str);
 	return (0);
-}
-
-void	swap_char(char *str, char c)
-{
-	int		i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == -1)
-			str[i] = c;
-	}
 }
 
 int		parse_esc(char *str, int j)
