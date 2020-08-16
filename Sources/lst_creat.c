@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:22:37 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 19:49:28 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/16 15:00:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ t_list	*split_line_lst(char *line, int i)
 				|| lst->content == NULL)
 				return ((t_list *)(long)ft_lstclear(&f_lst));
 			else if (!ft_isspace(line[i]) && line[i] != 0)
-			{
-				printf("nospace for %s\n",lst->content);
 				lst->nospace = 1;
-			}
 			if (f_lst == NULL && (f_lst = lst))
 				lst = NULL;
 			else

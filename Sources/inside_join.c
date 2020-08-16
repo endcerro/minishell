@@ -6,13 +6,13 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 23:50:31 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/15 22:03:38 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/16 14:59:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	select_free(char *str1, char *str, int mode)
+char	*select_free(char *str1, char *str, int mode)
 {
 	if (mode == 1)
 		free(str1);
@@ -23,6 +23,7 @@ void	select_free(char *str1, char *str, int mode)
 		free(str1);
 		free(str);
 	}
+	return (0);
 }
 
 void	iniside_join_loop(char *base, char *add, char *out, int exit)
@@ -52,15 +53,22 @@ void	iniside_join_loop(char *base, char *add, char *out, int exit)
 			out[p++] = base[i++];
 	}
 	out[p] = 0;
+}
 
+char 	*escape_nested_vars(char *str)
+{
+	int	i;
+	char *new;
 
+	if (!str || !(new = ft_strdup(str)))
+		return (0);
+	i = -1;
+	while(new[++i])
+		if (new[i] == '$')
+			new[i] = -2;
 
+	return (new);
 
-	if (ft_strcmp(base, add) == 0) // TESTEEEEEEEEEEEEEEEEEEER
-	{
-		out[0] = -248;
-		return ;
-	}
 }
 
 char	*inside_join(char *base, char *add, int mode, int exit)
@@ -71,17 +79,17 @@ char	*inside_join(char *base, char *add, int mode, int exit)
 	{
 		if (!(out = malloc(sizeof(char) *
 				(ft_strlen(base) + ft_strlen(add) + 1))))
-		{
-			select_free(base, add, mode);
-			return (0);
-		}
+			return (select_free(base, add, mode));
 	}
 	else
 		out = ft_strdup(base);
 	if (out == 0)
+		return (select_free(base, add, mode));
+	if (mode != 3)
 	{
-		select_free(base, add, mode);
-		return (0);
+		if (!(add = escape_nested_vars(add)))
+			return (0);
+		mode = 3;
 	}
 	iniside_join_loop(base, add, out, exit);
 	select_free(base, add, mode);
