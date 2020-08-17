@@ -34,11 +34,11 @@ char	*add_filler(char **fill)
 	return (out);
 }
 
-int	check_end_pipe(char *line, char *cpt)
+int		check_end_pipe(char *line, char *cpt)
 {
 	int i;
 	int c;
-	
+
 	c = 0;
 	i = -1;
 	while (line && line[++i])
@@ -54,7 +54,6 @@ int	check_end_pipe(char *line, char *cpt)
 				return (1);
 			c = 0;
 		}
-
 	}
 	if (c == 0)
 		cpt[3]++;

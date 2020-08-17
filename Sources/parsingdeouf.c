@@ -115,7 +115,6 @@ int		ms_exit(char *line, int *npipe)
 	freechar2ptr(g_mshell.vars, 0);
 	ft_lstclear(&g_mshell.ls);
 	free(line);
-	// system("leaks minishell");
 	exit(ex);
 }
 

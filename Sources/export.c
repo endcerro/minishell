@@ -80,11 +80,8 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, int ret)
 			if ((tmp = vars(curr->content)) != NULL
 				&& exportstuffter(curr, tmp) == 1)
 				return (1);
-			else if (env(curr->content))
-			{
-				curr = curr->next;
+			else if (env(curr->content) && ((curr = curr->next) || 1))
 				continue ;
-			}
 		}
 		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) == -1)
 			return (i);

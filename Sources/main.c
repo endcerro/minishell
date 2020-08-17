@@ -109,5 +109,4 @@ int		main(void)
 	free(line);
 	freechar2ptr(g_mshell.env, 0);
 	freechar2ptr(g_mshell.vars, 0);
-	// system("leaks minishell");
 }
