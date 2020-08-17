@@ -68,10 +68,10 @@ cd ~ -> redirige vers /home/user42														OK
 cd ../../../../../.. -> pwd : /															OK
 ctrl-C -> O 130 sur bin(ex : sleep 10)&line vide										OK
 $SHLVL -> doit être incrémenté a chaque lancement de minishell							OK
-echo bonjour ; | -> 2																	KO
+echo bonjour ; | -> 2																	OK
 echo bonjour | | -> 2																	OK
 | -> 2																					OK
-     | -> 2																				KO
+     | -> 2																				OK
 echo bonjour |; -> 2																	OK
 echo bonjour \; ls -> bonjour ; ls														OK
 echo bonjour > test\ 1 -> creation du fichier "test 1"									OK

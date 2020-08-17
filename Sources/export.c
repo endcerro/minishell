@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/17 12:54:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/17 13:06:50 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int		exportstuff(t_list *curr, char **tmp, char ***n_envi)
 				return (1);
 			}
 			printf("RETURN 4\n");
+			// if (ft_strcmp(curr->content, "SHLVL=2") != 0)
+			// 	return (freeret(*tmp, -1));	
 			return (freeret(*tmp, 0));	//HERE IT SHOULD BE -1 but SGFLT on init
 		}
 	if (!(*n_envi = malloc(sizeof(char *) * (i + 2))))
@@ -50,7 +52,7 @@ int		exportstuffbis(char ***n_envi, t_list **curr)
 	(*n_envi)[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = *n_envi;
-	*curr = (*curr)->next;
+	*curr = (*curr)->next;				//DOESN'T DO ANYTHING ?
 	return (0);
 }
 
