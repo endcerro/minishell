@@ -93,7 +93,10 @@ char	*checkpathbis(char **params, int j, int x)
 		{
 			g_mshell.env[x][i] = 0;
 			if (*(params[j]) == '\0')
+			{
+				g_mshell.env[x][i] = ':';
 				return (NULL);
+			}
 			str = ft_strjoinf1(ft_strjoin(&g_mshell.env[x][prev], "/"),
 							params[j]);
 			g_mshell.env[x][i] = ':';

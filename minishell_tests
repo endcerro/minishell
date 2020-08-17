@@ -199,8 +199,8 @@ pwd;;;ls 									Change message ?
 ;ls;pwd;									OK
 \"											OK
 \"\"										OK
-'' 											KO Empeche de faire des commandes qui ne sont pas built-in
-"" 											KO Pareil qu'au-dessus
+'' 											OK
+"" 											OK
 \"\"\"\"\"\" 								OK
 \"  \" 										OK
 |											OK
@@ -214,7 +214,7 @@ pwd;;;ls 									Change message ?
 ;>											OK
  ;< ls ;									OK
  ;> ls ;									OK
-'';											KO Pareil que plus haut
+'';											KO
 >>											OK
   \"|\" ;									OK
 '|'											OK
