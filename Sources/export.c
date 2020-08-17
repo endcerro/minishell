@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/07 19:18:39 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/09 19:47:35 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/17 12:54:40 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,16 @@ int		exportstuff(t_list *curr, char **tmp, char ***n_envi)
 			g_mshell.env[i] = ft_strdup(curr->content);
 			if (g_mshell.env[i] == 0)
 			{
+				printf("RETURN 3\n");
 				g_mshell.env[i] = *tmp;
 				return (1);
 			}
-			return (freeret(*tmp, 0));
+			printf("RETURN 4\n");
+			return (freeret(*tmp, 0));	//HERE IT SHOULD BE -1 but SGFLT on init
 		}
 	if (!(*n_envi = malloc(sizeof(char *) * (i + 2))))
 		return (1);
+	printf("RETURN 5\n");
 	return (-1);
 }
 
@@ -57,9 +60,15 @@ int		exportstuffquater2(t_list **curr, char **tmp, char ***n_envi)
 
 	unset_var((*curr)->content);
 	if ((i = exportstuff(*curr, tmp, n_envi)) != -1)
+	{
+		printf("RETURN 1 %d %s\n", i, (*curr)->content);
 		return (i);
+	}
 	if (exportstuffbis(n_envi, curr) == 1)
+	{
+		printf("RETURN 2\n");
 		return (1);
+	}
 	return (-1);
 }
 

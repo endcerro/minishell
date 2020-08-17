@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/16 19:01:02 by hpottier         ###   ########.fr       */
+/*   Updated: 2020/08/17 12:39:17 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int		ms_exit(char *line, int *npipe)
 	freechar2ptr(g_mshell.vars, 0);
 	ft_lstclear(&g_mshell.ls);
 	free(line);
-	system("leaks minishell");
+	// system("leaks minishell");
 	exit(ex);
 }
 
