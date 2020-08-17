@@ -47,7 +47,6 @@ int		exportstuffbis(char ***n_envi, t_list **curr)
 	(*n_envi)[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = *n_envi;
-	*curr = (*curr)->next;
 	return (0);
 }
 
@@ -57,9 +56,16 @@ int		exportstuffquater2(t_list **curr, char **tmp, char ***n_envi)
 
 	unset_var((*curr)->content);
 	if ((i = exportstuff(*curr, tmp, n_envi)) != -1)
+	{
+		*curr = (*curr)->next;
 		return (i);
+	}
 	if (exportstuffbis(n_envi, curr) == 1)
+	{
+		*curr = (*curr)->next;
 		return (1);
+	}
+	*curr = (*curr)->next;
 	return (-1);
 }
 
@@ -83,10 +89,8 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, int ret)
 			else if (env(curr->content) && ((curr = curr->next) || 1))
 				continue ;
 		}
-		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) == -1)
+		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) == 1)
 			return (i);
-		if (curr)
-			curr = curr->next;
 	}
 	return (ret);
 }

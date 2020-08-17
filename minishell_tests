@@ -40,8 +40,9 @@ export										OK
 export LOL									OK
 export LOL=lol								OK
 export LOL	 								OK
-unset LOL
-export LOL=lala ROR=rara					KO Seulement si LOL existe deja
+unset LOL									OK
+export LOL=lala ROR=rara					KO si LOL n'existe pas
+export HI = hi								KO
 unset LOL ROR								OK
 export "HI= hi"								OK
 export "HI =hi"  							OK
