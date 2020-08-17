@@ -204,9 +204,9 @@ pwd;;;ls 									Change message ?
 \"\"\"\"\"\" 								OK
 \"  \" 										OK
 |											OK
-     |										KO
+     |										OK
   |;										OK
-;| 											KO
+;| 											OK
 ;|<											OK
 <;											OK
 >;											OK
