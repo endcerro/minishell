@@ -24,18 +24,13 @@ int		exportstuff(t_list *curr, char **tmp, char ***n_envi)
 			g_mshell.env[i] = ft_strdup(curr->content);
 			if (g_mshell.env[i] == 0)
 			{
-				printf("RETURN 3\n");
 				g_mshell.env[i] = *tmp;
 				return (1);
 			}
-			printf("RETURN 4\n");
-			// if (ft_strcmp(curr->content, "SHLVL=2") != 0)
-			// 	return (freeret(*tmp, -1));	
-			return (freeret(*tmp, 0));	//HERE IT SHOULD BE -1 but SGFLT on init
+			return (freeret(*tmp, 0));
 		}
 	if (!(*n_envi = malloc(sizeof(char *) * (i + 2))))
 		return (1);
-	printf("RETURN 5\n");
 	return (-1);
 }
 
@@ -52,7 +47,7 @@ int		exportstuffbis(char ***n_envi, t_list **curr)
 	(*n_envi)[++i] = 0;
 	free(g_mshell.env);
 	g_mshell.env = *n_envi;
-	*curr = (*curr)->next;				//DOESN'T DO ANYTHING ?
+	*curr = (*curr)->next;
 	return (0);
 }
 
@@ -62,15 +57,9 @@ int		exportstuffquater2(t_list **curr, char **tmp, char ***n_envi)
 
 	unset_var((*curr)->content);
 	if ((i = exportstuff(*curr, tmp, n_envi)) != -1)
-	{
-		printf("RETURN 1 %d %s\n", i, (*curr)->content);
 		return (i);
-	}
 	if (exportstuffbis(n_envi, curr) == 1)
-	{
-		printf("RETURN 2\n");
 		return (1);
-	}
 	return (-1);
 }
 
@@ -97,8 +86,10 @@ int		exportstuffquater(t_list *curr, char *tmp, char **n_envi, int ret)
 				continue ;
 			}
 		}
-		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) != -1)
+		if ((i = exportstuffquater2(&curr, &tmp, &n_envi)) == -1)
 			return (i);
+		if (curr)
+			curr = curr->next;
 	}
 	return (ret);
 }
