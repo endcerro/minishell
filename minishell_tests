@@ -41,8 +41,8 @@ export LOL									OK
 export LOL=lol								OK
 export LOL	 								OK
 unset LOL									OK
-export LOL=lala ROR=rara					KO si LOL n'existe pas
-export HI = hi								KO
+export LOL=lala ROR=rara					OK
+export HI = hi								OK
 unset LOL ROR								OK
 export "HI= hi"								OK
 export "HI =hi"  							OK
@@ -216,6 +216,7 @@ pwd;;;ls 									Change message ?
  ;< ls ;									OK
  ;> ls ;									OK
 '';											KO
+''|											OK
 >>											OK
   \"|\" ;									OK
 '|'											OK
