@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:38:39 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/19 19:05:33 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	**getfiller(int depth, char *cpt, int *err)
 		return (NULL);
 	escape_chars(tmp, -1, 0, cpt);
 	parse_qts(tmp, cpt);
-	check_end_pipe(tmp, cpt);
+	if (check_end_pipe(tmp, cpt))
+		return (0);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 	{
 		if (!(out = getfiller(depth + 1, cpt, err)))
