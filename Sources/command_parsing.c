@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/19 19:49:40 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/19 20:01:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,24 @@ int		check_end_pipe(char *line, char *cpt)
 {
 	int i;
 	int c;
+	char lc;
 
 	c = 0;
 	i = -1;
+	lc = 0;
 	while (line && line[++i])
 	{
+		// lc = line[i];
 		if (line[i] != '|' && !ft_isspace(line[i]) && line[i] != ';')
 		{
+			lc = line[i];
 			cpt[3] = 0;
 			c++;
 		}
 		else if (line[i] == '|' || (cpt[3] && line[i] == ';'))
 		{
+			if (lc == '>' || lc == ';' || lc == '<' || lc == '|')
+				return (1);
 			if (c == 0)
 			{
 				cpt[3]++;
@@ -59,49 +65,16 @@ int		check_end_pipe(char *line, char *cpt)
 				cpt[3]++;
 			c = 0;
 		}
+		if (line[i] == ';' && line[i + 1] == ';')
+			return (1);
+		if(!ft_isspace(line[i]))
+			lc = line[i];
+
 	}
 	if (c == 0 && ft_strchr(line, '|') != 0)
 		cpt[3]++;
 	return (0);
 }
-
-// int check_end_pipe2(char *line, char *cpt)
-// {
-// 	int i;
-// 	int nbpi;
-// 	int nbpv;
-// 	int chars;
-
-// 	chars = 0;
-// 	nbpi = 0;
-// 	nbpv = 0;
-// 	i = -1;
-// 	while (line && line[++i])
-// 	{
-// 		if (line == '|')
-// 		{
-// 			nbpi++;
-// 			if (nbpi > 1)
-// 			{
-// 				return (1);
-// 			}
-// 			cpt[3]++;
-// 		}
-// 		else if (line == ';')
-// 		{
-// 			nbpv++;
-// 		}
-// 		else if (!ft_isspace(line[i]))
-// 			chars++;
-// 	}
-
-// 	if(chars == 0 && nbpv == 0 && nbpi == 0)
-// 		return (0);
-
-// }
-
-
-
 
 char	*check_finished_lst(char *line, int *err)
 {
