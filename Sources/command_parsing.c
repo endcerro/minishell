@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/19 20:58:18 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/19 21:09:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,28 @@ int 	check_end_pipe2(char *line, char *cpt)
 			return (1);
 		if (!ft_isspace(line[i]))
 		{	
-			if (line[i]!='|')
+			if(last == '|' && line[i] == '\\')
+			{
+				printf("HERE\n");
+				cpt[3]++;
+			}
+			else if (line[i] != '|')
 				cpt[3] = 0;
 			last = line[i];
 		}
 	}
-
+	if (last == '\\')
 	printf("LAST = %c\n",last );
 	if (last == '|')
 	{
 		if(cpt[3])
 			return (1);
 		cpt[3] = 1;
+	}
+	else if (last == '\\' && cpt[3])
+	{
+		line[i] = 0;
+		return (0);
 	}
 	else if (last != -1 && last != '|')
 		cpt[3] = 0;

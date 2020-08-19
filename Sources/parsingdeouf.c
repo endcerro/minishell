@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:45 by hpottier          #+#    #+#             */
-/*   Updated: 2020/08/17 12:39:17 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/19 21:07:29 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		rawtext(t_list *curr, t_list *prev, char **split, t_list *tmp)
 
 int		prep_ls(t_list *curr, t_list *lst, int ret)
 {
+	ft_lstprint(curr);
 	escape_lst(curr);
 	if (check_valid(curr, 0, 0, curr) != 0)
 		return (2);
