@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/19 19:34:54 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/19 19:40:55 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		check_end_pipe(char *line, char *cpt)
 			c = 0;
 		}
 	}
-	if (c == 0)
+	if (c == 0 && ft_strchr(line, '|') != 0)
 		cpt[3]++;
 	return (0);
 }
@@ -72,14 +72,10 @@ char	*check_finished_lst(char *line, int *err)
 	fill = 0;
 	out = 0;
 	ft_bzero(cpt, 4);
-	printf("CPT = %d %d %d %d \n",cpt[0], cpt[1], cpt[2],cpt[3] );
 	escape_chars(line, -1, 0, cpt);
-	printf("CPT = %d %d %d %d \n",cpt[0], cpt[1], cpt[2],cpt[3] );
 	if (check_end_pipe(line, cpt))
 		return (0);
-	printf("CPT = %d %d %d %d \n",cpt[0], cpt[1], cpt[2],cpt[3] );
 	parse_qts(line, cpt);
-	printf("CPT = %d %d %d %d \n",cpt[0], cpt[1], cpt[2],cpt[3] );
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 		if ((fill = getfiller(0, cpt, err)) == NULL)
 			return (NULL);
