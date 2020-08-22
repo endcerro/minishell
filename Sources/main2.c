@@ -42,7 +42,7 @@ char	**getfiller(int depth, char *cpt, int *err, char *tmp)
 	escape_chars(tmp, -1, 0, cpt);
 	parse_qts(tmp, cpt);
 	if (check_end_pipe(tmp, cpt, -1, -1))
-		return (0);
+		return ((char **)(long)freeret(tmp, 0));
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 	{
 		if (!(out = getfiller(depth + 1, cpt, err, 0)))
