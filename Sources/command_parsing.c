@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/22 15:10:51 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:14:25 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*check_finished_lst(char *line, int *err)
 		return (0);
 	parse_qts(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
-		if ((fill = getfiller(0, cpt, err)) == NULL)
+		if ((fill = getfiller(0, cpt, err, 0)) == NULL)
 			return (NULL);
 	if ((out = add_filler(fill)) == NULL)
 		return (NULL);

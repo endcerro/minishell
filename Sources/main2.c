@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 14:44:08 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/22 15:09:02 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:14:16 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ void	promptnextline(char **str, char *cpt, int *err)
 	}
 }
 
-char	**getfiller(int depth, char *cpt, int *err)
+char	**getfiller(int depth, char *cpt, int *err, char *tmp)
 {
-	char *tmp;
 	char **out;
 
 	promptnextline(&tmp, cpt, err);
@@ -46,7 +45,7 @@ char	**getfiller(int depth, char *cpt, int *err)
 		return (0);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
 	{
-		if (!(out = getfiller(depth + 1, cpt, err)))
+		if (!(out = getfiller(depth + 1, cpt, err, 0)))
 			return ((char **)(long)freeret(tmp, 0));
 	}
 	else

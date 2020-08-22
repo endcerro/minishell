@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/22 15:11:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:13:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char				*getcwdwrap(void);
 
 char				*get_lst(char *line);
 int					get_blocks(char *line);
-char				**getfiller(int depth, char *cpt, int *err);
+char				**getfiller(int depth, char *cpt, int *err, char *tmp);
 void				parse_qts(char *str, char *cpt);
 int					parse_bs(char *str);
 int					parse_esc(char *str, int i);
