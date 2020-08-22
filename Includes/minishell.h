@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/19 21:07:01 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:11:23 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,12 +172,11 @@ void				exec_command(char *line, t_list *lst,
 int					countpipes(t_list *curr);
 int					allocpipepid(int npipe, t_list *copy);
 int					prep_ls(t_list *curr, t_list *lst, int ret);
-int 				check_end_pipe2(char *line, char *cpt);
+int					check_end_pipe(char *line, char *cpt, int i, int last);
 t_list				*correct_rdir(t_list *lst, t_list *curr,
 								t_list *newlst, t_list *pr);
 int					openrdir3(t_list **urr, char *file);
 int					ms_exit(char *line, int *npipe);
-int					check_end_pipe(char *line, char *cpt);
 int					baderrorohno(void);
 
 #endif

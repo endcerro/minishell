@@ -223,12 +223,12 @@ pwd;;;ls 									Change message ?
   '|'										OK
 |.											OK
 < \" \" < ' '<								OK
-\" \" ' ' > < > ''							OK
+\" \" ' ' > < > ''							OK DIFF ERROR
 <											OK
 >											OK
-<<<<<<<<									OK
-<<<											OK
->>>											OK
+<<<<<<<<									OK DIFF ERROR
+<<<											OK DIFF ERROR
+>>>											OK DIFF ERROR
 
 cat fddsqffgfhds							OK
 cd ; ../../bin/cdfg							OK
@@ -238,6 +238,6 @@ XXXX multi lignes
 
 '''''										OK
 '											OK
-\";"\										OK
+\";"\										KO
 echo "\"									OK
 echo |										OK

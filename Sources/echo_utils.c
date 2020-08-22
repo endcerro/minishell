@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 16:22:26 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/16 17:24:13 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:04:14 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	parse_qts(char *str, char *cpt)
 	int		v;
 
 	j = -1;
-	while (str[++j])
+	while (str && str[++j])
 	{
 		if ((str[j] == '\'' || str[j] == '\"'))
 		{

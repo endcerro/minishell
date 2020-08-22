@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 16:28:49 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/19 21:09:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2020/08/22 15:10:51 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,27 @@ char	*add_filler(char **fill)
 	return (out);
 }
 
-int 	check_end_pipe2(char *line, char *cpt)
+int		check_end_pipe2(char last, char *cpt, int i, char *line)
 {
-	int i;
-	char last;
+	if (last == '|')
+	{
+		if (cpt[3])
+			return (1);
+		cpt[3] = 1;
+	}
+	else if (last == '\\' && cpt[3])
+		return (line[i] = 0);
+	else if (last != -1 && last != '|')
+		cpt[3] = 0;
+	return (0);
+}
 
-	last = -1;
-	i = -1;
+int		check_end_pipe(char *line, char *cpt, int i, int last)
+{
 	while (line[++i])
 	{
+		if (last == -1 && line[i] == '|')
+			return (1);
 		if (last == '|' && line[i] == '|')
 			return (1);
 		else if (last == ';' && line[i] == '|')
@@ -52,80 +64,16 @@ int 	check_end_pipe2(char *line, char *cpt)
 		else if (last == '<' && line[i] == '|')
 			return (1);
 		if (!ft_isspace(line[i]))
-		{	
-			if(last == '|' && line[i] == '\\')
-			{
-				printf("HERE\n");
-				cpt[3]++;
-			}
+		{
+			if (last == '|' && line[i] == '\\' && ++cpt[3])
+				line[i] = ' ';
 			else if (line[i] != '|')
 				cpt[3] = 0;
 			last = line[i];
 		}
 	}
-	if (last == '\\')
-	printf("LAST = %c\n",last );
-	if (last == '|')
-	{
-		if(cpt[3])
-			return (1);
-		cpt[3] = 1;
-	}
-	else if (last == '\\' && cpt[3])
-	{
-		line[i] = 0;
-		return (0);
-	}
-	else if (last != -1 && last != '|')
-		cpt[3] = 0;
-	return (0);
+	return (check_end_pipe2(last, cpt, i, line));
 }
-
-// int		check_end_pipe(char *line, char *cpt)
-// {
-// 	int i;
-// 	int c;
-// 	char lc;
-
-// 	c = 0;
-// 	i = -1;
-// 	lc = 0;
-// 	while (line && line[++i])
-// 	{
-// 		printf("LC IS %c\n",lc );
-// 		// lc = line[i];
-// 		if (line[i] != '|' && !ft_isspace(line[i]) && line[i] != ';')
-// 		{
-// 			lc = line[i];
-// 			cpt[3] = 0;
-// 			c++;
-// 		}
-// 		else if (line[i] == '|' || (cpt[3] && line[i] == ';'))
-// 		{
-// 			if (lc == '>' || lc == ';' || lc == '<' || lc == '|')
-// 				return (1);
-// 			if (c == 0)
-// 			{
-// 				cpt[3]++;
-// 				return (1);
-// 			}
-// 			else
-// 				cpt[3]++;
-// 			c = 0;
-// 		}
-// 		if(line[i] == '|' %%)
-// 		if(!ft_isspace(line[i]))
-// 			lc = line[i];
-
-// 	}
-// 	if (lc == '\\' && cpt[3])
-// 		cpt[3]++;
-// 	printf("C = %d, cpt = %d\n",c, cpt[3] );
-// 	printf("cpt = %d %d %d %d \n",cpt[0], cpt[1], cpt[2], cpt[3] );
-// 	if (c == 0 && ft_strchr(line, '|') != 0)
-// 		cpt[3]++;
-// 	return (0);
-// }
 
 char	*check_finished_lst(char *line, int *err)
 {
@@ -137,7 +85,7 @@ char	*check_finished_lst(char *line, int *err)
 	out = 0;
 	ft_bzero(cpt, 4);
 	escape_chars(line, -1, 0, cpt);
-	if (check_end_pipe2(line, cpt))
+	if (check_end_pipe(line, cpt, -1, -1))
 		return (0);
 	parse_qts(line, cpt);
 	if (cpt[0] % 2 || cpt[1] % 2 || cpt[2] || cpt[3])
