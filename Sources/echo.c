@@ -62,6 +62,8 @@ int		is_n(char *str)
 	i = 0;
 	if (str[i++] != '-')
 		return (0);
+	if (str[i] == 0)
+		return (0);
 	while (str[i] == 'n')
 		i++;
 	if (str[i] != 0)
