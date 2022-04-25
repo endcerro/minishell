@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/16 20:40:33 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/17 12:39:23 by edal--ce         ###   ########.fr       */
+/*   Updated: 2022/04/25 07:51:57 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	init_mshell(void)
 	g_mshell.dquote = 0;
 }
 
+t_mshell			g_mshell;
 int		main(void)
 {
 	char *line;

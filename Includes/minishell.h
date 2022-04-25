@@ -6,7 +6,7 @@
 /*   By: edal--ce <edal--ce@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 18:34:51 by edal--ce          #+#    #+#             */
-/*   Updated: 2020/08/22 15:38:59 by edal--ce         ###   ########.fr       */
+/*   Updated: 2022/04/25 07:51:49 by edal--ce         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct		s_innsplitl
 	t_list	*tml;
 }					t_innsplitl;
 
-t_mshell			g_mshell;
+extern t_mshell			g_mshell;
 
 /*
 **BUILTINS
